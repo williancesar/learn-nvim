@@ -1,0 +1,363 @@
+{
+  "_copy_paste_instructions": {
+    "description": "Day 07 - Copy & Paste Practice",
+    "objectives": [
+      "Use 'y' with motions to yank (copy): 'yw', 'yy', 'y$', etc.",
+      "Practice 'p' to paste after cursor, 'P' to paste before cursor",
+      "Use VISUAL mode 'v' to select and copy blocks of text",
+      "Practice duplicating configuration patterns throughout the file",
+      "Copy sections and modify them to create variations"
+    ],
+    "patterns": "Look for template patterns marked with [COPY] that need duplication"
+  },
+  "docker_compose_services": {
+    "template_web_service": {
+      "_note": "[COPY] Use this template to create web-service-1, web-service-2, web-service-3",
+      "image": "nginx:alpine",
+      "container_name": "template-web",
+      "ports": ["80:80"],
+      "volumes": [
+        "./nginx/conf.d:/etc/nginx/conf.d:ro",
+        "./static:/usr/share/nginx/html:ro"
+      ],
+      "environment": {
+        "NGINX_PORT": "80",
+        "NGINX_HOST": "localhost"
+      },
+      "networks": ["web-network"],
+      "restart": "unless-stopped",
+      "healthcheck": {
+        "test": ["CMD", "curl", "-f", "http://localhost/health"],
+        "interval": "30s",
+        "timeout": "10s",
+        "retries": 3
+      }
+    },
+    "template_api_service": {
+      "_note": "[COPY] Copy and modify for api-service-1, api-service-2",
+      "build": {
+        "context": "./api",
+        "dockerfile": "Dockerfile"
+      },
+      "container_name": "template-api",
+      "ports": ["3000:3000"],
+      "environment": {
+        "NODE_ENV": "production",
+        "PORT": "3000",
+        "DATABASE_URL": "postgresql://user:pass@postgres:5432/app",
+        "REDIS_URL": "redis://redis:6379",
+        "JWT_SECRET": "${JWT_SECRET}"
+      },
+      "volumes": [
+        "./api/src:/app/src",
+        "./api/logs:/app/logs"
+      ],
+      "depends_on": ["postgres", "redis"],
+      "networks": ["app-network"],
+      "restart": "unless-stopped"
+    },
+    "template_worker_service": {
+      "_note": "[COPY] Duplicate for worker-1, worker-2, worker-3 with different queue names",
+      "build": {
+        "context": "./worker",
+        "dockerfile": "Dockerfile"
+      },
+      "container_name": "template-worker",
+      "environment": {
+        "WORKER_QUEUE": "default",
+        "REDIS_URL": "redis://redis:6379",
+        "DATABASE_URL": "postgresql://user:pass@postgres:5432/app",
+        "LOG_LEVEL": "info"
+      },
+      "volumes": ["./worker/logs:/app/logs"],
+      "depends_on": ["redis", "postgres"],
+      "networks": ["app-network"],
+      "restart": "unless-stopped"
+    },
+    "postgres": {
+      "image": "postgres:15-alpine",
+      "container_name": "postgres-db",
+      "environment": {
+        "POSTGRES_DB": "app",
+        "POSTGRES_USER": "user",
+        "POSTGRES_PASSWORD": "${POSTGRES_PASSWORD}"
+      },
+      "volumes": [
+        "postgres_data:/var/lib/postgresql/data",
+        "./db/init:/docker-entrypoint-initdb.d"
+      ],
+      "ports": ["5432:5432"],
+      "networks": ["app-network"],
+      "restart": "unless-stopped"
+    },
+    "redis": {
+      "image": "redis:7-alpine",
+      "container_name": "redis-cache",
+      "command": "redis-server --appendonly yes",
+      "volumes": ["redis_data:/data"],
+      "ports": ["6379:6379"],
+      "networks": ["app-network"],
+      "restart": "unless-stopped"
+    }
+  },
+  "kubernetes_deployment_templates": {
+    "template_deployment": {
+      "_note": "[COPY] Copy this template for frontend-deployment, backend-deployment",
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "metadata": {
+        "name": "template-deployment",
+        "namespace": "default",
+        "labels": {
+          "app": "template-app",
+          "version": "v1.0.0"
+        }
+      },
+      "spec": {
+        "replicas": 3,
+        "selector": {
+          "matchLabels": {
+            "app": "template-app"
+          }
+        },
+        "template": {
+          "metadata": {
+            "labels": {
+              "app": "template-app",
+              "version": "v1.0.0"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "template-container",
+                "image": "template-image:latest",
+                "ports": [{"containerPort": 8080}],
+                "env": [
+                  {"name": "ENV", "value": "production"},
+                  {"name": "PORT", "value": "8080"}
+                ],
+                "resources": {
+                  "requests": {
+                    "memory": "256Mi",
+                    "cpu": "250m"
+                  },
+                  "limits": {
+                    "memory": "512Mi",
+                    "cpu": "500m"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "template_service": {
+      "_note": "[COPY] Copy for frontend-service, backend-service, api-service",
+      "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+        "name": "template-service",
+        "namespace": "default",
+        "labels": {
+          "app": "template-app"
+        }
+      },
+      "spec": {
+        "type": "ClusterIP",
+        "ports": [
+          {
+            "port": 80,
+            "targetPort": 8080,
+            "protocol": "TCP"
+          }
+        ],
+        "selector": {
+          "app": "template-app"
+        }
+      }
+    },
+    "template_configmap": {
+      "_note": "[COPY] Copy for app-config, database-config, cache-config",
+      "apiVersion": "v1",
+      "kind": "ConfigMap",
+      "metadata": {
+        "name": "template-config",
+        "namespace": "default"
+      },
+      "data": {
+        "config.yaml": "apiVersion: v1\nkind: Config\nmetadata:\n  name: template\nspec:\n  setting1: value1\n  setting2: value2",
+        "app.properties": "app.name=template\napp.version=1.0.0\napp.debug=false"
+      }
+    }
+  },
+  "terraform_resource_templates": {
+    "template_vpc": {
+      "_note": "[COPY] Copy for production-vpc, staging-vpc, development-vpc",
+      "resource": "aws_vpc",
+      "name": "template_vpc",
+      "cidr_block": "10.0.0.0/16",
+      "enable_dns_hostnames": true,
+      "enable_dns_support": true,
+      "tags": {
+        "Name": "template-vpc",
+        "Environment": "template",
+        "Terraform": "true"
+      }
+    },
+    "template_subnet": {
+      "_note": "[COPY] Copy for public-subnet-1, public-subnet-2, private-subnet-1, private-subnet-2",
+      "resource": "aws_subnet",
+      "name": "template_subnet",
+      "vpc_id": "${aws_vpc.template_vpc.id}",
+      "cidr_block": "10.0.1.0/24",
+      "availability_zone": "us-west-2a",
+      "map_public_ip_on_launch": true,
+      "tags": {
+        "Name": "template-subnet",
+        "Type": "template",
+        "Terraform": "true"
+      }
+    },
+    "template_security_group": {
+      "_note": "[COPY] Copy for web-sg, app-sg, db-sg with different rules",
+      "resource": "aws_security_group",
+      "name": "template_sg",
+      "description": "Template security group",
+      "vpc_id": "${aws_vpc.template_vpc.id}",
+      "ingress": [
+        {
+          "from_port": 80,
+          "to_port": 80,
+          "protocol": "tcp",
+          "cidr_blocks": ["0.0.0.0/0"]
+        },
+        {
+          "from_port": 443,
+          "to_port": 443,
+          "protocol": "tcp",
+          "cidr_blocks": ["0.0.0.0/0"]
+        }
+      ],
+      "egress": [
+        {
+          "from_port": 0,
+          "to_port": 0,
+          "protocol": "-1",
+          "cidr_blocks": ["0.0.0.0/0"]
+        }
+      ],
+      "tags": {
+        "Name": "template-sg",
+        "Terraform": "true"
+      }
+    },
+    "template_instance": {
+      "_note": "[COPY] Copy for web-server-1, web-server-2, app-server-1, app-server-2",
+      "resource": "aws_instance",
+      "name": "template_instance",
+      "ami": "ami-0c02fb55956c7d316",
+      "instance_type": "t3.micro",
+      "key_name": "${aws_key_pair.template_key.key_name}",
+      "vpc_security_group_ids": ["${aws_security_group.template_sg.id}"],
+      "subnet_id": "${aws_subnet.template_subnet.id}",
+      "user_data": "#!/bin/bash\nyum update -y\nyum install -y httpd\nsystemctl start httpd\nsystemctl enable httpd",
+      "tags": {
+        "Name": "template-instance",
+        "Environment": "template",
+        "Terraform": "true"
+      }
+    }
+  },
+  "nginx_server_blocks": {
+    "template_server_block": {
+      "_note": "[COPY] Copy and modify for api.example.com, admin.example.com, cdn.example.com",
+      "server": {
+        "listen": "80",
+        "listen_ssl": "443 ssl http2",
+        "server_name": "template.example.com",
+        "root": "/var/www/template/public",
+        "index": "index.html index.php",
+        "ssl_certificate": "/etc/ssl/certs/template.crt",
+        "ssl_certificate_key": "/etc/ssl/private/template.key",
+        "ssl_protocols": "TLSv1.2 TLSv1.3",
+        "ssl_ciphers": "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384",
+        "location_blocks": [
+          {
+            "path": "/",
+            "try_files": "$uri $uri/ /index.php?$query_string"
+          },
+          {
+            "path": "/api/",
+            "proxy_pass": "http://backend-servers",
+            "proxy_set_header": {
+              "Host": "$host",
+              "X-Real-IP": "$remote_addr",
+              "X-Forwarded-For": "$proxy_add_x_forwarded_for",
+              "X-Forwarded-Proto": "$scheme"
+            }
+          },
+          {
+            "path": "/static/",
+            "expires": "1y",
+            "add_header": "Cache-Control \"public, immutable\""
+          }
+        ]
+      }
+    }
+  },
+  "github_actions_workflows": {
+    "template_ci_workflow": {
+      "_note": "[COPY] Copy for frontend-ci.yml, backend-ci.yml, mobile-ci.yml",
+      "name": "Template CI",
+      "on": {
+        "push": {
+          "branches": ["main", "develop"]
+        },
+        "pull_request": {
+          "branches": ["main"]
+        }
+      },
+      "jobs": {
+        "test": {
+          "runs-on": "ubuntu-latest",
+          "strategy": {
+            "matrix": {
+              "node-version": ["16.x", "18.x", "20.x"]
+            }
+          },
+          "steps": [
+            {
+              "uses": "actions/checkout@v3"
+            },
+            {
+              "name": "Setup Node.js",
+              "uses": "actions/setup-node@v3",
+              "with": {
+                "node-version": "${{ matrix.node-version }}",
+                "cache": "npm"
+              }
+            },
+            {
+              "name": "Install dependencies",
+              "run": "npm ci"
+            },
+            {
+              "name": "Run linter",
+              "run": "npm run lint"
+            },
+            {
+              "name": "Run tests",
+              "run": "npm test"
+            },
+            {
+              "name": "Build project",
+              "run": "npm run build"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

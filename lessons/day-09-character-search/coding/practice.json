@@ -1,0 +1,676 @@
+{
+  "name": "microservices-monitoring-config",
+  "version": "2.1.0",
+  "description": "Comprehensive monitoring configuration for microservices architecture",
+  "metadata": {
+    "created_by": "devops-team@company.com",
+    "created_at": "2024-03-15T14:30:00Z",
+    "last_modified": "2024-03-20T09:15:00Z",
+    "environment": "production",
+    "cluster": "eks-prod-us-west-2"
+  },
+  "prometheus": {
+    "global": {
+      "scrape_interval": "15s",
+      "evaluation_interval": "15s",
+      "external_labels": {
+        "cluster": "production",
+        "region": "us-west-2",
+        "team": "platform-engineering"
+      }
+    },
+    "rule_files": [
+      "/etc/prometheus/rules/*.yml",
+      "/etc/prometheus/alerts/*.yml"
+    ],
+    "scrape_configs": [
+      {
+        "job_name": "kubernetes-apiservers",
+        "kubernetes_sd_configs": [
+          {
+            "role": "endpoints"
+          }
+        ],
+        "scheme": "https",
+        "tls_config": {
+          "ca_file": "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+        },
+        "bearer_token_file": "/var/run/secrets/kubernetes.io/serviceaccount/token",
+        "relabel_configs": [
+          {
+            "source_labels": ["__meta_kubernetes_namespace", "__meta_kubernetes_service_name", "__meta_kubernetes_endpoint_port_name"],
+            "action": "keep",
+            "regex": "default;kubernetes;https"
+          }
+        ]
+      },
+      {
+        "job_name": "kubernetes-nodes",
+        "kubernetes_sd_configs": [
+          {
+            "role": "node"
+          }
+        ],
+        "scheme": "https",
+        "tls_config": {
+          "ca_file": "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+        },
+        "bearer_token_file": "/var/run/secrets/kubernetes.io/serviceaccount/token",
+        "relabel_configs": [
+          {
+            "action": "labelmap",
+            "regex": "__meta_kubernetes_node_label_(.+)"
+          },
+          {
+            "target_label": "__address__",
+            "replacement": "kubernetes.default.svc:443"
+          },
+          {
+            "source_labels": ["__meta_kubernetes_node_name"],
+            "regex": "(.+)",
+            "target_label": "__metrics_path__",
+            "replacement": "/api/v1/nodes/${1}/proxy/metrics"
+          }
+        ]
+      },
+      {
+        "job_name": "kubernetes-cadvisor",
+        "kubernetes_sd_configs": [
+          {
+            "role": "node"
+          }
+        ],
+        "scheme": "https",
+        "tls_config": {
+          "ca_file": "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+        },
+        "bearer_token_file": "/var/run/secrets/kubernetes.io/serviceaccount/token",
+        "relabel_configs": [
+          {
+            "action": "labelmap",
+            "regex": "__meta_kubernetes_node_label_(.+)"
+          },
+          {
+            "target_label": "__address__",
+            "replacement": "kubernetes.default.svc:443"
+          },
+          {
+            "source_labels": ["__meta_kubernetes_node_name"],
+            "regex": "(.+)",
+            "target_label": "__metrics_path__",
+            "replacement": "/api/v1/nodes/${1}/proxy/metrics/cadvisor"
+          }
+        ]
+      },
+      {
+        "job_name": "microservices-endpoints",
+        "kubernetes_sd_configs": [
+          {
+            "role": "endpoints",
+            "namespaces": {
+              "names": ["microservices", "api-gateway"]
+            }
+          }
+        ],
+        "relabel_configs": [
+          {
+            "source_labels": ["__meta_kubernetes_service_annotation_prometheus_io_scrape"],
+            "action": "keep",
+            "regex": "true"
+          },
+          {
+            "source_labels": ["__meta_kubernetes_service_annotation_prometheus_io_path"],
+            "action": "replace",
+            "target_label": "__metrics_path__",
+            "regex": "(.+)"
+          },
+          {
+            "source_labels": ["__address__", "__meta_kubernetes_service_annotation_prometheus_io_port"],
+            "action": "replace",
+            "regex": "([^:]+)(?::\\d+)?;(\\d+)",
+            "replacement": "$1:$2",
+            "target_label": "__address__"
+          },
+          {
+            "action": "labelmap",
+            "regex": "__meta_kubernetes_service_label_(.+)"
+          },
+          {
+            "source_labels": ["__meta_kubernetes_namespace"],
+            "action": "replace",
+            "target_label": "kubernetes_namespace"
+          },
+          {
+            "source_labels": ["__meta_kubernetes_service_name"],
+            "action": "replace",
+            "target_label": "kubernetes_name"
+          }
+        ]
+      }
+    ],
+    "storage": {
+      "tsdb": {
+        "retention_time": "30d",
+        "retention_size": "100GB",
+        "wal_compression": true,
+        "min_block_duration": "2h",
+        "max_block_duration": "25h"
+      }
+    }
+  },
+  "alerting": {
+    "alertmanagers": [
+      {
+        "static_configs": [
+          {
+            "targets": ["alertmanager.monitoring.svc.cluster.local:9093"]
+          }
+        ],
+        "scheme": "http",
+        "timeout": "10s",
+        "api_version": "v2"
+      }
+    ]
+  },
+  "grafana": {
+    "admin": {
+      "user": "admin",
+      "password": "${GRAFANA_ADMIN_PASSWORD}"
+    },
+    "database": {
+      "type": "postgres",
+      "host": "postgresql.monitoring.svc.cluster.local:5432",
+      "name": "grafana",
+      "user": "grafana",
+      "password": "${GRAFANA_DB_PASSWORD}",
+      "ssl_mode": "require"
+    },
+    "security": {
+      "admin_user": "admin",
+      "admin_password": "${GRAFANA_ADMIN_PASSWORD}",
+      "secret_key": "${GRAFANA_SECRET_KEY}",
+      "disable_gravatar": true,
+      "data_source_proxy_whitelist": ["prometheus.monitoring.svc.cluster.local"]
+    },
+    "users": {
+      "allow_sign_up": false,
+      "allow_org_create": false,
+      "auto_assign_org": true,
+      "auto_assign_org_id": 1,
+      "auto_assign_org_role": "Viewer",
+      "verify_email_enabled": false
+    },
+    "auth": {
+      "disable_login_form": false,
+      "disable_signout_menu": false,
+      "signout_redirect_url": "",
+      "oauth_auto_login": false
+    },
+    "auth.ldap": {
+      "enabled": true,
+      "config_file": "/etc/grafana/ldap.toml",
+      "allow_sign_up": false
+    },
+    "smtp": {
+      "enabled": true,
+      "host": "smtp.company.com:587",
+      "user": "noreply@company.com",
+      "password": "${SMTP_PASSWORD}",
+      "cert_file": "",
+      "key_file": "",
+      "skip_verify": false,
+      "from_address": "grafana@company.com",
+      "from_name": "Grafana",
+      "ehlo_identity": "grafana.company.com"
+    },
+    "dashboards": [
+      {
+        "name": "kubernetes-cluster-overview",
+        "url": "https://grafana.com/api/dashboards/7249/revisions/1/download",
+        "folder": "Kubernetes"
+      },
+      {
+        "name": "kubernetes-pod-monitoring",
+        "url": "https://grafana.com/api/dashboards/6417/revisions/1/download",
+        "folder": "Kubernetes"
+      },
+      {
+        "name": "microservices-application-metrics",
+        "url": "https://grafana.com/api/dashboards/4701/revisions/1/download",
+        "folder": "Applications"
+      },
+      {
+        "name": "istio-service-mesh",
+        "url": "https://grafana.com/api/dashboards/7636/revisions/1/download",
+        "folder": "Service Mesh"
+      }
+    ],
+    "datasources": [
+      {
+        "name": "Prometheus",
+        "type": "prometheus",
+        "url": "http://prometheus-server.monitoring.svc.cluster.local:9090",
+        "access": "proxy",
+        "isDefault": true,
+        "editable": false
+      },
+      {
+        "name": "Loki",
+        "type": "loki",
+        "url": "http://loki.monitoring.svc.cluster.local:3100",
+        "access": "proxy",
+        "editable": false
+      },
+      {
+        "name": "Jaeger",
+        "type": "jaeger",
+        "url": "http://jaeger-query.monitoring.svc.cluster.local:16686",
+        "access": "proxy",
+        "editable": false
+      }
+    ]
+  },
+  "alertmanager": {
+    "global": {
+      "smtp_smarthost": "smtp.company.com:587",
+      "smtp_from": "alerts@company.com",
+      "smtp_auth_username": "alerts@company.com",
+      "smtp_auth_password": "${SMTP_PASSWORD}",
+      "slack_api_url": "${SLACK_API_URL}"
+    },
+    "templates": [
+      "/etc/alertmanager/templates/*.tmpl"
+    ],
+    "route": {
+      "group_by": ["alertname", "cluster", "service"],
+      "group_wait": "10s",
+      "group_interval": "10s",
+      "repeat_interval": "1h",
+      "receiver": "web.hook",
+      "routes": [
+        {
+          "match": {
+            "severity": "critical"
+          },
+          "receiver": "critical-alerts",
+          "group_wait": "5s",
+          "repeat_interval": "5m"
+        },
+        {
+          "match": {
+            "severity": "warning"
+          },
+          "receiver": "warning-alerts",
+          "group_wait": "10s",
+          "repeat_interval": "30m"
+        },
+        {
+          "match": {
+            "alertname": "DeadMansSwitch"
+          },
+          "receiver": "null"
+        }
+      ]
+    },
+    "receivers": [
+      {
+        "name": "web.hook",
+        "webhook_configs": [
+          {
+            "url": "http://webhook.company.com/alerts",
+            "send_resolved": true,
+            "http_config": {
+              "basic_auth": {
+                "username": "webhook_user",
+                "password": "${WEBHOOK_PASSWORD}"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "critical-alerts",
+        "email_configs": [
+          {
+            "to": "sre-team@company.com",
+            "subject": "[CRITICAL] {{ .GroupLabels.alertname }} in {{ .GroupLabels.cluster }}",
+            "body": "{{ range .Alerts }}{{ .Annotations.description }}{{ end }}",
+            "html": "{{ range .Alerts }}<h3>{{ .Annotations.summary }}</h3><p>{{ .Annotations.description }}</p>{{ end }}"
+          }
+        ],
+        "slack_configs": [
+          {
+            "api_url": "${SLACK_API_URL}",
+            "channel": "#alerts-critical",
+            "title": "[CRITICAL] {{ .GroupLabels.alertname }}",
+            "text": "{{ range .Alerts }}{{ .Annotations.description }}{{ end }}",
+            "send_resolved": true,
+            "color": "danger"
+          }
+        ],
+        "pagerduty_configs": [
+          {
+            "routing_key": "${PAGERDUTY_INTEGRATION_KEY}",
+            "description": "{{ .GroupLabels.alertname }} - {{ .GroupLabels.instance }}",
+            "severity": "critical",
+            "client": "Alertmanager",
+            "client_url": "http://alertmanager.company.com"
+          }
+        ]
+      },
+      {
+        "name": "warning-alerts",
+        "email_configs": [
+          {
+            "to": "devops-team@company.com",
+            "subject": "[WARNING] {{ .GroupLabels.alertname }} in {{ .GroupLabels.cluster }}",
+            "body": "{{ range .Alerts }}{{ .Annotations.description }}{{ end }}"
+          }
+        ],
+        "slack_configs": [
+          {
+            "api_url": "${SLACK_API_URL}",
+            "channel": "#alerts-warning",
+            "title": "[WARNING] {{ .GroupLabels.alertname }}",
+            "text": "{{ range .Alerts }}{{ .Annotations.description }}{{ end }}",
+            "send_resolved": true,
+            "color": "warning"
+          }
+        ]
+      },
+      {
+        "name": "null"
+      }
+    ]
+  },
+  "monitoring_rules": {
+    "kubernetes": {
+      "node_cpu_usage": {
+        "expr": "(1 - rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100",
+        "threshold": 80,
+        "severity": "warning"
+      },
+      "node_memory_usage": {
+        "expr": "(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100",
+        "threshold": 85,
+        "severity": "warning"
+      },
+      "node_disk_usage": {
+        "expr": "(node_filesystem_size_bytes - node_filesystem_free_bytes) / node_filesystem_size_bytes * 100",
+        "threshold": 90,
+        "severity": "critical"
+      },
+      "pod_cpu_usage": {
+        "expr": "rate(container_cpu_usage_seconds_total{container!=\"POD\",container!=\"\"}[5m]) * 100",
+        "threshold": 80,
+        "severity": "warning"
+      },
+      "pod_memory_usage": {
+        "expr": "container_memory_usage_bytes{container!=\"POD\",container!=\"\"} / container_spec_memory_limit_bytes * 100",
+        "threshold": 85,
+        "severity": "warning"
+      }
+    },
+    "microservices": {
+      "http_request_rate": {
+        "expr": "rate(http_requests_total[5m])",
+        "threshold": 1000,
+        "severity": "info"
+      },
+      "http_error_rate": {
+        "expr": "rate(http_requests_total{status=~\"5..\"}[5m]) / rate(http_requests_total[5m]) * 100",
+        "threshold": 5,
+        "severity": "warning"
+      },
+      "http_response_time": {
+        "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))",
+        "threshold": 1,
+        "severity": "warning"
+      },
+      "database_connection_pool": {
+        "expr": "db_connection_pool_used / db_connection_pool_max * 100",
+        "threshold": 80,
+        "severity": "warning"
+      },
+      "cache_hit_rate": {
+        "expr": "redis_cache_hits / (redis_cache_hits + redis_cache_misses) * 100",
+        "threshold": 90,
+        "severity": "info"
+      }
+    },
+    "business_metrics": {
+      "order_processing_time": {
+        "expr": "histogram_quantile(0.95, rate(order_processing_duration_seconds_bucket[5m]))",
+        "threshold": 30,
+        "severity": "warning"
+      },
+      "payment_success_rate": {
+        "expr": "rate(payment_transactions_total{status=\"success\"}[5m]) / rate(payment_transactions_total[5m]) * 100",
+        "threshold": 95,
+        "severity": "critical"
+      },
+      "user_registration_rate": {
+        "expr": "rate(user_registrations_total[1h])",
+        "threshold": 100,
+        "severity": "info"
+      }
+    }
+  },
+  "log_aggregation": {
+    "loki": {
+      "config": {
+        "server": {
+          "http_listen_port": 3100
+        },
+        "auth_enabled": false,
+        "ingester": {
+          "lifecycler": {
+            "address": "127.0.0.1",
+            "ring": {
+              "kvstore": {
+                "store": "inmemory"
+              },
+              "replication_factor": 1
+            }
+          },
+          "chunk_idle_period": "1h",
+          "max_chunk_age": "1h",
+          "chunk_target_size": 1048576,
+          "chunk_retain_period": "30s",
+          "max_transfer_retries": 0
+        },
+        "schema_config": {
+          "configs": [
+            {
+              "from": "2020-10-24",
+              "store": "boltdb-shipper",
+              "object_store": "filesystem",
+              "schema": "v11",
+              "index": {
+                "prefix": "index_",
+                "period": "24h"
+              }
+            }
+          ]
+        },
+        "storage_config": {
+          "boltdb_shipper": {
+            "active_index_directory": "/loki/boltdb-shipper-active",
+            "cache_location": "/loki/boltdb-shipper-cache",
+            "cache_ttl": "24h",
+            "shared_store": "filesystem"
+          },
+          "filesystem": {
+            "directory": "/loki/chunks"
+          }
+        },
+        "compactor": {
+          "working_directory": "/loki/boltdb-shipper-compactor",
+          "shared_store": "filesystem"
+        },
+        "limits_config": {
+          "reject_old_samples": true,
+          "reject_old_samples_max_age": "168h"
+        },
+        "chunk_store_config": {
+          "max_look_back_period": "0s"
+        },
+        "table_manager": {
+          "retention_deletes_enabled": false,
+          "retention_period": "0s"
+        },
+        "ruler": {
+          "storage": {
+            "type": "local",
+            "local": {
+              "directory": "/loki/rules"
+            }
+          },
+          "rule_path": "/loki/rules-temp",
+          "alertmanager_url": "http://alertmanager.monitoring.svc.cluster.local:9093",
+          "ring": {
+            "kvstore": {
+              "store": "inmemory"
+            }
+          },
+          "enable_api": true
+        }
+      }
+    },
+    "promtail": {
+      "server": {
+        "http_listen_port": 9080,
+        "grpc_listen_port": 0
+      },
+      "positions": {
+        "filename": "/tmp/positions.yaml"
+      },
+      "clients": [
+        {
+          "url": "http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push"
+        }
+      ],
+      "scrape_configs": [
+        {
+          "job_name": "kubernetes-pods",
+          "kubernetes_sd_configs": [
+            {
+              "role": "pod"
+            }
+          ],
+          "relabel_configs": [
+            {
+              "source_labels": ["__meta_kubernetes_pod_annotation_prometheus_io_scrape"],
+              "action": "keep",
+              "regex": "true"
+            },
+            {
+              "source_labels": ["__meta_kubernetes_pod_annotation_prometheus_io_path"],
+              "action": "replace",
+              "target_label": "__path__",
+              "regex": "(.+)"
+            },
+            {
+              "source_labels": ["__address__", "__meta_kubernetes_pod_annotation_prometheus_io_port"],
+              "action": "replace",
+              "regex": "([^:]+)(?::\\d+)?;(\\d+)",
+              "replacement": "$1:$2",
+              "target_label": "__address__"
+            },
+            {
+              "action": "labelmap",
+              "regex": "__meta_kubernetes_pod_label_(.+)"
+            },
+            {
+              "source_labels": ["__meta_kubernetes_namespace"],
+              "action": "replace",
+              "target_label": "kubernetes_namespace"
+            },
+            {
+              "source_labels": ["__meta_kubernetes_pod_name"],
+              "action": "replace",
+              "target_label": "kubernetes_pod_name"
+            }
+          ],
+          "pipeline_stages": [
+            {
+              "docker": {}
+            },
+            {
+              "match": {
+                "selector": "{kubernetes_namespace=\"microservices\"}",
+                "stages": [
+                  {
+                    "json": {
+                      "expressions": {
+                        "timestamp": "timestamp",
+                        "level": "level",
+                        "message": "message",
+                        "service": "service"
+                      }
+                    }
+                  },
+                  {
+                    "timestamp": {
+                      "source": "timestamp",
+                      "format": "RFC3339"
+                    }
+                  },
+                  {
+                    "labels": {
+                      "level": "",
+                      "service": ""
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "tracing": {
+    "jaeger": {
+      "strategy": {
+        "type": "Adaptive",
+        "max_traces_per_second": 1000,
+        "default_strategy": {
+          "type": "probabilistic",
+          "param": 0.1
+        },
+        "per_service_strategies": [
+          {
+            "service": "user-service",
+            "type": "probabilistic",
+            "param": 0.5
+          },
+          {
+            "service": "payment-service",
+            "type": "probabilistic",
+            "param": 1.0
+          }
+        ]
+      },
+      "storage": {
+        "type": "elasticsearch",
+        "elasticsearch": {
+          "server_urls": ["http://elasticsearch.monitoring.svc.cluster.local:9200"],
+          "index_prefix": "jaeger",
+          "username": "jaeger",
+          "password": "${ELASTICSEARCH_PASSWORD}"
+        }
+      },
+      "collector": {
+        "queue_size": 2000,
+        "num_workers": 50,
+        "write_cache_ttl": "1h"
+      },
+      "query": {
+        "base_path": "/jaeger",
+        "static_files": "/go/jaeger-ui/",
+        "ui_config": "ui-config.json"
+      }
+    }
+  }
+}

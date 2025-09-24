@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 05: Basic Editing Practice</title>
+    <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+    <!--
+    PRACTICE INSTRUCTIONS FOR DAY 05: BASIC EDITING
+
+    Basic Editing Commands:
+    i - Insert mode before cursor
+    a - Insert mode after cursor
+    o - Open new line below
+    O - Open new line above
+    s - Substitute character (delete char and enter insert mode)
+    S - Substitute line (delete line and enter insert mode)
+    r - Replace single character
+    R - Replace mode (overwrite characters)
+    c - Change (combine with motion, like cw for change word)
+    u - Undo last change
+    Ctrl+r - Redo last undone change
+
+    This file has missing tags, attributes, and content - practice adding them!
+    -->
+
+    <header class="main-header">
+        <!-- MISSING: Add proper navigation structure -->
+        <div class="header-container">
+            <!-- TODO: Add company logo img tag with src="logo.svg" and alt text -->
+
+            <nav class="primary-nav">
+                <!-- MISSING: Add role="navigation" attribute -->
+                <ul class="nav-list">
+                    <!-- TODO: Add navigation items for Home, About, Services, Contact -->
+                    <li><a href="#home"></a></li>
+                    <!-- MISSING: Add proper href and link text -->
+                    <li><a href="#about">About</a></li>
+                    <li><a href="">Services</a></li>
+                    <!-- MISSING: Add href="#services" -->
+                    <li><a href="#contact" class="">Contact</a></li>
+                    <!-- TODO: Add class="nav-link" to all anchor tags above -->
+                </ul>
+            </nav>
+
+            <!-- MISSING: Add search form with input and button -->
+            <form class="search-form">
+                <!-- TODO: Add method="GET" and action="/search" -->
+                <input type="" name="query" placeholder="">
+                <!-- MISSING: Add type="search" and proper placeholder text -->
+                <button type="">
+                    <!-- TODO: Add type="submit" and button text "Search" -->
+                </button>
+            </form>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Hero Section - Missing content and attributes -->
+        <section class="hero-section">
+            <!-- MISSING: Add id="hero" attribute -->
+            <div class="hero-content">
+                <!-- TODO: Add main heading "Welcome to Our Platform" -->
+
+                <p class="hero-subtitle">
+                    <!-- MISSING: Add subtitle text about the platform -->
+                </p>
+
+                <!-- TODO: Add hero description paragraph -->
+
+                <div class="hero-actions">
+                    <!-- MISSING: Add two buttons - "Get Started" (primary) and "Learn More" (secondary) -->
+                    <button class="">
+                        <!-- TODO: Add class="btn btn-primary" and button text -->
+                    </button>
+
+                    <!-- MISSING: Add second button with btn-secondary class -->
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <!-- TODO: Add image with src="hero-illustration.jpg" and proper alt text -->
+                <img src="" alt="">
+                <!-- MISSING: Add proper attributes -->
+            </div>
+        </section>
+
+        <!-- Features Section - Incomplete structure -->
+        <section class="features-section">
+            <div class="container">
+                <!-- MISSING: Add section heading "Our Features" -->
+
+                <div class="features-grid">
+                    <!-- Feature 1 - Fast Performance -->
+                    <div class="feature-card">
+                        <!-- TODO: Add data-feature="performance" attribute -->
+                        <div class="feature-icon">
+                            <!-- MISSING: Add emoji or icon ⚡ -->
+                        </div>
+                        <h3 class="feature-title"></h3>
+                        <!-- TODO: Add title "Lightning Fast" -->
+
+                        <p class="feature-description">
+                            <!-- MISSING: Add description about fast performance -->
+                        </p>
+
+                        <!-- TODO: Add feature list -->
+                        <ul class="feature-list">
+                            <!-- MISSING: Add 3 list items about performance benefits -->
+                        </ul>
+                    </div>
+
+                    <!-- Feature 2 - Security -->
+                    <div class="feature-card" data-feature="">
+                        <!-- TODO: Add data-feature="security" -->
+                        <div class="feature-icon">🔒</div>
+                        <!-- MISSING: Add feature title "Secure & Reliable" -->
+
+                        <p class="feature-description">
+                            Enterprise-grade security with end-to-end encryption
+                            <!-- TODO: Add more description text -->
+                        </p>
+
+                        <ul class="feature-list">
+                            <li>256-bit encryption</li>
+                            <!-- MISSING: Add 2 more security features -->
+                        </ul>
+                    </div>
+
+                    <!-- Feature 3 - User Friendly -->
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <!-- TODO: Add user-friendly icon 👤 or 🎨 -->
+                        </div>
+
+                        <!-- MISSING: Add complete feature content structure -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section - Missing most content -->
+        <section class="" id="about">
+            <!-- TODO: Add class="about-section" -->
+            <div class="container">
+                <!-- MISSING: Add section heading -->
+
+                <div class="about-content">
+                    <div class="about-text">
+                        <!-- TODO: Add about us content -->
+                        <p>
+                            <!-- MISSING: Add company description paragraph -->
+                        </p>
+
+                        <!-- TODO: Add second paragraph about mission -->
+
+                        <div class="stats-container">
+                            <!-- MISSING: Add company statistics -->
+                            <div class="stat-item">
+                                <span class="stat-number"></span>
+                                <!-- TODO: Add number like "10k+" -->
+                                <span class="stat-label">Happy Customers</span>
+                            </div>
+
+                            <!-- TODO: Add 2 more stat items -->
+                        </div>
+                    </div>
+
+                    <div class="about-image">
+                        <!-- MISSING: Add team photo -->
+                        <img src="" alt="" class="team-photo">
+                        <!-- TODO: Add proper src and alt attributes -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section - Incomplete -->
+        <section id="services" class="">
+            <!-- TODO: Add class="services-section" -->
+            <div class="container">
+                <h2 class="section-title">Our Services</h2>
+
+                <div class="services-grid">
+                    <!-- Service 1: Web Development -->
+                    <article class="service-card">
+                        <!-- MISSING: Add data-service="web-dev" attribute -->
+                        <header class="service-header">
+                            <div class="service-icon">💻</div>
+                            <!-- TODO: Add service title "Web Development" -->
+                        </header>
+
+                        <div class="service-content">
+                            <!-- MISSING: Add service description -->
+                            <p>
+                            </p>
+
+                            <!-- TODO: Add technologies list -->
+                            <ul class="tech-list">
+                                <!-- MISSING: Add technology items like React, Vue, etc. -->
+                            </ul>
+
+                            <!-- TODO: Add pricing starting from -->
+                            <div class="service-pricing">
+                                <span class="price">Starting at $</span>
+                                <!-- MISSING: Add price amount -->
+                            </div>
+                        </div>
+
+                        <footer class="service-footer">
+                            <!-- TODO: Add "Learn More" button -->
+                        </footer>
+                    </article>
+
+                    <!-- Service 2: Mobile Apps -->
+                    <article class="service-card" data-service="">
+                        <!-- TODO: Add data-service="mobile-apps" -->
+                        <header class="service-header">
+                            <!-- MISSING: Add mobile icon 📱 and title -->
+                        </header>
+
+                        <!-- TODO: Complete mobile apps service structure -->
+                    </article>
+
+                    <!-- Service 3: Consulting -->
+                    <article class="service-card">
+                        <!-- MISSING: Add complete consulting service content -->
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section - Missing structure -->
+        <section class="testimonials-section">
+            <!-- TODO: Add id="testimonials" -->
+            <div class="container">
+                <!-- MISSING: Add section heading "What Our Clients Say" -->
+
+                <div class="testimonials-grid">
+                    <!-- Testimonial 1 -->
+                    <blockquote class="testimonial-card">
+                        <!-- TODO: Add testimonial text -->
+                        <p class="testimonial-text">
+                        </p>
+
+                        <footer class="testimonial-footer">
+                            <img src="" alt="" class="client-avatar">
+                            <!-- MISSING: Add client photo attributes -->
+
+                            <div class="client-info">
+                                <cite class="client-name"></cite>
+                                <!-- TODO: Add client name -->
+
+                                <span class="client-title">CEO, Tech Corp</span>
+                            </div>
+                        </footer>
+                    </blockquote>
+
+                    <!-- TODO: Add 2 more testimonial cards -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section - Missing form elements -->
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <h2 class="section-title">Get In Touch</h2>
+
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <!-- TODO: Add contact information -->
+                        <div class="contact-item">
+                            <div class="contact-icon">📧</div>
+                            <div class="contact-details">
+                                <!-- MISSING: Add email address -->
+                                <h3></h3>
+                                <p>hello@example.com</p>
+                            </div>
+                        </div>
+
+                        <!-- TODO: Add phone and address contact items -->
+                    </div>
+
+                    <form class="contact-form" method="" action="">
+                        <!-- MISSING: Add method="POST" and action="/contact" -->
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <!-- TODO: Add label for first name -->
+                                <input type="text" id="" name="firstName" required>
+                                <!-- MISSING: Add id="firstName" and placeholder -->
+                            </div>
+
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="" id="lastName" name="lastName" required>
+                                <!-- TODO: Add type="text" -->
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <!-- MISSING: Add email label and input -->
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Subject</label>
+                            <!-- TODO: Add for="subject" -->
+                            <input type="text" id="subject" name="subject" placeholder="">
+                            <!-- MISSING: Add placeholder text -->
+                        </div>
+
+                        <div class="form-group">
+                            <!-- TODO: Add message textarea with label -->
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="" class="btn btn-primary">
+                                <!-- MISSING: Add type="submit" and button text -->
+                            </button>
+
+                            <!-- TODO: Add reset button -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer - Missing content -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <!-- TODO: Add footer heading "Quick Links" -->
+
+                <ul class="footer-links">
+                    <!-- MISSING: Add footer navigation links -->
+                    <li><a href=""></a></li>
+                    <!-- TODO: Add proper href and link text -->
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <!-- TODO: Add contact information -->
+                <address class="footer-address">
+                    <!-- MISSING: Add company address -->
+                </address>
+            </div>
+
+            <div class="footer-section">
+                <!-- MISSING: Add social media section -->
+                <h3></h3>
+                <!-- TODO: Add "Follow Us" heading -->
+
+                <div class="social-links">
+                    <!-- TODO: Add social media links -->
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <!-- MISSING: Add newsletter signup form -->
+                <form class="newsletter-form">
+                    <!-- TODO: Add email input and subscribe button -->
+                </form>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-container">
+                <!-- TODO: Add copyright notice -->
+                <p class="copyright">
+                    &copy; 2024
+                    <!-- MISSING: Add company name and rights statement -->
+                </p>
+
+                <!-- TODO: Add privacy policy and terms links -->
+                <nav class="footer-legal">
+                    <!-- MISSING: Add legal navigation -->
+                </nav>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MISSING: Add JavaScript section -->
+    <script>
+        // TODO: Add basic form validation
+        // MISSING: Add scroll-to-top functionality
+        // TODO: Add mobile menu toggle
+    </script>
+</body>
+</html>

@@ -1,0 +1,1208 @@
+/*
+PRACTICE INSTRUCTIONS FOR DAY 07: COPY & PASTE - CSS
+
+Copy & Paste Practice in CSS:
+- Use 'yy' to copy entire CSS rules
+- Use 'yw' to copy property names or values
+- Use visual mode (V) to select and copy multiple rules
+- Use 'p' to paste below current line
+- Use 'P' to paste above current line
+- Practice copying CSS patterns and modifying them
+- Use numbered commands like '3yy' to copy multiple rules
+
+This file contains CSS patterns that should be copied and duplicated!
+*/
+
+/* COPY THIS: CSS Variables pattern - duplicate for different themes */
+:root {
+    --primary-color: #3b82f6;
+    --secondary-color: #1e40af;
+    --accent-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --neutral-color: #6b7280;
+    --light-gray: #f3f4f6;
+    --white: #ffffff;
+    --black: #111827;
+}
+
+/* TODO: Copy the :root block above and create a dark theme variant */
+
+/* COPY THIS: Font variables pattern */
+:root {
+    --font-sans: system-ui, -apple-system, sans-serif;
+    --font-mono: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+}
+
+/* TODO: Copy font variables and create spacing variables */
+
+/* COPY THIS: Reset pattern */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* TODO: Copy reset and create specific element resets */
+
+html {
+    font-size: 16px;
+    line-height: 1.6;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-sans);
+    color: var(--black);
+    background-color: var(--white);
+    line-height: 1.6;
+}
+
+/* COPY THIS: Container pattern - use for different section containers */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* TODO: Copy container and create narrow-container variant */
+
+/* COPY THIS: Header styling pattern */
+.main-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* TODO: Copy header pattern for footer styling */
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+/* COPY THIS: Logo section pattern */
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-image {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 0.25rem;
+}
+
+.site-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--white);
+    text-decoration: none;
+}
+
+/* TODO: Copy logo section pattern for footer logo */
+
+/* COPY THIS: Navigation pattern */
+.primary-navigation {
+    display: flex;
+    align-items: center;
+}
+
+.nav-list {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item {
+    display: flex;
+}
+
+.nav-link {
+    color: var(--white);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* TODO: Copy navigation pattern for footer navigation */
+
+/* COPY THIS: Search form pattern */
+.search-form {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.search-input {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    background: white;
+    color: var(--black);
+}
+
+.search-button {
+    padding: 0.5rem 1rem;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+    background: #059669;
+}
+
+/* TODO: Copy search form pattern for sidebar search */
+
+/* COPY THIS: Main content layout */
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 100vh;
+}
+
+/* TODO: Copy main content layout for different page layouts */
+
+/* COPY THIS: Hero section pattern */
+.hero-section {
+    background: linear-gradient(135deg, var(--light-gray), var(--white));
+    padding: 4rem 2rem;
+    border-radius: 1rem;
+    margin-bottom: 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    grid-column: 1 / -1;
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    line-height: 1.2;
+}
+
+.hero-description {
+    font-size: 1.25rem;
+    color: var(--neutral-color);
+    line-height: 1.7;
+}
+
+/* TODO: Copy hero section pattern for other promotional sections */
+
+/* COPY THIS: Button group pattern */
+.hero-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* TODO: Copy button group for form actions */
+
+/* COPY THIS: Button base styles */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.btn-secondary:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* COPY THIS: Button size variants */
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+.btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+}
+
+/* TODO: Copy button variants and create btn-outline, btn-danger, etc. */
+
+/* COPY THIS: Hero image pattern */
+.hero-image {
+    text-align: center;
+}
+
+.hero-figure {
+    display: inline-block;
+}
+
+.hero-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.image-caption {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: var(--neutral-color);
+    font-style: italic;
+}
+
+/* TODO: Copy image pattern for gallery items */
+
+/* COPY THIS: Section styling pattern */
+.features-section,
+.components-section,
+.examples-section,
+.practice-section {
+    padding: 4rem 0;
+    grid-column: 1;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--black);
+}
+
+.section-description {
+    font-size: 1.125rem;
+    text-align: center;
+    color: var(--neutral-color);
+    margin-bottom: 3rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* TODO: Copy section pattern for different section types */
+
+/* COPY THIS: Grid layout pattern */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* TODO: Copy grid pattern for components-grid, examples-grid */
+
+/* COPY THIS: Card component pattern */
+.feature-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid var(--light-gray);
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.feature-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.feature-description {
+    color: var(--neutral-color);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.feature-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--light-gray);
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.feature-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.feature-list li:last-child {
+    border-bottom: none;
+}
+
+.feature-footer {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+/* TODO: Copy feature card pattern for component cards */
+
+/* COPY THIS: Component showcase pattern */
+.component-showcase {
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: var(--light-gray);
+    border-radius: 1rem;
+}
+
+/* TODO: Copy component showcase for different demo areas */
+
+/* COPY THIS: Card component structure */
+.component-card {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.card-header {
+    background: var(--primary-color);
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.card-badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.card-content {
+    padding: 1.5rem;
+}
+
+.card-text {
+    color: var(--neutral-color);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.card-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.card-features li {
+    padding: 0.25rem 0;
+    color: var(--neutral-color);
+    font-size: 0.875rem;
+}
+
+.card-footer {
+    background: var(--light-gray);
+    padding: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+/* TODO: Copy card component and create variations */
+
+/* COPY THIS: List component pattern */
+.list-component {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.list-header {
+    background: var(--accent-color);
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.list-count {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+}
+
+.task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-item {
+    padding: 1rem;
+    border-bottom: 1px solid var(--light-gray);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.task-item:last-child {
+    border-bottom: none;
+}
+
+.task-checkbox {
+    margin: 0;
+}
+
+.task-label {
+    flex: 1;
+    font-size: 0.875rem;
+    color: var(--black);
+}
+
+.task-action {
+    background: var(--light-gray);
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    color: var(--neutral-color);
+}
+
+.list-footer {
+    background: var(--light-gray);
+    padding: 1rem;
+    text-align: center;
+}
+
+/* TODO: Copy list component for different list types */
+
+/* COPY THIS: Form component pattern */
+.form-component {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.form-header {
+    background: var(--primary-color);
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.form-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+}
+
+.form-description {
+    font-size: 0.875rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.form-body {
+    padding: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--black);
+    font-size: 0.875rem;
+}
+
+.form-input,
+.form-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--light-gray);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-family: var(--font-sans);
+    transition: border-color 0.3s ease;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-footer {
+    background: var(--light-gray);
+    padding: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+/* TODO: Copy form component for different form types */
+
+/* COPY THIS: Code example pattern */
+.code-example {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.code-header {
+    background: var(--neutral-color);
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.code-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.copy-button {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.copy-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.code-block {
+    background: var(--black);
+    color: white;
+    padding: 1.5rem;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    overflow-x: auto;
+}
+
+/* TODO: Copy code example pattern for different code types */
+
+/* COPY THIS: Practice exercise pattern */
+.practice-exercise {
+    background: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.exercise-header {
+    background: var(--warning-color);
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.exercise-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.exercise-difficulty {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.exercise-content {
+    padding: 1.5rem;
+}
+
+.exercise-description {
+    color: var(--neutral-color);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.exercise-area {
+    background: var(--light-gray);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border-left: 4px solid var(--warning-color);
+}
+
+.exercise-footer {
+    background: var(--light-gray);
+    padding: 1rem;
+}
+
+.exercise-commands {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    color: var(--neutral-color);
+}
+
+.exercise-commands code {
+    background: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    margin-right: 1rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* TODO: Copy exercise pattern for different exercise types */
+
+/* COPY THIS: Copy target styling */
+.copy-target {
+    background: rgba(59, 130, 246, 0.1);
+    border: 2px dashed var(--primary-color);
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin: 0.5rem 0;
+    position: relative;
+}
+
+.copy-target::before {
+    content: 'COPY ME';
+    position: absolute;
+    top: -8px;
+    right: 8px;
+    background: var(--primary-color);
+    color: white;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.625rem;
+    font-weight: bold;
+}
+
+/* TODO: Copy the copy-target styling for paste-target */
+
+/* COPY THIS: Code snippet styling */
+.code-snippet {
+    background: var(--black);
+    color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+.code-snippet p {
+    margin: 0.25rem 0;
+}
+
+/* TODO: Copy code snippet for terminal output styling */
+
+/* COPY THIS: Content block pattern */
+.content-block {
+    background: white;
+    border: 1px solid var(--light-gray);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.content-block h4 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.content-block p {
+    color: var(--neutral-color);
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+}
+
+.content-block ul {
+    padding-left: 1.5rem;
+    color: var(--neutral-color);
+}
+
+/* TODO: Copy content block for different content types */
+
+/* COPY THIS: Table pattern */
+.practice-table {
+    margin: 2rem 0;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.data-table thead {
+    background: var(--primary-color);
+    color: white;
+}
+
+.data-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.data-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--light-gray);
+    color: var(--black);
+}
+
+.data-table tr:nth-child(even) {
+    background: var(--light-gray);
+}
+
+.data-table tr:hover {
+    background: rgba(59, 130, 246, 0.05);
+}
+
+/* TODO: Copy table pattern for different table types */
+
+/* COPY THIS: Sidebar styling */
+.sidebar {
+    grid-column: 2;
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    height: fit-content;
+    position: sticky;
+    top: 120px;
+}
+
+.sidebar-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.sidebar-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--light-gray);
+    padding-bottom: 0.5rem;
+}
+
+/* TODO: Copy sidebar styling for different sidebar layouts */
+
+/* COPY THIS: Command reference pattern */
+.command-reference {
+    background: var(--light-gray);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border-left: 4px solid var(--primary-color);
+}
+
+.reference-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--black);
+    margin-bottom: 1rem;
+}
+
+.command-list {
+    margin: 0;
+    padding: 0;
+}
+
+.command-term {
+    background: var(--black);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.875rem;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+.command-description {
+    margin: 0 0 1rem 0;
+    color: var(--neutral-color);
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+/* TODO: Copy command reference for different command categories */
+
+/* COPY THIS: Tips section pattern */
+.tips-section {
+    background: rgba(16, 185, 129, 0.1);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border-left: 4px solid var(--accent-color);
+}
+
+.tips-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+}
+
+.tips-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tip-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+    position: relative;
+    padding-left: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--black);
+    line-height: 1.4;
+}
+
+.tip-item::before {
+    content: '💡';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+}
+
+.tip-item:last-child {
+    border-bottom: none;
+}
+
+/* TODO: Copy tips section for warnings or notes */
+
+/* COPY THIS: Contact section pattern */
+.contact-section {
+    padding: 4rem 0;
+    background: var(--light-gray);
+}
+
+.contact-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* TODO: Copy contact section for testimonials section */
+
+/* COPY THIS: Contact item pattern */
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.contact-icon {
+    font-size: 1.5rem;
+    background: var(--primary-color);
+    color: white;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.contact-details {
+    flex: 1;
+}
+
+.contact-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--black);
+    margin-bottom: 0.25rem;
+}
+
+.contact-text {
+    color: var(--neutral-color);
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+/* TODO: Copy contact item for social media links */
+
+/* COPY THIS: Footer pattern */
+.main-footer {
+    background: var(--black);
+    color: white;
+    padding: 3rem 0 2rem;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.footer-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.footer-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+/* TODO: Copy footer pattern for header */
+
+/* COPY THIS: Footer links pattern */
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-link {
+    color: var(--neutral-color);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+    color: white;
+}
+
+/* TODO: Copy footer links for breadcrumb navigation */
+
+/* COPY THIS: Footer bottom pattern */
+.footer-bottom {
+    border-top: 1px solid #374151;
+    margin-top: 2rem;
+    padding-top: 2rem;
+}
+
+.copyright {
+    font-size: 0.875rem;
+    color: var(--neutral-color);
+    text-align: center;
+    margin: 0;
+}
+
+/* TODO: Copy footer bottom for page header */
+
+/* COPY THIS: Responsive breakpoint pattern */
+@media (max-width: 768px) {
+    .main-content {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+
+    .sidebar {
+        grid-column: 1;
+        position: static;
+    }
+
+    .hero-section {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 2rem 1rem;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-content {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+}
+
+/* TODO: Copy responsive breakpoint for tablet and desktop */
+
+/* COPY THIS: Mobile navigation pattern */
+@media (max-width: 640px) {
+    .header-container {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .nav-list {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+/* TODO: Copy mobile navigation for desktop navigation enhancements */

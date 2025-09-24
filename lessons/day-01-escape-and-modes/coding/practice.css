@@ -1,0 +1,227 @@
+/*
+PRACTICE INSTRUCTIONS FOR DAY 01: ESCAPE & MODES - CSS
+
+Mode Switching Practice in CSS:
+1. Use 'i' to enter Insert mode and add new properties
+2. Use 'a' to append values at end of lines
+3. Use 'o' to create new lines with properties
+4. Use 'v' to select property blocks
+5. Practice entering and exiting modes while editing
+
+Practice areas are marked with [PRACTICE] comments below
+*/
+
+:root {
+    /* [PRACTICE] Insert mode: Add CSS custom properties here */
+    --primary-color: #2563eb;
+    --secondary-color: #64748b;
+    --background-color: #f8fafc;
+    --text-color: #1e293b;
+    /* [PRACTICE] New line: Add more CSS variables using 'o' */
+    --border-radius: 8px;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 2rem;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    /* [PRACTICE] Append mode: Add more body properties after this comment */
+}
+
+/* [PRACTICE] Visual mode: Select this entire rule block */
+.main-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    padding: var(--spacing-md);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* [PRACTICE] Insert mode: Add header styling properties */
+}
+
+.navigation {
+    max-width: 1200px;
+    margin: 0 auto;
+    /* [PRACTICE] New line: Use 'o' to add navigation properties */
+}
+
+.nav-list {
+    display: flex;
+    list-style: none;
+    gap: var(--spacing-md);
+    /* [PRACTICE] Insert mode: Complete navigation list styling */
+}
+
+.nav-list li a {
+    color: white;
+    text-decoration: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s ease;
+    /* [PRACTICE] Append mode: Add hover and focus states */
+}
+
+/* [PRACTICE] New line: Use 'o' to add hover state rule */
+
+.main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--spacing-lg);
+    /* [PRACTICE] Visual mode: Select and practice with grid properties */
+}
+
+.content-section {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    /* [PRACTICE] Insert mode: Add section styling */
+}
+
+.content-section h1 {
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-md);
+    font-size: 2.5rem;
+    /* [PRACTICE] Append mode: Add heading properties */
+}
+
+.mode-explanation {
+    margin-top: var(--spacing-lg);
+    /* [PRACTICE] New line: Add explanation container properties */
+}
+
+.mode-explanation h2 {
+    color: var(--secondary-color);
+    margin: var(--spacing-md) 0 var(--spacing-sm) 0;
+    border-left: 4px solid var(--primary-color);
+    padding-left: var(--spacing-md);
+    /* [PRACTICE] Visual mode: Select this entire h2 rule */
+}
+
+/* [PRACTICE] Insert mode: Add paragraph styling for mode explanations */
+.mode-explanation p {
+    margin-bottom: var(--spacing-sm);
+    padding-left: var(--spacing-md);
+}
+
+.practice-area {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: var(--spacing-lg);
+    /* [PRACTICE] New line: Use 'o' to add practice area properties */
+}
+
+.practice-block {
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    border: 2px dashed var(--secondary-color);
+    border-radius: var(--border-radius);
+    /* [PRACTICE] Insert mode: Complete practice block styling */
+}
+
+.practice-block h3 {
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-sm);
+    /* [PRACTICE] Append mode: Add h3 styling properties */
+}
+
+/* [PRACTICE] Visual mode: Select this code block rule */
+.code-block {
+    background: #1e293b;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    margin: var(--spacing-md) 0;
+}
+
+.code-block pre {
+    color: #e2e8f0;
+    font-family: 'Courier New', monospace;
+    overflow-x: auto;
+    /* [PRACTICE] New line: Add code pre styling */
+}
+
+.practice-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    /* [PRACTICE] Insert mode: Add form styling properties */
+}
+
+.practice-form label {
+    font-weight: 600;
+    color: var(--text-color);
+    /* [PRACTICE] Append mode: Add label styling */
+}
+
+.practice-form input,
+.practice-form textarea {
+    padding: var(--spacing-sm);
+    border: 1px solid var(--secondary-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    /* [PRACTICE] New line: Add input and textarea properties */
+}
+
+/* [PRACTICE] Visual mode: Select this entire sidebar rule */
+.sidebar {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    height: fit-content;
+}
+
+.reference-list {
+    list-style: none;
+    margin: var(--spacing-md) 0;
+    /* [PRACTICE] Insert mode: Complete reference list styling */
+}
+
+.reference-list li {
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid #e2e8f0;
+    /* [PRACTICE] Append mode: Add list item properties */
+}
+
+.tip-box {
+    background: linear-gradient(135deg, #fef3c7, #fed7aa);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    margin-top: var(--spacing-lg);
+    /* [PRACTICE] New line: Add tip box styling */
+}
+
+.main-footer {
+    background: var(--text-color);
+    color: white;
+    text-align: center;
+    padding: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+    /* [PRACTICE] Insert mode: Complete footer styling */
+}
+
+/* [PRACTICE] Visual mode: Select responsive media query block */
+@media (max-width: 768px) {
+    .main-content {
+        grid-template-columns: 1fr;
+        padding: var(--spacing-md);
+        /* [PRACTICE] New line: Add mobile styling properties */
+    }
+
+    .nav-list {
+        flex-direction: column;
+        /* [PRACTICE] Append mode: Add mobile navigation properties */
+    }
+}

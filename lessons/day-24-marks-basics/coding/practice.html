@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marks Basics Practice - Day 24</title>
+    <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+    <div class="marks-container">
+        <header class="main-header">
+            <h1>Vim Marks Practice</h1>
+            <p>HTML sections requiring marks for efficient navigation</p>
+        </header>
+
+        <main class="content">
+            <section id="introduction" class="mark-section">
+                <h2>Introduction to Marks</h2>
+                <!-- Mark 'a': Set mark here with 'ma' -->
+                <p class="mark-point">Set mark 'a' here using 'ma' command. Marks allow you to save specific positions in your document and return to them quickly using single-quote or backtick navigation.</p>
+
+                <div class="marks-explanation">
+                    <h3>Understanding Vim Marks</h3>
+                    <p>Marks are bookmarks that save cursor positions. Use lowercase letters (a-z) for marks within a file, and uppercase letters (A-Z) for marks that persist across files and Vim sessions.</p>
+
+                    <ul class="marks-commands">
+                        <li><code>ma</code> - Set mark 'a' at current position</li>
+                        <li><code>'a</code> - Jump to line of mark 'a'</li>
+                        <li><code>`a</code> - Jump to exact position of mark 'a'</li>
+                        <li><code>:marks</code> - List all marks</li>
+                        <li><code>:delmarks a</code> - Delete mark 'a'</li>
+                    </ul>
+                </div>
+
+                <!-- Mark 'b': Important reference point -->
+                <p class="important-point">Mark 'b' location: This paragraph contains important reference information that you'll want to return to frequently during editing sessions.</p>
+            </section>
+
+            <section id="basic-marks" class="mark-section">
+                <h2>Basic Mark Operations</h2>
+                <!-- Mark 'c': Start of examples section -->
+                <p class="mark-point">Set mark 'c' at the beginning of this examples section. Practice setting and navigating to marks in this area.</p>
+
+                <div class="example-content">
+                    <h3>Mark Setting Practice</h3>
+                    <p>Practice setting marks at different locations:</p>
+
+                    <div class="practice-area">
+                        <!-- Mark 'd': Code example location -->
+                        <h4>Code Example Location (mark 'd')</h4>
+                        <pre><code>
+function navigateWithMarks() {
+    // Set mark here with 'md'
+    const position = getCurrentPosition();
+
+    // Navigate away and return with 'd or `d
+    processData();
+
+    // Mark 'e' could be set here
+    return position;
+}
+                        </code></pre>
+
+                        <!-- Mark 'e': End of code example -->
+                        <p class="mark-point">Mark 'e' position: End of code example. Practice jumping between marks 'd' and 'e' to understand mark navigation.</p>
+                    </div>
+
+                    <div class="navigation-practice">
+                        <!-- Mark 'f': Navigation section -->
+                        <h4>Navigation Practice (mark 'f')</h4>
+                        <p>Set mark 'f' here and practice these navigation patterns:</p>
+                        <ol>
+                            <li>Set mark 'f' with 'mf'</li>
+                            <li>Navigate to another section</li>
+                            <li>Return with 'f (line) or `f (exact position)</li>
+                            <li>Try combining with other navigation commands</li>
+                        </ol>
+
+                        <!-- Mark 'g': Nested practice point -->
+                        <p class="nested-mark">Mark 'g' location: Practice setting marks within nested content structures for complex navigation workflows.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="advanced-marks" class="mark-section">
+                <h2>Advanced Mark Techniques</h2>
+                <!-- Mark 'h': Advanced section start -->
+                <p class="mark-point">Mark 'h' position: Beginning of advanced mark techniques. This section covers sophisticated marking strategies for complex editing workflows.</p>
+
+                <div class="advanced-content">
+                    <h3>Multiple Mark Management</h3>
+                    <!-- Mark 'i': Multiple marks example -->
+                    <p class="mark-point">Mark 'i' location: When working with multiple marks, establish a consistent naming convention. Use 'a' for main sections, 'b' for subsections, 'c' for code blocks, etc.</p>
+
+                    <div class="mark-strategy">
+                        <h4>Strategic Mark Placement</h4>
+                        <!-- Mark 'j': Strategy explanation -->
+                        <p class="mark-point">Mark 'j' here: Strategic mark placement improves editing efficiency. Consider these locations for marks:</p>
+
+                        <ul class="strategy-list">
+                            <li>Function definitions and class declarations</li>
+                            <li>Important configuration sections</li>
+                            <li>Complex logic or algorithm implementations</li>
+                            <li>Documentation sections you reference frequently</li>
+                            <li>Error handling and debugging areas</li>
+                        </ul>
+
+                        <!-- Mark 'k': Implementation notes -->
+                        <p class="implementation-note">Mark 'k' position: Implementation notes and examples that demonstrate effective mark usage patterns in real development scenarios.</p>
+                    </div>
+
+                    <div class="workflow-integration">
+                        <!-- Mark 'l': Workflow section -->
+                        <h4>Workflow Integration (mark 'l')</h4>
+                        <p>Integrate marks with other Vim features for powerful editing workflows:</p>
+
+                        <div class="integration-examples">
+                            <!-- Mark 'm': Integration start -->
+                            <h5>Mark 'm': Integration Examples</h5>
+                            <p>Combine marks with search, macros, and text objects for advanced editing patterns. Set mark 'm' here to practice integration techniques.</p>
+
+                            <div class="macro-example">
+                                <!-- Mark 'n': Macro location -->
+                                <h6>Macro Integration (mark 'n')</h6>
+                                <p>Record macros that set and use marks for repeatable editing patterns. Mark 'n' serves as a reference point for macro operations.</p>
+
+                                <pre><code>
+" Example macro using marks
+qa          " Start recording macro 'a'
+ma          " Set mark 'a'
+/pattern    " Search for pattern
+cn          " Change to next occurrence
+'a          " Return to mark 'a'
+q           " Stop recording
+                                </code></pre>
+                            </div>
+
+                            <!-- Mark 'o': Search integration -->
+                            <p class="search-integration">Mark 'o' location: Search integration examples. Set marks before complex searches to maintain your editing context and easily return to your starting point.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="global-marks" class="mark-section">
+                <h2>Global Marks and File Navigation</h2>
+                <!-- Mark 'A': Global mark example -->
+                <p class="global-mark">Global Mark 'A' location: Set global mark 'A' here with 'mA'. Global marks (uppercase) persist across files and Vim sessions, making them perfect for project navigation.</p>
+
+                <div class="global-examples">
+                    <h3>Global Mark Benefits</h3>
+                    <!-- Mark 'B': Benefits section -->
+                    <p class="mark-point">Mark 'B' position: Global marks enable efficient project-wide navigation. Use them to bookmark important files, configuration sections, or frequently edited code areas.</p>
+
+                    <div class="project-navigation">
+                        <h4>Project Navigation Patterns</h4>
+                        <!-- Mark 'C': Project patterns -->
+                        <p class="mark-point">Mark 'C' location: Common project navigation patterns using global marks:</p>
+
+                        <ul class="navigation-patterns">
+                            <li>Mark 'A': Main application entry point</li>
+                            <li>Mark 'B': Primary configuration file</li>
+                            <li>Mark 'C': Core business logic implementation</li>
+                            <li>Mark 'D': Database schema or models</li>
+                            <li>Mark 'E': Error handling and logging</li>
+                            <li>Mark 'F': Feature flags and toggles</li>
+                        </ul>
+
+                        <!-- Mark 'D': Usage examples -->
+                        <p class="usage-example">Mark 'D' position: Usage examples demonstrating how global marks improve development workflow efficiency across multiple files and editing sessions.</p>
+                    </div>
+
+                    <div class="session-persistence">
+                        <!-- Mark 'E': Persistence section -->
+                        <h4>Session Persistence (mark 'E')</h4>
+                        <p>Global marks persist across Vim sessions when viminfo is properly configured. This enables consistent navigation patterns across development sessions.</p>
+
+                        <div class="configuration-example">
+                            <!-- Mark 'F': Configuration -->
+                            <h5>Configuration (mark 'F')</h5>
+                            <pre><code>
+" Viminfo configuration for mark persistence
+set viminfo='100,f1,<500,:100,@100,/100,h
+
+" Where:
+" '100 = save marks for last 100 files
+" f1   = store global marks A-Z
+" <500 = save 500 lines for each register
+" :100 = save 100 lines of command history
+" @100 = save 100 lines of input history
+" /100 = save 100 search patterns
+" h    = disable hlsearch when loading viminfo
+                            </code></pre>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="practice-exercises" class="mark-section">
+                <h2>Mark Practice Exercises</h2>
+                <!-- Mark 'p': Practice section -->
+                <p class="mark-point">Mark 'p' location: Practice exercises to build mark usage skills and develop efficient navigation patterns.</p>
+
+                <div class="exercise-set">
+                    <h3>Exercise 1: Basic Mark Operations</h3>
+                    <!-- Mark 'q': Exercise 1 -->
+                    <p class="exercise-start">Mark 'q' - Exercise 1 start: Complete these basic mark operations:</p>
+
+                    <ol class="exercise-steps">
+                        <li>Set mark 'r' at the beginning of this list</li>
+                        <li>Navigate to mark 'p' using 'p command</li>
+                        <li>Return to mark 'r' using `r command</li>
+                        <li>Set mark 's' at the end of this exercise</li>
+                        <li>Practice jumping between marks 'q', 'r', and 's'</li>
+                    </ol>
+
+                    <!-- Mark 's': Exercise 1 end -->
+                    <p class="exercise-end">Mark 's' - Exercise 1 end: Complete the basic operations above before proceeding to advanced exercises.</p>
+                </div>
+
+                <div class="exercise-set">
+                    <h3>Exercise 2: Mark Integration</h3>
+                    <!-- Mark 't': Exercise 2 -->
+                    <p class="exercise-start">Mark 't' - Exercise 2 start: Practice integrating marks with other Vim features:</p>
+
+                    <div class="integration-tasks">
+                        <!-- Mark 'u': Integration tasks -->
+                        <h4>Mark 'u': Integration Tasks</h4>
+                        <ul class="task-list">
+                            <li>Set mark 'u' here, then search for "exercise" and return</li>
+                            <li>Use marks with text objects (e.g., y'u to yank to mark)</li>
+                            <li>Combine marks with visual selection</li>
+                            <li>Practice mark-based editing operations</li>
+                        </ul>
+
+                        <!-- Mark 'v': Advanced integration -->
+                        <p class="advanced-task">Mark 'v' location: Advanced integration challenges that combine marks with complex editing workflows and multiple Vim features.</p>
+                    </div>
+
+                    <!-- Mark 'w': Exercise 2 end -->
+                    <p class="exercise-end">Mark 'w' - Exercise 2 end: Master these integration techniques before attempting the final challenge exercise.</p>
+                </div>
+
+                <div class="exercise-set">
+                    <h3>Exercise 3: Real-world Application</h3>
+                    <!-- Mark 'x': Exercise 3 -->
+                    <p class="exercise-start">Mark 'x' - Exercise 3 start: Apply mark skills to realistic editing scenarios:</p>
+
+                    <div class="scenario-practice">
+                        <!-- Mark 'y': Scenario -->
+                        <h4>Mark 'y': Code Review Scenario</h4>
+                        <p>Simulate a code review workflow using marks to navigate between different sections, functions, and areas requiring attention.</p>
+
+                        <div class="review-workflow">
+                            <!-- Mark 'z': Review workflow -->
+                            <h5>Mark 'z': Review Workflow Steps</h5>
+                            <ol class="workflow-steps">
+                                <li>Set marks at each function definition</li>
+                                <li>Mark areas requiring detailed review</li>
+                                <li>Use marks to compare similar code sections</li>
+                                <li>Navigate efficiently between related components</li>
+                                <li>Document findings using mark-based notes</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Final mark location -->
+                    <p class="final-mark">Final practice location: This completes the mark practice exercises. Use this content to develop proficiency with mark-based navigation and editing workflows.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="main-footer">
+            <p>Marks provide powerful navigation capabilities for efficient editing workflows.</p>
+            <p>Commands: ma (set), 'a (line), `a (exact), :marks (list), :delmarks (delete)</p>
+        </footer>
+    </div>
+</body>
+</html>

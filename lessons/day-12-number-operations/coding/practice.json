@@ -1,0 +1,365 @@
+{
+  "infrastructure_config": {
+    "version": "2.4.1",
+    "build_number": 1247,
+    "deployment_id": "dep-20240315-001",
+    "cluster_info": {
+      "name": "production-cluster-v3",
+      "region": "us-west-2",
+      "availability_zones": 3,
+      "node_count": 15,
+      "master_nodes": 3,
+      "worker_nodes": 12,
+      "cpu_cores_total": 192,
+      "memory_gb_total": 768,
+      "storage_tb_total": 50
+    },
+    "networking": {
+      "vpc_cidr": "10.0.0.0/16",
+      "public_subnets": [
+        "10.0.1.0/24",
+        "10.0.2.0/24",
+        "10.0.3.0/24"
+      ],
+      "private_subnets": [
+        "10.0.10.0/24",
+        "10.0.20.0/24",
+        "10.0.30.0/24"
+      ],
+      "database_subnets": [
+        "10.0.100.0/24",
+        "10.0.200.0/24"
+      ],
+      "load_balancer": {
+        "port": 443,
+        "health_check_port": 8080,
+        "timeout_seconds": 30,
+        "interval_seconds": 10,
+        "healthy_threshold": 2,
+        "unhealthy_threshold": 5
+      }
+    },
+    "services": {
+      "api_gateway": {
+        "port": 8080,
+        "ssl_port": 8443,
+        "metrics_port": 9090,
+        "health_port": 8081,
+        "replicas": 5,
+        "min_replicas": 3,
+        "max_replicas": 20,
+        "cpu_request_millicores": 500,
+        "cpu_limit_millicores": 2000,
+        "memory_request_mb": 1024,
+        "memory_limit_mb": 4096,
+        "storage_gb": 10,
+        "rate_limit": {
+          "requests_per_second": 1000,
+          "burst_capacity": 2000,
+          "requests_per_minute": 60000
+        },
+        "timeouts": {
+          "connection_timeout_ms": 5000,
+          "read_timeout_ms": 30000,
+          "write_timeout_ms": 30000,
+          "idle_timeout_ms": 120000
+        }
+      },
+      "user_service": {
+        "port": 8082,
+        "metrics_port": 9092,
+        "health_port": 8083,
+        "replicas": 8,
+        "min_replicas": 4,
+        "max_replicas": 32,
+        "cpu_request_millicores": 250,
+        "cpu_limit_millicores": 1000,
+        "memory_request_mb": 512,
+        "memory_limit_mb": 2048,
+        "storage_gb": 5,
+        "database_connections": {
+          "min_pool_size": 5,
+          "max_pool_size": 50,
+          "connection_timeout_ms": 30000,
+          "idle_timeout_ms": 600000,
+          "max_lifetime_ms": 1800000
+        }
+      },
+      "order_service": {
+        "port": 8084,
+        "metrics_port": 9094,
+        "health_port": 8085,
+        "replicas": 6,
+        "min_replicas": 3,
+        "max_replicas": 24,
+        "cpu_request_millicores": 300,
+        "cpu_limit_millicores": 1500,
+        "memory_request_mb": 768,
+        "memory_limit_mb": 3072,
+        "storage_gb": 15,
+        "queue_config": {
+          "max_message_size_kb": 256,
+          "visibility_timeout_seconds": 300,
+          "message_retention_days": 14,
+          "dead_letter_queue_max_receives": 3
+        }
+      },
+      "payment_service": {
+        "port": 8086,
+        "metrics_port": 9096,
+        "health_port": 8087,
+        "replicas": 4,
+        "min_replicas": 2,
+        "max_replicas": 16,
+        "cpu_request_millicores": 400,
+        "cpu_limit_millicores": 2000,
+        "memory_request_mb": 1024,
+        "memory_limit_mb": 4096,
+        "storage_gb": 20,
+        "circuit_breaker": {
+          "failure_threshold": 10,
+          "success_threshold": 5,
+          "timeout_seconds": 60,
+          "half_open_max_calls": 3
+        }
+      },
+      "notification_service": {
+        "port": 8088,
+        "metrics_port": 9098,
+        "health_port": 8089,
+        "replicas": 3,
+        "min_replicas": 2,
+        "max_replicas": 12,
+        "cpu_request_millicores": 200,
+        "cpu_limit_millicores": 800,
+        "memory_request_mb": 384,
+        "memory_limit_mb": 1536,
+        "storage_gb": 8
+      }
+    },
+    "databases": {
+      "postgresql_primary": {
+        "port": 5432,
+        "version": "14.5",
+        "cpu_cores": 8,
+        "memory_gb": 32,
+        "storage_gb": 500,
+        "iops": 3000,
+        "backup_retention_days": 30,
+        "max_connections": 200,
+        "shared_buffers_mb": 8192,
+        "effective_cache_size_mb": 24576,
+        "work_mem_mb": 64,
+        "maintenance_work_mem_mb": 2048,
+        "checkpoint_completion_target": 0.9,
+        "wal_buffers_mb": 256,
+        "default_statistics_target": 500
+      },
+      "postgresql_replicas": {
+        "count": 2,
+        "port": 5432,
+        "cpu_cores": 4,
+        "memory_gb": 16,
+        "storage_gb": 500,
+        "iops": 1500,
+        "max_connections": 100,
+        "lag_threshold_ms": 1000
+      },
+      "redis_cluster": {
+        "nodes": 6,
+        "port": 6379,
+        "sentinel_port": 26379,
+        "cpu_cores_per_node": 2,
+        "memory_gb_per_node": 8,
+        "storage_gb_per_node": 50,
+        "max_memory_policy": "allkeys-lru",
+        "save_seconds": [900, 300, 60],
+        "save_changes": [1, 10, 10000],
+        "tcp_keepalive": 300,
+        "timeout": 0,
+        "tcp_backlog": 511
+      }
+    },
+    "monitoring": {
+      "prometheus": {
+        "port": 9090,
+        "retention_days": 90,
+        "storage_gb": 200,
+        "scrape_interval_seconds": 15,
+        "evaluation_interval_seconds": 15,
+        "query_timeout_seconds": 30,
+        "rule_files_count": 25,
+        "target_groups": 45
+      },
+      "grafana": {
+        "port": 3000,
+        "cpu_cores": 2,
+        "memory_gb": 4,
+        "storage_gb": 20,
+        "session_timeout_hours": 24,
+        "dashboard_count": 38,
+        "user_count": 150,
+        "alert_rules": 67
+      },
+      "jaeger": {
+        "collector_port": 14268,
+        "query_port": 16686,
+        "agent_port": 6831,
+        "sampling_rate": 0.01,
+        "max_traces_per_second": 10000,
+        "memory_max_traces": 50000,
+        "storage_retention_hours": 168
+      },
+      "elasticsearch": {
+        "port": 9200,
+        "cluster_size": 5,
+        "master_nodes": 3,
+        "data_nodes": 2,
+        "cpu_cores_per_node": 4,
+        "memory_gb_per_node": 16,
+        "storage_gb_per_node": 500,
+        "heap_size_gb": 8,
+        "index_replicas": 1,
+        "index_shards": 3,
+        "refresh_interval_seconds": 30,
+        "retention_days": 30
+      }
+    },
+    "security": {
+      "certificate_manager": {
+        "port": 9443,
+        "certificate_validity_days": 90,
+        "renewal_threshold_days": 30,
+        "rsa_key_size": 2048,
+        "certificates_count": 25
+      },
+      "vault": {
+        "port": 8200,
+        "api_port": 8201,
+        "cluster_port": 8202,
+        "replicas": 3,
+        "cpu_cores": 2,
+        "memory_gb": 4,
+        "storage_gb": 50,
+        "token_ttl_hours": 24,
+        "max_lease_ttl_hours": 168,
+        "secret_threshold": 10000
+      },
+      "network_policies": {
+        "ingress_rules": 15,
+        "egress_rules": 8,
+        "allowed_ports": [22, 80, 443, 8080, 8443, 9090, 3000],
+        "blocked_ports": [21, 23, 25, 53, 135, 139, 445, 1433, 3389]
+      }
+    },
+    "autoscaling": {
+      "horizontal_pod_autoscaler": {
+        "target_cpu_utilization": 70,
+        "target_memory_utilization": 80,
+        "scale_down_delay_seconds": 300,
+        "scale_up_delay_seconds": 60,
+        "stabilization_window_seconds": 300,
+        "scale_down_percent": 10,
+        "scale_up_percent": 50,
+        "scale_down_pods": 2,
+        "scale_up_pods": 4
+      },
+      "vertical_pod_autoscaler": {
+        "cpu_histogram_bucket_size": 0.1,
+        "memory_histogram_bucket_size": 104857600,
+        "recommendation_margin_fraction": 0.15,
+        "target_cpu_percentile": 0.9,
+        "target_memory_percentile": 0.9
+      },
+      "cluster_autoscaler": {
+        "scale_down_delay_after_add_seconds": 600,
+        "scale_down_unneeded_time_seconds": 600,
+        "skip_nodes_with_local_storage": true,
+        "skip_nodes_with_system_pods": true,
+        "max_node_provision_time_seconds": 900,
+        "scan_interval_seconds": 10
+      }
+    },
+    "backup": {
+      "database_backup": {
+        "schedule_hour": 2,
+        "schedule_minute": 30,
+        "retention_days": 90,
+        "compression_level": 9,
+        "parallel_jobs": 4,
+        "timeout_hours": 6
+      },
+      "volume_backup": {
+        "schedule_hours": [6, 18],
+        "retention_days": 30,
+        "snapshot_frequency_hours": 12,
+        "cross_region_replication": true,
+        "encryption_enabled": true
+      },
+      "application_backup": {
+        "schedule_hour": 4,
+        "retention_weeks": 12,
+        "include_secrets": false,
+        "include_configmaps": true,
+        "parallel_uploads": 8
+      }
+    },
+    "cost_optimization": {
+      "reserved_instances": {
+        "percentage": 70,
+        "term_years": 3,
+        "payment_option": "partial_upfront",
+        "estimated_savings_percent": 45
+      },
+      "spot_instances": {
+        "percentage": 30,
+        "max_price_usd_per_hour": 0.15,
+        "interruption_tolerance_minutes": 120,
+        "estimated_savings_percent": 70
+      },
+      "resource_limits": {
+        "max_cpu_cores": 500,
+        "max_memory_gb": 2000,
+        "max_storage_tb": 100,
+        "max_monthly_cost_usd": 25000
+      }
+    },
+    "performance_targets": {
+      "api_response_time": {
+        "p50_ms": 100,
+        "p95_ms": 500,
+        "p99_ms": 1000,
+        "timeout_ms": 30000
+      },
+      "database_performance": {
+        "max_connections": 1000,
+        "query_timeout_ms": 30000,
+        "slow_query_threshold_ms": 1000,
+        "connection_pool_min": 10,
+        "connection_pool_max": 100
+      },
+      "cache_performance": {
+        "hit_ratio_percent": 95,
+        "eviction_rate_per_second": 10,
+        "memory_usage_percent": 80,
+        "key_expiration_seconds": 3600
+      },
+      "network_performance": {
+        "bandwidth_mbps": 10000,
+        "latency_ms": 5,
+        "packet_loss_percent": 0.01,
+        "concurrent_connections": 50000
+      }
+    },
+    "compliance": {
+      "audit_retention_days": 2555,
+      "log_retention_days": 365,
+      "backup_retention_years": 7,
+      "certificate_rotation_days": 30,
+      "password_rotation_days": 90,
+      "access_review_days": 180,
+      "vulnerability_scan_hours": 24,
+      "penetration_test_months": 6
+    }
+  }
+}

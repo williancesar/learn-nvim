@@ -1,0 +1,55 @@
+{
+  "name": "file-operations-practice",
+  "version": "1.0.0",
+  "description": "Practice files for Vim/Neovim file operations - Day 13",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "dev": "node --watch main.js",
+    "test": "node --test",
+    "test:watch": "node --test --watch",
+    "lint": "eslint *.js",
+    "format": "prettier --write *.js",
+    "build": "npm run lint && npm run test",
+    "clean": "rm -rf node_modules package-lock.json",
+    "reset": "npm run clean && npm install"
+  },
+  "keywords": [
+    "vim",
+    "neovim",
+    "practice",
+    "file-operations",
+    "javascript",
+    "node"
+  ],
+  "author": "Vim Learning Exercise",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "jsonwebtoken": "^9.0.0",
+    "express": "^4.18.0",
+    "cors": "^2.8.5",
+    "helmet": "^6.1.0",
+    "morgan": "^1.10.0",
+    "dotenv": "^16.0.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.40.0",
+    "prettier": "^2.8.8",
+    "nodemon": "^2.0.22",
+    "@types/node": "^20.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/example/file-operations-practice.git"
+  },
+  "bugs": {
+    "url": "https://github.com/example/file-operations-practice/issues"
+  },
+  "homepage": "https://github.com/example/file-operations-practice#readme"
+}

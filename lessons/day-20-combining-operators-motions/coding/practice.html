@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operator + Motion Practice - Day 20</title>
+    <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <h1>Mastering Operator + Motion Combinations</h1>
+            <p>Practice combining delete, change, yank operators with motion commands</p>
+        </header>
+
+        <main class="content">
+            <section class="operator-basics">
+                <h2>Understanding Operators and Motions</h2>
+                <p>The power of Vim lies in combining operators with motions to create powerful editing commands. The basic operators include delete (d), change (c), yank (y), and the motions include word (w), end of word (e), beginning of line (0), end of line ($), paragraph (}), and many others.</p>
+
+                <p>When you combine these, you get commands like dw (delete word), c$ (change to end of line), y} (yank paragraph), and countless other combinations. Practice with these sentences by trying different operator-motion combinations.</p>
+
+                <div class="operator-examples">
+                    <h3>Basic Operator + Motion Examples</h3>
+                    <ul>
+                        <li>dw - delete word (from cursor to start of next word)</li>
+                        <li>de - delete to end of word</li>
+                        <li>d$ - delete to end of line</li>
+                        <li>c0 - change from beginning of line to cursor</li>
+                        <li>y} - yank from cursor to end of paragraph</li>
+                        <li>caw - change around word (includes surrounding whitespace)</li>
+                        <li>diw - delete inner word (word only, no whitespace)</li>
+                        <li>yi" - yank inside quotes</li>
+                    </ul>
+                </div>
+
+                <p>Practice changing this entire sentence using operator-motion combinations. Try using cis (change inner sentence) or cas (change around sentence). Notice how different combinations affect the text differently.</p>
+            </section>
+
+            <section class="word-operations">
+                <h2>Word-Based Operations Practice</h2>
+                <p>Word operations are fundamental in Vim editing. Practice changing individual words, deleting multiple words, and yanking word sequences. Try changing "individual" to "specific" using ciw, or delete "multiple words" using d2w.</p>
+
+                <p>Different word boundaries create interesting challenges. CamelCaseWords, hyphenated-words, and under_scored_variables all behave differently with word motions. Practice with various word types to understand the nuances.</p>
+
+                <div class="word-practice">
+                    <h3>Word Operation Exercises</h3>
+                    <p>Change these words: ancient, modern, futuristic, contemporary</p>
+                    <p>Delete these phrases: unnecessary text, redundant information, excessive details</p>
+                    <p>Yank and duplicate: important concepts, key principles, essential ideas</p>
+
+                    <div class="code-words">
+                        <code>functionName</code>
+                        <code>variable_name</code>
+                        <code>CONSTANT_VALUE</code>
+                        <code>hyphenated-identifier</code>
+                        <code>nested.property.access</code>
+                    </div>
+                </div>
+
+                <p>Advanced word operations include working with WORD (capital W) which treats punctuation differently than word (lowercase w). Compare dw vs dW on punctuation-heavy text like "don't" or "user@example.com".</p>
+            </section>
+
+            <section class="line-operations">
+                <h2>Line-Based Operations Practice</h2>
+                <p>Line operations are essential for efficient text manipulation. Practice with d$ (delete to end of line), c0 (change from beginning of line), and y^ (yank from beginning of text on line). Each operation has specific uses in different editing scenarios.</p>
+
+                <p>This line is perfect for practicing d$ - place your cursor in the middle and delete to the end.</p>
+                <p>Use c0 on this line to change from the beginning to your cursor position.</p>
+                <p>Try y$ to yank from cursor to end of this line, then paste it elsewhere with p.</p>
+
+                <div class="line-examples">
+                    <h3>Line Operation Combinations</h3>
+                    <pre><code>const variable = "value"; // Delete this comment with d$
+let another = "string";   // Change this comment with c$
+var third = "example";    // Yank this comment with y$</code></pre>
+
+                    <div class="indented-lines">
+                        <p>    This line has leading whitespace - practice with ^ motion</p>
+                        <p>        This line is more deeply indented</p>
+                        <p>    Back to less indentation</p>
+                        <p>No indentation on this line</p>
+                    </div>
+                </div>
+
+                <p>Advanced line operations include dd (delete entire line), cc (change entire line), and yy (yank entire line). Practice these on the lines above to see how they work differently from motion-based operations.</p>
+            </section>
+
+            <section class="text-object-operations">
+                <h2>Text Object Operations</h2>
+                <p>Text objects provide semantic editing capabilities. Practice with di" (delete inside quotes), da( (delete around parentheses), ci{ (change inside braces), and yi[ (yank inside brackets). These operations work with the logical structure of your text.</p>
+
+                <div class="text-object-examples">
+                    <h3>Text Object Practice Examples</h3>
+                    <p>Here are some "quoted strings" and 'single-quoted text' to practice with. Try di" and da" to see the difference between inner and around operations.</p>
+
+                    <p>Function calls like calculateTotal(price, tax, discount) provide practice with parentheses text objects. Use di( to change parameters or da( to replace the entire call.</p>
+
+                    <p>Arrays like [item1, item2, item3] and objects like {key: "value", number: 42} offer bracket and brace practice opportunities.</p>
+
+                    <div class="nested-structures">
+                        <p>Nested structures: {outer: {inner: "value", array: [1, 2, 3]}, function: calculateResult(a, b)}</p>
+                        <p>Complex nesting: [[nested, array], {object: "inside", brackets: [more, items]}]</p>
+                        <p>Mixed delimiters: "string with {object: 'nested quotes'} inside"</p>
+                    </div>
+                </div>
+
+                <p>Advanced text object operations include working with HTML tags using it (inner tag) and at (around tag). Practice on the HTML elements in this document.</p>
+            </section>
+
+            <section class="motion-combinations">
+                <h2>Advanced Motion Combinations</h2>
+                <p>Complex editing tasks often require combining multiple motion types. Practice with operations like c/pattern (change to search pattern), d?word (delete back to search pattern), and y'a (yank to mark 'a').</p>
+
+                <div class="search-operations">
+                    <h3>Search-Based Operations</h3>
+                    <p>Use c/end to change from cursor to the word "end" in this sentence.</p>
+                    <p>Practice d?beginning to delete back to the word "beginning" from your cursor position.</p>
+                    <p>Try y/Practice to yank from cursor to the next occurrence of "Practice".</p>
+                </div>
+
+                <div class="pattern-practice">
+                    <h3>Pattern-Based Editing</h3>
+                    <p>Regular expressions work with operations: d/\d\+ deletes to the next number sequence like 123 or 456.</p>
+                    <p>Email addresses like user@example.com can be targeted with patterns.</p>
+                    <p>URLs like https://www.example.com/path provide pattern practice opportunities.</p>
+                    <p>File paths like /usr/local/bin/program offer slash-based navigation patterns.</p>
+                </div>
+
+                <p>Advanced users combine counts with operator-motion patterns: 3cw changes three words, 2d$ deletes two lines to end, 5yj yanks five lines down.</p>
+            </section>
+
+            <section class="practical-exercises">
+                <h2>Practical Editing Scenarios</h2>
+                <p>Real-world editing involves complex combinations of operators and motions. Practice these scenarios to build muscle memory and editing intuition.</p>
+
+                <div class="refactoring-example">
+                    <h3>Code Refactoring Practice</h3>
+                    <pre><code>function calculateTotalPrice(basePrice, taxRate, discountPercent) {
+    const discountAmount = basePrice * (discountPercent / 100);
+    const discountedPrice = basePrice - discountAmount;
+    const taxAmount = discountedPrice * (taxRate / 100);
+    const totalPrice = discountedPrice + taxAmount;
+    return totalPrice;
+}</code></pre>
+
+                    <p>Practice operations on the code above:</p>
+                    <ul>
+                        <li>Change variable names using ciw</li>
+                        <li>Delete entire lines with dd</li>
+                        <li>Modify function parameters with di(</li>
+                        <li>Change string literals with di"</li>
+                        <li>Duplicate lines with yy and p</li>
+                    </ul>
+                </div>
+
+                <div class="documentation-editing">
+                    <h3>Documentation Editing</h3>
+                    <p>Documentation requires different editing patterns than code. Practice with list items, paragraph reorganization, and formatting changes. Use operator-motion combinations to move sections efficiently.</p>
+
+                    <ul>
+                        <li>This is the first list item that could be reordered</li>
+                        <li>Second item with different content for practice</li>
+                        <li>Third item that might need modification</li>
+                        <li>Fourth item for deletion or movement practice</li>
+                        <li>Final item that could be duplicated</li>
+                    </ul>
+
+                    <p>Long paragraphs like this one provide opportunities to practice sentence-level operations. Use cis to change sentences, das to delete them, or yis to copy sentences for reorganization. The key is thinking in terms of logical content units rather than arbitrary character positions.</p>
+                </div>
+
+                <div class="data-manipulation">
+                    <h3>Data Manipulation Practice</h3>
+                    <pre><code>users = [
+    {"name": "Alice Johnson", "email": "alice@example.com", "age": 28},
+    {"name": "Bob Smith", "email": "bob@example.com", "age": 34},
+    {"name": "Carol Davis", "email": "carol@example.com", "age": 29},
+    {"name": "David Wilson", "email": "david@example.com", "age": 31}
+]</code></pre>
+
+                    <p>Practice with the data structure above:</p>
+                    <ul>
+                        <li>Change email addresses using di"</li>
+                        <li>Modify ages using ciw on numbers</li>
+                        <li>Delete entire objects using da{</li>
+                        <li>Duplicate entries using ya{ and p</li>
+                        <li>Change keys using ci"</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="efficiency-tips">
+                <h2>Building Efficiency and Speed</h2>
+                <p>Mastering operator-motion combinations requires understanding when to use which combination for maximum efficiency. The goal is to minimize keystrokes while maximizing the precision of your edits.</p>
+
+                <div class="efficiency-guidelines">
+                    <h3>Efficiency Guidelines</h3>
+                    <ul>
+                        <li>Choose the largest appropriate motion for your operation</li>
+                        <li>Use text objects when working with logical units</li>
+                        <li>Prefer precise motions over repetitive operations</li>
+                        <li>Combine counts with motions for bulk operations</li>
+                        <li>Use search-based motions for distant targets</li>
+                    </ul>
+                </div>
+
+                <div class="common-patterns">
+                    <h3>Common Efficient Patterns</h3>
+                    <p>caw - change around word (better than dwi for word replacement)</p>
+                    <p>da" - delete around quotes (removes both content and quotes)</p>
+                    <p>ci{ - change inside braces (perfect for object/function content)</p>
+                    <p>d$ - delete to end of line (faster than selecting and deleting)</p>
+                    <p>y} - yank paragraph (efficient for moving large text blocks)</p>
+                </div>
+
+                <p>Speed comes from thinking in terms of your desired outcome rather than individual characters. Ask yourself: "What logical unit am I trying to modify?" then choose the operator-motion combination that targets that unit most directly.</p>
+
+                <div class="practice-drills">
+                    <h3>Speed Building Drills</h3>
+                    <p>Quick drill: Change the word "Quick" at the beginning of this sentence.</p>
+                    <p>Delete everything after the colon in this sentence: remove this part completely.</p>
+                    <p>Yank this entire sentence and paste it after the next paragraph.</p>
+
+                    <p>Intermediate drill paragraph for practicing sentence and paragraph operations. Use various operator-motion combinations to manipulate this text efficiently.</p>
+
+                    <p>Advanced drill: "Change this quoted text" and replace the 'single quotes' with different content, then delete the (parenthetical remark) entirely.</p>
+                </div>
+            </section>
+
+            <section class="troubleshooting">
+                <h2>Common Issues and Solutions</h2>
+                <p>Learning operator-motion combinations involves understanding common mistakes and how to avoid them. Building correct muscle memory from the beginning prevents bad habits that are difficult to unlearn later.</p>
+
+                <div class="common-mistakes">
+                    <h3>Common Mistakes to Avoid</h3>
+                    <ul>
+                        <li>Using character motions when word motions would be more efficient</li>
+                        <li>Forgetting about text objects for structured content</li>
+                        <li>Using visual mode when operator-motion would be faster</li>
+                        <li>Not considering count prefixes for repetitive operations</li>
+                        <li>Choosing imprecise motions that require additional corrections</li>
+                    </ul>
+                </div>
+
+                <div class="debugging-edits">
+                    <h3>Debugging Your Editing Patterns</h3>
+                    <p>When an operation doesn't work as expected, consider these factors: cursor position, motion precision, operator choice, and text object appropriateness. Often, a slight adjustment in approach yields better results.</p>
+
+                    <p>Practice recovering from mistakes: if you delete too much with d2w, use u to undo, then try dw instead. Learning to adjust your approach quickly is part of developing Vim fluency.</p>
+                </div>
+
+                <p>The key to mastering operator-motion combinations is consistent practice with real content. Use these techniques on your actual work to build practical muscle memory that transfers to real editing scenarios.</p>
+            </section>
+        </main>
+
+        <footer class="main-footer">
+            <p>Operator + motion combinations are the foundation of efficient Vim editing.</p>
+            <p>Master the basics: d/c/y + w/e/$/}/"/(/[/{ for powerful text manipulation.</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,309 @@
+# Operator + Motion Practice Configuration
+# Practice combining operators (d, c, y) with motions (w, b, e, f, t, /, ?, etc.)
+# Use this file to practice: dw, cw, yw, df), ct", y/pattern, d'a, etc.
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: operator-motion-practice
+  namespace: training
+data:
+  # Database configuration section for motion practice
+  database_config: |
+    primary_host: postgres-primary.database.svc.cluster.local
+    primary_port: 5432
+    primary_database: production_db
+    primary_username: application_user
+    primary_password: secure_password_123
+    primary_max_connections: 100
+    primary_timeout: 30s
+
+    replica_host: postgres-replica.database.svc.cluster.local
+    replica_port: 5432
+    replica_database: production_db
+    replica_username: readonly_user
+    replica_password: readonly_password_456
+    replica_max_connections: 50
+    replica_timeout: 15s
+
+    connection_pool_min: 5
+    connection_pool_max: 20
+    connection_pool_idle_timeout: 10m
+    connection_pool_max_lifetime: 1h
+
+  # API Gateway settings for word motion practice
+  api_gateway_config: |
+    listen_port: 8080
+    listen_host: 0.0.0.0
+    server_name: api.company.com
+    ssl_certificate: /etc/ssl/certs/server.crt
+    ssl_private_key: /etc/ssl/private/server.key
+    ssl_protocols: [TLSv1.2, TLSv1.3]
+    ssl_ciphers: ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256
+
+    upstream_servers:
+      - server: backend-1.services.local:8080 weight=3
+      - server: backend-2.services.local:8080 weight=2
+      - server: backend-3.services.local:8080 weight=1
+
+    health_check_path: /health
+    health_check_interval: 30s
+    health_check_timeout: 5s
+    health_check_retries: 3
+
+    rate_limiting:
+      requests_per_second: 1000
+      burst_size: 100
+      delay_threshold: 80%
+
+  # Logging configuration for line-based motions
+  logging_config: |
+    log_level: info
+    log_format: json
+    log_output: stdout
+    log_file: /var/log/application.log
+    log_rotation: daily
+    log_retention: 30d
+    log_max_size: 100MB
+
+    structured_logging: true
+    include_caller: true
+    include_timestamp: true
+    include_level: true
+    include_message: true
+
+    correlation_id_header: X-Correlation-ID
+    request_id_header: X-Request-ID
+    trace_id_header: X-Trace-ID
+    span_id_header: X-Span-ID
+
+  # Message queue configuration for search motion practice
+  message_queue_config: |
+    broker_type: rabbitmq
+    broker_host: rabbitmq.messaging.svc.cluster.local
+    broker_port: 5672
+    broker_username: app_user
+    broker_password: message_queue_password
+    broker_virtual_host: /production
+
+    exchange_name: application_exchange
+    exchange_type: topic
+    exchange_durable: true
+    exchange_auto_delete: false
+
+    queue_configurations:
+      - name: user_events_queue
+        routing_key: user.events.*
+        durable: true
+        exclusive: false
+        auto_delete: false
+        arguments:
+          x-message-ttl: 3600000
+          x-max-length: 10000
+
+      - name: order_events_queue
+        routing_key: order.events.*
+        durable: true
+        exclusive: false
+        auto_delete: false
+        arguments:
+          x-message-ttl: 7200000
+          x-max-length: 5000
+
+      - name: payment_events_queue
+        routing_key: payment.events.*
+        durable: true
+        exclusive: false
+        auto_delete: false
+        arguments:
+          x-message-ttl: 1800000
+          x-max-length: 20000
+
+  # Monitoring configuration for bracket motion practice
+  monitoring_config: |
+    metrics:
+      enabled: true
+      endpoint: /metrics
+      port: 9090
+      path: /prometheus/metrics
+      interval: 15s
+      timeout: 10s
+
+      custom_metrics:
+        - name: http_requests_total
+          type: counter
+          help: "Total number of HTTP requests"
+          labels: [method, status, endpoint]
+
+        - name: http_request_duration_seconds
+          type: histogram
+          help: "HTTP request duration in seconds"
+          labels: [method, endpoint]
+          buckets: [0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0]
+
+        - name: database_connections_active
+          type: gauge
+          help: "Number of active database connections"
+          labels: [database, pool]
+
+    alerting:
+      enabled: true
+      webhook_url: https://hooks.slack.com/services/T123/B456/xyz789
+
+      rules:
+        - name: high_error_rate
+          condition: "rate(http_requests_total{status=~'5..'}[5m]) > 0.1"
+          duration: 2m
+          severity: critical
+          message: "High error rate detected: {{ $value }}"
+
+        - name: high_response_time
+          condition: "histogram_quantile(0.95, http_request_duration_seconds) > 2"
+          duration: 5m
+          severity: warning
+          message: "High response time: {{ $value }}s"
+
+        - name: database_connection_exhaustion
+          condition: "database_connections_active / database_connections_max > 0.9"
+          duration: 1m
+          severity: critical
+          message: "Database connection pool nearly exhausted"
+
+  # Security configuration for quote motion practice
+  security_config: |
+    authentication:
+      jwt:
+        issuer: "https://auth.company.com"
+        audience: "api.company.com"
+        algorithm: "RS256"
+        public_key_url: "https://auth.company.com/.well-known/jwks.json"
+        token_validation:
+          verify_signature: true
+          verify_issuer: true
+          verify_audience: true
+          verify_expiration: true
+          clock_skew_seconds: 30
+
+      oauth2:
+        authorization_endpoint: "https://auth.company.com/oauth2/authorize"
+        token_endpoint: "https://auth.company.com/oauth2/token"
+        userinfo_endpoint: "https://auth.company.com/oauth2/userinfo"
+        client_id: "api-gateway-client"
+        client_secret: "oauth2-client-secret-xyz"
+        scopes: ["read", "write", "admin"]
+
+    authorization:
+      rbac:
+        enabled: true
+        policies:
+          - name: "admin-policy"
+            subjects: ["group:administrators"]
+            resources: ["*"]
+            actions: ["*"]
+
+          - name: "developer-policy"
+            subjects: ["group:developers"]
+            resources: ["deployments", "services", "configmaps"]
+            actions: ["get", "list", "create", "update"]
+
+          - name: "viewer-policy"
+            subjects: ["group:viewers"]
+            resources: ["*"]
+            actions: ["get", "list"]
+
+    network_security:
+      tls:
+        min_version: "1.2"
+        cipher_suites:
+          - "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"
+          - "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
+          - "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305"
+
+      cors:
+        allowed_origins:
+          - "https://app.company.com"
+          - "https://admin.company.com"
+        allowed_methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+        allowed_headers: ["Authorization", "Content-Type", "X-Requested-With"]
+        exposed_headers: ["X-Total-Count", "X-Page-Count"]
+        max_age_seconds: 3600
+        allow_credentials: true
+
+  # Caching configuration for mark motion practice
+  caching_config: |
+    redis:
+      cluster_mode: true
+      nodes:
+        - host: redis-0.cache.svc.cluster.local
+          port: 6379
+        - host: redis-1.cache.svc.cluster.local
+          port: 6379
+        - host: redis-2.cache.svc.cluster.local
+          port: 6379
+
+      connection_pool:
+        max_connections: 100
+        min_connections: 10
+        connection_timeout: 5s
+        read_timeout: 3s
+        write_timeout: 3s
+
+      cache_policies:
+        - name: "user_sessions"
+          key_pattern: "session:*"
+          ttl_seconds: 3600
+          max_memory_policy: "allkeys-lru"
+
+        - name: "api_responses"
+          key_pattern: "api:response:*"
+          ttl_seconds: 300
+          max_memory_policy: "volatile-lru"
+
+        - name: "database_queries"
+          key_pattern: "db:query:*"
+          ttl_seconds: 600
+          max_memory_policy: "allkeys-lfu"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: practice-app
+  labels:
+    app: practice-application
+    version: v1.0.0
+    environment: development
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: practice-application
+  template:
+    metadata:
+      labels:
+        app: practice-application
+        version: v1.0.0
+    spec:
+      containers:
+        - name: main-container
+          image: nginx:1.21.0
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          env:
+            - name: DATABASE_HOST
+              value: "postgres.database.svc.cluster.local"
+            - name: DATABASE_PORT
+              value: "5432"
+            - name: REDIS_HOST
+              value: "redis.cache.svc.cluster.local"
+            - name: REDIS_PORT
+              value: "6379"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"

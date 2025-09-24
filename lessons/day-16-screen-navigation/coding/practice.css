@@ -1,0 +1,493 @@
+/* Day 16 - Screen Navigation Practice CSS */
+/* Long document styling for screen navigation practice */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.8;
+    color: #2c3e50;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+}
+
+.page-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: white;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    min-height: 100vh;
+}
+
+/* Header for top-of-screen navigation practice */
+.top-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 60px 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.top-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="white" opacity="0.1"/><circle cx="80" cy="40" r="1" fill="white" opacity="0.1"/><circle cx="40" cy="80" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.3;
+}
+
+.header-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.top-header h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.top-header p {
+    font-size: 1.4rem;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+.header-navigation {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.header-navigation a {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 25px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.header-navigation a:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+}
+
+/* Main content for screen navigation practice */
+.main-content {
+    padding: 60px 40px;
+    background: white;
+}
+
+.content-section {
+    margin-bottom: 80px;
+    padding: 40px;
+    background: #fafafa;
+    border-radius: 12px;
+    border-left: 6px solid #3498db;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+.content-section::before {
+    content: attr(id);
+    position: absolute;
+    top: -15px;
+    left: 30px;
+    background: #3498db;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.content-section h2 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid #e74c3c;
+    position: relative;
+}
+
+.content-section h2::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: #3498db;
+}
+
+.content-section p {
+    font-size: 1.2rem;
+    margin-bottom: 25px;
+    text-align: justify;
+    line-height: 1.9;
+}
+
+.content-section p:last-of-type {
+    margin-bottom: 0;
+}
+
+/* Code examples for screen positioning practice */
+.code-example {
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 30px;
+    border-radius: 8px;
+    margin: 30px 0;
+    border-left: 5px solid #e74c3c;
+}
+
+.code-example h3 {
+    color: #f39c12;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.code-example pre {
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    line-height: 1.6;
+    overflow-x: auto;
+}
+
+.code-example code {
+    color: #1abc9c;
+}
+
+/* Special content boxes for navigation landmarks */
+.tip-box {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin: 35px 0;
+    box-shadow: 0 8px 25px rgba(240, 147, 251, 0.3);
+}
+
+.tip-box h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.workflow-example {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    padding: 30px;
+    border-radius: 12px;
+    margin: 35px 0;
+    border: 2px solid #d63384;
+}
+
+.workflow-example h3 {
+    color: #495057;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.workflow-example ol {
+    color: #495057;
+    padding-left: 20px;
+}
+
+.workflow-example li {
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.performance-tips {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    padding: 30px;
+    border-radius: 12px;
+    margin: 35px 0;
+    border-left: 5px solid #fd7e14;
+}
+
+.performance-tips h3 {
+    color: #495057;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.performance-tips ul {
+    color: #495057;
+    padding-left: 20px;
+}
+
+.performance-tips li {
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.troubleshooting-guide {
+    background: #f8f9fa;
+    border: 2px solid #6c757d;
+    border-radius: 12px;
+    padding: 30px;
+    margin: 35px 0;
+}
+
+.troubleshooting-guide h3 {
+    color: #495057;
+    margin-bottom: 25px;
+    font-size: 1.4rem;
+}
+
+.troubleshooting-guide dl {
+    color: #495057;
+}
+
+.troubleshooting-guide dt {
+    font-weight: bold;
+    margin-bottom: 8px;
+    margin-top: 20px;
+    color: #dc3545;
+}
+
+.troubleshooting-guide dt:first-child {
+    margin-top: 0;
+}
+
+.troubleshooting-guide dd {
+    margin-left: 20px;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.integration-examples {
+    background: linear-gradient(135deg, #e3ffe7 0%, #d9e7ff 100%);
+    padding: 30px;
+    border-radius: 12px;
+    margin: 35px 0;
+    border-left: 5px solid #198754;
+}
+
+.integration-examples h3 {
+    color: #495057;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.integration-examples p {
+    color: #495057;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+.integration-examples strong {
+    color: #198754;
+}
+
+.practice-routine {
+    background: linear-gradient(135deg, #ffd3a5 0%, #fd9853 100%);
+    padding: 30px;
+    border-radius: 12px;
+    margin: 35px 0;
+    border: 2px solid #fd7e14;
+}
+
+.practice-routine h3 {
+    color: #495057;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.practice-routine ol {
+    color: #495057;
+    padding-left: 20px;
+}
+
+.practice-routine li {
+    margin-bottom: 15px;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+.practice-routine strong {
+    color: #dc3545;
+}
+
+.advanced-scenarios {
+    background: #f1f3f4;
+    border: 2px solid #9c27b0;
+    border-radius: 12px;
+    padding: 30px;
+    margin: 35px 0;
+}
+
+.advanced-scenarios h3 {
+    color: #9c27b0;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.advanced-scenarios ul {
+    color: #495057;
+    padding-left: 20px;
+}
+
+.advanced-scenarios li {
+    margin-bottom: 12px;
+    line-height: 1.6;
+}
+
+.advanced-scenarios strong {
+    color: #9c27b0;
+}
+
+.customization-options {
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 30px;
+    border-radius: 12px;
+    margin: 35px 0;
+    border-left: 5px solid #f39c12;
+}
+
+.customization-options h3 {
+    color: #f39c12;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.customization-options pre {
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 8px;
+    color: #1abc9c;
+}
+
+.mastery-indicators {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin: 35px 0;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.mastery-indicators h3 {
+    color: white;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.mastery-indicators ul {
+    padding-left: 20px;
+}
+
+.mastery-indicators li {
+    margin-bottom: 12px;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+/* Footer for bottom-of-screen navigation practice */
+.bottom-footer {
+    background: linear-gradient(135deg, #2c3e50 0%, #4a6741 100%);
+    color: white;
+    padding: 50px 40px;
+    text-align: center;
+}
+
+.footer-content p {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.footer-content p:last-child {
+    margin-bottom: 0;
+    font-weight: bold;
+    color: #f39c12;
+}
+
+/* Responsive design for different screen sizes */
+@media (max-width: 1200px) {
+    .page-container {
+        max-width: 100%;
+    }
+
+    .main-content,
+    .top-header,
+    .bottom-footer {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .top-header h1 {
+        font-size: 2.5rem;
+    }
+
+    .top-header p {
+        font-size: 1.2rem;
+    }
+
+    .header-navigation {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .content-section {
+        padding: 20px;
+        margin-bottom: 40px;
+    }
+
+    .content-section h2 {
+        font-size: 2rem;
+    }
+
+    .content-section p {
+        font-size: 1.1rem;
+    }
+
+    .main-content {
+        padding: 30px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .top-header {
+        padding: 40px 15px;
+    }
+
+    .top-header h1 {
+        font-size: 2rem;
+    }
+
+    .main-content {
+        padding: 20px 15px;
+    }
+
+    .content-section {
+        padding: 15px;
+    }
+
+    .content-section h2 {
+        font-size: 1.8rem;
+    }
+}

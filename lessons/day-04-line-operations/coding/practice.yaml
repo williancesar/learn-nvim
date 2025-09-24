@@ -1,0 +1,332 @@
+# Day 04 - Line Operations Practice
+# Objectives:
+# - Practice line numbers - use ':set number' to show line numbers
+# - Use 'gg' to go to first line, 'G' to go to last line
+# - Practice ':<number>' to jump to specific lines (e.g., ':25')
+# - Use '+' and '-' to move by lines relative to cursor
+# - Practice line operations on numbered sections
+# Tips: Focus on quick line navigation - numbered sections make great targets
+
+comprehensive_server_configuration:
+
+  # ========== SECTION 1: BASIC SETTINGS ==========
+  section_1_basic_settings:
+    server_name: production-api-server
+    version: 2.1.4
+    environment: production
+    region: us-east-1
+    availability_zone: us-east-1a
+    instance_type: c5.2xlarge
+    operating_system: Ubuntu 22.04 LTS
+    kernel_version: 5.15.0-73-generic
+    architecture: x86_64
+    cpu_cores: 8
+    memory_gb: 16
+    storage_gb: 500
+    network_interface: eth0
+    public_ip: 203.0.113.42
+    private_ip: 10.0.1.42
+    hostname: api-prod-01.company.com
+
+  # ========== SECTION 2: NETWORK CONFIGURATION ==========
+  section_2_network_configuration:
+    listen_ports:
+      - 80
+      - 443
+      - 8080
+      - 8443
+    ssl_configuration:
+      enabled: true
+      certificate_path: /etc/ssl/certs/server.crt
+      private_key_path: /etc/ssl/private/server.key
+      cipher_suites:
+        - TLS_AES_256_GCM_SHA384
+        - TLS_CHACHA20_POLY1305_SHA256
+        - TLS_AES_128_GCM_SHA256
+      protocols:
+        - TLSv1.2
+        - TLSv1.3
+      hsts_enabled: true
+      hsts_max_age: 31536000
+      certificate_authority: Let's Encrypt
+      auto_renewal: true
+      renewal_days_before_expiry: 30
+
+    firewall_rules:
+      ingress:
+        - port: 22
+          protocol: tcp
+          source: 10.0.0.0/8
+          description: SSH from internal network
+        - port: 80
+          protocol: tcp
+          source: 0.0.0.0/0
+          description: HTTP from anywhere
+        - port: 443
+          protocol: tcp
+          source: 0.0.0.0/0
+          description: HTTPS from anywhere
+        - port: 8080
+          protocol: tcp
+          source: 10.0.0.0/8
+          description: Internal API
+        - port: 9090
+          protocol: tcp
+          source: 10.0.1.0/24
+          description: Monitoring
+
+      egress:
+        - port: 53
+          protocol: udp
+          destination: 0.0.0.0/0
+          description: DNS
+        - port: 80
+          protocol: tcp
+          destination: 0.0.0.0/0
+          description: HTTP outbound
+        - port: 443
+          protocol: tcp
+          destination: 0.0.0.0/0
+          description: HTTPS outbound
+        - port: 5432
+          protocol: tcp
+          destination: 10.0.2.0/24
+          description: PostgreSQL
+
+  # ========== SECTION 3: APPLICATION SETTINGS ==========
+  section_3_application_settings:
+    runtime_environment: Node.js v18.17.0
+    process_manager: PM2
+    worker_processes: 4
+    max_memory_per_worker: 1GB
+    restart_policy: on-failure
+    max_restarts: 5
+    min_uptime: 10s
+
+    environment_variables:
+      NODE_ENV: production
+      PORT: "3000"
+      DATABASE_URL: postgresql://api_user:secure_password@db.internal:5432/api_production
+      REDIS_URL: redis://redis.internal:6379/0
+      JWT_SECRET: "${JWT_SECRET_FROM_VAULT}"
+      API_KEY_ENCRYPTION: "${API_ENCRYPTION_KEY}"
+      LOG_LEVEL: info
+      METRICS_ENABLED: "true"
+      SENTRY_DSN: "${SENTRY_DSN_PRODUCTION}"
+      NEW_RELIC_LICENSE_KEY: "${NEW_RELIC_KEY}"
+
+    startup_scripts:
+      - /opt/app/scripts/pre-start.sh
+      - /opt/app/scripts/migrate-database.sh
+      - /opt/app/scripts/warm-cache.sh
+
+    health_check:
+      endpoint: /health
+      interval: 30
+      timeout: 5
+      retries: 3
+      start_period: 60
+
+  # ========== SECTION 4: DATABASE CONNECTIONS ==========
+  section_4_database_connections:
+    primary_database:
+      type: postgresql
+      version: "14.8"
+      host: db-primary.internal
+      port: 5432
+      database: api_production
+      username: api_user
+      password: "${DB_PASSWORD_VAULT}"
+      ssl_mode: require
+
+      connection_pool:
+        min_connections: 5
+        max_connections: 25
+        idle_timeout: 10m
+        max_lifetime: 1h
+        health_check_period: 1m
+
+      backup_schedule: "0 2 * * *"
+      retention_policy: 30 days
+
+    read_replicas:
+      - name: replica-1
+        host: db-replica-1.internal
+        weight: 0.5
+        lag_threshold: 5s
+      - name: replica-2
+        host: db-replica-2.internal
+        weight: 0.5
+        lag_threshold: 5s
+
+    cache_layer:
+      type: redis
+      version: 7.0.11
+      host: redis-cluster.internal
+      port: 6379
+      database: 0
+      password: "${REDIS_PASSWORD_VAULT}"
+      cluster_mode: true
+      sentinel_enabled: false
+      max_memory: 2GB
+      eviction_policy: allkeys-lru
+      persistence: rdb
+      snapshot_schedule: save 900 1 300 10 60 10000
+
+  # ========== SECTION 5: MONITORING AND LOGGING ==========
+  section_5_monitoring_and_logging:
+    log_configuration:
+      level: info
+      format: json
+      timestamp: true
+      caller_info: true
+      stack_traces: true
+
+      output_destinations:
+        - type: file
+          path: /var/log/app/application.log
+          rotate: true
+        - type: syslog
+          facility: local0
+          tag: api-server
+        - type: elasticsearch
+          hosts:
+            - es-1.internal:9200
+            - es-2.internal:9200
+
+      log_rotation:
+        max_size: 100MB
+        max_files: 10
+        compress: true
+        daily_rotation: true
+
+    metrics_collection:
+      prometheus:
+        enabled: true
+        port: 9090
+        path: /metrics
+        scrape_interval: 15s
+        retention: 15d
+
+      custom_metrics:
+        - name: api_requests_total
+          type: counter
+          labels:
+            - method
+            - endpoint
+            - status
+        - name: api_request_duration
+          type: histogram
+          buckets:
+            - 0.1
+            - 0.5
+            - 1.0
+            - 2.5
+            - 5.0
+            - 10.0
+        - name: database_connections_active
+          type: gauge
+        - name: cache_hit_ratio
+          type: gauge
+        - name: worker_memory_usage
+          type: gauge
+          labels:
+            - worker_id
+
+    alerting_rules:
+      - name: high_error_rate
+        condition: error_rate > 0.05
+        duration: 5m
+        severity: critical
+      - name: high_latency
+        condition: p95_latency > 2s
+        duration: 5m
+        severity: warning
+      - name: low_disk_space
+        condition: disk_usage > 0.85
+        duration: 10m
+        severity: warning
+      - name: database_connection_exhaustion
+        condition: db_connections > 20
+        duration: 2m
+        severity: critical
+
+  # ========== SECTION 6: SECURITY CONFIGURATION ==========
+  section_6_security_configuration:
+    authentication:
+      jwt_settings:
+        algorithm: HS256
+        expiration: 24h
+        refresh_token_expiration: 7d
+        issuer: api.company.com
+        audience: company-clients
+
+      password_policy:
+        min_length: 12
+        require_uppercase: true
+        require_lowercase: true
+        require_numbers: true
+        require_special_chars: true
+        max_age_days: 90
+        lockout_attempts: 5
+        lockout_duration: 15m
+
+    authorization:
+      rbac_enabled: true
+      roles:
+        - name: admin
+          permissions:
+            - "*"
+        - name: user
+          permissions:
+            - read:profile
+            - write:profile
+        - name: api_client
+          permissions:
+            - read:data
+            - write:data
+
+      session_management:
+        timeout: 30m
+        concurrent_sessions: 3
+        secure_cookies: true
+        same_site: strict
+
+    rate_limiting:
+      global_limit: 1000 requests per hour
+      per_user_limit: 100 requests per minute
+      per_ip_limit: 500 requests per hour
+      burst_allowance: 20
+      rate_limit_headers: true
+
+  # ========== SECTION 7: BACKUP AND DISASTER RECOVERY ==========
+  section_7_backup_and_disaster_recovery:
+    backup_strategy:
+      database_backups:
+        full_backup_schedule: "0 1 * * 0"
+        incremental_backup_schedule: "0 1 * * 1-6"
+        retention_full: 12 weeks
+        retention_incremental: 4 weeks
+        backup_location: s3://company-backups/database/
+        encryption: AES-256
+        compression: gzip
+
+      application_backups:
+        config_backup_schedule: "0 2 * * *"
+        logs_backup_schedule: "0 3 * * *"
+        retention: 30 days
+        backup_location: s3://company-backups/application/
+
+    disaster_recovery:
+      rto: 4 hours
+      rpo: 1 hour
+      failover_procedures:
+        - Activate standby database
+        - Update DNS records
+        - Scale up backup infrastructure
+        - Notify stakeholders
+
+      backup_site:
+        region: us-west-2
+        availability_zone: us-west-2b
+        infrastructure: hot-standby

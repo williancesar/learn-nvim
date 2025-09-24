@@ -1,0 +1,252 @@
+{
+  "comprehensive_review_practice": {
+    "navigation_targets": {
+      "section_a_database_configuration": {
+        "primary_database": {
+          "host": "postgres-primary.database.cluster.local",
+          "port": 5432,
+          "database": "enterprise_production",
+          "username": "application_user",
+          "password": "secure_database_password_with_special_chars_123!@#",
+          "connection_pool": {
+            "min_connections": 5,
+            "max_connections": 100,
+            "idle_timeout": "600s",
+            "max_lifetime": "3600s",
+            "health_check_period": "30s"
+          },
+          "ssl_configuration": {
+            "mode": "require",
+            "ca_file": "/etc/ssl/certs/ca-certificate.pem",
+            "cert_file": "/etc/ssl/certs/client-certificate.pem",
+            "key_file": "/etc/ssl/private/client-private-key.pem"
+          }
+        },
+        "read_replicas": [
+          {
+            "id": "replica-001",
+            "host": "postgres-replica-1.database.cluster.local",
+            "port": 5432,
+            "lag_threshold": "10MB",
+            "max_connections": 50,
+            "read_only": true
+          },
+          {
+            "id": "replica-002",
+            "host": "postgres-replica-2.database.cluster.local",
+            "port": 5432,
+            "lag_threshold": "10MB",
+            "max_connections": 50,
+            "read_only": true
+          }
+        ]
+      },
+      "section_b_cache_configuration": {
+        "redis_cluster": {
+          "master_nodes": [
+            {
+              "node_id": "master-001",
+              "host": "redis-master-1.cache.cluster.local",
+              "port": 6379,
+              "password": "redis_master_password_456",
+              "max_memory": "2GB",
+              "eviction_policy": "allkeys-lru"
+            },
+            {
+              "node_id": "master-002",
+              "host": "redis-master-2.cache.cluster.local",
+              "port": 6379,
+              "password": "redis_master_password_456",
+              "max_memory": "2GB",
+              "eviction_policy": "allkeys-lru"
+            }
+          ],
+          "slave_nodes": [
+            {
+              "node_id": "slave-001",
+              "host": "redis-slave-1.cache.cluster.local",
+              "port": 6379,
+              "master": "redis-master-1.cache.cluster.local:6379"
+            },
+            {
+              "node_id": "slave-002",
+              "host": "redis-slave-2.cache.cluster.local",
+              "port": 6379,
+              "master": "redis-master-2.cache.cluster.local:6379"
+            }
+          ]
+        }
+      }
+    },
+    "search_patterns_practice": {
+      "email_addresses": [
+        "admin@company.com",
+        "developer@team.org",
+        "user@example.net",
+        "support@help.io",
+        "contact@business.co"
+      ],
+      "ip_addresses": [
+        "192.168.1.100",
+        "10.0.0.50",
+        "172.16.0.25",
+        "203.0.113.10",
+        "198.51.100.20"
+      ],
+      "version_numbers": [
+        "v1.2.3",
+        "2.0.0",
+        "v3.14.159",
+        "1.0.0-alpha.1",
+        "2.1.0-beta.3"
+      ],
+      "urls": [
+        "https://api.company.com/v1/users",
+        "http://localhost:3000/health",
+        "ftp://files.example.org/uploads",
+        "ws://websocket.service.com:8080"
+      ]
+    },
+    "text_objects_practice": {
+      "kubernetes_resources": {
+        "deployments": ["frontend-deployment", "backend-deployment", "database-deployment"],
+        "services": ["frontend-service", "backend-service", "database-service"],
+        "configmaps": ["app-config", "nginx-config", "database-config"],
+        "secrets": ["api-secrets", "database-secrets", "ssl-certificates"]
+      },
+      "nested_structures": {
+        "api_configuration": {
+          "endpoints": {
+            "users": {
+              "get": "/api/v1/users",
+              "post": "/api/v1/users",
+              "put": "/api/v1/users/{id}",
+              "delete": "/api/v1/users/{id}"
+            },
+            "orders": {
+              "get": "/api/v1/orders",
+              "post": "/api/v1/orders",
+              "patch": "/api/v1/orders/{id}"
+            }
+          }
+        }
+      }
+    },
+    "visual_block_practice": {
+      "server_table": [
+        "name        ip              port    status    version",
+        "web-01      192.168.1.100   80      active    nginx-1.21",
+        "web-02      192.168.1.101   80      active    nginx-1.21",
+        "api-01      192.168.2.100   8080    active    node-18.15",
+        "api-02      192.168.2.101   8080    active    node-18.15",
+        "db-01       192.168.3.100   5432    active    postgres-15"
+      ],
+      "resource_allocation": [
+        "component    cpu     memory    disk     replicas",
+        "frontend     250m    512Mi     10Gi     3",
+        "backend      500m    1Gi       20Gi     5",
+        "database     1000m   2Gi       100Gi    2",
+        "cache        250m    256Mi     5Gi      2"
+      ]
+    },
+    "indentation_practice": {
+      "poorly_formatted_config": {
+"web_server": {
+"nginx": {
+"version": "1.21.0",
+"worker_processes": 4,
+"worker_connections": 1024,
+"locations": [
+{
+"path": "/",
+"proxy_pass": "http://backend",
+"headers": {
+"Host": "$host",
+"X-Real-IP": "$remote_addr"
+}
+},
+{
+"path": "/api/",
+"proxy_pass": "http://api-backend/"
+}
+]
+}
+}
+    },
+    "long_lines_practice": {
+      "database_url": "postgresql://production_user:very_secure_password_with_special_characters@postgres-cluster.database.svc.cluster.local:5432/enterprise_production_database?sslmode=require&connect_timeout=30&application_name=microservice-api&pool_min_conns=10&pool_max_conns=50&pool_max_conn_lifetime=3600&statement_timeout=60000&lock_timeout=30000",
+      "api_endpoint": "GET /api/v2/analytics/reports?start_date=2024-01-01T00:00:00Z&end_date=2024-12-31T23:59:59Z&granularity=daily&metrics=revenue,orders,customers&dimensions=product_category,region&filters[status]=active&group_by=month&having=revenue>10000&order_by=revenue_desc&limit=1000&format=json",
+      "docker_command": "docker run --detach --name enterprise-app --restart unless-stopped --network app-network --env-file .env.production --volume /var/log/app:/app/logs --volume /etc/ssl:/app/ssl:ro --publish 8080:8080 --memory 4g --cpus 2.0 --health-cmd 'curl -f http://localhost:8080/health || exit 1' --health-interval 30s enterprise/app:v2.1.0"
+    },
+    "marks_and_jumps_practice": {
+      "important_sections": {
+        "section_mark_a": {
+          "description": "Database configuration section - set mark 'a' here",
+          "content": "Primary database settings and connection pooling configuration"
+        },
+        "section_mark_b": {
+          "description": "API Gateway configuration section - set mark 'b' here",
+          "content": "Load balancer, upstream services, and routing rules"
+        },
+        "section_mark_c": {
+          "description": "Monitoring configuration section - set mark 'c' here",
+          "content": "Prometheus, Grafana, and alerting configuration"
+        },
+        "section_mark_d": {
+          "description": "Security configuration section - set mark 'd' here",
+          "content": "Authentication, authorization, and encryption settings"
+        }
+      }
+    },
+    "operator_motion_combinations": {
+      "deletion_practice": [
+        "Delete this entire word using dw",
+        "Delete from cursor to end of line using D or d$",
+        "Delete inside quotes using di\"",
+        "Delete around parentheses using da)",
+        "Delete to next occurrence of 'x' using dfx"
+      ],
+      "change_practice": [
+        "Change this word using cw",
+        "Change inside brackets using ci[",
+        "Change around curly braces using ca{",
+        "Change to end of line using C or c$",
+        "Change until next comma using ct,"
+      ],
+      "yank_practice": [
+        "Yank this word using yw",
+        "Yank inside quotes using yi'",
+        "Yank around parentheses using ya)",
+        "Yank to mark 'a' using y'a",
+        "Yank search pattern using y/pattern"
+      ]
+    },
+    "complex_editing_scenarios": {
+      "multi_line_editing": [
+        "Line 1: server-01  192.168.1.100  active   nginx",
+        "Line 2: server-02  192.168.1.101  active   nginx",
+        "Line 3: server-03  192.168.1.102  inactive apache",
+        "Line 4: server-04  192.168.1.103  active   nginx",
+        "Line 5: server-05  192.168.1.104  active   nginx"
+      ],
+      "configuration_blocks": {
+        "before_refactoring": "host=localhost port=3000 user=admin password=secret ssl=false timeout=30",
+        "after_refactoring": {
+          "host": "localhost",
+          "port": 3000,
+          "user": "admin",
+          "password": "secret",
+          "ssl": false,
+          "timeout": 30
+        }
+      }
+    },
+    "review_challenges": {
+      "challenge_1": "Navigate to line 50, set mark 'z', search for 'password', change the word inside quotes, return to mark 'z'",
+      "challenge_2": "Use visual block mode to select the IP address column, change all IPs to start with 10.0.0.x",
+      "challenge_3": "Find all email addresses, use operator+motion to delete everything after the @ symbol",
+      "challenge_4": "Join multiple configuration lines, then format the long line by breaking it appropriately",
+      "challenge_5": "Fix indentation in the nested JSON structure using = command on the entire block"
+    }
+  }
+}

@@ -1,0 +1,214 @@
+/* Day 15 - Paragraph Motion Practice CSS */
+/* Clear section boundaries for paragraph motion practice */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header section with clear boundaries */
+.main-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 40px 0;
+    text-align: center;
+    margin-bottom: 40px;
+    border-radius: 8px;
+}
+
+.main-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 300;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.main-nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.main-nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Content wrapper with clear section divisions */
+.content-wrapper {
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 40px;
+}
+
+/* Section styling with paragraph boundaries */
+section {
+    margin-bottom: 60px;
+    padding-bottom: 40px;
+    border-bottom: 2px solid #eee;
+}
+
+section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+section h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #3498db;
+}
+
+/* Paragraph styling for clear motion boundaries */
+p {
+    margin-bottom: 20px;
+    text-align: justify;
+    font-size: 1.1rem;
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+/* Feature grid with distinct sections */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.feature-item {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+}
+
+.feature-item h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+/* Tutorial articles with clear paragraph separation */
+.tutorial-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 30px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.tutorial-item h3 {
+    color: #e74c3c;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+/* Advanced techniques section */
+.technique-list h3 {
+    color: #8e44ad;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.technique-list h3:first-child {
+    margin-top: 0;
+}
+
+/* Tips section with clear list boundaries */
+.tips-list {
+    background: #e8f5e8;
+    padding: 25px;
+    border-radius: 8px;
+    margin: 25px 0;
+    border-left: 5px solid #27ae60;
+}
+
+.tips-list li {
+    margin-bottom: 10px;
+    padding-left: 10px;
+    list-style-position: inside;
+}
+
+/* Contact section styling */
+.contact-info h3 {
+    color: #f39c12;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.contact-info h3:first-child {
+    margin-top: 0;
+}
+
+/* Footer with clear boundaries */
+.main-footer {
+    background: #34495e;
+    color: white;
+    text-align: center;
+    padding: 30px;
+    border-radius: 8px;
+    margin-top: 40px;
+}
+
+.main-footer p {
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.main-footer p:last-child {
+    margin-bottom: 0;
+    font-weight: bold;
+    color: #3498db;
+}
+
+/* Responsive design for different screen sizes */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .content-wrapper {
+        padding: 20px;
+    }
+
+    .main-header h1 {
+        font-size: 2rem;
+    }
+
+    .main-nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+}

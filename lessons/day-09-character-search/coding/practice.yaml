@@ -1,0 +1,747 @@
+# Container Orchestration Configuration - Designed for f/F/t/T character search practice
+# Multi-cluster service mesh deployment with advanced networking
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: istio-system-config
+  namespace: istio-system
+  labels:
+    app.kubernetes.io/name: istio
+    app.kubernetes.io/version: "1.19.0"
+    app.kubernetes.io/component: pilot
+  annotations:
+    config.istio.io/checksum: "sha256:a1b2c3d4e5f6"
+    kubernetes.io/description: "Istio service mesh configuration"
+data:
+  mesh: |
+    defaultConfig:
+      discoveryRefreshDelay: 10s
+      proxyStatsMatcher:
+        inclusionRegexps:
+        - ".*circuit_breakers.*"
+        - ".*upstream_rq_retry.*"
+        - ".*_cx_.*"
+        exclusionRegexps:
+        - ".*osconfig.*"
+    defaultProviders:
+      metrics:
+      - prometheus
+      tracing:
+      - jaeger
+      accessLogging:
+      - envoy
+    extensionProviders:
+    - name: prometheus
+      prometheus:
+        service: prometheus.monitoring.svc.cluster.local
+        port: 9090
+    - name: jaeger
+      envoyOtelAls:
+        service: jaeger-collector.monitoring.svc.cluster.local
+        port: 14250
+    - name: envoy
+      envoyFileAccessLog:
+        path: "/dev/stdout"
+        format: |
+          [%START_TIME%] "%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%"
+          %RESPONSE_CODE% %RESPONSE_FLAGS% %BYTES_RECEIVED% %BYTES_SENT%
+          %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% "%REQ(X-FORWARDED-FOR)%"
+          "%REQ(USER-AGENT)%" "%REQ(X-REQUEST-ID)%" "%REQ(:AUTHORITY)%" "%UPSTREAM_HOST%"
+    trustDomain: cluster.local
+    certificates:
+    - secretName: cacerts
+      dnsNames:
+      - istio-ca-secret.istio-system.svc.cluster.local
+  meshNetworks: |
+    networks:
+      network1:
+        endpoints:
+        - fromRegistry: cluster1
+        gateways:
+        - registryServiceName: istio-eastwestgateway.istio-system.svc.cluster.local
+          port: 15021
+      network2:
+        endpoints:
+        - fromRegistry: cluster2
+        gateways:
+        - registryServiceName: istio-eastwestgateway.istio-system.svc.cluster.local
+          port: 15021
+---
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+metadata:
+  name: control-plane
+  namespace: istio-system
+spec:
+  values:
+    global:
+      meshID: mesh1
+      multiCluster:
+        clusterName: cluster1
+      network: network1
+      pilot:
+        env:
+          EXTERNAL_ISTIOD: false
+          PILOT_ENABLE_CROSS_CLUSTER_WORKLOAD_ENTRY: true
+          PILOT_ENABLE_WORKLOAD_ENTRY_AUTOREGISTRATION: true
+      proxy:
+        privileged: false
+        enableCoreDump: false
+        statusPort: 15020
+        readinessInitialDelaySeconds: 1
+        readinessPeriodSeconds: 2
+        readinessFailureThreshold: 30
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 2000m
+            memory: 1024Mi
+  components:
+    pilot:
+      k8s:
+        env:
+        - name: PILOT_TRACE_SAMPLING
+          value: "1.0"
+        - name: PILOT_ENABLE_ALPHA_GATEWAY_API
+          value: "true"
+        - name: PILOT_ENABLE_STATUS
+          value: "true"
+        resources:
+          requests:
+            cpu: 500m
+            memory: 2048Mi
+          limits:
+            cpu: 2000m
+            memory: 4096Mi
+        hpaSpec:
+          maxReplicas: 10
+          minReplicas: 3
+          scaleTargetRef:
+            apiVersion: apps/v1
+            kind: Deployment
+            name: istiod
+          metrics:
+          - type: Resource
+            resource:
+              name: cpu
+              target:
+                type: Utilization
+                averageUtilization: 80
+    ingressGateways:
+    - name: istio-ingressgateway
+      enabled: true
+      k8s:
+        service:
+          type: LoadBalancer
+          loadBalancerIP: "10.0.0.100"
+          ports:
+          - port: 15021
+            targetPort: 15021
+            name: status-port
+            protocol: TCP
+          - port: 80
+            targetPort: 8080
+            name: http2
+            protocol: TCP
+          - port: 443
+            targetPort: 8443
+            name: https
+            protocol: TCP
+          - port: 31400
+            targetPort: 31400
+            name: tcp
+            protocol: TCP
+          - port: 15443
+            targetPort: 15443
+            name: tls
+            protocol: TCP
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 2000m
+            memory: 1024Mi
+        hpaSpec:
+          maxReplicas: 20
+          minReplicas: 5
+          scaleTargetRef:
+            apiVersion: apps/v1
+            kind: Deployment
+            name: istio-ingressgateway
+          metrics:
+          - type: Resource
+            resource:
+              name: cpu
+              target:
+                type: Utilization
+                averageUtilization: 80
+          - type: Resource
+            resource:
+              name: memory
+              target:
+                type: Utilization
+                averageUtilization: 80
+    - name: istio-eastwestgateway
+      enabled: true
+      label:
+        istio: eastwestgateway
+        app: istio-eastwestgateway
+      k8s:
+        service:
+          type: LoadBalancer
+          loadBalancerIP: "10.0.0.101"
+          ports:
+          - port: 15021
+            targetPort: 15021
+            name: status-port
+            protocol: TCP
+          - port: 15020
+            targetPort: 15020
+            name: health-check
+            protocol: TCP
+          - port: 15443
+            targetPort: 15443
+            name: tls
+            protocol: TCP
+    egressGateways:
+    - name: istio-egressgateway
+      enabled: true
+      k8s:
+        service:
+          type: ClusterIP
+          ports:
+          - port: 80
+            targetPort: 8080
+            name: http2
+            protocol: TCP
+          - port: 443
+            targetPort: 8443
+            name: https
+            protocol: TCP
+          - port: 15443
+            targetPort: 15443
+            name: tls
+            protocol: TCP
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 2000m
+            memory: 1024Mi
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: microservices-gateway
+  namespace: microservices
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "api.example.com"
+    - "dashboard.example.com"
+    - "monitoring.example.com"
+    tls:
+      httpsRedirect: true
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - "api.example.com"
+    - "dashboard.example.com"
+    - "monitoring.example.com"
+    tls:
+      mode: SIMPLE
+      credentialName: microservices-tls-secret
+  - port:
+      number: 31400
+      name: tcp-echo
+      protocol: TCP
+    hosts:
+    - "*"
+  - port:
+      number: 15443
+      name: tls-passthrough
+      protocol: TLS
+    hosts:
+    - "secure.example.com"
+    tls:
+      mode: PASSTHROUGH
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: microservices-routing
+  namespace: microservices
+spec:
+  hosts:
+  - "api.example.com"
+  - "dashboard.example.com"
+  gateways:
+  - microservices-gateway
+  http:
+  - match:
+    - uri:
+        prefix: "/api/v1/users"
+    - headers:
+        x-api-version:
+          exact: "v1"
+    route:
+    - destination:
+        host: user-service.microservices.svc.cluster.local
+        port:
+          number: 8080
+      weight: 90
+    - destination:
+        host: user-service-v2.microservices.svc.cluster.local
+        port:
+          number: 8080
+      weight: 10
+    fault:
+      delay:
+        percentage:
+          value: 0.1
+        fixedDelay: 5s
+      abort:
+        percentage:
+          value: 0.01
+        httpStatus: 500
+    retries:
+      attempts: 3
+      perTryTimeout: 2s
+      retryOn: gateway-error,connect-failure,refused-stream
+    timeout: 10s
+  - match:
+    - uri:
+        prefix: "/api/v1/orders"
+    headers:
+      request:
+        set:
+          x-service-name: "order-service"
+        add:
+          x-request-id: "req-%{RANDOM_ID}%"
+      response:
+        set:
+          x-response-time: "%DURATION%"
+        remove:
+        - x-internal-header
+    route:
+    - destination:
+        host: order-service.microservices.svc.cluster.local
+        port:
+          number: 8080
+    corsPolicy:
+      allowOrigins:
+      - exact: "https://dashboard.example.com"
+      - regex: "https://.*\\.example\\.com"
+      allowMethods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+      allowHeaders:
+      - "authorization"
+      - "content-type"
+      - "x-requested-with"
+      exposeHeaders:
+      - "x-request-id"
+      - "x-response-time"
+      maxAge: "24h"
+      allowCredentials: true
+  - match:
+    - uri:
+        prefix: "/api/v1/payments"
+    route:
+    - destination:
+        host: payment-service.microservices.svc.cluster.local
+        port:
+          number: 8080
+    mirror:
+      host: payment-audit-service.microservices.svc.cluster.local
+      port:
+        number: 8080
+    mirrorPercentage:
+      value: 100.0
+  - match:
+    - uri:
+        prefix: "/dashboard"
+    route:
+    - destination:
+        host: frontend-service.microservices.svc.cluster.local
+        port:
+          number: 3000
+  - match:
+    - uri:
+        prefix: "/monitoring"
+    route:
+    - destination:
+        host: grafana.monitoring.svc.cluster.local
+        port:
+          number: 3000
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: microservices-destinations
+  namespace: microservices
+spec:
+  host: "*.microservices.svc.cluster.local"
+  trafficPolicy:
+    tls:
+      mode: ISTIO_MUTUAL
+    connectionPool:
+      tcp:
+        maxConnections: 100
+        connectTimeout: 30s
+        keepAlive:
+          time: 7200s
+          interval: 75s
+          probes: 9
+      http:
+        http1MaxPendingRequests: 100
+        http2MaxRequests: 1000
+        maxRequestsPerConnection: 2
+        maxRetries: 3
+        consecutiveGatewayErrors: 5
+        interval: 30s
+        baseEjectionTime: 30s
+        maxEjectionPercent: 50
+        minHealthPercent: 50
+        splitExternalLocalOriginErrors: false
+    circuitBreaker:
+      consecutiveGatewayErrors: 5
+      consecutive5xxErrors: 5
+      interval: 30s
+      baseEjectionTime: 30s
+      maxEjectionPercent: 50
+      minHealthPercent: 50
+    outlierDetection:
+      consecutiveGatewayErrors: 5
+      consecutive5xxErrors: 5
+      interval: 30s
+      baseEjectionTime: 30s
+      maxEjectionPercent: 50
+      minHealthPercent: 50
+  portLevelSettings:
+  - port:
+      number: 8080
+    connectionPool:
+      tcp:
+        maxConnections: 50
+        connectTimeout: 10s
+      http:
+        http1MaxPendingRequests: 50
+        maxRequestsPerConnection: 1
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+    trafficPolicy:
+      connectionPool:
+        tcp:
+          maxConnections: 20
+  - name: v2
+    labels:
+      version: v2
+    trafficPolicy:
+      connectionPool:
+        tcp:
+          maxConnections: 10
+  - name: canary
+    labels:
+      track: canary
+    trafficPolicy:
+      connectionPool:
+        tcp:
+          maxConnections: 5
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: microservices-mtls
+  namespace: microservices
+spec:
+  mtls:
+    mode: STRICT
+  portLevelMtls:
+    8080:
+      mode: STRICT
+    9090:
+      mode: PERMISSIVE
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: microservices-authz
+  namespace: microservices
+spec:
+  selector:
+    matchLabels:
+      app: user-service
+  rules:
+  - from:
+    - source:
+        principals:
+        - "cluster.local/ns/microservices/sa/api-gateway"
+        - "cluster.local/ns/microservices/sa/order-service"
+    - source:
+        namespaces:
+        - "monitoring"
+        - "istio-system"
+    to:
+    - operation:
+        methods:
+        - "GET"
+        - "POST"
+        paths:
+        - "/api/v1/users/*"
+    - operation:
+        methods:
+        - "GET"
+        paths:
+        - "/health"
+        - "/metrics"
+  - from:
+    - source:
+        requestPrincipals:
+        - "https://accounts.google.com/*"
+        - "https://login.microsoftonline.com/*"
+    to:
+    - operation:
+        methods:
+        - "GET"
+        - "POST"
+        - "PUT"
+        - "DELETE"
+    when:
+    - key: custom.jwt_claim
+      values:
+      - "admin"
+      - "user"
+    - key: request.headers[x-api-key]
+      values:
+      - "valid-api-key-123"
+      - "valid-api-key-456"
+  - to:
+    - operation:
+        methods:
+        - "GET"
+        paths:
+        - "/health"
+        - "/ready"
+---
+apiVersion: telemetry.istio.io/v1alpha1
+kind: Telemetry
+metadata:
+  name: microservices-metrics
+  namespace: microservices
+spec:
+  metrics:
+  - providers:
+    - name: prometheus
+  - overrides:
+    - match:
+        metric: ALL_METRICS
+      tagOverrides:
+        request_protocol:
+          operation: UPSERT
+          value: "%{REQUEST_PROTOCOL}"
+        response_code:
+          operation: UPSERT
+          value: "%{RESPONSE_CODE}"
+        source_app:
+          operation: UPSERT
+          value: "%{SOURCE_APP}"
+        destination_service_name:
+          operation: UPSERT
+          value: "%{DESTINATION_SERVICE_NAME}"
+    - match:
+        metric: requests_total
+      disabled: false
+    - match:
+        metric: request_duration_milliseconds
+      disabled: false
+    - match:
+        metric: request_bytes
+      disabled: false
+    - match:
+        metric: response_bytes
+      disabled: false
+  - providers:
+    - name: jaeger
+  tracing:
+  - providers:
+    - name: jaeger
+  accessLogging:
+  - providers:
+    - name: envoy
+---
+apiVersion: v1
+kind: ServiceEntry
+metadata:
+  name: external-apis
+  namespace: microservices
+spec:
+  hosts:
+  - api.stripe.com
+  - api.paypal.com
+  - smtp.sendgrid.net
+  - api.twilio.com
+  ports:
+  - number: 443
+    name: https
+    protocol: HTTPS
+  - number: 587
+    name: smtp-tls
+    protocol: TCP
+  location: MESH_EXTERNAL
+  resolution: DNS
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Sidecar
+metadata:
+  name: microservices-sidecar
+  namespace: microservices
+spec:
+  workloadSelector:
+    labels:
+      app: user-service
+  ingress:
+  - port:
+      number: 8080
+      protocol: HTTP
+      name: http
+    defaultEndpoint: 127.0.0.1:8080
+    captureMode: IPTABLES
+  - port:
+      number: 9090
+      protocol: HTTP
+      name: metrics
+    defaultEndpoint: 127.0.0.1:9090
+    captureMode: IPTABLES
+  egress:
+  - hosts:
+    - "./*"
+    - "istio-system/*"
+    - "monitoring/*"
+  - port:
+      number: 443
+      protocol: HTTPS
+      name: https
+    hosts:
+    - "api.stripe.com"
+    - "api.paypal.com"
+  - port:
+      number: 587
+      protocol: TCP
+      name: smtp
+    hosts:
+    - "smtp.sendgrid.net"
+  outboundTrafficPolicy:
+    mode: REGISTRY_ONLY
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: rate-limit-filter
+  namespace: microservices
+spec:
+  workloadSelector:
+    labels:
+      app: user-service
+  configPatches:
+  - applyTo: HTTP_FILTER
+    match:
+      context: SIDECAR_INBOUND
+      listener:
+        filterChain:
+          filter:
+            name: "envoy.filters.network.http_connection_manager"
+    patch:
+      operation: INSERT_BEFORE
+      value:
+        name: envoy.filters.http.local_ratelimit
+        typed_config:
+          "@type": type.googleapis.com/udpa.type.v1.TypedStruct
+          type_url: type.googleapis.com/envoy.extensions.filters.http.local_ratelimit.v3.LocalRateLimit
+          value:
+            stat_prefix: http_local_rate_limiter
+            token_bucket:
+              max_tokens: 1000
+              tokens_per_fill: 1000
+              fill_interval: 60s
+            filter_enabled:
+              runtime_key: local_rate_limit_enabled
+              default_value:
+                numerator: 100
+                denominator: HUNDRED
+            filter_enforced:
+              runtime_key: local_rate_limit_enforced
+              default_value:
+                numerator: 100
+                denominator: HUNDRED
+            response_headers_to_add:
+            - append: false
+              header:
+                key: x-local-rate-limit
+                value: 'true'
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: WasmPlugin
+metadata:
+  name: custom-headers
+  namespace: microservices
+spec:
+  selector:
+    matchLabels:
+      app: user-service
+  url: oci://gcr.io/istio-testing/wasm/header-injector:latest
+  phase: AUTHN
+  pluginConfig:
+    headers:
+    - name: x-service-mesh
+      value: istio
+    - name: x-cluster-name
+      value: production
+    - name: x-timestamp
+      value: "%{TIMESTAMP}"
+  pluginName: header-injector
+---
+apiVersion: v1
+kind: ServiceMonitor
+metadata:
+  name: istio-proxy-metrics
+  namespace: monitoring
+  labels:
+    app: istio-proxy
+spec:
+  selector:
+    matchLabels:
+      app: istio-proxy
+  endpoints:
+  - port: http-monitoring
+    path: /stats/prometheus
+    interval: 30s
+    relabelings:
+    - sourceLabels: [__meta_kubernetes_pod_name]
+      targetLabel: pod_name
+    - sourceLabels: [__meta_kubernetes_namespace]
+      targetLabel: namespace
+    - sourceLabels: [__meta_kubernetes_service_name]
+      targetLabel: service_name
+  namespaceSelector:
+    matchNames:
+    - microservices
+    - istio-system

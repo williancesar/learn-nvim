@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Motion Review - Day 28</title>
+    <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+    <div class="review-container">
+        <header class="main-header">
+            <h1>Comprehensive Motion Review</h1>
+            <p>Complete web application combining all motion and navigation techniques</p>
+        </header>
+
+        <nav class="site-navigation">
+            <ul class="nav-menu">
+                <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
+                <li><a href="#users" class="nav-link">Users</a></li>
+                <li><a href="#products" class="nav-link">Products</a></li>
+                <li><a href="#analytics" class="nav-link">Analytics</a></li>
+                <li><a href="#settings" class="nav-link">Settings</a></li>
+                <li><a href="#documentation" class="nav-link">Documentation</a></li>
+            </ul>
+        </nav>
+
+        <main class="app-content">
+            <!-- Dashboard Section - Practice paragraph motion -->
+            <section id="dashboard" class="app-section dashboard-section">
+                <h2>Application Dashboard</h2>
+                <p>Welcome to the comprehensive motion review application. This dashboard provides an overview of all features and functionality available in the system.</p>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card stats-card">
+                        <h3>System Statistics</h3>
+                        <div class="stats-data">
+                            <div class="stat-item">
+                                <span class="stat-label">Total Users:</span>
+                                <span class="stat-value">1,247</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Active Sessions:</span>
+                                <span class="stat-value">89</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Products Listed:</span>
+                                <span class="stat-value">3,456</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Revenue Today:</span>
+                                <span class="stat-value">$12,349</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card activity-card">
+                        <h3>Recent Activity</h3>
+                        <ul class="activity-list">
+                            <li>User john@example.com registered</li>
+                            <li>Product "Widget Pro" added to catalog</li>
+                            <li>Order #12345 shipped successfully</li>
+                            <li>System backup completed</li>
+                            <li>Security scan passed</li>
+                        </ul>
+                    </div>
+
+                    <div class="dashboard-card alerts-card">
+                        <h3>System Alerts</h3>
+                        <div class="alert-item warning">
+                            <strong>Warning:</strong> Server load is approaching 80%
+                        </div>
+                        <div class="alert-item info">
+                            <strong>Info:</strong> Scheduled maintenance in 24 hours
+                        </div>
+                        <div class="alert-item success">
+                            <strong>Success:</strong> All systems operational
+                        </div>
+                    </div>
+                </div>
+
+                <p>The dashboard provides real-time insights into system performance and user activity. Use paragraph motion commands ({}) to navigate between different dashboard sections efficiently.</p>
+            </section>
+
+            <!-- Users Section - Practice search patterns and line jumps -->
+            <section id="users" class="app-section users-section">
+                <h2>User Management</h2>
+                <p>Comprehensive user management interface with search functionality and detailed user profiles. Practice search patterns and line-based navigation in this section.</p>
+
+                <div class="search-interface">
+                    <h3>User Search</h3>
+                    <form class="search-form">
+                        <input type="text" placeholder="Search users by name, email, or role..." class="search-input">
+                        <button type="submit" class="search-button">Search</button>
+                    </form>
+                </div>
+
+                <table class="users-table data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>John Smith</td>
+                            <td>john.smith@company.com</td>
+                            <td>Administrator</td>
+                            <td>Active</td>
+                            <td>2024-01-20 09:15</td>
+                            <td><button class="action-btn">Edit</button></td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>Jane Doe</td>
+                            <td>jane.doe@company.com</td>
+                            <td>Manager</td>
+                            <td>Active</td>
+                            <td>2024-01-20 08:45</td>
+                            <td><button class="action-btn">Edit</button></td>
+                        </tr>
+                        <tr>
+                            <td>003</td>
+                            <td>Bob Wilson</td>
+                            <td>bob.wilson@company.com</td>
+                            <td>User</td>
+                            <td>Inactive</td>
+                            <td>2024-01-19 14:30</td>
+                            <td><button class="action-btn">Edit</button></td>
+                        </tr>
+                        <tr>
+                            <td>004</td>
+                            <td>Alice Brown</td>
+                            <td>alice.brown@company.com</td>
+                            <td>User</td>
+                            <td>Active</td>
+                            <td>2024-01-20 10:22</td>
+                            <td><button class="action-btn">Edit</button></td>
+                        </tr>
+                        <tr>
+                            <td>005</td>
+                            <td>Carol Davis</td>
+                            <td>carol.davis@company.com</td>
+                            <td>Manager</td>
+                            <td>Active</td>
+                            <td>2024-01-20 07:18</td>
+                            <td><button class="action-btn">Edit</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>Use search patterns (/) to find specific users, emails, or roles in the table above. Practice line jumping (42G, :50) to navigate to specific rows efficiently.</p>
+            </section>
+
+            <!-- Products Section - Practice text objects and visual operations -->
+            <section id="products" class="app-section products-section">
+                <h2>Product Catalog</h2>
+                <p>Complete product management system with categories, pricing, and inventory tracking. This section is ideal for practicing text objects and visual block operations.</p>
+
+                <div class="product-grid">
+                    <article class="product-card featured-product">
+                        <div class="product-image">
+                            <img src="/placeholder-image.jpg" alt="Featured Product">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Premium Widget Pro</h3>
+                            <p class="product-description">High-quality widget with advanced features and premium materials. Perfect for professional applications requiring reliability and performance.</p>
+                            <div class="product-pricing">
+                                <span class="original-price">$199.99</span>
+                                <span class="sale-price">$149.99</span>
+                                <span class="discount-badge">25% OFF</span>
+                            </div>
+                            <div class="product-meta">
+                                <span class="category">Electronics</span>
+                                <span class="stock-status in-stock">In Stock (47)</span>
+                                <span class="rating">★★★★☆ (4.2)</span>
+                            </div>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </article>
+
+                    <article class="product-card standard-product">
+                        <div class="product-image">
+                            <img src="/placeholder-image.jpg" alt="Standard Product">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Standard Widget</h3>
+                            <p class="product-description">Reliable widget for everyday use with standard features and good build quality. Suitable for most common applications.</p>
+                            <div class="product-pricing">
+                                <span class="regular-price">$79.99</span>
+                            </div>
+                            <div class="product-meta">
+                                <span class="category">Electronics</span>
+                                <span class="stock-status low-stock">Low Stock (3)</span>
+                                <span class="rating">★★★☆☆ (3.8)</span>
+                            </div>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </article>
+
+                    <article class="product-card budget-product">
+                        <div class="product-image">
+                            <img src="/placeholder-image.jpg" alt="Budget Product">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Budget Widget</h3>
+                            <p class="product-description">Affordable widget option with basic features. Good value for money for simple applications and budget-conscious customers.</p>
+                            <div class="product-pricing">
+                                <span class="regular-price">$29.99</span>
+                            </div>
+                            <div class="product-meta">
+                                <span class="category">Electronics</span>
+                                <span class="stock-status out-of-stock">Out of Stock</span>
+                                <span class="rating">★★☆☆☆ (2.9)</span>
+                            </div>
+                            <button class="add-to-cart-btn" disabled>Out of Stock</button>
+                        </div>
+                    </article>
+                </div>
+
+                <p>Practice text objects (diw, da", ci{) on product titles, descriptions, and pricing information. Use visual block mode (Ctrl+v) to select columns of data across multiple products.</p>
+            </section>
+
+            <!-- Analytics Section - Practice marks and indentation -->
+            <section id="analytics" class="app-section analytics-section">
+                <h2>Analytics Dashboard</h2>
+                <p>Advanced analytics and reporting interface with complex data structures. Practice setting marks for navigation and fixing indentation issues in data presentations.</p>
+
+                <div class="analytics-container">
+                    <div class="chart-section">
+                        <h3>Revenue Analytics</h3>
+                        <div class="chart-placeholder">
+                            <p>[Revenue Chart Placeholder]</p>
+                        </div>
+                        <div class="chart-data">
+                            <pre class="data-display">
+{
+  "revenue": {
+    "daily": [
+      {"date": "2024-01-01", "amount": 1250.00, "orders": 15},
+      {"date": "2024-01-02", "amount": 1890.50, "orders": 23},
+      {"date": "2024-01-03", "amount": 2100.75, "orders": 28},
+      {"date": "2024-01-04", "amount": 1750.25, "orders": 19},
+      {"date": "2024-01-05", "amount": 2350.00, "orders": 31}
+    ],
+    "monthly": {
+      "target": 50000.00,
+      "current": 45230.75,
+      "percentage": 90.46
+    }
+  }
+}
+            </pre>
+                        </div>
+                    </div>
+
+                    <div class="metrics-section">
+                        <h3>Key Performance Indicators</h3>
+                        <div class="kpi-grid">
+                            <div class="kpi-card">
+                                <h4>Conversion Rate</h4>
+                                <span class="kpi-value">3.24%</span>
+                                <span class="kpi-trend positive">↑ 0.8%</span>
+                            </div>
+                            <div class="kpi-card">
+                                <h4>Average Order Value</h4>
+                                <span class="kpi-value">$87.45</span>
+                                <span class="kpi-trend positive">↑ $12.30</span>
+                            </div>
+                            <div class="kpi-card">
+                                <h4>Customer Lifetime Value</h4>
+                                <span class="kpi-value">$342.18</span>
+                                <span class="kpi-trend negative">↓ $15.22</span>
+                            </div>
+                            <div class="kpi-card">
+                                <h4>Return Rate</h4>
+                                <span class="kpi-value">2.1%</span>
+                                <span class="kpi-trend positive">↓ 0.3%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p>Set marks (ma, mb, mc) at different analytics sections for quick navigation. Practice indentation commands (>>, <<, ==) on the JSON data structure above.</p>
+            </section>
+
+            <!-- Settings Section - Practice operator+motion combinations -->
+            <section id="settings" class="app-section settings-section">
+                <h2>System Configuration</h2>
+                <p>Comprehensive system settings and configuration options. Perfect for practicing operator+motion combinations with various text patterns and structures.</p>
+
+                <div class="settings-groups">
+                    <div class="settings-group">
+                        <h3>Database Configuration</h3>
+                        <form class="config-form">
+                            <div class="form-group">
+                                <label for="db-host">Database Host:</label>
+                                <input type="text" id="db-host" value="localhost" class="config-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="db-port">Database Port:</label>
+                                <input type="number" id="db-port" value="5432" class="config-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="db-name">Database Name:</label>
+                                <input type="text" id="db-name" value="production_db" class="config-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="db-user">Database User:</label>
+                                <input type="text" id="db-user" value="admin" class="config-input">
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="settings-group">
+                        <h3>Security Settings</h3>
+                        <div class="security-options">
+                            <div class="option-group">
+                                <h4>Authentication</h4>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" checked> Enable Two-Factor Authentication
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" checked> Require Strong Passwords
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox"> Enable Single Sign-On (SSO)
+                                </label>
+                            </div>
+                            <div class="option-group">
+                                <h4>Session Management</h4>
+                                <label class="setting-label">
+                                    Session Timeout: <input type="number" value="30" class="inline-input"> minutes
+                                </label>
+                                <label class="setting-label">
+                                    Max Concurrent Sessions: <input type="number" value="3" class="inline-input">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <h3>API Configuration</h3>
+                        <div class="api-settings">
+                            <textarea class="config-textarea" rows="10">
+{
+  "api": {
+    "base_url": "https://api.example.com/v1",
+    "timeout": 30000,
+    "retry_attempts": 3,
+    "rate_limit": {
+      "requests_per_minute": 1000,
+      "burst_limit": 50
+    },
+    "authentication": {
+      "type": "bearer_token",
+      "header": "Authorization",
+      "prefix": "Bearer "
+    },
+    "endpoints": {
+      "users": "/users",
+      "products": "/products",
+      "orders": "/orders",
+      "analytics": "/analytics"
+    }
+  }
+}
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <p>Practice operator+motion combinations: ciw (change word), da" (delete around quotes), yi{ (yank inside braces), c$ (change to end of line) on configuration values above.</p>
+            </section>
+
+            <!-- Documentation Section - Practice all techniques combined -->
+            <section id="documentation" class="app-section documentation-section">
+                <h2>Complete Documentation</h2>
+                <p>Comprehensive documentation section that combines all navigation and motion techniques learned throughout the course. This section serves as the final practice area.</p>
+
+                <div class="doc-navigation">
+                    <h3>Documentation Topics</h3>
+                    <ul class="doc-toc">
+                        <li><a href="#getting-started">Getting Started Guide</a></li>
+                        <li><a href="#user-management">User Management</a></li>
+                        <li><a href="#product-catalog">Product Catalog Management</a></li>
+                        <li><a href="#analytics-reporting">Analytics and Reporting</a></li>
+                        <li><a href="#api-reference">API Reference</a></li>
+                        <li><a href="#troubleshooting">Troubleshooting Guide</a></li>
+                    </ul>
+                </div>
+
+                <article id="getting-started" class="doc-article">
+                    <h3>Getting Started Guide</h3>
+                    <p>Welcome to the comprehensive motion review application. This guide will help you understand all the features and functionality available in the system.</p>
+
+                    <h4>Prerequisites</h4>
+                    <ul>
+                        <li>Basic understanding of web applications</li>
+                        <li>Familiarity with user interface concepts</li>
+                        <li>Access to the system with appropriate permissions</li>
+                    </ul>
+
+                    <h4>Initial Setup</h4>
+                    <ol>
+                        <li>Log in to the system using your credentials</li>
+                        <li>Configure your user preferences in the settings section</li>
+                        <li>Familiarize yourself with the dashboard interface</li>
+                        <li>Review the navigation menu and available sections</li>
+                    </ol>
+
+                    <div class="code-example">
+                        <h4>Configuration Example</h4>
+                        <pre><code>
+// User configuration object
+const userConfig = {
+  preferences: {
+    theme: "dark",
+    language: "en-US",
+    timezone: "America/New_York",
+    notifications: {
+      email: true,
+      push: false,
+      desktop: true
+    }
+  },
+  dashboard: {
+    layout: "grid",
+    widgets: ["stats", "activity", "alerts"],
+    refresh_interval: 30000
+  }
+};
+                        </code></pre>
+                    </div>
+                </article>
+
+                <article id="troubleshooting" class="doc-article">
+                    <h3>Troubleshooting Guide</h3>
+                    <p>Common issues and their solutions for the motion review application.</p>
+
+                    <div class="troubleshooting-section">
+                        <h4>Login Issues</h4>
+                        <div class="issue-solution">
+                            <p><strong>Problem:</strong> Cannot log in to the system</p>
+                            <p><strong>Solution:</strong></p>
+                            <ol>
+                                <li>Verify your username and password are correct</li>
+                                <li>Check if your account is active and not locked</li>
+                                <li>Clear your browser cache and cookies</li>
+                                <li>Try using an incognito/private browsing window</li>
+                                <li>Contact system administrator if issues persist</li>
+                            </ol>
+                        </div>
+
+                        <h4>Performance Issues</h4>
+                        <div class="issue-solution">
+                            <p><strong>Problem:</strong> Application is running slowly</p>
+                            <p><strong>Solution:</strong></p>
+                            <ul>
+                                <li>Check your internet connection speed</li>
+                                <li>Close unnecessary browser tabs and applications</li>
+                                <li>Update your browser to the latest version</li>
+                                <li>Disable browser extensions that might interfere</li>
+                                <li>Contact support if problems continue</li>
+                            </ul>
+                        </div>
+                    </div>
+                </article>
+
+                <p>This documentation section combines all motion techniques: paragraph motion ({}), search patterns (/), line jumps (:50), text objects (diw, da"), marks (ma), visual operations (Ctrl+v), operator+motion combinations (c$, y}), and more. Practice navigating through this complex document structure using all the skills you've learned.</p>
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Motion Review Complete</h4>
+                    <p>You have completed the comprehensive motion and navigation course. Continue practicing these techniques in your daily editing workflows.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Key Techniques Mastered</h4>
+                    <ul class="techniques-list">
+                        <li>Paragraph motion ({, })</li>
+                        <li>Screen navigation (Ctrl+f/b/d/u, H/M/L)</li>
+                        <li>Text objects (iw/aw, is/as, ip/ap, it/at)</li>
+                        <li>Quote/bracket objects (i"/a", i(/a(, i{/a{)</li>
+                        <li>Search patterns (/, ?, n, N, *)</li>
+                        <li>Line jumps (nG, :n, %)</li>
+                        <li>Marks (ma, 'a, `a)</li>
+                        <li>Visual operations (v, V, Ctrl+v)</li>
+                        <li>Operator+motion (d/c/y + motions)</li>
+                        <li>Join and format (J, gq)</li>
+                        <li>Indentation (>>, <<, ==)</li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

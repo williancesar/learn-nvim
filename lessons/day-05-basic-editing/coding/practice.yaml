@@ -1,0 +1,233 @@
+# Day 05 - Basic Editing Practice
+# Objectives:
+# - Use 'r' to replace single characters
+# - Use 'R' to enter REPLACE mode for multiple characters
+# - Practice 's' to substitute (delete character and enter INSERT mode)
+# - Use 'c' with motions (cw, c$, etc.) for change operations
+# - Complete incomplete configurations by filling in missing values
+# Editing Targets: Look for TODO, FIXME, and missing values throughout this file
+
+package:
+  name: express-api-server
+  version: TODO # Add version number
+  description: A RESTful API server built with Express.js
+  main: src/app.js
+  author:
+    name: FIXME # Add author name
+    email: TODO # Add email address
+  license: TODO # Choose license
+  repository:
+    type: git
+    url: FIXME # Add repository URL
+  keywords:
+    - express
+    - api
+    - TODO # Add more keywords
+    - FIXME # Replace placeholder
+
+scripts:
+  start: node src/app.js
+  dev: nodemon src/app.js
+  test: TODO # Add test command
+  lint: FIXME # Add linting command
+  build: TODO # Add build script
+  deploy: FIXME # Add deployment command
+  migrate: TODO # Add migration command
+  seed: FIXME # Add seeding script
+
+dependencies:
+  express: ^4.18.2
+  cors: TODO # Add version
+  helmet: FIXME # Add version
+  morgan: TODO # Add version
+  dotenv: ^16.0.3
+  bcryptjs: FIXME # Add version
+  jsonwebtoken: TODO # Add version
+  mongoose: ^7.0.3
+  validator: FIXME # Add version
+  compression: TODO # Add version
+
+devDependencies:
+  nodemon: ^2.0.22
+  jest: TODO # Add version
+  supertest: FIXME # Add version
+  eslint: TODO # Add version
+  prettier: FIXME # Add version
+
+engines:
+  node: TODO # Specify Node version
+  npm: FIXME # Specify npm version
+
+config:
+  database:
+    host: TODO # Add database host
+    port: FIXME # Add port number
+    name: TODO # Add database name
+    user: FIXME # Add username
+    password: TODO # Add password placeholder
+
+  server:
+    port: TODO # Add server port
+    host: FIXME # Add server host
+    environment: TODO # Add environment
+
+  jwt:
+    secret: TODO # Add JWT secret placeholder
+    expiration: FIXME # Add token expiration
+
+  cors:
+    origin: TODO # Add allowed origins
+    credentials: FIXME # Set credentials flag
+
+  rate_limiting:
+    window_ms: TODO # Add rate limit window
+    max_requests: FIXME # Add max requests
+
+api_endpoints:
+  authentication:
+    register:
+      method: POST
+      path: /api/auth/register
+      body:
+        username: TODO # Add validation rules
+        email: FIXME # Add email validation
+        password: TODO # Add password requirements
+      responses:
+        201: User created successfully
+        400: TODO # Add error message
+        409: FIXME # Add conflict message
+
+    login:
+      method: POST
+      path: /api/auth/login
+      body:
+        email: TODO # Add email field
+        password: FIXME # Add password field
+      responses:
+        200: Login successful
+        401: TODO # Add unauthorized message
+        422: FIXME # Add validation error
+
+  users:
+    get_profile:
+      method: GET
+      path: /api/users/profile
+      headers:
+        Authorization: TODO # Add bearer token format
+      responses:
+        200: Profile retrieved
+        401: FIXME # Add unauthorized message
+        404: TODO # Add not found message
+
+    update_profile:
+      method: PUT
+      path: /api/users/profile
+      headers:
+        Authorization: TODO # Add authorization header
+        Content-Type: FIXME # Add content type
+      body:
+        first_name: TODO # Add validation
+        last_name: FIXME # Add validation
+        bio: TODO # Add character limit
+
+  posts:
+    create_post:
+      method: POST
+      path: /api/posts
+      headers:
+        Authorization: TODO # Add auth header
+        Content-Type: FIXME # Set content type
+      body:
+        title: TODO # Add title validation
+        content: FIXME # Add content validation
+        tags: TODO # Add tags array
+      responses:
+        201: Post created
+        400: TODO # Add validation error
+        401: FIXME # Add auth error
+
+    get_posts:
+      method: GET
+      path: /api/posts
+      query_parameters:
+        page: TODO # Add pagination
+        limit: FIXME # Add limit validation
+        sort: TODO # Add sort options
+        filter: FIXME # Add filter options
+
+    update_post:
+      method: PUT
+      path: /api/posts/:id
+      parameters:
+        id: TODO # Add ID validation
+      body:
+        title: FIXME # Add title field
+        content: TODO # Add content field
+
+    delete_post:
+      method: DELETE
+      path: /api/posts/:id
+      parameters:
+        id: TODO # Add parameter validation
+      responses:
+        200: Post deleted
+        404: FIXME # Add not found error
+        403: TODO # Add forbidden error
+
+middleware:
+  authentication:
+    jwt_verify: TODO # Add JWT verification middleware
+    optional_auth: FIXME # Add optional auth middleware
+
+  validation:
+    user_validation: TODO # Add user validation rules
+    post_validation: FIXME # Add post validation rules
+
+  error_handling:
+    global_error_handler: TODO # Add error handler
+    not_found_handler: FIXME # Add 404 handler
+
+  security:
+    rate_limiter: TODO # Configure rate limiting
+    cors_config: FIXME # Configure CORS
+    helmet_config: TODO # Configure security headers
+
+database_schema:
+  users:
+    id: TODO # Add primary key definition
+    username: FIXME # Add unique constraint
+    email: TODO # Add email validation
+    password_hash: FIXME # Add hashing info
+    first_name: TODO # Add optional field
+    last_name: FIXME # Add optional field
+    bio: TODO # Add text field
+    created_at: FIXME # Add timestamp
+    updated_at: TODO # Add timestamp
+
+  posts:
+    id: TODO # Add primary key
+    user_id: FIXME # Add foreign key
+    title: TODO # Add title field
+    content: FIXME # Add content field
+    tags: TODO # Add tags array
+    published: FIXME # Add boolean field
+    created_at: TODO # Add timestamp
+    updated_at: FIXME # Add timestamp
+
+deployment:
+  docker:
+    image: TODO # Add Docker image name
+    port: FIXME # Add container port
+    environment: TODO # Add env variables
+
+  kubernetes:
+    namespace: TODO # Add namespace
+    replicas: FIXME # Add replica count
+    resources: TODO # Add resource limits
+
+  environment_variables:
+    NODE_ENV: TODO # Set environment
+    PORT: FIXME # Set port number
+    DB_URL: TODO # Set database URL
+    JWT_SECRET: FIXME # Set JWT secret
+    CORS_ORIGIN: TODO # Set CORS origin

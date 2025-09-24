@@ -1,0 +1,382 @@
+# Comprehensive Kubernetes Deployment Configuration
+# This YAML file contains extensive comments and documentation for practicing comment navigation
+# Use this file to practice advanced text object operations with comments and descriptions
+
+# =============================================================================
+# METADATA SECTION
+# =============================================================================
+# This section contains metadata about the deployment including versioning,
+# ownership information, and deployment specifications
+
+apiVersion: apps/v1  # API version for Kubernetes Deployment resource
+kind: Deployment     # Resource type - manages a replicated application
+metadata:
+  # Basic identification and labeling for the deployment
+  name: microservices-platform  # Unique name within the namespace
+  namespace: production         # Target namespace for deployment
+
+  # Labels provide key-value pairs for organizing and selecting resources
+  labels:
+    app: microservices-platform      # Application identifier
+    version: v3.2.1                  # Version tag for tracking releases
+    environment: production          # Environment designation
+    tier: backend                    # Application tier classification
+    team: platform-engineering      # Owning team for responsibility
+    cost-center: engineering         # Cost allocation for billing
+
+  # Annotations store additional metadata that tools and libraries can use
+  annotations:
+    # Deployment tracking and rollback information
+    deployment.kubernetes.io/revision: "5"
+    kubernetes.io/change-cause: "Updated to version 3.2.1 with security patches"
+
+    # Contact and ownership information for operational support
+    kubernetes.io/created-by: "platform-engineering-team"
+    kubernetes.io/managed-by: "argo-cd"
+
+    # Operational metadata for monitoring and alerting
+    prometheus.io/scrape: "true"              # Enable Prometheus scraping
+    prometheus.io/path: "/metrics"            # Metrics endpoint path
+    prometheus.io/port: "8080"               # Port for metrics collection
+
+    # Documentation and support links
+    documentation.company.com/runbook: "https://docs.company.com/runbooks/microservices-platform"
+    support.company.com/oncall: "platform-engineering"
+
+    # Change management and approval tracking
+    change-management.company.com/ticket: "CHG-12345"
+    change-management.company.com/approved-by: "john.doe@company.com"
+    change-management.company.com/approved-date: "2024-03-15T10:30:00Z"
+
+# =============================================================================
+# DEPLOYMENT SPECIFICATION
+# =============================================================================
+# This section defines the desired state of the deployment including replica
+# count, update strategy, and pod template specification
+
+spec:
+  # Replica management and scaling configuration
+  replicas: 5  # Number of pod instances to maintain
+
+  # Update strategy defines how rolling updates are performed
+  strategy:
+    type: RollingUpdate  # Gradually replace old pods with new ones
+    rollingUpdate:
+      # Maximum number of pods that can be unavailable during update
+      maxUnavailable: 1
+      # Maximum number of pods that can be created above desired replica count
+      maxSurge: 2
+
+  # Label selector to identify pods managed by this deployment
+  selector:
+    matchLabels:
+      app: microservices-platform
+      version: v3.2.1
+
+  # Pod template defines the configuration for each replica
+  template:
+    metadata:
+      # Labels applied to each pod instance
+      labels:
+        app: microservices-platform        # Application identifier
+        version: v3.2.1                   # Version for rolling updates
+        environment: production            # Environment designation
+        tier: backend                      # Application tier
+        security-scan: enabled             # Security scanning enabled
+
+      # Pod-level annotations for operational metadata
+      annotations:
+        # Monitoring and observability configuration
+        prometheus.io/scrape: "true"       # Enable metrics collection
+        prometheus.io/path: "/metrics"     # Metrics endpoint
+        prometheus.io/port: "8080"        # Metrics port
+
+        # Security and compliance annotations
+        security.company.com/scan-date: "2024-03-15"
+        security.company.com/vulnerability-scan: "passed"
+        compliance.company.com/pci-dss: "compliant"
+
+        # Operational metadata for troubleshooting
+        kubectl.kubernetes.io/last-applied-configuration: |
+          {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"name":"microservices-platform"}}
+
+    # Pod specification defining containers, volumes, and security context
+    spec:
+      # =======================================================================
+      # CONTAINER SPECIFICATIONS
+      # =======================================================================
+      # Define the containers that will run in each pod instance
+
+      containers:
+        # Main application container
+        - name: app-container
+          image: company/microservices-platform:v3.2.1  # Container image
+          imagePullPolicy: Always  # Always pull latest image version
+
+          # Container port configuration for service exposure
+          ports:
+            - containerPort: 8080
+              name: http          # Named port for service references
+              protocol: TCP       # Network protocol
+            - containerPort: 8081
+              name: admin         # Admin interface port
+              protocol: TCP
+            - containerPort: 9090
+              name: metrics       # Prometheus metrics port
+              protocol: TCP
+
+          # Environment variables for application configuration
+          env:
+            # Database connection configuration
+            - name: DATABASE_URL
+              value: "postgresql://user:password@postgres.db.svc.cluster.local:5432/maindb"
+
+            # Redis cache configuration for session storage
+            - name: REDIS_URL
+              value: "redis://redis-cluster.cache.svc.cluster.local:6379/0"
+
+            # Feature flags for A/B testing and gradual rollouts
+            - name: FEATURE_FLAGS
+              value: "experimental_ui=true,new_api=false,enhanced_logging=true"
+
+            # Logging configuration for structured output
+            - name: LOG_LEVEL
+              value: "info"          # Log level: debug, info, warn, error
+            - name: LOG_FORMAT
+              value: "json"          # Log format: json, text
+
+            # Performance and resource configuration
+            - name: MAX_CONNECTIONS
+              value: "100"           # Maximum database connections
+            - name: WORKER_PROCESSES
+              value: "4"             # Number of worker processes
+
+            # Security configuration
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets  # Kubernetes secret name
+                  key: jwt-secret    # Secret key
+
+            # API keys and external service configuration
+            - name: STRIPE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: payment-secrets
+                  key: stripe-api-key
+
+            # Monitoring and observability configuration
+            - name: JAEGER_ENDPOINT
+              value: "http://jaeger-collector.monitoring.svc.cluster.local:14268/api/traces"
+            - name: METRICS_ENABLED
+              value: "true"          # Enable metrics collection
+
+          # Volume mounts for persistent storage and configuration
+          volumeMounts:
+            # Application configuration files
+            - name: config-volume
+              mountPath: /etc/app/config    # Mount path in container
+              readOnly: true                # Read-only mount
+
+            # SSL certificates for secure communication
+            - name: ssl-certs
+              mountPath: /etc/ssl/certs     # Certificate mount path
+              readOnly: true
+
+            # Temporary storage for file uploads and processing
+            - name: temp-storage
+              mountPath: /tmp               # Temporary file storage
+
+            # Log output directory for log aggregation
+            - name: log-volume
+              mountPath: /var/log/app       # Application log directory
+
+          # Resource allocation and limits for the container
+          resources:
+            # Resource requests (guaranteed allocation)
+            requests:
+              memory: "512Mi"       # Minimum memory allocation
+              cpu: "250m"          # Minimum CPU allocation (0.25 cores)
+
+            # Resource limits (maximum allowed usage)
+            limits:
+              memory: "1Gi"        # Maximum memory usage
+              cpu: "500m"          # Maximum CPU usage (0.5 cores)
+
+          # Health check configuration for container lifecycle management
+          livenessProbe:
+            # HTTP health check to determine if container is alive
+            httpGet:
+              path: /health/live    # Health check endpoint
+              port: 8080           # Port for health check
+              scheme: HTTP         # Protocol scheme
+
+            # Timing configuration for health checks
+            initialDelaySeconds: 30   # Wait before first check
+            periodSeconds: 10         # Check interval
+            timeoutSeconds: 5         # Timeout for each check
+            failureThreshold: 3       # Failures before restart
+            successThreshold: 1       # Successes to be considered healthy
+
+          # Readiness probe to determine if container is ready to serve traffic
+          readinessProbe:
+            httpGet:
+              path: /health/ready   # Readiness check endpoint
+              port: 8080
+              scheme: HTTP
+
+            initialDelaySeconds: 5    # Shorter delay for readiness
+            periodSeconds: 5          # More frequent readiness checks
+            timeoutSeconds: 3
+            failureThreshold: 3
+            successThreshold: 1
+
+        # Sidecar container for log aggregation and forwarding
+        - name: log-forwarder
+          image: fluentd:v1.16.0-debian-1.0    # Log aggregation image
+
+          # Environment configuration for log forwarder
+          env:
+            - name: FLUENTD_CONF
+              value: "fluent.conf"              # Configuration file name
+
+            # Output destination for log forwarding
+            - name: LOG_DESTINATION
+              value: "elasticsearch.logging.svc.cluster.local:9200"
+
+            # Log parsing and formatting configuration
+            - name: LOG_FORMAT
+              value: "json"                     # Expected log format
+            - name: LOG_LEVEL
+              value: "info"                     # Forwarder log level
+
+          # Volume mounts for accessing application logs
+          volumeMounts:
+            - name: log-volume
+              mountPath: /var/log/app           # Application log directory
+              readOnly: true                    # Read-only access to logs
+
+            - name: fluentd-config
+              mountPath: /fluentd/etc           # Fluentd configuration
+              readOnly: true
+
+          # Resource allocation for log forwarder
+          resources:
+            requests:
+              memory: "128Mi"       # Minimal memory for log processing
+              cpu: "100m"          # Minimal CPU for log forwarding
+            limits:
+              memory: "256Mi"      # Maximum memory for log buffering
+              cpu: "200m"          # Maximum CPU for log processing
+
+      # =======================================================================
+      # VOLUME CONFIGURATION
+      # =======================================================================
+      # Define volumes that can be mounted by containers in the pod
+
+      volumes:
+        # Configuration volume from ConfigMap
+        - name: config-volume
+          configMap:
+            name: app-config              # ConfigMap name
+            defaultMode: 0644             # File permissions
+            items:
+              - key: app.yaml             # ConfigMap key
+                path: application.yaml    # File name in volume
+              - key: database.yaml
+                path: database.yaml
+
+        # SSL certificate volume from Secret
+        - name: ssl-certs
+          secret:
+            secretName: ssl-certificates  # Secret containing certificates
+            defaultMode: 0600             # Secure file permissions
+
+        # Temporary storage volume
+        - name: temp-storage
+          emptyDir:
+            sizeLimit: "1Gi"             # Maximum size for temp storage
+
+        # Log volume for sharing between containers
+        - name: log-volume
+          emptyDir:
+            sizeLimit: "500Mi"           # Log storage limit
+
+        # Fluentd configuration volume
+        - name: fluentd-config
+          configMap:
+            name: fluentd-config         # Fluentd configuration
+
+      # =======================================================================
+      # SECURITY AND SCHEDULING CONFIGURATION
+      # =======================================================================
+      # Define security context and pod scheduling preferences
+
+      # Service account for pod authentication
+      serviceAccountName: microservices-platform    # Service account name
+
+      # Security context for the entire pod
+      securityContext:
+        # Run as non-root user for security
+        runAsNonRoot: true              # Prevent root execution
+        runAsUser: 1000                 # Specific user ID
+        runAsGroup: 3000                # Specific group ID
+        fsGroup: 2000                   # File system group
+
+        # Security capabilities and restrictions
+        seccompProfile:
+          type: RuntimeDefault          # Use default seccomp profile
+
+        # Prevent privilege escalation
+        allowPrivilegeEscalation: false
+
+      # Node selection and affinity rules for pod placement
+      nodeSelector:
+        # Require nodes with specific labels
+        kubernetes.io/arch: amd64       # AMD64 architecture requirement
+        node-type: general-purpose      # General purpose node type
+
+      # Advanced scheduling rules for high availability
+      affinity:
+        # Pod anti-affinity to spread replicas across nodes
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values: ["microservices-platform"]
+                topologyKey: kubernetes.io/hostname
+
+        # Node affinity for zone distribution
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 50
+              preference:
+                matchExpressions:
+                  - key: topology.kubernetes.io/zone
+                    operator: In
+                    values: ["us-west-2a", "us-west-2b", "us-west-2c"]
+
+      # Tolerations for node taints
+      tolerations:
+        # Tolerate temporary node conditions
+        - key: node.kubernetes.io/not-ready
+          operator: Exists
+          effect: NoExecute
+          tolerationSeconds: 300        # Tolerate for 5 minutes
+
+        - key: node.kubernetes.io/unreachable
+          operator: Exists
+          effect: NoExecute
+          tolerationSeconds: 300
+
+      # DNS configuration for service discovery
+      dnsPolicy: ClusterFirst          # Use cluster DNS
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "2"                  # DNS search optimization
+          - name: edns0               # Enable DNS extensions

@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+    Advanced Text Objects Practice File
+    Day 19: Comments and Advanced Structures
+    Practice with comment text objects, custom delimiters, and complex patterns
+-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Text Objects - Day 19</title>
+    <!-- Link to external stylesheet for advanced text object practice -->
+    <link rel="stylesheet" href="practice.css">
+    <!--
+        Additional meta tags for practice:
+        - SEO optimization
+        - Social media sharing
+        - Advanced configurations
+    -->
+    <meta name="description" content="Advanced text objects practice including comments, custom delimiters, and complex structures">
+    <meta name="keywords" content="vim, text objects, advanced editing, comments, delimiters">
+    <meta name="author" content="Vim Learning Platform">
+
+    <!-- Open Graph meta tags for social sharing -->
+    <meta property="og:title" content="Advanced Text Objects Practice">
+    <meta property="og:description" content="Master advanced text object manipulation in Vim">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://example.com/day-19">
+
+    <!-- Twitter Card meta tags -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Advanced Text Objects Practice">
+    <meta name="twitter:description" content="Master advanced text object manipulation in Vim">
+</head>
+<body>
+    <!-- Main container for the practice content -->
+    <div class="container">
+        <!--
+            Primary header section
+            Contains navigation and title information
+            Practice deleting entire comment blocks with text objects
+        -->
+        <header class="main-header">
+            <div class="header-content">
+                <h1>Advanced Text Objects Mastery</h1>
+                <p>Comments, Custom Delimiters, and Complex Structure Navigation</p>
+
+                <!-- Navigation menu with multiple levels -->
+                <nav class="primary-navigation" role="navigation" aria-label="Main navigation">
+                    <ul class="nav-list">
+                        <li><a href="#comments">Comment Objects</a></li>
+                        <li><a href="#custom-delimiters">Custom Delimiters</a></li>
+                        <li><a href="#complex-structures">Complex Structures</a></li>
+                        <li><a href="#practice-exercises">Practice Exercises</a></li>
+                        <!-- Dropdown submenu for advanced topics -->
+                        <li class="dropdown">
+                            <a href="#advanced" aria-haspopup="true" aria-expanded="false">Advanced Topics</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#regex-patterns">Regex Patterns</a></li>
+                                <li><a href="#macro-integration">Macro Integration</a></li>
+                                <li><a href="#plugin-extensions">Plugin Extensions</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main content area with complex nested structures -->
+        <main class="content-wrapper" role="main">
+            <!--
+                Section 1: Understanding Advanced Text Objects
+
+                This section covers advanced text object concepts that go beyond
+                the basic word, sentence, and paragraph objects. We'll explore
+                comment-aware text objects, custom delimiter patterns, and
+                complex nested structures.
+
+                Key topics covered:
+                - Comment text objects and manipulation
+                - Custom delimiter recognition
+                - Advanced pattern matching
+                - Integration with other Vim features
+            -->
+            <section id="comments" class="content-section">
+                <h2>Comment Text Objects and Manipulation</h2>
+                <p><!-- Inline comment for practice --> Advanced text object usage includes working with comments as discrete units. While Vim doesn't have built-in comment text objects, understanding how to work with comment blocks is essential for efficient code editing.</p>
+
+                <!--
+                    Multi-line comment block for practice
+
+                    This comment spans multiple lines and contains various
+                    types of content that can be manipulated using text objects.
+
+                    Try using paragraph motions and search patterns to navigate
+                    comment blocks efficiently.
+                -->
+
+                <div class="comment-examples">
+                    <h3>HTML Comment Patterns</h3>
+                    <!-- Single line comment with specific content -->
+                    <p>HTML comments use &lt;!-- and --&gt; delimiters. <!-- This is an inline comment --> These can be manipulated using search and replace patterns combined with text object operations.</p>
+
+                    <!--
+                        Complex comment block with nested content:
+
+                        <div class="example">
+                            <p>Commented out HTML code</p>
+                            <span>Multiple elements</span>
+                        </div>
+
+                        Practice selecting and manipulating this entire comment block.
+                    -->
+
+                    <div class="code-block">
+                        <pre><code>/*
+ * CSS-style comment block
+ * Multiple lines with consistent formatting
+ * Each line prefixed with asterisk
+ *
+ * Practice navigating and editing these
+ * structured comment patterns
+ */</code></pre>
+
+                        <pre><code>/**
+ * JSDoc-style documentation comment
+ * @param {string} name - The user's name
+ * @param {number} age - The user's age
+ * @param {Object} options - Configuration options
+ * @param {boolean} options.verbose - Enable verbose output
+ * @param {string} options.format - Output format ('json'|'xml'|'text')
+ * @returns {Promise&lt;User&gt;} The created user object
+ * @throws {ValidationError} When input parameters are invalid
+ * @example
+ * const user = await createUser('John', 30, {
+ *   verbose: true,
+ *   format: 'json'
+ * });
+ */</code></pre>
+                    </div>
+
+                    <!-- TODO: Add more comment examples for different languages -->
+                    <!-- FIXME: Review comment formatting consistency -->
+                    <!-- NOTE: Consider adding syntax highlighting for comments -->
+                    <!-- WARNING: Large comment blocks may affect performance -->
+
+                    <div class="language-comments">
+                        <h4>Multi-Language Comment Examples</h4>
+                        <!-- Python-style comments -->
+                        <pre><code># Python single-line comment
+"""
+Python multi-line string/docstring
+Used for documentation and long comments
+Supports markdown formatting and examples
+
+Args:
+    param1 (str): Description of param1
+    param2 (int): Description of param2
+
+Returns:
+    bool: Description of return value
+"""</code></pre>
+
+                        <!-- JavaScript comments -->
+                        <pre><code>// JavaScript single-line comment
+/* JavaScript block comment */
+/*
+ * Multi-line JavaScript comment
+ * with consistent formatting
+ */</code></pre>
+
+                        <!-- Shell script comments -->
+                        <pre><code># Shell script comment
+: '
+Multi-line shell comment
+using here-document syntax
+for longer explanations
+'</code></pre>
+                    </div>
+                </div>
+
+                <!-- Advanced comment manipulation techniques -->
+                <div class="comment-techniques">
+                    <h3>Advanced Comment Manipulation</h3>
+                    <p>Working with comments efficiently requires understanding search patterns, visual selection, and macro recording. <!-- Practice tip: use search patterns like /&lt;!-- to find comment starts --> Comments often span multiple lines and have specific formatting requirements.</p>
+
+                    <!--
+                        Technique 1: Block comment selection
+                        Use visual line mode (V) with search to select entire comment blocks
+                    -->
+
+                    <!--
+                        Technique 2: Comment toggling
+                        Combine text objects with substitution commands for comment toggling
+                    -->
+
+                    <!--
+                        Technique 3: Comment formatting
+                        Use visual block mode for consistent comment formatting
+                    -->
+                </div>
+            </section>
+
+            <!--
+                Section 2: Custom Delimiters and Advanced Patterns
+
+                Beyond standard quotes and brackets, many contexts use custom
+                delimiters that require special handling techniques.
+            -->
+            <section id="custom-delimiters" class="content-section">
+                <h2>Custom Delimiters and Pattern Recognition</h2>
+                <p>Advanced text editing often involves custom delimiter patterns that don't follow standard quote or bracket conventions. Understanding how to work with these patterns is crucial for efficient editing.</p>
+
+                <div class="delimiter-examples">
+                    <h3>Template String Patterns</h3>
+                    <!-- Template literals with embedded expressions -->
+                    <div class="template-patterns">
+                        <pre><code>const template = `
+            &lt;div class="${className} ${additionalClasses}"&gt;
+                &lt;h2&gt;${title || 'Default Title'}&lt;/h2&gt;
+                &lt;p&gt;Welcome, ${user.name}! You have ${user.notifications?.length || 0} notifications.&lt;/p&gt;
+                ${user.isAdmin ? `
+                    &lt;div class="admin-panel"&gt;
+                        &lt;button onclick="showAdminTools()"&gt;Admin Tools&lt;/button&gt;
+                        &lt;span class="status"&gt;${adminStatus}&lt;/span&gt;
+                    &lt;/div&gt;
+                ` : ''}
+                &lt;ul class="notification-list"&gt;
+                    ${user.notifications.map(notification =&gt; `
+                        &lt;li class="notification ${notification.type}"&gt;
+                            &lt;span class="title"&gt;${notification.title}&lt;/span&gt;
+                            &lt;span class="message"&gt;${notification.message}&lt;/span&gt;
+                            &lt;time datetime="${notification.timestamp}"&gt;
+                                ${formatDate(notification.timestamp)}
+                            &lt;/time&gt;
+                        &lt;/li&gt;
+                    `).join('')}
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        `;</code></pre>
+                    </div>
+
+                    <h3>Regex Delimiters and Patterns</h3>
+                    <div class="regex-patterns">
+                        <!-- Regular expression patterns with various delimiters -->
+                        <pre><code>// Different regex delimiter styles
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const phoneRegex = #^\+?1?[-.\s]?\(?([0-9]{3})\)?[-.\s]?([0-9]{3})[-.\s]?([0-9]{4})$#;
+const urlRegex = |^https?://(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&=]*)$|;
+
+// Perl-style regex with custom delimiters
+const perlRegex = qr{
+    ^                                    # Start of string
+    (?:
+        (?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+ # Domain components
+        [a-zA-Z]{2,}                     # TLD
+    )
+    $                                    # End of string
+}x;</code></pre>
+                    </div>
+
+                    <h3>Mathematical Expressions and Delimiters</h3>
+                    <div class="math-delimiters">
+                        <!-- Mathematical notation with various bracket types -->
+                        <pre><code>// LaTeX-style mathematical expressions
+$\sum_{i=1}^{n} \frac{1}{i^2} = \frac{\pi^2}{6}$
+
+// Matrix notation with various bracket styles
+$\begin{pmatrix} a & b \\ c & d \end{pmatrix}$
+$\begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}$
+$\begin{Bmatrix} x \mid x > 0 \end{Bmatrix}$
+
+// Set notation with custom delimiters
+$\{x \in \mathbb{R} \mid x^2 + y^2 \leq 1\}$
+$\langle a, b \rangle = a_1 b_1 + a_2 b_2 + \ldots + a_n b_n$
+
+// Function notation with complex delimiters
+$f: \mathbb{R}^n \to \mathbb{R}, \quad f(x_1, x_2, \ldots, x_n) = \sum_{i=1}^{n} x_i^2$</code></pre>
+                    </div>
+
+                    <h3>Configuration File Delimiters</h3>
+                    <div class="config-delimiters">
+                        <!-- Various configuration file formats -->
+                        <pre><code># YAML with complex nested structures
+database:
+  primary:
+    host: "db-primary.example.com"
+    port: 5432
+    credentials: &amp;db-creds
+      username: "${DB_USER:-admin}"
+      password: "${DB_PASS:-secret}"
+  replica:
+    host: "db-replica.example.com"
+    port: 5432
+    credentials: *db-creds
+
+# TOML configuration
+[server]
+host = "0.0.0.0"
+port = 8080
+workers = 4
+
+[[plugins]]
+name = "auth"
+config = { provider = "oauth2", scopes = ["read", "write"] }
+
+[[plugins]]
+name = "logging"
+config = { level = "info", format = "json" }
+
+# INI-style configuration
+[section1]
+key1=value1
+key2="value with spaces"
+key3='single quoted value'
+
+[section2]
+; Comment in INI file
+multiline=line1\
+          line2\
+          line3</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!--
+                Section 3: Complex Nested Structures
+
+                Real-world documents often contain deeply nested structures
+                that require sophisticated navigation techniques.
+            -->
+            <section id="complex-structures" class="content-section">
+                <h2>Complex Nested Structure Navigation</h2>
+                <p>Advanced text object mastery involves working with deeply nested and complex structures that combine multiple delimiter types and formatting patterns.</p>
+
+                <div class="nested-examples">
+                    <h3>Deeply Nested JSON Structures</h3>
+                    <div class="json-complex">
+                        <!-- Complex JSON with multiple nesting levels -->
+                        <pre><code>{
+  "application": {
+    "name": "Advanced Text Editor",
+    "version": "2.1.0",
+    "configuration": {
+      "editor": {
+        "theme": "dark",
+        "fontSize": 14,
+        "fontFamily": "Fira Code",
+        "lineNumbers": true,
+        "wordWrap": "bounded",
+        "rulers": [80, 120],
+        "minimap": {
+          "enabled": true,
+          "renderCharacters": false,
+          "maxColumn": 120
+        },
+        "textObjects": {
+          "quotes": {
+            "single": "'",
+            "double": "\"",
+            "backtick": "`"
+          },
+          "brackets": {
+            "parentheses": ["(", ")"],
+            "square": ["[", "]"],
+            "curly": ["{", "}"],
+            "angle": ["<", ">"]
+          },
+          "custom": {
+            "enabled": true,
+            "patterns": [
+              {
+                "name": "template",
+                "start": "${",
+                "end": "}",
+                "nested": true
+              },
+              {
+                "name": "regex",
+                "start": "/",
+                "end": "/",
+                "nested": false,
+                "flags": ["g", "i", "m", "s"]
+              }
+            ]
+          }
+        }
+      },
+      "plugins": [
+        {
+          "name": "vim-motions",
+          "enabled": true,
+          "config": {
+            "textObjects": {
+              "word": ["w", "W"],
+              "sentence": ["s"],
+              "paragraph": ["p"],
+              "quotes": ["\"", "'", "`"],
+              "brackets": ["(", "[", "{", "<"]
+            },
+            "customCommands": {
+              "selectFunction": {
+                "pattern": "function\\s+\\w+\\s*\\([^)]*\\)\\s*{[^}]*}",
+                "scope": "inner"
+              },
+              "selectClass": {
+                "pattern": "class\\s+\\w+[^{]*{[^}]*}",
+                "scope": "around"
+              }
+            }
+          }
+        },
+        {
+          "name": "syntax-highlighter",
+          "enabled": true,
+          "config": {
+            "languages": {
+              "javascript": {
+                "keywords": ["function", "class", "const", "let", "var"],
+                "strings": ["\"", "'", "`"],
+                "comments": ["//", "/*", "*/"],
+                "brackets": ["()", "[]", "{}", "<>"]
+              },
+              "html": {
+                "tags": ["div", "span", "p", "h1", "h2", "h3"],
+                "attributes": ["class", "id", "data-*"],
+                "comments": ["<!--", "-->"]
+              },
+              "css": {
+                "selectors": [".", "#", "[", ":", "::"],
+                "properties": ["color", "background", "margin", "padding"],
+                "values": ["px", "em", "rem", "%", "vh", "vw"],
+                "comments": ["/*", "*/"]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "metadata": {
+      "created": "2024-01-15T10:30:00Z",
+      "modified": "2024-01-20T15:45:30Z",
+      "author": {
+        "name": "Developer Name",
+        "email": "developer@example.com",
+        "role": "senior-engineer"
+      },
+      "tags": ["text-editing", "vim", "advanced-features"],
+      "statistics": {
+        "totalLines": 15420,
+        "totalCharacters": 487632,
+        "functions": 247,
+        "classes": 42,
+        "files": {
+          "javascript": 28,
+          "html": 15,
+          "css": 12,
+          "json": 8,
+          "markdown": 5
+        }
+      }
+    }
+  }
+}</code></pre>
+                    </div>
+
+                    <h3>Complex HTML Structures</h3>
+                    <div class="html-complex">
+                        <!-- Deeply nested HTML with various element types -->
+                        <div class="complex-layout">
+                            <div class="grid-container" data-columns="3" data-responsive="true">
+                                <div class="grid-item featured" data-priority="high">
+                                    <header class="item-header">
+                                        <h3 class="item-title">
+                                            <a href="/articles/advanced-text-objects" title="Advanced Text Objects Guide">
+                                                Advanced Text Objects in Vim
+                                            </a>
+                                        </h3>
+                                        <div class="item-meta">
+                                            <time datetime="2024-01-20T10:30:00Z" class="publish-date">
+                                                January 20, 2024
+                                            </time>
+                                            <span class="author-info">
+                                                by <a href="/authors/jane-doe" class="author-link">Jane Doe</a>
+                                            </span>
+                                            <ul class="tag-list">
+                                                <li class="tag"><a href="/tags/vim">#vim</a></li>
+                                                <li class="tag"><a href="/tags/text-editing">#text-editing</a></li>
+                                                <li class="tag"><a href="/tags/advanced">#advanced</a></li>
+                                            </ul>
+                                        </div>
+                                    </header>
+                                    <div class="item-content">
+                                        <p class="excerpt">
+                                            Master advanced text object manipulation techniques including custom delimiters,
+                                            complex nested structures, and integration with other Vim features for
+                                            maximum editing efficiency.
+                                        </p>
+                                        <div class="content-media">
+                                            <figure class="featured-image">
+                                                <img src="/images/vim-text-objects.jpg"
+                                                     alt="Vim text objects visualization"
+                                                     loading="lazy"
+                                                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+                                                <figcaption>
+                                                    Visual representation of text object boundaries and relationships
+                                                </figcaption>
+                                            </figure>
+                                        </div>
+                                        <div class="action-buttons">
+                                            <a href="/articles/advanced-text-objects" class="btn btn-primary">
+                                                Read Full Article
+                                                <span class="btn-icon" aria-hidden="true">→</span>
+                                            </a>
+                                            <button type="button" class="btn btn-secondary" data-action="bookmark">
+                                                <span class="btn-icon" aria-hidden="true">♡</span>
+                                                Bookmark
+                                            </button>
+                                            <button type="button" class="btn btn-secondary" data-action="share">
+                                                <span class="btn-icon" aria-hidden="true">↗</span>
+                                                Share
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="grid-item" data-priority="medium">
+                                    <!-- Similar complex structure for second item -->
+                                    <header class="item-header">
+                                        <h3 class="item-title">
+                                            <a href="/articles/vim-macros-mastery">Vim Macros Mastery</a>
+                                        </h3>
+                                        <!-- Nested structure continues... -->
+                                    </header>
+                                    <!-- Content structure mirrors the first item but with different content -->
+                                </div>
+
+                                <div class="grid-item" data-priority="low">
+                                    <!-- Third item with similar structure -->
+                                    <header class="item-header">
+                                        <h3 class="item-title">
+                                            <a href="/articles/text-object-plugins">Text Object Plugins</a>
+                                        </h3>
+                                    </header>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Advanced CSS with Complex Selectors</h3>
+                    <div class="css-complex">
+                        <!-- Complex CSS with nested selectors and advanced patterns -->
+                        <pre><code>/* Advanced CSS patterns for text object practice */
+.complex-selector[data-state="active"]:not(.disabled):nth-child(odd) {
+    background: linear-gradient(
+        45deg,
+        rgba(255, 0, 0, 0.1) 0%,
+        rgba(0, 255, 0, 0.1) 50%,
+        rgba(0, 0, 255, 0.1) 100%
+    );
+    box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.1),
+        0 4px 8px rgba(0, 0, 0, 0.1),
+        0 8px 16px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px) scale(1.02);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Complex media queries with nested conditions */
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    .responsive-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-gap: clamp(1rem, 2.5vw, 2rem);
+        grid-auto-rows: minmax(200px, auto);
+    }
+
+    .grid-item:nth-child(3n+1) {
+        grid-column: span 2;
+    }
+
+    .grid-item:hover {
+        transform: translateY(-4px) scale(1.05);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+}
+
+/* CSS custom properties with complex calculations */
+:root {
+    --primary-hue: 220;
+    --primary-saturation: 70%;
+    --primary-lightness: 50%;
+    --primary-color: hsl(
+        var(--primary-hue),
+        var(--primary-saturation),
+        var(--primary-lightness)
+    );
+    --primary-light: hsl(
+        var(--primary-hue),
+        var(--primary-saturation),
+        calc(var(--primary-lightness) + 20%)
+    );
+    --primary-dark: hsl(
+        var(--primary-hue),
+        var(--primary-saturation),
+        calc(var(--primary-lightness) - 20%)
+    );
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!--
+                Section 4: Practice Exercises
+
+                Structured exercises for building advanced text object skills
+                with real-world complexity.
+            -->
+            <section id="practice-exercises" class="content-section">
+                <h2>Advanced Practice Exercises</h2>
+                <p>These exercises combine multiple advanced text object concepts to build comprehensive editing skills.</p>
+
+                <!-- Exercise 1: Comment manipulation -->
+                <div class="exercise-set">
+                    <h3>Exercise 1: Advanced Comment Manipulation</h3>
+                    <!--
+                        Multi-line comment with embedded code examples
+                        Practice selecting, modifying, and formatting comment blocks
+
+                        const example = {
+                            property: "value",
+                            method: function() {
+                                return this.property;
+                            }
+                        };
+
+                        Try uncommenting the code above using text objects and substitution
+                    -->
+
+                    <div class="comment-exercise">
+                        <!--
+                        <div class="commented-section">
+                            <h4>Commented HTML Section</h4>
+                            <p>This entire section is commented out.</p>
+                            <ul>
+                                <li>List item 1</li>
+                                <li>List item 2</li>
+                                <li>List item 3</li>
+                            </ul>
+                        </div>
+                        -->
+
+                        <p>Practice uncommenting the section above using search and replace with text objects.</p>
+                    </div>
+                </div>
+
+                <!-- Exercise 2: Complex delimiter navigation -->
+                <div class="exercise-set">
+                    <h3>Exercise 2: Complex Delimiter Navigation</h3>
+                    <div class="delimiter-exercise">
+                        <pre><code>// Complex JavaScript object with mixed delimiters
+const advancedConfig = {
+    api: {
+        endpoints: {
+            users: `https://api.example.com/v2/users/${userId}/profile?include=${encodeURIComponent(['preferences', 'notifications', 'settings'].join(','))}`,
+            posts: `https://api.example.com/v2/posts?author=${userId}&sort=${sortBy}&order=${order}&limit=${limit}&offset=${offset}`,
+            media: `https://cdn.example.com/media/${mediaId}?size=${size}&format=${format}&quality=${quality}`
+        },
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'X-Client-Version': `${appVersion}`,
+            'X-Request-ID': `${generateRequestId()}`,
+            'X-Custom-Headers': JSON.stringify({
+                'feature-flags': featureFlags,
+                'user-preferences': userPrefs
+            })
+        },
+        timeout: Math.max(5000, Math.min(30000, userTimeout)),
+        retries: {
+            count: 3,
+            delay: (attempt) => Math.pow(2, attempt) * 1000,
+            condition: (error) => error.status >= 500 || error.code === 'NETWORK_ERROR'
+        }
+    },
+    ui: {
+        theme: {
+            colors: {
+                primary: `hsl(${primaryHue}, 70%, 50%)`,
+                secondary: `hsl(${(primaryHue + 120) % 360}, 70%, 50%)`,
+                accent: `hsl(${(primaryHue + 240) % 360}, 70%, 50%)`,
+                background: isDarkMode ? '#1a1a1a' : '#ffffff',
+                text: isDarkMode ? '#e0e0e0' : '#333333'
+            },
+            typography: {
+                fontFamily: `"${preferredFont}", "Helvetica Neue", Arial, sans-serif`,
+                sizes: {
+                    small: 'clamp(0.875rem, 2vw, 1rem)',
+                    medium: 'clamp(1rem, 2.5vw, 1.125rem)',
+                    large: 'clamp(1.25rem, 3vw, 1.5rem)',
+                    xlarge: 'clamp(1.5rem, 4vw, 2rem)'
+                }
+            }
+        },
+        layout: {
+            breakpoints: {
+                mobile: '(max-width: 767px)',
+                tablet: '(min-width: 768px) and (max-width: 1023px)',
+                desktop: '(min-width: 1024px)',
+                wide: '(min-width: 1440px)'
+            },
+            grid: {
+                columns: {
+                    mobile: 1,
+                    tablet: 2,
+                    desktop: 3,
+                    wide: 4
+                },
+                gap: 'clamp(1rem, 2.5vw, 2rem)'
+            }
+        }
+    }
+};</code></pre>
+                    </div>
+                </div>
+
+                <!-- Exercise 3: Template string manipulation -->
+                <div class="exercise-set">
+                    <h3>Exercise 3: Advanced Template String Manipulation</h3>
+                    <div class="template-exercise">
+                        <pre><code>const generateComplexHTML = (data, options = {}) => {
+    const {
+        theme = 'default',
+        showMetadata = true,
+        enableInteractions = true,
+        customClasses = []
+    } = options;
+
+    return `
+        &lt;article class="article-card ${theme} ${customClasses.join(' ')}"
+                 data-article-id="${data.id}"
+                 data-published="${data.publishedAt}"
+                 ${enableInteractions ? 'data-interactive="true"' : ''}&gt;
+
+            ${data.featured ? `
+                &lt;div class="featured-badge"&gt;
+                    &lt;span class="badge-text"&gt;Featured&lt;/span&gt;
+                    &lt;span class="badge-icon"&gt;⭐&lt;/span&gt;
+                &lt;/div&gt;
+            ` : ''}
+
+            &lt;header class="article-header"&gt;
+                &lt;h2 class="article-title"&gt;
+                    &lt;a href="/articles/${data.slug}" title="${data.title.replace(/"/g, '&quot;')}"&gt;
+                        ${data.title}
+                    &lt;/a&gt;
+                &lt;/h2&gt;
+
+                ${showMetadata ? `
+                    &lt;div class="article-meta"&gt;
+                        &lt;time datetime="${data.publishedAt}" class="publish-date"&gt;
+                            ${formatDate(data.publishedAt, options.dateFormat || 'MMM DD, YYYY')}
+                        &lt;/time&gt;
+
+                        ${data.author ? `
+                            &lt;span class="author-info"&gt;
+                                by &lt;a href="/authors/${data.author.slug}" class="author-link"&gt;
+                                    ${data.author.name}
+                                &lt;/a&gt;
+                            &lt;/span&gt;
+                        ` : ''}
+
+                        ${data.readTime ? `
+                            &lt;span class="read-time" title="Estimated reading time"&gt;
+                                ${data.readTime} min read
+                            &lt;/span&gt;
+                        ` : ''}
+                    &lt;/div&gt;
+                ` : ''}
+            &lt;/header&gt;
+
+            &lt;div class="article-content"&gt;
+                ${data.excerpt ? `
+                    &lt;p class="article-excerpt"&gt;${data.excerpt}&lt;/p&gt;
+                ` : ''}
+
+                ${data.coverImage ? `
+                    &lt;figure class="cover-image"&gt;
+                        &lt;img src="${data.coverImage.url}"
+                             alt="${data.coverImage.alt || data.title}"
+                             loading="lazy"
+                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"&gt;
+                        ${data.coverImage.caption ? `
+                            &lt;figcaption&gt;${data.coverImage.caption}&lt;/figcaption&gt;
+                        ` : ''}
+                    &lt;/figure&gt;
+                ` : ''}
+
+                ${data.tags && data.tags.length > 0 ? `
+                    &lt;ul class="tag-list" role="list"&gt;
+                        ${data.tags.map(tag => `
+                            &lt;li class="tag-item"&gt;
+                                &lt;a href="/tags/${tag.slug}"
+                                   class="tag-link"
+                                   title="View all posts tagged with ${tag.name}"&gt;
+                                    #${tag.name}
+                                &lt;/a&gt;
+                            &lt;/li&gt;
+                        `).join('')}
+                    &lt;/ul&gt;
+                ` : ''}
+            &lt;/div&gt;
+
+            ${enableInteractions ? `
+                &lt;footer class="article-actions"&gt;
+                    &lt;div class="action-buttons"&gt;
+                        &lt;button type="button"
+                                class="action-btn like-btn ${data.isLiked ? 'liked' : ''}"
+                                data-action="toggle-like"
+                                data-article-id="${data.id}"
+                                aria-label="${data.isLiked ? 'Unlike' : 'Like'} this article"&gt;
+                            &lt;span class="btn-icon"&gt;${data.isLiked ? '♥' : '♡'}&lt;/span&gt;
+                            &lt;span class="btn-text"&gt;${data.likesCount || 0}&lt;/span&gt;
+                        &lt;/button&gt;
+
+                        &lt;button type="button"
+                                class="action-btn bookmark-btn ${data.isBookmarked ? 'bookmarked' : ''}"
+                                data-action="toggle-bookmark"
+                                data-article-id="${data.id}"
+                                aria-label="${data.isBookmarked ? 'Remove bookmark' : 'Bookmark'} this article"&gt;
+                            &lt;span class="btn-icon"&gt;${data.isBookmarked ? '★' : '☆'}&lt;/span&gt;
+                            &lt;span class="btn-text"&gt;Bookmark&lt;/span&gt;
+                        &lt;/button&gt;
+
+                        &lt;button type="button"
+                                class="action-btn share-btn"
+                                data-action="share"
+                                data-title="${data.title.replace(/"/g, '&quot;')}"
+                                data-url="${window.location.origin}/articles/${data.slug}"
+                                aria-label="Share this article"&gt;
+                            &lt;span class="btn-icon"&gt;↗&lt;/span&gt;
+                            &lt;span class="btn-text"&gt;Share&lt;/span&gt;
+                        &lt;/button&gt;
+                    &lt;/div&gt;
+
+                    ${data.commentsEnabled ? `
+                        &lt;div class="comments-preview"&gt;
+                            &lt;a href="/articles/${data.slug}#comments"
+                               class="comments-link"&gt;
+                                ${data.commentsCount || 0}
+                                ${(data.commentsCount || 0) === 1 ? 'comment' : 'comments'}
+                            &lt;/a&gt;
+                        &lt;/div&gt;
+                    ` : ''}
+                &lt;/footer&gt;
+            ` : ''}
+        &lt;/article&gt;
+    `;
+};</code></pre>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!--
+            Footer section with additional complex structures
+            Contains contact information, links, and metadata
+        -->
+        <footer class="main-footer" role="contentinfo">
+            <div class="footer-content">
+                <div class="footer-sections">
+                    <!-- Multiple footer sections with nested content -->
+                    <section class="footer-section">
+                        <h3>Advanced Text Objects</h3>
+                        <p>Master complex text manipulation patterns for efficient editing in any context.</p>
+                        <!-- Social links with custom data attributes -->
+                        <ul class="social-links">
+                            <li><a href="https://github.com/vim-learning" data-platform="github" aria-label="GitHub">GitHub</a></li>
+                            <li><a href="https://twitter.com/vim_learning" data-platform="twitter" aria-label="Twitter">Twitter</a></li>
+                            <li><a href="mailto:contact@vim-learning.com" data-platform="email" aria-label="Email">Contact</a></li>
+                        </ul>
+                    </section>
+
+                    <!-- Additional footer sections for practice -->
+                    <section class="footer-section">
+                        <h3>Related Topics</h3>
+                        <ul class="topic-links">
+                            <li><a href="#basic-text-objects">Basic Text Objects</a></li>
+                            <li><a href="#custom-motions">Custom Motions</a></li>
+                            <li><a href="#plugin-development">Plugin Development</a></li>
+                        </ul>
+                    </section>
+                </div>
+
+                <!-- Copyright and metadata -->
+                <div class="footer-bottom">
+                    <p>&copy; 2024 Vim Learning Platform. <!-- All rights reserved. --> Licensed under MIT.</p>
+                    <!-- Final comment for practice -->
+                    <!-- End of document - practice navigation back to top -->
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!--
+        JavaScript examples for additional text object practice
+        Note: This would typically be in a separate file
+    -->
+    <script>
+        // Complex JavaScript patterns for text object practice
+        const advancedTextObjects = {
+            // Method with complex parameter destructuring
+            processComplexData({
+                data: rawData,
+                options: {
+                    format = 'json',
+                    validate = true,
+                    transform = null,
+                    cache: {
+                        enabled = false,
+                        ttl = 3600,
+                        key = null
+                    } = {}
+                } = {},
+                callbacks: {
+                    onSuccess = () => {},
+                    onError = () => {},
+                    onProgress = () => {}
+                } = {}
+            } = {}) {
+                // Implementation with nested try-catch and complex logic
+                try {
+                    const processedData = rawData
+                        .filter(item => validate ? this.validateItem(item) : true)
+                        .map(item => transform ? transform(item) : item)
+                        .reduce((acc, item) => {
+                            const key = item.category || 'uncategorized';
+                            acc[key] = acc[key] || [];
+                            acc[key].push(item);
+                            return acc;
+                        }, {});
+
+                    onSuccess(processedData);
+                    return processedData;
+                } catch (error) {
+                    onError(error);
+                    throw new Error(`Processing failed: ${error.message}`);
+                }
+            }
+        };
+    </script>
+</body>
+</html>

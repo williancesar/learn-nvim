@@ -1,0 +1,499 @@
+# Multi-Section Configuration for Jump History Practice
+# Use Ctrl+O and Ctrl+I to navigate through jump history
+# Practice jumping between different sections with G, gg, /pattern, etc.
+
+# ================================================================
+# SECTION 1: Frontend Configuration
+# ================================================================
+frontend:
+  web_application:
+    name: "enterprise-web-portal"
+    version: "3.2.1"
+    technology_stack:
+      framework: "React 18.2.0"
+      state_management: "Redux Toolkit"
+      router: "React Router v6"
+      ui_library: "Material-UI v5"
+      build_tool: "Vite 4.3.0"
+
+    development_config:
+      server_port: 3000
+      api_base_url: "http://localhost:8080/api/v1"
+      hot_reload: true
+      source_maps: true
+      debug_mode: true
+      mock_api: false
+
+    production_config:
+      server_port: 80
+      api_base_url: "https://api.company.com/v1"
+      hot_reload: false
+      source_maps: false
+      debug_mode: false
+      cdn_url: "https://cdn.company.com"
+      compression: true
+      cache_control: "max-age=31536000"
+
+  mobile_application:
+    name: "enterprise-mobile-app"
+    platform: "React Native"
+    version: "2.1.0"
+
+    ios_config:
+      bundle_identifier: "com.company.enterprise"
+      deployment_target: "14.0"
+      app_store_connect: true
+      code_signing: "automatic"
+      provisioning_profile: "enterprise-production"
+
+    android_config:
+      package_name: "com.company.enterprise"
+      min_sdk_version: 23
+      target_sdk_version: 33
+      compile_sdk_version: 33
+      google_play_console: true
+      signing_config: "release"
+
+# ================================================================
+# SECTION 2: Backend Services Configuration
+# ================================================================
+backend:
+  api_gateway:
+    name: "enterprise-gateway"
+    technology: "Kong Gateway"
+    version: "3.2.0"
+
+    upstream_services:
+      user_service:
+        url: "http://user-service.backend.svc.cluster.local:8080"
+        health_check_path: "/actuator/health"
+        timeout_ms: 30000
+        retries: 3
+        circuit_breaker:
+          failure_threshold: 5
+          recovery_timeout: 30000
+
+      order_service:
+        url: "http://order-service.backend.svc.cluster.local:8080"
+        health_check_path: "/health"
+        timeout_ms: 25000
+        retries: 3
+        circuit_breaker:
+          failure_threshold: 3
+          recovery_timeout: 20000
+
+      payment_service:
+        url: "http://payment-service.backend.svc.cluster.local:8080"
+        health_check_path: "/health/live"
+        timeout_ms: 15000
+        retries: 5
+        circuit_breaker:
+          failure_threshold: 2
+          recovery_timeout: 10000
+
+  microservices:
+    user_management:
+      name: "user-service"
+      technology: "Spring Boot 3.0"
+      java_version: "17"
+      port: 8080
+
+      database_config:
+        type: "PostgreSQL"
+        host: "postgres-users.db.svc.cluster.local"
+        port: 5432
+        database: "users_db"
+        connection_pool:
+          min_size: 5
+          max_size: 20
+          timeout_ms: 30000
+
+      security_config:
+        jwt_secret: "${JWT_SECRET}"
+        token_expiry: "1h"
+        refresh_token_expiry: "24h"
+        password_policy:
+          min_length: 12
+          require_uppercase: true
+          require_lowercase: true
+          require_numbers: true
+          require_special_chars: true
+
+    order_processing:
+      name: "order-service"
+      technology: "Node.js Express"
+      node_version: "18.15.0"
+      port: 8080
+
+      database_config:
+        type: "MongoDB"
+        connection_string: "mongodb://mongo-orders.db.svc.cluster.local:27017/orders"
+        replica_set: "orders-rs"
+        read_preference: "secondaryPreferred"
+
+      messaging_config:
+        broker: "RabbitMQ"
+        host: "rabbitmq.messaging.svc.cluster.local"
+        port: 5672
+        virtual_host: "/orders"
+        exchanges:
+          - name: "order.events"
+            type: "topic"
+            durable: true
+        queues:
+          - name: "order.created"
+            routing_key: "order.created"
+            durable: true
+          - name: "order.updated"
+            routing_key: "order.updated"
+            durable: true
+
+# ================================================================
+# SECTION 3: Database Configuration
+# ================================================================
+databases:
+  postgresql_cluster:
+    primary:
+      host: "postgres-primary.database.svc.cluster.local"
+      port: 5432
+      database: "enterprise_db"
+      username: "app_user"
+      max_connections: 200
+
+      performance_tuning:
+        shared_buffers: "256MB"
+        effective_cache_size: "1GB"
+        maintenance_work_mem: "64MB"
+        checkpoint_completion_target: 0.9
+        wal_buffers: "16MB"
+        random_page_cost: 1.1
+        effective_io_concurrency: 200
+
+    read_replicas:
+      - host: "postgres-replica-1.database.svc.cluster.local"
+        port: 5432
+        max_connections: 100
+        lag_threshold: "10MB"
+      - host: "postgres-replica-2.database.svc.cluster.local"
+        port: 5432
+        max_connections: 100
+        lag_threshold: "10MB"
+
+    backup_configuration:
+      schedule: "0 2 * * *"  # Daily at 2 AM
+      retention_days: 30
+      compression: true
+      encryption: true
+      storage_backend: "AWS S3"
+      bucket: "enterprise-db-backups"
+      region: "us-west-2"
+
+  mongodb_cluster:
+    replica_set:
+      name: "enterprise-rs"
+      members:
+        - host: "mongo-0.mongo.svc.cluster.local:27017"
+          priority: 1
+          votes: 1
+          arbiter_only: false
+        - host: "mongo-1.mongo.svc.cluster.local:27017"
+          priority: 0.5
+          votes: 1
+          arbiter_only: false
+        - host: "mongo-2.mongo.svc.cluster.local:27017"
+          priority: 0.5
+          votes: 1
+          arbiter_only: false
+
+    sharding:
+      enabled: true
+      config_servers:
+        - "mongo-config-0.mongo.svc.cluster.local:27019"
+        - "mongo-config-1.mongo.svc.cluster.local:27019"
+        - "mongo-config-2.mongo.svc.cluster.local:27019"
+      mongos_routers:
+        - "mongos-0.mongo.svc.cluster.local:27017"
+        - "mongos-1.mongo.svc.cluster.local:27017"
+      shard_key_configs:
+        users: {"user_id": 1}
+        orders: {"order_id": 1, "created_at": 1}
+        products: {"category": 1, "product_id": 1}
+
+# ================================================================
+# SECTION 4: Infrastructure Configuration
+# ================================================================
+infrastructure:
+  kubernetes:
+    cluster_config:
+      version: "1.27.0"
+      cluster_name: "enterprise-production"
+      region: "us-west-2"
+
+      node_groups:
+        control_plane:
+          instance_type: "t3.medium"
+          min_size: 3
+          max_size: 3
+          desired_capacity: 3
+          availability_zones:
+            - "us-west-2a"
+            - "us-west-2b"
+            - "us-west-2c"
+
+        worker_nodes:
+          instance_type: "t3.large"
+          min_size: 5
+          max_size: 50
+          desired_capacity: 15
+          auto_scaling:
+            enabled: true
+            scale_up_cooldown: "300s"
+            scale_down_cooldown: "600s"
+            target_cpu_utilization: 70
+
+        storage_nodes:
+          instance_type: "r5.xlarge"
+          min_size: 3
+          max_size: 10
+          desired_capacity: 5
+          storage_type: "gp3"
+          storage_size: "500GB"
+          iops: 3000
+
+  networking:
+    vpc_configuration:
+      cidr_block: "10.0.0.0/16"
+      enable_dns_hostnames: true
+      enable_dns_support: true
+
+      public_subnets:
+        - cidr: "10.0.1.0/24"
+          availability_zone: "us-west-2a"
+        - cidr: "10.0.2.0/24"
+          availability_zone: "us-west-2b"
+        - cidr: "10.0.3.0/24"
+          availability_zone: "us-west-2c"
+
+      private_subnets:
+        - cidr: "10.0.10.0/24"
+          availability_zone: "us-west-2a"
+        - cidr: "10.0.20.0/24"
+          availability_zone: "us-west-2b"
+        - cidr: "10.0.30.0/24"
+          availability_zone: "us-west-2c"
+
+      database_subnets:
+        - cidr: "10.0.100.0/24"
+          availability_zone: "us-west-2a"
+        - cidr: "10.0.101.0/24"
+          availability_zone: "us-west-2b"
+        - cidr: "10.0.102.0/24"
+          availability_zone: "us-west-2c"
+
+    load_balancers:
+      application_load_balancer:
+        name: "enterprise-alb"
+        scheme: "internet-facing"
+        type: "application"
+        ip_address_type: "ipv4"
+        subnets: ["subnet-public-1", "subnet-public-2", "subnet-public-3"]
+        security_groups: ["sg-alb-public"]
+
+        listeners:
+          - port: 80
+            protocol: "HTTP"
+            default_action: "redirect-to-https"
+          - port: 443
+            protocol: "HTTPS"
+            ssl_policy: "ELBSecurityPolicy-TLS-1-2-2017-01"
+            certificate_arn: "arn:aws:acm:us-west-2:123456789012:certificate/12345678-1234-1234-1234-123456789012"
+
+# ================================================================
+# SECTION 5: Monitoring and Observability
+# ================================================================
+monitoring:
+  metrics_collection:
+    prometheus:
+      version: "2.42.0"
+      retention_period: "15d"
+      storage_size: "100Gi"
+      storage_class: "fast-ssd"
+
+      scrape_configurations:
+        kubernetes_components:
+          - job_name: "kubernetes-apiservers"
+            scrape_interval: "30s"
+            scrape_timeout: "10s"
+            metrics_path: "/metrics"
+
+          - job_name: "kubernetes-nodes"
+            scrape_interval: "30s"
+            scrape_timeout: "10s"
+            metrics_path: "/metrics"
+
+          - job_name: "kubernetes-pods"
+            scrape_interval: "15s"
+            scrape_timeout: "10s"
+            metrics_path: "/metrics"
+
+        application_metrics:
+          - job_name: "user-service"
+            scrape_interval: "15s"
+            scrape_timeout: "5s"
+            metrics_path: "/actuator/prometheus"
+
+          - job_name: "order-service"
+            scrape_interval: "15s"
+            scrape_timeout: "5s"
+            metrics_path: "/metrics"
+
+    grafana:
+      version: "9.4.0"
+      admin_password: "${GRAFANA_ADMIN_PASSWORD}"
+      persistence:
+        enabled: true
+        size: "10Gi"
+        storage_class: "gp3"
+
+      dashboard_configurations:
+        - name: "Kubernetes Cluster Overview"
+          source: "https://grafana.com/api/dashboards/315/revisions/3/download"
+        - name: "Node Exporter Full"
+          source: "https://grafana.com/api/dashboards/1860/revisions/27/download"
+        - name: "Application Performance"
+          source: "custom-dashboard-1.json"
+        - name: "Business Metrics"
+          source: "custom-dashboard-2.json"
+
+  logging:
+    elasticsearch:
+      version: "8.6.0"
+      cluster_name: "enterprise-logs"
+      cluster_size: 3
+
+      node_configuration:
+        master_nodes: 3
+        data_nodes: 3
+        ingest_nodes: 2
+
+        resources:
+          master:
+            memory: "2Gi"
+            cpu: "1000m"
+            storage: "20Gi"
+          data:
+            memory: "8Gi"
+            cpu: "2000m"
+            storage: "500Gi"
+          ingest:
+            memory: "4Gi"
+            cpu: "1000m"
+            storage: "50Gi"
+
+      index_management:
+        templates:
+          - name: "application-logs"
+            pattern: "app-logs-*"
+            settings:
+              number_of_shards: 3
+              number_of_replicas: 1
+              refresh_interval: "5s"
+            lifecycle_policy:
+              hot_phase: "7d"
+              warm_phase: "30d"
+              cold_phase: "90d"
+              delete_phase: "365d"
+
+# ================================================================
+# SECTION 6: Security Configuration
+# ================================================================
+security:
+  authentication:
+    oauth2_provider:
+      issuer: "https://auth.company.com"
+      authorization_endpoint: "https://auth.company.com/oauth2/authorize"
+      token_endpoint: "https://auth.company.com/oauth2/token"
+      userinfo_endpoint: "https://auth.company.com/oauth2/userinfo"
+      jwks_uri: "https://auth.company.com/.well-known/jwks.json"
+
+      client_configurations:
+        web_app:
+          client_id: "enterprise-web-app"
+          client_secret: "${WEB_APP_CLIENT_SECRET}"
+          redirect_uris:
+            - "https://app.company.com/auth/callback"
+            - "https://staging.company.com/auth/callback"
+          scopes: ["openid", "profile", "email", "read", "write"]
+
+        mobile_app:
+          client_id: "enterprise-mobile-app"
+          client_secret: "${MOBILE_APP_CLIENT_SECRET}"
+          redirect_uris:
+            - "com.company.enterprise://auth/callback"
+          scopes: ["openid", "profile", "email", "read"]
+
+  authorization:
+    rbac_policies:
+      - name: "cluster-admin"
+        subjects:
+          - kind: "User"
+            name: "admin@company.com"
+          - kind: "Group"
+            name: "platform-engineers"
+        role_ref:
+          kind: "ClusterRole"
+          name: "cluster-admin"
+
+      - name: "developer-access"
+        subjects:
+          - kind: "Group"
+            name: "developers"
+        role_ref:
+          kind: "ClusterRole"
+          name: "developer-role"
+
+        custom_rules:
+          - api_groups: ["apps", ""]
+            resources: ["deployments", "services", "configmaps", "secrets"]
+            verbs: ["get", "list", "create", "update", "patch"]
+          - api_groups: [""]
+            resources: ["pods", "pods/log"]
+            verbs: ["get", "list"]
+
+  network_security:
+    network_policies:
+      - name: "default-deny-all"
+        policy_types: ["Ingress", "Egress"]
+        pod_selector: {}
+        ingress: []
+        egress: []
+
+      - name: "allow-frontend-to-backend"
+        policy_types: ["Ingress"]
+        pod_selector:
+          match_labels:
+            tier: "backend"
+        ingress:
+          - from:
+              - pod_selector:
+                  match_labels:
+                    tier: "frontend"
+            ports:
+              - protocol: "TCP"
+                port: 8080
+
+      - name: "allow-backend-to-database"
+        policy_types: ["Egress"]
+        pod_selector:
+          match_labels:
+            tier: "backend"
+        egress:
+          - to:
+              - pod_selector:
+                  match_labels:
+                    tier: "database"
+            ports:
+              - protocol: "TCP"
+                port: 5432
+              - protocol: "TCP"
+                port: 27017

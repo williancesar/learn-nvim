@@ -1,0 +1,725 @@
+# Multi-Environment Container Orchestration Configuration
+# Designed for visual selection practice with deeply nested structures
+# Use V, Ctrl+V, and text objects to select nested configurations
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: microservices-platform
+  labels:
+    environment: production
+    team: platform-engineering
+    cost-center: engineering
+  annotations:
+    description: "Core microservices platform namespace"
+    contact: "platform-team@company.com"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  namespace: microservices-platform
+  labels:
+    app: api-gateway
+    version: v2.1.0
+    component: gateway
+    tier: frontend
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: api-gateway
+      version: v2.1.0
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+        version: v2.1.0
+        component: gateway
+        tier: frontend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
+        sidecar.istio.io/inject: "true"
+    spec:
+      serviceAccountName: api-gateway
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+        supplementalGroups: [1000]
+      containers:
+      - name: api-gateway
+        image: myregistry.azurecr.io/api-gateway:v2.1.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        - name: https
+          containerPort: 8443
+          protocol: TCP
+        - name: metrics
+          containerPort: 9090
+          protocol: TCP
+        - name: health
+          containerPort: 8081
+          protocol: TCP
+        env:
+        - name: PORT
+          value: "8080"
+        - name: HTTPS_PORT
+          value: "8443"
+        - name: METRICS_PORT
+          value: "9090"
+        - name: HEALTH_PORT
+          value: "8081"
+        - name: LOG_LEVEL
+          value: info
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: api-gateway-secrets
+              key: jwt-secret
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: database-credentials
+              key: url
+        - name: REDIS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: redis-config
+              key: url
+        - name: UPSTREAM_SERVICES
+          valueFrom:
+            configMapKeyRef:
+              name: service-discovery
+              key: services.json
+        envFrom:
+        - configMapRef:
+            name: api-gateway-config
+        - secretRef:
+            name: external-api-keys
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+            ephemeral-storage: 1Gi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+            ephemeral-storage: 5Gi
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: health
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+          successThreshold: 1
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: health
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+          successThreshold: 1
+        startupProbe:
+          httpGet:
+            path: /health/startup
+            port: health
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 2
+          timeoutSeconds: 1
+          failureThreshold: 30
+          successThreshold: 1
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - /bin/bash
+              - -c
+              - |
+                echo "Gracefully shutting down..."
+                curl -X POST http://localhost:8081/shutdown
+                sleep 15
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/config
+          readOnly: true
+        - name: secrets-volume
+          mountPath: /app/secrets
+          readOnly: true
+        - name: tls-certs
+          mountPath: /etc/ssl/certs
+          readOnly: true
+        - name: logs
+          mountPath: /var/log/app
+        - name: tmp
+          mountPath: /tmp
+        - name: cache
+          mountPath: /app/cache
+      - name: sidecar-proxy
+        image: envoyproxy/envoy:v1.28.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: proxy-admin
+          containerPort: 15000
+          protocol: TCP
+        - name: proxy-inbound
+          containerPort: 15006
+          protocol: TCP
+        - name: proxy-outbound
+          containerPort: 15001
+          protocol: TCP
+        env:
+        - name: ENVOY_CONFIG_PATH
+          value: /etc/envoy/envoy.yaml
+        - name: ENVOY_LOG_LEVEL
+          value: info
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        volumeMounts:
+        - name: envoy-config
+          mountPath: /etc/envoy
+          readOnly: true
+        - name: envoy-logs
+          mountPath: /var/log/envoy
+      volumes:
+      - name: config-volume
+        configMap:
+          name: api-gateway-config
+          defaultMode: 0644
+          items:
+          - key: application.yaml
+            path: application.yaml
+          - key: routes.yaml
+            path: routes.yaml
+          - key: middleware.yaml
+            path: middleware.yaml
+      - name: secrets-volume
+        secret:
+          secretName: api-gateway-secrets
+          defaultMode: 0600
+          items:
+          - key: jwt-secret
+            path: jwt.key
+          - key: oauth-credentials
+            path: oauth.json
+          - key: database-password
+            path: db.pass
+      - name: tls-certs
+        secret:
+          secretName: tls-certificates
+          defaultMode: 0600
+          items:
+          - key: tls.crt
+            path: server.crt
+          - key: tls.key
+            path: server.key
+          - key: ca.crt
+            path: ca.crt
+      - name: logs
+        emptyDir:
+          sizeLimit: 10Gi
+      - name: tmp
+        emptyDir:
+          sizeLimit: 1Gi
+          medium: Memory
+      - name: cache
+        emptyDir:
+          sizeLimit: 5Gi
+      - name: envoy-config
+        configMap:
+          name: envoy-sidecar-config
+      - name: envoy-logs
+        emptyDir:
+          sizeLimit: 1Gi
+      nodeSelector:
+        kubernetes.io/arch: amd64
+        node-type: application
+        instance-type: c5.2xlarge
+      tolerations:
+      - key: "dedicated"
+        operator: "Equal"
+        value: "application"
+        effect: "NoSchedule"
+      - key: "spot-instance"
+        operator: "Exists"
+        effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
+              - key: node-type
+                operator: In
+                values:
+                - application
+                - general-purpose
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+              - key: instance-type
+                operator: In
+                values:
+                - c5.2xlarge
+                - c5.4xlarge
+          - weight: 50
+            preference:
+              matchExpressions:
+              - key: availability-zone
+                operator: In
+                values:
+                - us-west-2a
+                - us-west-2b
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - redis
+                  - postgresql
+              topologyKey: kubernetes.io/hostname
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - api-gateway
+            topologyKey: kubernetes.io/hostname
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: component
+                  operator: In
+                  values:
+                  - gateway
+                  - proxy
+              topologyKey: topology.kubernetes.io/zone
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-gateway-config
+  namespace: microservices-platform
+  labels:
+    app: api-gateway
+    component: config
+data:
+  application.yaml: |
+    server:
+      port: 8080
+      ssl:
+        enabled: true
+        port: 8443
+        key-store: /etc/ssl/certs/server.key
+        key-store-password: ${SSL_KEYSTORE_PASSWORD}
+        trust-store: /etc/ssl/certs/ca.crt
+
+    logging:
+      level:
+        com.company.gateway: INFO
+        org.springframework.security: DEBUG
+        org.springframework.web: INFO
+      pattern:
+        console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+        file: "%d{ISO8601} [%thread] %-5level %logger{36} - %msg%n"
+
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: health,info,metrics,prometheus
+      endpoint:
+        health:
+          show-details: always
+          probes:
+            enabled: true
+        metrics:
+          enabled: true
+      metrics:
+        export:
+          prometheus:
+            enabled: true
+
+    spring:
+      application:
+        name: api-gateway
+      cloud:
+        gateway:
+          routes:
+          - id: user-service
+            uri: http://user-service.microservices.svc.cluster.local:8080
+            predicates:
+            - Path=/api/v1/users/**
+            - Method=GET,POST,PUT,DELETE
+            filters:
+            - name: RateLimiter
+              args:
+                rate-limiter: "#{@userServiceRateLimiter}"
+                key-resolver: "#{@userKeyResolver}"
+            - name: Retry
+              args:
+                retries: 3
+                methods: GET,POST
+                exceptions: java.io.IOException,org.springframework.web.client.HttpServerErrorException
+            - name: CircuitBreaker
+              args:
+                name: user-service-cb
+                fallbackUri: forward:/fallback/user-service
+          - id: order-service
+            uri: http://order-service.microservices.svc.cluster.local:8081
+            predicates:
+            - Path=/api/v1/orders/**
+            - Header=X-API-Version,v1
+            filters:
+            - name: AddRequestHeader
+              args:
+                name: X-Gateway-Version
+                value: v2.1.0
+            - name: AddResponseHeader
+              args:
+                name: X-Response-Time
+                value: "#{T(java.time.Instant).now().toEpochMilli()}"
+            - name: RequestRateLimiter
+              args:
+                rate-limiter: "#{@orderServiceRateLimiter}"
+                key-resolver: "#{@apiKeyResolver}"
+            - name: ModifyRequestBody
+              args:
+                in-class: java.lang.String
+                out-class: java.lang.String
+                new-content-type: application/json;charset=UTF-8
+          - id: payment-service
+            uri: http://payment-service.microservices.svc.cluster.local:8082
+            predicates:
+            - Path=/api/v1/payments/**
+            - Query=version,v1
+            filters:
+            - name: Hystrix
+              args:
+                name: payment-service-hystrix
+                fallbackUri: forward:/fallback/payment-service
+            - name: RequestSize
+              args:
+                maxSize: 5MB
+          globalcors:
+            corsConfigurations:
+              '[/**]':
+                allowedOrigins:
+                - "https://app.company.com"
+                - "https://admin.company.com"
+                allowedMethods:
+                - GET
+                - POST
+                - PUT
+                - DELETE
+                - OPTIONS
+                allowedHeaders:
+                - "*"
+                allowCredentials: true
+                maxAge: 3600
+
+  routes.yaml: |
+    routes:
+      dynamic:
+        enabled: true
+        refresh-interval: 30s
+        discovery:
+          consul:
+            enabled: true
+            host: consul.service-discovery.svc.cluster.local
+            port: 8500
+            health-check-interval: 10s
+          kubernetes:
+            enabled: true
+            namespace: microservices
+            label-selector: "gateway.enabled=true"
+            annotation-prefix: "gateway.config/"
+
+  middleware.yaml: |
+    middleware:
+      authentication:
+        jwt:
+          secret: ${JWT_SECRET}
+          expiration: 3600
+          refresh-token-expiration: 86400
+          issuer: "api-gateway"
+          audience: "microservices"
+        oauth2:
+          providers:
+            google:
+              client-id: ${GOOGLE_CLIENT_ID}
+              client-secret: ${GOOGLE_CLIENT_SECRET}
+              authorization-uri: https://accounts.google.com/o/oauth2/auth
+              token-uri: https://oauth2.googleapis.com/token
+              user-info-uri: https://www.googleapis.com/oauth2/v2/userinfo
+              scopes: [openid, email, profile]
+            github:
+              client-id: ${GITHUB_CLIENT_ID}
+              client-secret: ${GITHUB_CLIENT_SECRET}
+              authorization-uri: https://github.com/login/oauth/authorize
+              token-uri: https://github.com/login/oauth/access_token
+              user-info-uri: https://api.github.com/user
+              scopes: [user:email]
+
+      rate-limiting:
+        global:
+          requests-per-second: 1000
+          burst-capacity: 2000
+        per-user:
+          requests-per-minute: 60
+          burst-capacity: 120
+        per-ip:
+          requests-per-minute: 100
+          burst-capacity: 200
+
+      security:
+        csrf:
+          enabled: true
+          token-repository: redis
+        cors:
+          allowed-origins: ["https://app.company.com", "https://admin.company.com"]
+          allowed-methods: [GET, POST, PUT, DELETE, OPTIONS]
+          allowed-headers: ["*"]
+          exposed-headers: [X-Request-ID, X-Response-Time]
+          allow-credentials: true
+          max-age: 3600
+        headers:
+          content-security-policy: "default-src 'self'; script-src 'self' 'unsafe-inline'"
+          x-frame-options: DENY
+          x-content-type-options: nosniff
+          x-xss-protection: "1; mode=block"
+          strict-transport-security: "max-age=31536000; includeSubDomains"
+
+      monitoring:
+        metrics:
+          prometheus:
+            enabled: true
+            path: /metrics
+            include-patterns: ["gateway.*", "http.*", "jvm.*"]
+            exclude-patterns: ["tomcat.*"]
+        tracing:
+          jaeger:
+            enabled: true
+            endpoint: http://jaeger-collector.monitoring.svc.cluster.local:14268/api/traces
+            sampling-rate: 0.1
+        logging:
+          access-log:
+            enabled: true
+            format: combined
+            include-headers: true
+          request-response:
+            enabled: false
+            max-payload-size: 1024
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: api-gateway-secrets
+  namespace: microservices-platform
+  labels:
+    app: api-gateway
+    component: secrets
+type: Opaque
+data:
+  jwt-secret: bXktc3VwZXItc2VjcmV0LWp3dC1rZXktZm9yLWF1dGhlbnRpY2F0aW9u
+  oauth-credentials: |
+    ewogICJnb29nbGUiOiB7CiAgICAiY2xpZW50X2lkIjogIjEyMzQ1Njc4OTAu
+    YXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLAogICAgImNsaWVudF9zZWNy
+    ZXQiOiAiR09DU1BYLWFiY2RlZjEyMzQ1NiIKICB9LAogICJnaXRodWIiOiB7
+    CiAgICAiY2xpZW50X2lkIjogIkl2MWZkMTI5NzU2NGFiYzEyMyIsCiAgICAi
+    Y2xpZW50X3NlY3JldCI6ICIxMjM0NTY3ODkwYWJjZGVmZ2hpams5ODc2NTQz
+    MjEiCiAgfQp9
+  database-password: cG9zdGdyZXNxbC1zdXBlci1zZWN1cmUtcGFzc3dvcmQ=
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: api-gateway-hpa
+  namespace: microservices-platform
+  labels:
+    app: api-gateway
+    component: autoscaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api-gateway
+  minReplicas: 3
+  maxReplicas: 50
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  - type: Pods
+    pods:
+      metric:
+        name: requests_per_second
+      target:
+        type: AverageValue
+        averageValue: "100"
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+      - type: Pods
+        value: 2
+        periodSeconds: 60
+      selectPolicy: Min
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 30
+      - type: Pods
+        value: 5
+        periodSeconds: 30
+      selectPolicy: Max
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: api-gateway-network-policy
+  namespace: microservices-platform
+  labels:
+    app: api-gateway
+    component: security
+spec:
+  podSelector:
+    matchLabels:
+      app: api-gateway
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: istio-system
+    - namespaceSelector:
+        matchLabels:
+          name: ingress-nginx
+    - podSelector:
+        matchLabels:
+          app: load-balancer
+    ports:
+    - protocol: TCP
+      port: 8080
+    - protocol: TCP
+      port: 8443
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: monitoring
+    - podSelector:
+        matchLabels:
+          app: prometheus
+    ports:
+    - protocol: TCP
+      port: 9090
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: kube-system
+    - podSelector:
+        matchLabels:
+          app: kubernetes-dashboard
+    ports:
+    - protocol: TCP
+      port: 8081
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: microservices
+    - podSelector:
+        matchLabels:
+          component: backend
+    ports:
+    - protocol: TCP
+      port: 8080
+    - protocol: TCP
+      port: 8081
+    - protocol: TCP
+      port: 8082
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: data-layer
+    - podSelector:
+        matchLabels:
+          app: postgresql
+    ports:
+    - protocol: TCP
+      port: 5432
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: cache-layer
+    - podSelector:
+        matchLabels:
+          app: redis
+    ports:
+    - protocol: TCP
+      port: 6379
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443
+    - protocol: TCP
+      port: 80

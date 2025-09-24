@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paragraph Motion Practice - Day 15</title>
+    <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+    <header class="main-header">
+        <h1>Welcome to Paragraph Motion Practice</h1>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#introduction">Introduction</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#tutorials">Tutorials</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="content-wrapper">
+        <section id="introduction" class="intro-section">
+            <h2>Understanding Paragraph Navigation</h2>
+            <p>Paragraph navigation in Vim is one of the most powerful features for moving through structured text. When you press the '{' key, you move to the beginning of the current paragraph. When you press '}', you move to the end of the current paragraph.</p>
+
+            <p>This technique becomes particularly useful when working with HTML documents, where logical sections are separated by blank lines or different block elements. You can quickly jump between sections without having to count lines or search for specific text.</p>
+
+            <p>Understanding how Vim defines paragraphs is crucial. A paragraph boundary occurs at blank lines, certain formatting commands, or changes in block-level elements. This makes paragraph motion perfect for navigating structured documents like this HTML file.</p>
+        </section>
+
+        <section id="features" class="features-section">
+            <h2>Key Features of Paragraph Motion</h2>
+            <p>The beauty of paragraph motion lies in its simplicity and effectiveness. Unlike word-by-word navigation, paragraph motion allows you to think in terms of logical content blocks rather than individual characters or words.</p>
+
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h3>Speed Navigation</h3>
+                    <p>Move quickly between logical sections of your document without having to manually scroll or search. This is especially useful in long documents with clear section divisions.</p>
+                </div>
+
+                <div class="feature-item">
+                    <h3>Content-Aware Movement</h3>
+                    <p>Vim understands the structure of your document and moves based on content boundaries rather than arbitrary line counts. This makes your navigation more intuitive and predictable.</p>
+                </div>
+
+                <div class="feature-item">
+                    <h3>Editing Efficiency</h3>
+                    <p>Combine paragraph motion with operators like 'd' for delete or 'y' for yank to manipulate entire sections of content with just a few keystrokes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="tutorials" class="tutorials-section">
+            <h2>Practice Exercises</h2>
+            <p>Try these exercises to master paragraph motion. Remember that each section in this document is separated by clear boundaries that Vim recognizes as paragraph breaks.</p>
+
+            <article class="tutorial-item">
+                <h3>Exercise 1: Basic Navigation</h3>
+                <p>Place your cursor anywhere in this paragraph and practice using '{' and '}' to move between the different sections. Notice how the cursor jumps to the beginning and end of logical content blocks.</p>
+
+                <p>This is a separate paragraph within the same article. Practice moving between these paragraphs using the motion commands. Pay attention to how Vim treats each paragraph as a distinct unit.</p>
+            </article>
+
+            <article class="tutorial-item">
+                <h3>Exercise 2: Combined Operations</h3>
+                <p>Now try combining paragraph motion with other operations. Use 'd}' to delete from the cursor to the end of the current paragraph, or 'y{' to yank from the cursor to the beginning of the paragraph.</p>
+
+                <p>This paragraph is perfect for practicing deletion and yanking operations. Try selecting this entire paragraph using 'v}' to visually select from cursor to paragraph end.</p>
+            </article>
+
+            <article class="tutorial-item">
+                <h3>Exercise 3: Navigation Patterns</h3>
+                <p>Develop muscle memory by repeatedly navigating through this document using only paragraph motions. Start from the top and use '}' to move through each section systematically.</p>
+
+                <p>Practice going backwards as well. Use '{' to move to previous paragraph beginnings. This bidirectional navigation is essential for efficient text editing workflows.</p>
+            </article>
+        </section>
+
+        <section id="advanced-techniques" class="advanced-section">
+            <h2>Advanced Paragraph Techniques</h2>
+            <p>Once you're comfortable with basic paragraph motion, you can explore more advanced techniques that combine paragraph navigation with other Vim features.</p>
+
+            <div class="technique-list">
+                <h3>Counting with Motions</h3>
+                <p>Use numbers before paragraph motions to jump multiple paragraphs at once. For example, '3}' moves three paragraphs forward, while '2{' moves two paragraphs backward.</p>
+
+                <h3>Visual Mode Integration</h3>
+                <p>Paragraph motions work excellently with visual mode. Use 'v}' to select to the end of a paragraph, or 'V{' to select entire lines back to the previous paragraph boundary.</p>
+
+                <h3>Search and Paragraph Motion</h3>
+                <p>Combine search with paragraph motion for powerful navigation. Search for a term, then use paragraph motions to navigate within the context of your search results.</p>
+            </div>
+        </section>
+
+        <section id="tips" class="tips-section">
+            <h2>Pro Tips for Paragraph Navigation</h2>
+            <p>These professional tips will help you become more efficient with paragraph motion and integrate it seamlessly into your editing workflow.</p>
+
+            <ul class="tips-list">
+                <li>Always think in terms of content blocks rather than individual lines when navigating</li>
+                <li>Use paragraph motion for code review - jump between functions and class definitions</li>
+                <li>Combine with marks to quickly return to important paragraph locations</li>
+                <li>Practice in different file types to understand how Vim interprets paragraph boundaries</li>
+                <li>Use paragraph motion with indentation commands for better code formatting</li>
+            </ul>
+
+            <p>Remember that mastery comes with practice. The more you use paragraph motion, the more natural it becomes. Soon you'll find yourself thinking in terms of logical content blocks rather than individual lines or characters.</p>
+        </section>
+
+        <section id="contact" class="contact-section">
+            <h2>Continue Your Learning Journey</h2>
+            <p>Paragraph motion is just one part of efficient Vim navigation. As you master this technique, you'll find that it combines beautifully with other motion commands to create a powerful editing workflow.</p>
+
+            <div class="contact-info">
+                <h3>Next Steps</h3>
+                <p>After mastering paragraph motion, consider exploring sentence motion (parentheses), word motion, and more advanced text objects. Each motion type serves a specific purpose in creating an efficient editing environment.</p>
+
+                <h3>Practice Recommendations</h3>
+                <p>Use this HTML file regularly to practice paragraph motion. Try editing the content, rearranging sections, and navigating quickly between different parts of the document using only keyboard commands.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>Practice paragraph motion daily to build muscle memory and improve your Vim efficiency.</p>
+        <p>Remember: '{' moves to paragraph beginning, '}' moves to paragraph end.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,497 @@
+{
+  "complex_configuration": {
+    "application_settings": {
+      "authentication": {
+        "providers": [
+          {
+            "name": "oauth2",
+            "config": {
+              "client_id": "${OAUTH2_CLIENT_ID}",
+              "client_secret": "${OAUTH2_CLIENT_SECRET}",
+              "scopes": ["read", "write", "admin"],
+              "endpoints": {
+                "authorization": "https://auth.company.com/oauth/authorize",
+                "token": "https://auth.company.com/oauth/token",
+                "userinfo": "https://auth.company.com/oauth/userinfo"
+              }
+            }
+          },
+          {
+            "name": "ldap",
+            "config": {
+              "server": "${LDAP_SERVER}",
+              "port": 636,
+              "base_dn": "dc=company,dc=com",
+              "bind_dn": "cn=admin,dc=company,dc=com",
+              "bind_password": "${LDAP_BIND_PASSWORD}",
+              "search_filter": "(uid={username})",
+              "attributes": ["uid", "cn", "mail", "memberOf"]
+            }
+          }
+        ],
+        "session": {
+          "timeout": 3600,
+          "cookie": {
+            "name": "session_id",
+            "secure": true,
+            "httpOnly": true,
+            "sameSite": "strict"
+          }
+        }
+      },
+      "database": {
+        "connections": {
+          "primary": {
+            "host": "${DB_PRIMARY_HOST}",
+            "port": 5432,
+            "database": "application_db",
+            "username": "${DB_USERNAME}",
+            "password": "${DB_PASSWORD}",
+            "pool": {
+              "min": 5,
+              "max": 20,
+              "idle_timeout": 30000
+            },
+            "ssl": {
+              "enabled": true,
+              "ca_cert": "/etc/ssl/certs/ca.pem",
+              "client_cert": "/etc/ssl/certs/client.pem",
+              "client_key": "/etc/ssl/private/client.key"
+            }
+          },
+          "replica": {
+            "host": "${DB_REPLICA_HOST}",
+            "port": 5432,
+            "database": "application_db",
+            "username": "${DB_REPLICA_USERNAME}",
+            "password": "${DB_REPLICA_PASSWORD}",
+            "readonly": true
+          }
+        }
+      },
+      "cache": {
+        "redis": {
+          "clusters": [
+            {
+              "name": "session_cache",
+              "nodes": [
+                {
+                  "host": "${REDIS_SESSION_HOST_1}",
+                  "port": 6379
+                },
+                {
+                  "host": "${REDIS_SESSION_HOST_2}",
+                  "port": 6379
+                }
+              ],
+              "password": "${REDIS_SESSION_PASSWORD}",
+              "database": 0,
+              "key_prefix": "session:"
+            },
+            {
+              "name": "application_cache",
+              "nodes": [
+                {
+                  "host": "${REDIS_APP_HOST_1}",
+                  "port": 6379
+                },
+                {
+                  "host": "${REDIS_APP_HOST_2}",
+                  "port": 6379
+                }
+              ],
+              "password": "${REDIS_APP_PASSWORD}",
+              "database": 1,
+              "key_prefix": "app:"
+            }
+          ]
+        }
+      }
+    },
+    "microservices": [
+      {
+        "name": "user-service",
+        "deployment": {
+          "image": "registry.company.com/user-service:${USER_SERVICE_VERSION}",
+          "replicas": 3,
+          "resources": {
+            "requests": {
+              "cpu": "100m",
+              "memory": "256Mi"
+            },
+            "limits": {
+              "cpu": "500m",
+              "memory": "1Gi"
+            }
+          },
+          "environment": {
+            "NODE_ENV": "production",
+            "DATABASE_URL": "postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_PRIMARY_HOST}:5432/users",
+            "REDIS_URL": "redis://:${REDIS_SESSION_PASSWORD}@${REDIS_SESSION_HOST_1}:6379/0",
+            "JWT_SECRET": "${JWT_SECRET}",
+            "CORS_ORIGINS": "${CORS_ORIGINS}",
+            "API_RATE_LIMIT": "${API_RATE_LIMIT:-1000}",
+            "LOG_LEVEL": "${LOG_LEVEL:-info}"
+          },
+          "secrets": [
+            {
+              "name": "database-credentials",
+              "keys": ["username", "password", "url"]
+            },
+            {
+              "name": "jwt-secrets",
+              "keys": ["secret", "issuer", "audience"]
+            }
+          ]
+        },
+        "service": {
+          "type": "ClusterIP",
+          "ports": [
+            {
+              "name": "http",
+              "port": 80,
+              "targetPort": 8080
+            },
+            {
+              "name": "metrics",
+              "port": 9090,
+              "targetPort": 9090
+            }
+          ]
+        },
+        "ingress": {
+          "enabled": true,
+          "annotations": {
+            "kubernetes.io/ingress.class": "nginx",
+            "nginx.ingress.kubernetes.io/rate-limit": "100",
+            "nginx.ingress.kubernetes.io/ssl-redirect": "true",
+            "cert-manager.io/cluster-issuer": "letsencrypt-prod"
+          },
+          "hosts": [
+            {
+              "host": "users.api.company.com",
+              "paths": [
+                {
+                  "path": "/",
+                  "pathType": "Prefix"
+                }
+              ]
+            }
+          ],
+          "tls": [
+            {
+              "secretName": "user-service-tls",
+              "hosts": ["users.api.company.com"]
+            }
+          ]
+        }
+      },
+      {
+        "name": "order-service",
+        "deployment": {
+          "image": "registry.company.com/order-service:${ORDER_SERVICE_VERSION}",
+          "replicas": 5,
+          "resources": {
+            "requests": {
+              "cpu": "200m",
+              "memory": "512Mi"
+            },
+            "limits": {
+              "cpu": "1000m",
+              "memory": "2Gi"
+            }
+          },
+          "environment": {
+            "NODE_ENV": "production",
+            "DATABASE_URL": "postgresql://${DB_USERNAME}:${DB_PASSWORD}@${DB_PRIMARY_HOST}:5432/orders",
+            "USER_SERVICE_URL": "http://user-service.production.svc.cluster.local/api/v1",
+            "PAYMENT_SERVICE_URL": "http://payment-service.production.svc.cluster.local/api/v1",
+            "QUEUE_URL": "amqp://${QUEUE_USERNAME}:${QUEUE_PASSWORD}@${QUEUE_HOST}:5672/",
+            "WEBHOOK_URLS": {
+              "order_created": "${WEBHOOK_ORDER_CREATED}",
+              "order_updated": "${WEBHOOK_ORDER_UPDATED}",
+              "order_cancelled": "${WEBHOOK_ORDER_CANCELLED}"
+            }
+          }
+        }
+      }
+    ],
+    "monitoring": {
+      "prometheus": {
+        "global": {
+          "scrape_interval": "15s",
+          "evaluation_interval": "15s",
+          "external_labels": {
+            "cluster": "production",
+            "environment": "prod"
+          }
+        },
+        "scrape_configs": [
+          {
+            "job_name": "kubernetes-pods",
+            "kubernetes_sd_configs": [
+              {
+                "role": "pod",
+                "namespaces": {
+                  "names": ["production", "monitoring"]
+                }
+              }
+            ],
+            "relabel_configs": [
+              {
+                "source_labels": ["__meta_kubernetes_pod_annotation_prometheus_io_scrape"],
+                "action": "keep",
+                "regex": true
+              },
+              {
+                "source_labels": ["__meta_kubernetes_pod_annotation_prometheus_io_path"],
+                "action": "replace",
+                "target_label": "__metrics_path__",
+                "regex": "(.+)"
+              }
+            ]
+          },
+          {
+            "job_name": "kubernetes-services",
+            "kubernetes_sd_configs": [
+              {
+                "role": "service"
+              }
+            ],
+            "relabel_configs": [
+              {
+                "source_labels": ["__meta_kubernetes_service_annotation_prometheus_io_scrape"],
+                "action": "keep",
+                "regex": true
+              }
+            ]
+          }
+        ],
+        "alerting": {
+          "alertmanagers": [
+            {
+              "static_configs": [
+                {
+                  "targets": ["alertmanager:9093"]
+                }
+              ]
+            }
+          ]
+        },
+        "rule_files": [
+          "/etc/prometheus/rules/*.yml"
+        ]
+      },
+      "alertmanager": {
+        "global": {
+          "smtp_smarthost": "${SMTP_HOST}:587",
+          "smtp_from": "alerts@company.com",
+          "smtp_auth_username": "${SMTP_USERNAME}",
+          "smtp_auth_password": "${SMTP_PASSWORD}"
+        },
+        "templates": [
+          "/etc/alertmanager/templates/*.tmpl"
+        ],
+        "route": {
+          "group_by": ["alertname", "cluster", "service"],
+          "group_wait": "10s",
+          "group_interval": "10s",
+          "repeat_interval": "1h",
+          "receiver": "default",
+          "routes": [
+            {
+              "match": {
+                "severity": "critical"
+              },
+              "receiver": "critical-alerts",
+              "group_wait": "5s",
+              "repeat_interval": "15m"
+            },
+            {
+              "match": {
+                "team": "platform"
+              },
+              "receiver": "platform-team"
+            }
+          ]
+        },
+        "receivers": [
+          {
+            "name": "default",
+            "email_configs": [
+              {
+                "to": "alerts@company.com",
+                "subject": "[{{ .Status | toUpper }}] {{ .GroupLabels.alertname }}",
+                "body": "{{ range .Alerts }}{{ .Annotations.summary }}{{ end }}"
+              }
+            ]
+          },
+          {
+            "name": "critical-alerts",
+            "email_configs": [
+              {
+                "to": "oncall@company.com",
+                "subject": "[CRITICAL] {{ .GroupLabels.alertname }}",
+                "body": "{{ range .Alerts }}{{ .Annotations.description }}{{ end }}"
+              }
+            ],
+            "slack_configs": [
+              {
+                "api_url": "${SLACK_WEBHOOK_URL}",
+                "channel": "#alerts-critical",
+                "title": "Critical Alert: {{ .GroupLabels.alertname }}",
+                "text": "{{ range .Alerts }}{{ .Annotations.description }}{{ end }}"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "security": {
+      "rbac": {
+        "roles": [
+          {
+            "name": "pod-reader",
+            "rules": [
+              {
+                "apiGroups": [""],
+                "resources": ["pods"],
+                "verbs": ["get", "list", "watch"]
+              }
+            ]
+          },
+          {
+            "name": "deployment-manager",
+            "rules": [
+              {
+                "apiGroups": ["apps"],
+                "resources": ["deployments", "replicasets"],
+                "verbs": ["get", "list", "watch", "create", "update", "patch", "delete"]
+              },
+              {
+                "apiGroups": [""],
+                "resources": ["pods", "services", "configmaps", "secrets"],
+                "verbs": ["get", "list", "watch", "create", "update", "patch"]
+              }
+            ]
+          }
+        ],
+        "bindings": [
+          {
+            "role": "pod-reader",
+            "subjects": [
+              {
+                "kind": "User",
+                "name": "monitoring-user"
+              },
+              {
+                "kind": "ServiceAccount",
+                "name": "prometheus",
+                "namespace": "monitoring"
+              }
+            ]
+          },
+          {
+            "role": "deployment-manager",
+            "subjects": [
+              {
+                "kind": "User",
+                "name": "deploy-user"
+              },
+              {
+                "kind": "ServiceAccount",
+                "name": "ci-cd-deployer",
+                "namespace": "jenkins"
+              }
+            ]
+          }
+        ]
+      },
+      "network_policies": [
+        {
+          "name": "deny-all-ingress",
+          "selector": {},
+          "policy_types": ["Ingress"]
+        },
+        {
+          "name": "allow-monitoring",
+          "selector": {
+            "matchLabels": {
+              "app": "prometheus"
+            }
+          },
+          "ingress": [
+            {
+              "from": [
+                {
+                  "namespaceSelector": {
+                    "matchLabels": {
+                      "name": "monitoring"
+                    }
+                  }
+                }
+              ],
+              "ports": [
+                {
+                  "protocol": "TCP",
+                  "port": 9090
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "ci_cd": {
+      "jenkins": {
+        "plugins": [
+          "kubernetes",
+          "docker-workflow",
+          "pipeline-stage-view",
+          "git",
+          "github",
+          "slack"
+        ],
+        "pipelines": [
+          {
+            "name": "user-service-pipeline",
+            "repository": "https://github.com/company/user-service.git",
+            "branch": "main",
+            "triggers": ["push", "pull_request"],
+            "stages": [
+              {
+                "name": "checkout",
+                "script": "git clone ${REPO_URL} && cd user-service"
+              },
+              {
+                "name": "test",
+                "script": "npm test && npm run test:integration"
+              },
+              {
+                "name": "build",
+                "script": "docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} ."
+              },
+              {
+                "name": "security-scan",
+                "script": "trivy image --format json --output scan-results.json ${IMAGE_NAME}:${BUILD_NUMBER}"
+              },
+              {
+                "name": "push",
+                "script": "docker push ${IMAGE_NAME}:${BUILD_NUMBER}"
+              },
+              {
+                "name": "deploy-staging",
+                "script": "helm upgrade --install user-service ./helm/user-service --set image.tag=${BUILD_NUMBER} --namespace staging"
+              },
+              {
+                "name": "deploy-production",
+                "approval_required": true,
+                "script": "helm upgrade --install user-service ./helm/user-service --set image.tag=${BUILD_NUMBER} --namespace production"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

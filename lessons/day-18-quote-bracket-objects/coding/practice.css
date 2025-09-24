@@ -1,0 +1,508 @@
+/* Day 18 - Quote and Bracket Objects Practice CSS */
+/* Styling for practicing quote and bracket text objects */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    line-height: 1.6;
+    color: #2c3e50;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+/* Header styling */
+.main-header {
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    color: white;
+    padding: 50px;
+    text-align: center;
+    position: relative;
+}
+
+.main-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><defs><pattern id="quotes" width="60" height="60" patternUnits="userSpaceOnUse"><text x="10" y="20" fill="white" opacity="0.1" font-size="14">"</text><text x="40" y="40" fill="white" opacity="0.1" font-size="14">\'</text><text x="20" y="50" fill="white" opacity="0.1" font-size="14">(</text><text x="50" y="15" fill="white" opacity="0.1" font-size="14">[</text></pattern></defs><rect width="60" height="60" fill="url(%23quotes)"/></svg>');
+}
+
+.main-header h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+}
+
+.main-header p {
+    font-size: 1.4rem;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+    font-family: 'Georgia', serif;
+}
+
+/* Main content styling */
+.content {
+    padding: 50px;
+}
+
+/* Section styling */
+section {
+    margin-bottom: 60px;
+    padding: 40px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border-left: 6px solid #3498db;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    position: relative;
+}
+
+section h2 {
+    color: #2c3e50;
+    font-size: 2.4rem;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid #e74c3c;
+    font-family: 'Georgia', serif;
+}
+
+section p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    text-align: justify;
+}
+
+/* Code styling for better quote/bracket visibility */
+code {
+    background: #2c3e50;
+    color: #1abc9c;
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.95em;
+    font-weight: bold;
+}
+
+pre {
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 25px;
+    border-radius: 10px;
+    overflow-x: auto;
+    margin: 20px 0;
+    border-left: 5px solid #e74c3c;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    border-radius: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Quote basics section */
+.quote-basics {
+    background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+    border-left-color: #27ae60;
+}
+
+.quote-examples {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin: 25px 0;
+    border: 2px solid #27ae60;
+    box-shadow: 0 3px 10px rgba(39, 174, 96, 0.1);
+}
+
+.quote-examples h3 {
+    color: #27ae60;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.quote-examples ul {
+    list-style: none;
+    padding: 0;
+}
+
+.quote-examples li {
+    margin-bottom: 12px;
+    padding: 10px 15px;
+    background: #e8f5e8;
+    border-radius: 6px;
+    border-left: 3px solid #27ae60;
+    font-family: 'Monaco', monospace;
+}
+
+.mixed-quotes {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #bdc3c7;
+}
+
+.mixed-quotes h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.mixed-quotes p {
+    font-family: 'Monaco', monospace;
+    background: white;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border-left: 3px solid #3498db;
+}
+
+/* Bracket basics section */
+.bracket-basics {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-left-color: #2196f3;
+}
+
+.bracket-examples {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin: 25px 0;
+    border: 2px solid #2196f3;
+    box-shadow: 0 3px 10px rgba(33, 150, 243, 0.1);
+}
+
+.bracket-examples h3 {
+    color: #2196f3;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.bracket-examples ul {
+    list-style: none;
+    padding: 0;
+}
+
+.bracket-examples li {
+    margin-bottom: 12px;
+    padding: 10px 15px;
+    background: #e3f2fd;
+    border-radius: 6px;
+    border-left: 3px solid #2196f3;
+    font-family: 'Monaco', monospace;
+}
+
+.nested-brackets {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #9e9e9e;
+}
+
+.nested-brackets h3 {
+    color: #424242;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.nested-brackets p {
+    font-family: 'Monaco', monospace;
+    background: white;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border-left: 3px solid #ff9800;
+    font-size: 0.95rem;
+}
+
+/* Programming examples section */
+.programming-examples {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    border-left-color: #ff9800;
+}
+
+.javascript-examples,
+.html-examples,
+.css-examples {
+    margin: 30px 0;
+}
+
+.javascript-examples h3,
+.html-examples h3,
+.css-examples h3 {
+    color: #e65100;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    padding: 10px 15px;
+    background: rgba(255, 152, 0, 0.1);
+    border-radius: 8px;
+    border-left: 4px solid #ff9800;
+}
+
+/* Complex patterns section */
+.complex-patterns {
+    background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+    border-left-color: #9c27b0;
+}
+
+.regex-examples {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin: 25px 0;
+    border: 2px solid #9c27b0;
+}
+
+.regex-examples h3 {
+    color: #9c27b0;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.regex-examples ul {
+    list-style: none;
+    padding: 0;
+}
+
+.regex-examples li {
+    margin-bottom: 15px;
+    padding: 12px 15px;
+    background: #f3e5f5;
+    border-radius: 6px;
+    border-left: 3px solid #9c27b0;
+    font-family: 'Monaco', monospace;
+    word-break: break-all;
+}
+
+.json-examples,
+.template-examples {
+    margin: 30px 0;
+}
+
+.json-examples h3,
+.template-examples h3 {
+    color: #6a1b9a;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+/* Practice exercises section */
+.practice-exercises {
+    background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+    border-left-color: #4caf50;
+}
+
+.exercise-1,
+.exercise-2,
+.exercise-3,
+.exercise-4,
+.exercise-5 {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin: 25px 0;
+    border: 2px solid #4caf50;
+    box-shadow: 0 3px 10px rgba(76, 175, 80, 0.1);
+}
+
+.exercise-1 h3,
+.exercise-2 h3,
+.exercise-3 h3,
+.exercise-4 h3,
+.exercise-5 h3 {
+    color: #2e7d32;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    padding: 8px 12px;
+    background: rgba(76, 175, 80, 0.1);
+    border-radius: 6px;
+    border-left: 4px solid #4caf50;
+}
+
+.exercise-1 p,
+.exercise-2 p,
+.exercise-3 p {
+    font-family: 'Monaco', monospace;
+    background: #f1f8e9;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    border-left: 3px solid #8bc34a;
+    font-size: 0.95rem;
+}
+
+/* Tips section */
+.tips-section {
+    background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+    border-left-color: #ffc107;
+}
+
+.tips-container,
+.common-patterns,
+.troubleshooting {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin: 25px 0;
+    border: 2px solid #ffc107;
+}
+
+.tips-container h3,
+.common-patterns h3,
+.troubleshooting h3 {
+    color: #f57c00;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.tips-container ul,
+.common-patterns ul,
+.troubleshooting ul {
+    list-style-type: disc;
+    padding-left: 25px;
+}
+
+.tips-container li,
+.common-patterns li,
+.troubleshooting li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+/* Advanced techniques section */
+.advanced-techniques {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    border-left-color: #f44336;
+}
+
+.workflow-examples,
+.integration-examples {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin: 25px 0;
+    border: 2px solid #f44336;
+}
+
+.workflow-examples h3,
+.integration-examples h3 {
+    color: #c62828;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.integration-examples ul {
+    list-style-type: disc;
+    padding-left: 25px;
+}
+
+.integration-examples li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+/* Footer styling */
+.main-footer {
+    background: linear-gradient(135deg, #37474f 0%, #263238 100%);
+    color: white;
+    padding: 40px 50px;
+    text-align: center;
+}
+
+.main-footer p {
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.main-footer p:last-child {
+    margin-bottom: 0;
+    font-weight: bold;
+    color: #4fc3f7;
+    font-family: 'Monaco', monospace;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .content {
+        padding: 30px 20px;
+    }
+
+    .main-header {
+        padding: 30px 20px;
+    }
+
+    .main-header h1 {
+        font-size: 2.2rem;
+    }
+
+    section {
+        padding: 25px 20px;
+    }
+
+    section h2 {
+        font-size: 1.8rem;
+    }
+
+    pre {
+        padding: 15px;
+        font-size: 0.8rem;
+    }
+
+    .main-footer {
+        padding: 25px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-header h1 {
+        font-size: 1.8rem;
+    }
+
+    section {
+        padding: 20px 15px;
+    }
+
+    section h2 {
+        font-size: 1.6rem;
+    }
+
+    pre {
+        font-size: 0.75rem;
+        padding: 12px;
+    }
+
+    .regex-examples li {
+        font-size: 0.8rem;
+        word-break: break-all;
+    }
+}

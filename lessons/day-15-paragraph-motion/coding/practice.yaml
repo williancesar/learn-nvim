@@ -1,0 +1,114 @@
+# Cloud Native Microservices Configuration
+# Practice file for paragraph motion ({ } keys)
+# This file has clear paragraph boundaries separated by blank lines
+
+# API Gateway Configuration
+apiGateway:
+  name: "main-gateway"
+  version: "v2.1.0"
+  port: 8080
+  timeout: 30s
+  retryAttempts: 3
+
+# Load Balancer Settings
+loadBalancer:
+  type: "round-robin"
+  healthCheck:
+    interval: 10s
+    timeout: 5s
+    path: "/health"
+    port: 8080
+
+# Authentication Service
+auth:
+  provider: "oauth2"
+  issuer: "https://auth.company.com"
+  audience: "api.company.com"
+  tokenExpiry: "1h"
+  refreshExpiry: "24h"
+
+# Database Configuration
+database:
+  primary:
+    host: "postgres-primary.db.svc.cluster.local"
+    port: 5432
+    database: "maindb"
+    username: "app_user"
+    maxConnections: 100
+    connectionTimeout: 10s
+
+  replica:
+    host: "postgres-replica.db.svc.cluster.local"
+    port: 5432
+    database: "maindb"
+    username: "readonly_user"
+    maxConnections: 50
+
+# Redis Cache Configuration
+cache:
+  cluster:
+    - "redis-0.cache.svc.cluster.local:6379"
+    - "redis-1.cache.svc.cluster.local:6379"
+    - "redis-2.cache.svc.cluster.local:6379"
+  timeout: 2s
+  retryDelay: 100ms
+
+# Message Queue Settings
+messageQueue:
+  type: "rabbitmq"
+  host: "rabbitmq.queue.svc.cluster.local"
+  port: 5672
+  virtualHost: "/production"
+  exchange: "main_exchange"
+  durableQueues: true
+
+# Monitoring and Observability
+monitoring:
+  metrics:
+    enabled: true
+    endpoint: "/metrics"
+    interval: 15s
+    retention: "7d"
+
+  logging:
+    level: "info"
+    format: "json"
+    destination: "stdout"
+    structuredLogs: true
+
+  tracing:
+    enabled: true
+    sampler: "probabilistic"
+    samplingRate: 0.1
+    jaegerEndpoint: "http://jaeger:14268/api/traces"
+
+# Security Configuration
+security:
+  cors:
+    allowedOrigins:
+      - "https://app.company.com"
+      - "https://admin.company.com"
+    allowedMethods: ["GET", "POST", "PUT", "DELETE"]
+    allowedHeaders: ["Authorization", "Content-Type"]
+
+  rateLimit:
+    requests: 1000
+    window: "1m"
+    burst: 100
+
+# Service Discovery
+serviceDiscovery:
+  type: "kubernetes"
+  namespace: "production"
+  syncInterval: 30s
+  watchEnabled: true
+
+# Backup Configuration
+backup:
+  schedule: "0 2 * * *"
+  retention: "30d"
+  storage:
+    type: "s3"
+    bucket: "company-backups"
+    region: "us-west-2"
+    encryption: true

@@ -1,0 +1,288 @@
+{
+  "marks_navigation_practice": {
+    "section_a_database_config": {
+      "primary_database": {
+        "host": "postgres-primary.db.company.local",
+        "port": 5432,
+        "database": "enterprise_production",
+        "username": "app_primary_user",
+        "password": "secure_primary_password_123",
+        "max_connections": 200,
+        "connection_timeout": 30,
+        "idle_timeout": 600,
+        "max_lifetime": 1800
+      },
+      "replica_databases": [
+        {
+          "host": "postgres-replica-1.db.company.local",
+          "port": 5432,
+          "database": "enterprise_production",
+          "username": "app_replica_user",
+          "password": "secure_replica_password_456",
+          "max_connections": 100
+        },
+        {
+          "host": "postgres-replica-2.db.company.local",
+          "port": 5432,
+          "database": "enterprise_production",
+          "username": "app_replica_user",
+          "password": "secure_replica_password_456",
+          "max_connections": 100
+        }
+      ]
+    },
+    "section_b_cache_configuration": {
+      "redis_cluster": {
+        "master_nodes": [
+          {
+            "host": "redis-master-1.cache.company.local",
+            "port": 6379,
+            "auth": "redis_master_password_789"
+          },
+          {
+            "host": "redis-master-2.cache.company.local",
+            "port": 6379,
+            "auth": "redis_master_password_789"
+          },
+          {
+            "host": "redis-master-3.cache.company.local",
+            "port": 6379,
+            "auth": "redis_master_password_789"
+          }
+        ],
+        "slave_nodes": [
+          {
+            "host": "redis-slave-1.cache.company.local",
+            "port": 6379,
+            "master": "redis-master-1.cache.company.local"
+          },
+          {
+            "host": "redis-slave-2.cache.company.local",
+            "port": 6379,
+            "master": "redis-master-2.cache.company.local"
+          },
+          {
+            "host": "redis-slave-3.cache.company.local",
+            "port": 6379,
+            "master": "redis-master-3.cache.company.local"
+          }
+        ]
+      }
+    },
+    "section_c_api_gateway_config": {
+      "kong_gateway": {
+        "admin_api": {
+          "host": "kong-admin.gateway.company.local",
+          "port": 8001,
+          "ssl": false
+        },
+        "proxy": {
+          "host": "kong-proxy.gateway.company.local",
+          "port": 8000,
+          "ssl_port": 8443
+        },
+        "upstream_services": [
+          {
+            "name": "user-service",
+            "url": "http://user-service.backend.company.local:8080",
+            "health_check": "/actuator/health",
+            "timeout": 30000,
+            "retries": 3
+          },
+          {
+            "name": "order-service",
+            "url": "http://order-service.backend.company.local:8080",
+            "health_check": "/health",
+            "timeout": 25000,
+            "retries": 5
+          },
+          {
+            "name": "payment-service",
+            "url": "http://payment-service.backend.company.local:8080",
+            "health_check": "/health",
+            "timeout": 15000,
+            "retries": 3
+          }
+        ]
+      }
+    },
+    "section_d_monitoring_setup": {
+      "prometheus_config": {
+        "server": {
+          "host": "prometheus.monitoring.company.local",
+          "port": 9090,
+          "retention_days": 15,
+          "storage_size_gb": 100
+        },
+        "alertmanager": {
+          "host": "alertmanager.monitoring.company.local",
+          "port": 9093,
+          "notification_channels": [
+            {
+              "type": "slack",
+              "webhook_url": "https://hooks.slack.com/services/T123/B456/xyz789",
+              "channel": "#alerts-production"
+            },
+            {
+              "type": "email",
+              "smtp_server": "smtp.company.com",
+              "recipients": ["oncall@company.com", "devops@company.com"]
+            }
+          ]
+        },
+        "scrape_targets": [
+          {
+            "job_name": "kubernetes-apiservers",
+            "targets": ["k8s-api.company.local:6443"],
+            "scrape_interval": "30s"
+          },
+          {
+            "job_name": "node-exporters",
+            "targets": [
+              "node-1.company.local:9100",
+              "node-2.company.local:9100",
+              "node-3.company.local:9100"
+            ],
+            "scrape_interval": "15s"
+          }
+        ]
+      }
+    },
+    "section_e_security_configuration": {
+      "oauth2_providers": [
+        {
+          "name": "google",
+          "client_id": "123456789012-abcdefghijklmnopqrstuvwxyz.apps.googleusercontent.com",
+          "client_secret": "GOCSPX-abcdefghijklmnopqrstuvwxyz",
+          "authorization_endpoint": "https://accounts.google.com/o/oauth2/v2/auth",
+          "token_endpoint": "https://oauth2.googleapis.com/token",
+          "userinfo_endpoint": "https://openidconnect.googleapis.com/v1/userinfo",
+          "scopes": ["openid", "profile", "email"]
+        },
+        {
+          "name": "github",
+          "client_id": "Iv1.abcdefghijklmnop",
+          "client_secret": "abcdefghijklmnopqrstuvwxyz1234567890",
+          "authorization_endpoint": "https://github.com/login/oauth/authorize",
+          "token_endpoint": "https://github.com/login/oauth/access_token",
+          "userinfo_endpoint": "https://api.github.com/user",
+          "scopes": ["user:email", "read:user"]
+        }
+      ],
+      "jwt_configuration": {
+        "issuer": "https://auth.company.com",
+        "audience": "https://api.company.com",
+        "algorithm": "RS256",
+        "public_key_url": "https://auth.company.com/.well-known/jwks.json",
+        "token_expiry_seconds": 3600,
+        "refresh_token_expiry_seconds": 86400
+      }
+    },
+    "section_f_deployment_config": {
+      "kubernetes_clusters": [
+        {
+          "name": "production",
+          "region": "us-west-2",
+          "version": "1.28.0",
+          "node_groups": [
+            {
+              "name": "control-plane",
+              "instance_type": "t3.medium",
+              "min_size": 3,
+              "max_size": 3,
+              "desired_capacity": 3
+            },
+            {
+              "name": "worker-nodes",
+              "instance_type": "t3.large",
+              "min_size": 5,
+              "max_size": 20,
+              "desired_capacity": 10
+            }
+          ]
+        },
+        {
+          "name": "staging",
+          "region": "us-west-2",
+          "version": "1.28.0",
+          "node_groups": [
+            {
+              "name": "control-plane",
+              "instance_type": "t3.small",
+              "min_size": 1,
+              "max_size": 1,
+              "desired_capacity": 1
+            },
+            {
+              "name": "worker-nodes",
+              "instance_type": "t3.medium",
+              "min_size": 2,
+              "max_size": 5,
+              "desired_capacity": 3
+            }
+          ]
+        }
+      ]
+    },
+    "section_g_backup_configuration": {
+      "database_backups": {
+        "schedule": "0 2 * * *",
+        "retention_days": 30,
+        "compression": true,
+        "encryption": true,
+        "storage": {
+          "type": "s3",
+          "bucket": "company-database-backups",
+          "region": "us-west-2",
+          "storage_class": "STANDARD_IA"
+        }
+      },
+      "application_backups": {
+        "schedule": "0 3 * * *",
+        "retention_days": 14,
+        "compression": true,
+        "storage": {
+          "type": "s3",
+          "bucket": "company-application-backups",
+          "region": "us-west-2"
+        }
+      }
+    },
+    "section_h_logging_configuration": {
+      "elasticsearch": {
+        "cluster_name": "production-logs",
+        "nodes": [
+          {
+            "host": "es-master-1.logging.company.local",
+            "port": 9200,
+            "roles": ["master", "data"]
+          },
+          {
+            "host": "es-master-2.logging.company.local",
+            "port": 9200,
+            "roles": ["master", "data"]
+          },
+          {
+            "host": "es-master-3.logging.company.local",
+            "port": 9200,
+            "roles": ["master", "data"]
+          }
+        ],
+        "index_settings": {
+          "number_of_shards": 3,
+          "number_of_replicas": 1,
+          "refresh_interval": "5s"
+        }
+      },
+      "kibana": {
+        "host": "kibana.logging.company.local",
+        "port": 5601,
+        "elasticsearch_hosts": [
+          "http://es-master-1.logging.company.local:9200",
+          "http://es-master-2.logging.company.local:9200",
+          "http://es-master-3.logging.company.local:9200"
+        ]
+      }
+    }
+  }
+}

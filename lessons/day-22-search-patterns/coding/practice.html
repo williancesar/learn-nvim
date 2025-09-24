@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Patterns Practice - Day 22</title>
+    <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+    <div class="search-container">
+        <header class="search-header">
+            <h1>Search Pattern Mastery</h1>
+            <p class="search-description">HTML with searchable class names, IDs, and content patterns</p>
+        </header>
+
+        <main class="search-content">
+            <section class="pattern-examples" id="basic-patterns">
+                <h2 class="search-title">Basic Search Patterns</h2>
+                <p class="content-text">Practice searching with <span class="highlight-term">forward slash</span> and <span class="highlight-term">question mark</span> commands. Search for class names like "highlight-term", "search-container", or "pattern-examples".</p>
+
+                <div class="search-demo user-interface primary-content">
+                    <h3 class="demo-title">Search Demo Section</h3>
+                    <p class="demo-text">Use /class to find class attributes, or ?content to search backwards for content-related terms. Practice with different search directions and patterns.</p>
+                </div>
+
+                <ul class="searchable-list navigation-menu secondary-content">
+                    <li class="list-item menu-item primary-item">First searchable item with multiple classes</li>
+                    <li class="list-item menu-item secondary-item">Second item for pattern matching practice</li>
+                    <li class="list-item menu-item tertiary-item">Third item with different classification</li>
+                </ul>
+            </section>
+
+            <section class="regex-patterns" id="advanced-search">
+                <h2 class="search-title advanced-title">Regular Expression Patterns</h2>
+                <p class="content-text regex-content">Advanced search using regex patterns. Search for email patterns like user@domain.com, phone numbers like (555) 123-4567, or URLs like https://example.com/path.</p>
+
+                <div class="contact-info data-section searchable-content">
+                    <h3 class="contact-title">Contact Information</h3>
+                    <p class="email-address">Contact us at: support@searchpatterns.com</p>
+                    <p class="phone-number">Phone: (555) 123-4567 or (555) 987-6543</p>
+                    <p class="website-url">Website: https://www.searchpatterns.com</p>
+                    <p class="alt-email">Alternative email: info@patterns.org</p>
+                </div>
+
+                <div class="code-examples programming-content searchable-data">
+                    <h3 class="code-title">Code Pattern Examples</h3>
+                    <pre class="code-block javascript-code"><code>
+function searchExample() {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const phoneRegex = /^\(\d{3}\)\s\d{3}-\d{4}$/;
+    const urlRegex = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b/;
+
+    return {emailPattern: emailRegex, phonePattern: phoneRegex, urlPattern: urlRegex};
+}
+                    </code></pre>
+                </div>
+            </section>
+
+            <section class="id-examples" id="element-ids">
+                <h2 class="search-title id-title">Element ID Patterns</h2>
+                <p class="content-text id-content">Practice searching for element IDs and unique identifiers. Use search patterns to find specific elements by their ID attributes.</p>
+
+                <div id="main-container" class="container-element searchable-container">
+                    <div id="header-section" class="header-element navigation-element">
+                        <h3 id="page-title" class="title-element">Page Title Element</h3>
+                    </div>
+
+                    <div id="content-area" class="content-element main-content">
+                        <div id="article-content" class="article-element text-content">
+                            <p id="intro-paragraph" class="paragraph-element">Introduction paragraph with unique ID</p>
+                            <p id="main-paragraph" class="paragraph-element">Main content paragraph for search practice</p>
+                        </div>
+
+                        <aside id="sidebar-content" class="sidebar-element auxiliary-content">
+                            <div id="widget-area" class="widget-element">
+                                <h4 id="widget-title" class="widget-header">Widget Title</h4>
+                                <p id="widget-text" class="widget-content">Widget content for pattern matching</p>
+                            </div>
+                        </aside>
+                    </div>
+
+                    <footer id="page-footer" class="footer-element">
+                        <p id="footer-text" class="footer-content">Footer text with searchable content</p>
+                    </footer>
+                </div>
+            </section>
+
+            <section class="class-search" id="class-patterns">
+                <h2 class="search-title class-title">Class Name Search Patterns</h2>
+                <p class="content-text class-content">Multiple elements with various class combinations for search practice. Try searching for single classes, multiple classes, or partial class matches.</p>
+
+                <div class="grid-container layout-grid responsive-grid modern-layout">
+                    <div class="grid-item card-element primary-card featured-content">
+                        <h3 class="card-title primary-title">Primary Card Title</h3>
+                        <p class="card-text primary-text">Primary card content for search testing</p>
+                    </div>
+
+                    <div class="grid-item card-element secondary-card standard-content">
+                        <h3 class="card-title secondary-title">Secondary Card Title</h3>
+                        <p class="card-text secondary-text">Secondary card content with different classes</p>
+                    </div>
+
+                    <div class="grid-item card-element tertiary-card special-content">
+                        <h3 class="card-title tertiary-title">Tertiary Card Title</h3>
+                        <p class="card-text tertiary-text">Tertiary card with unique class combinations</p>
+                    </div>
+                </div>
+
+                <nav class="navigation-menu primary-navigation main-nav">
+                    <ul class="nav-list menu-list primary-list">
+                        <li class="nav-item menu-item home-link"><a href="#home" class="nav-link menu-link">Home</a></li>
+                        <li class="nav-item menu-item about-link"><a href="#about" class="nav-link menu-link">About</a></li>
+                        <li class="nav-item menu-item services-link"><a href="#services" class="nav-link menu-link">Services</a></li>
+                        <li class="nav-item menu-item contact-link"><a href="#contact" class="nav-link menu-link">Contact</a></li>
+                    </ul>
+                </nav>
+            </section>
+
+            <section class="data-attributes" id="data-search">
+                <h2 class="search-title data-title">Data Attribute Patterns</h2>
+                <p class="content-text data-content">Elements with data attributes for advanced search practice. Search for data-* attributes and their values.</p>
+
+                <div class="interactive-elements" data-section="interactive" data-type="demo" data-priority="high">
+                    <button class="action-button primary-button" data-action="search" data-target="content" data-method="regex">
+                        Search Action Button
+                    </button>
+
+                    <button class="action-button secondary-button" data-action="filter" data-target="list" data-method="text">
+                        Filter Action Button
+                    </button>
+
+                    <div class="data-display" data-component="display" data-format="table" data-sortable="true">
+                        <table class="data-table search-table" data-rows="5" data-columns="3">
+                            <thead class="table-header">
+                                <tr class="header-row" data-row="header">
+                                    <th class="header-cell" data-column="name" data-sortable="true">Name</th>
+                                    <th class="header-cell" data-column="email" data-sortable="true">Email</th>
+                                    <th class="header-cell" data-column="phone" data-sortable="false">Phone</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-body">
+                                <tr class="data-row user-row" data-row="1" data-user-id="101">
+                                    <td class="data-cell name-cell" data-field="name">John Smith</td>
+                                    <td class="data-cell email-cell" data-field="email">john.smith@example.com</td>
+                                    <td class="data-cell phone-cell" data-field="phone">(555) 123-4567</td>
+                                </tr>
+                                <tr class="data-row user-row" data-row="2" data-user-id="102">
+                                    <td class="data-cell name-cell" data-field="name">Jane Doe</td>
+                                    <td class="data-cell email-cell" data-field="email">jane.doe@example.org</td>
+                                    <td class="data-cell phone-cell" data-field="phone">(555) 987-6543</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section class="pattern-practice" id="search-exercises">
+                <h2 class="search-title exercise-title">Search Exercise Patterns</h2>
+                <p class="content-text exercise-content">Structured exercises for building search pattern skills with various content types and naming conventions.</p>
+
+                <div class="exercise-container practice-area learning-section">
+                    <h3 class="exercise-title practice-title">Exercise 1: Basic Pattern Matching</h3>
+                    <ul class="exercise-list pattern-list search-list">
+                        <li class="exercise-item pattern-item">Search for "search-title" to find all section titles</li>
+                        <li class="exercise-item pattern-item">Use "content-text" to locate paragraph content</li>
+                        <li class="exercise-item pattern-item">Find "card-element" to identify all card components</li>
+                        <li class="exercise-item pattern-item">Look for "data-" to find data attribute patterns</li>
+                    </ul>
+                </div>
+
+                <div class="advanced-exercises complex-patterns expert-level">
+                    <h3 class="advanced-title complex-title">Exercise 2: Advanced Pattern Techniques</h3>
+                    <div class="technique-examples method-demos pattern-samples">
+                        <p class="technique-text sample-text">Use \c to make searches case-insensitive: /CLASS\c finds "class", "Class", "CLASS"</p>
+                        <p class="technique-text sample-text">Use \< and \> for word boundaries: /\<item\> finds "item" but not "items"</p>
+                        <p class="technique-text sample-text">Use . for any character: /h.ml finds "html", "haml", etc.</p>
+                        <p class="technique-text sample-text">Use * for zero or more: /colou*r finds "color" and "colour"</p>
+                    </div>
+                </div>
+
+                <div class="regex-exercises pattern-challenges complex-matching">
+                    <h3 class="regex-title challenge-title">Exercise 3: Regular Expression Challenges</h3>
+                    <div class="challenge-content regex-samples pattern-examples">
+                        <p class="sample-email">Find emails: test@domain.com, user@example.org, admin@site.net</p>
+                        <p class="sample-phone">Find phones: (555) 123-4567, 555-987-6543, +1-555-111-2222</p>
+                        <p class="sample-url">Find URLs: http://example.com, https://www.site.org/path</p>
+                        <p class="sample-hex">Find hex colors: #ff0000, #00ff00, #0066cc, #333</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="search-tips" id="optimization-techniques">
+                <h2 class="search-title tips-title">Search Optimization Techniques</h2>
+                <p class="content-text tips-content">Advanced techniques for efficient search pattern usage and optimization strategies.</p>
+
+                <div class="tips-container optimization-guide efficiency-section">
+                    <h3 class="tips-title guide-title">Search Efficiency Tips</h3>
+                    <ul class="tips-list efficiency-list optimization-list">
+                        <li class="tip-item efficiency-item">Use specific patterns to reduce false matches</li>
+                        <li class="tip-item efficiency-item">Combine search with text objects for powerful editing</li>
+                        <li class="tip-item efficiency-item">Use n and N to navigate through search results quickly</li>
+                        <li class="tip-item efficiency-item">Press * to search for word under cursor</li>
+                        <li class="tip-item efficiency-item">Use :noh to clear search highlighting</li>
+                    </ul>
+                </div>
+
+                <div class="pattern-library reference-guide search-reference">
+                    <h3 class="library-title reference-title">Common Pattern Library</h3>
+                    <div class="pattern-examples reference-examples common-patterns">
+                        <div class="pattern-group email-patterns">
+                            <h4 class="group-title">Email Patterns</h4>
+                            <code class="pattern-code">@.*\.com</code> - Find .com email addresses
+                            <code class="pattern-code">[a-zA-Z0-9._%+-]+@</code> - Find email prefixes
+                        </div>
+
+                        <div class="pattern-group number-patterns">
+                            <h4 class="group-title">Number Patterns</h4>
+                            <code class="pattern-code">\d\{3\}-\d\{4\}</code> - Find phone number patterns
+                            <code class="pattern-code">#[0-9a-fA-F]\{6\}</code> - Find hex color codes
+                        </div>
+
+                        <div class="pattern-group html-patterns">
+                            <h4 class="group-title">HTML Patterns</h4>
+                            <code class="pattern-code">class="[^"]*</code> - Find class attributes
+                            <code class="pattern-code">id="[^"]*</code> - Find ID attributes
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="search-footer page-footer">
+            <p class="footer-text conclusion-text">Master search patterns for efficient navigation and text manipulation in Vim.</p>
+            <p class="footer-commands command-reference">Key commands: /pattern (forward), ?pattern (backward), n (next), N (previous), * (word under cursor)</p>
+        </footer>
+    </div>
+</body>
+</html>

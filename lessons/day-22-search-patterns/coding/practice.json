@@ -1,0 +1,223 @@
+{
+  "search_pattern_practice": {
+    "email_addresses": [
+      "admin@company.com",
+      "user@example.org",
+      "developer@test.net",
+      "support@help.io",
+      "contact@service.co",
+      "info@business.com",
+      "sales@enterprise.org"
+    ],
+    "ip_addresses": [
+      "192.168.1.100",
+      "10.0.0.1",
+      "172.16.0.50",
+      "203.0.113.10",
+      "198.51.100.20",
+      "127.0.0.1",
+      "255.255.255.0"
+    ],
+    "phone_numbers": [
+      "+1-555-123-4567",
+      "(555) 987-6543",
+      "555.456.7890",
+      "+44-20-7946-0958",
+      "+33-1-42-86-83-26",
+      "1-800-CALL-NOW",
+      "555-HELP-NOW"
+    ],
+    "urls": [
+      "https://api.company.com/v1/users",
+      "http://localhost:3000/api/health",
+      "https://staging.service.net/docs",
+      "ftp://files.example.org/uploads",
+      "https://cdn.assets.io/images/logo.png",
+      "ws://websocket.service.com:8080",
+      "https://oauth.provider.com/token"
+    ],
+    "version_numbers": [
+      "v1.2.3",
+      "2.0.0",
+      "v3.14.159",
+      "1.0.0-alpha.1",
+      "2.1.0-beta.3",
+      "v0.9.8-rc.2",
+      "version-4.5.6"
+    ],
+    "configuration_keys": {
+      "database_config": {
+        "primary_host": "postgres-primary.db.local",
+        "primary_port": 5432,
+        "replica_host": "postgres-replica.db.local",
+        "replica_port": 5432,
+        "username": "app_user",
+        "password": "secure_password_123",
+        "max_connections": 100,
+        "timeout_seconds": 30
+      },
+      "cache_config": {
+        "redis_host": "redis.cache.local",
+        "redis_port": 6379,
+        "redis_password": "cache_password_456",
+        "max_memory": "2GB",
+        "eviction_policy": "allkeys-lru",
+        "persistence": "rdb"
+      },
+      "api_config": {
+        "base_url": "https://api.service.com",
+        "timeout_ms": 5000,
+        "retry_attempts": 3,
+        "rate_limit": 1000,
+        "api_key": "sk_live_abc123def456ghi789",
+        "webhook_secret": "whsec_xyz789uvw456rst123"
+      }
+    },
+    "log_entries": [
+      "[2024-03-15 10:30:45] INFO: Application started successfully",
+      "[2024-03-15 10:31:02] DEBUG: Database connection established",
+      "[2024-03-15 10:31:15] WARN: High memory usage detected: 85%",
+      "[2024-03-15 10:32:30] ERROR: Failed to connect to external service",
+      "[2024-03-15 10:33:45] INFO: User authentication successful for user@example.com",
+      "[2024-03-15 10:34:12] DEBUG: Cache hit rate: 95.6%",
+      "[2024-03-15 10:35:20] FATAL: Database connection lost, attempting reconnection"
+    ],
+    "http_status_codes": [
+      {"code": 200, "message": "OK", "description": "Request successful"},
+      {"code": 201, "message": "Created", "description": "Resource created"},
+      {"code": 400, "message": "Bad Request", "description": "Invalid request"},
+      {"code": 401, "message": "Unauthorized", "description": "Authentication required"},
+      {"code": 403, "message": "Forbidden", "description": "Access denied"},
+      {"code": 404, "message": "Not Found", "description": "Resource not found"},
+      {"code": 500, "message": "Internal Server Error", "description": "Server error"}
+    ],
+    "file_paths": [
+      "/var/log/application.log",
+      "/etc/nginx/nginx.conf",
+      "/home/user/documents/readme.txt",
+      "C:\\Windows\\System32\\config\\system",
+      "/usr/local/bin/docker-compose",
+      "~/.ssh/id_rsa.pub",
+      "/opt/applications/webapp/config.yaml"
+    ],
+    "date_time_patterns": [
+      "2024-03-15",
+      "15/03/2024",
+      "03-15-2024",
+      "March 15, 2024",
+      "2024-03-15T10:30:45Z",
+      "2024-03-15 10:30:45.123",
+      "Fri, 15 Mar 2024 10:30:45 GMT"
+    ],
+    "kubernetes_resources": {
+      "deployments": [
+        "frontend-deployment",
+        "backend-api-deployment",
+        "database-deployment",
+        "cache-redis-deployment",
+        "monitoring-prometheus-deployment"
+      ],
+      "services": [
+        "frontend-service",
+        "backend-api-service",
+        "database-service",
+        "cache-service",
+        "monitoring-service"
+      ],
+      "namespaces": [
+        "default",
+        "kube-system",
+        "monitoring",
+        "logging",
+        "ingress-nginx",
+        "cert-manager",
+        "prometheus-system"
+      ],
+      "labels": {
+        "app": ["frontend", "backend", "database", "cache", "monitoring"],
+        "version": ["v1.0.0", "v1.1.0", "v2.0.0", "v2.1.0"],
+        "environment": ["development", "staging", "production"],
+        "tier": ["frontend", "backend", "database"]
+      }
+    },
+    "regex_patterns_to_find": {
+      "comments": [
+        "// TODO: Implement user authentication",
+        "/* FIXME: Memory leak in cache cleanup */",
+        "# NOTE: This configuration is environment-specific",
+        "<!-- WARNING: Deprecated feature, remove in v3.0 -->",
+        "// BUG: Race condition in concurrent access",
+        "/* HACK: Temporary workaround for API limitation */"
+      ],
+      "sql_queries": [
+        "SELECT * FROM users WHERE active = true",
+        "INSERT INTO orders (user_id, total) VALUES (?, ?)",
+        "UPDATE products SET price = ? WHERE id = ?",
+        "DELETE FROM sessions WHERE expires_at < NOW()",
+        "CREATE INDEX idx_user_email ON users(email)",
+        "ALTER TABLE orders ADD COLUMN status VARCHAR(50)"
+      ],
+      "environment_variables": [
+        "${DATABASE_URL}",
+        "$API_KEY",
+        "${REDIS_PASSWORD}",
+        "$NODE_ENV",
+        "${JWT_SECRET}",
+        "$PORT",
+        "${LOG_LEVEL}"
+      ]
+    },
+    "container_images": [
+      "nginx:1.21.0",
+      "postgres:15.2",
+      "redis:7.0-alpine",
+      "node:18.15.0-slim",
+      "openjdk:17-jdk-slim",
+      "python:3.11-slim",
+      "alpine:3.17"
+    ],
+    "port_numbers": [
+      80, 443, 8080, 8443, 3000, 3001, 5432, 6379, 9090, 9200, 5672, 27017
+    ],
+    "uuid_examples": [
+      "550e8400-e29b-41d4-a716-446655440000",
+      "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+      "6ba7b811-9dad-11d1-80b4-00c04fd430c8",
+      "01234567-89ab-cdef-0123-456789abcdef",
+      "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+      "12345678-1234-5678-9abc-123456789012"
+    ],
+    "json_web_tokens": [
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+      "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoLmNvbXBhbnkuY29tIiwic3ViIjoidXNlckBleGFtcGxlLmNvbSIsImF1ZCI6ImFwaS5jb21wYW55LmNvbSIsImV4cCI6MTY3OTQ4MTYwMCwiaWF0IjoxNjc5NDc4MDAwfQ.signature"
+    ],
+    "base64_encoded_strings": [
+      "SGVsbG8gV29ybGQ=",
+      "VGhpcyBpcyBhIHRlc3Q=",
+      "YWRtaW46cGFzc3dvcmQ=",
+      "dXNlcm5hbWU6c2VjcmV0",
+      "Y29uZmlnOmRhdGE="
+    ],
+    "hash_values": {
+      "md5": [
+        "5d41402abc4b2a76b9719d911017c592",
+        "098f6bcd4621d373cade4e832627b4f6",
+        "e99a18c428cb38d5f260853678922e03"
+      ],
+      "sha256": [
+        "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+        "2cf24dba4f21d4288094c95a8d8a3b2e7e3b8a9b7e4c9f5a6e3d2c1b0a9f8e7d"
+      ]
+    },
+    "api_endpoints": [
+      "GET /api/v1/users",
+      "POST /api/v1/auth/login",
+      "PUT /api/v1/users/{id}",
+      "DELETE /api/v1/sessions/{sessionId}",
+      "PATCH /api/v1/profile",
+      "OPTIONS /api/v1/cors-check",
+      "HEAD /api/v1/health"
+    ]
+  }
+}

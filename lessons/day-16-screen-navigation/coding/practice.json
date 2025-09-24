@@ -1,0 +1,793 @@
+{
+  "comprehensive_devops_platform": {
+    "metadata": {
+      "platform_name": "Enterprise DevOps Platform",
+      "version": "3.2.1",
+      "architecture": "microservices",
+      "deployment_model": "cloud-native",
+      "created_date": "2024-01-16T08:00:00Z",
+      "last_modified": "2024-01-16T14:30:00Z",
+      "maintainer": "platform-engineering-team",
+      "documentation_url": "https://docs.company.com/platform",
+      "support_contact": "platform-support@company.com",
+      "compliance_frameworks": ["SOC2", "ISO27001", "PCI-DSS"],
+      "data_classification": "internal"
+    },
+
+    "global_configuration": {
+      "environments": {
+        "production": {
+          "cluster_name": "prod-k8s-cluster",
+          "region": "us-west-2",
+          "backup_region": "us-east-1",
+          "node_count": 15,
+          "auto_scaling": {
+            "enabled": true,
+            "min_nodes": 10,
+            "max_nodes": 50
+          },
+          "monitoring": {
+            "level": "comprehensive",
+            "retention_days": 90,
+            "alerting": "critical"
+          },
+          "security": {
+            "level": "strict",
+            "network_policies": "enabled",
+            "pod_security_standards": "restricted"
+          }
+        },
+        "staging": {
+          "cluster_name": "staging-k8s-cluster",
+          "region": "us-west-2",
+          "node_count": 5,
+          "auto_scaling": {
+            "enabled": true,
+            "min_nodes": 3,
+            "max_nodes": 20
+          },
+          "monitoring": {
+            "level": "standard",
+            "retention_days": 30,
+            "alerting": "warning"
+          },
+          "security": {
+            "level": "standard",
+            "network_policies": "enabled",
+            "pod_security_standards": "baseline"
+          }
+        },
+        "development": {
+          "cluster_name": "dev-k8s-cluster",
+          "region": "us-west-2",
+          "node_count": 3,
+          "auto_scaling": {
+            "enabled": false,
+            "min_nodes": 2,
+            "max_nodes": 10
+          },
+          "monitoring": {
+            "level": "basic",
+            "retention_days": 7,
+            "alerting": "disabled"
+          },
+          "security": {
+            "level": "relaxed",
+            "network_policies": "disabled",
+            "pod_security_standards": "privileged"
+          }
+        }
+      },
+
+      "infrastructure_providers": {
+        "primary": {
+          "name": "aws",
+          "regions": ["us-west-2", "us-east-1", "eu-west-1"],
+          "services": {
+            "compute": ["ec2", "eks", "fargate"],
+            "storage": ["s3", "ebs", "efs"],
+            "database": ["rds", "elasticache", "documentdb"],
+            "networking": ["vpc", "cloudfront", "route53"],
+            "security": ["iam", "kms", "secrets-manager"],
+            "monitoring": ["cloudwatch", "x-ray"]
+          },
+          "cost_optimization": {
+            "spot_instances": true,
+            "reserved_instances": true,
+            "savings_plans": true,
+            "lifecycle_policies": true
+          }
+        },
+        "secondary": {
+          "name": "azure",
+          "regions": ["eastus", "westeurope"],
+          "services": {
+            "compute": ["vm", "aks", "container-instances"],
+            "storage": ["blob-storage", "disk-storage"],
+            "database": ["sql-database", "cosmos-db"],
+            "networking": ["virtual-network", "cdn"],
+            "security": ["key-vault", "active-directory"],
+            "monitoring": ["monitor", "application-insights"]
+          }
+        }
+      },
+
+      "container_orchestration": {
+        "kubernetes": {
+          "distribution": "eks",
+          "version": "1.28.5",
+          "networking": {
+            "cni": "aws-vpc-cni",
+            "service_mesh": "istio",
+            "ingress_controller": "nginx"
+          },
+          "storage": {
+            "default_storage_class": "gp3",
+            "csi_drivers": ["ebs", "efs"],
+            "volume_snapshot": true
+          },
+          "security": {
+            "rbac": true,
+            "network_policies": true,
+            "pod_security_admission": true,
+            "image_scanning": true,
+            "opa_gatekeeper": true
+          },
+          "observability": {
+            "metrics": "prometheus",
+            "logging": "fluentd",
+            "tracing": "jaeger",
+            "service_mesh_observability": "kiali"
+          }
+        }
+      }
+    },
+
+    "application_architecture": {
+      "microservices": [
+        {
+          "name": "user-management-service",
+          "description": "Handles user authentication, authorization, and profile management",
+          "version": "v2.5.3",
+          "language": "java",
+          "framework": "spring-boot",
+          "database": "postgresql",
+          "cache": "redis",
+          "message_queue": "kafka",
+          "deployment": {
+            "replicas": 5,
+            "cpu_request": "200m",
+            "memory_request": "512Mi",
+            "cpu_limit": "1000m",
+            "memory_limit": "2Gi",
+            "auto_scaling": {
+              "enabled": true,
+              "min_replicas": 3,
+              "max_replicas": 20,
+              "target_cpu_utilization": 70,
+              "target_memory_utilization": 80
+            }
+          },
+          "dependencies": [
+            "auth-service",
+            "notification-service",
+            "audit-service"
+          ],
+          "endpoints": [
+            {
+              "path": "/api/v1/users",
+              "methods": ["GET", "POST"],
+              "authentication": "required",
+              "rate_limit": 1000
+            },
+            {
+              "path": "/api/v1/users/{id}",
+              "methods": ["GET", "PUT", "DELETE"],
+              "authentication": "required",
+              "rate_limit": 500
+            },
+            {
+              "path": "/api/v1/auth/login",
+              "methods": ["POST"],
+              "authentication": "none",
+              "rate_limit": 100
+            }
+          ]
+        },
+        {
+          "name": "order-management-service",
+          "description": "Manages order lifecycle, inventory, and fulfillment",
+          "version": "v3.1.2",
+          "language": "nodejs",
+          "framework": "express",
+          "database": "mongodb",
+          "cache": "redis",
+          "message_queue": "rabbitmq",
+          "deployment": {
+            "replicas": 8,
+            "cpu_request": "300m",
+            "memory_request": "768Mi",
+            "cpu_limit": "1500m",
+            "memory_limit": "3Gi",
+            "auto_scaling": {
+              "enabled": true,
+              "min_replicas": 5,
+              "max_replicas": 30,
+              "target_cpu_utilization": 65,
+              "target_memory_utilization": 75
+            }
+          },
+          "dependencies": [
+            "user-management-service",
+            "payment-service",
+            "inventory-service",
+            "notification-service"
+          ],
+          "endpoints": [
+            {
+              "path": "/api/v1/orders",
+              "methods": ["GET", "POST"],
+              "authentication": "required",
+              "rate_limit": 2000
+            },
+            {
+              "path": "/api/v1/orders/{id}",
+              "methods": ["GET", "PUT", "DELETE"],
+              "authentication": "required",
+              "rate_limit": 1000
+            },
+            {
+              "path": "/api/v1/orders/{id}/status",
+              "methods": ["PUT"],
+              "authentication": "required",
+              "rate_limit": 500
+            }
+          ]
+        },
+        {
+          "name": "payment-processing-service",
+          "description": "Handles payment processing, refunds, and financial transactions",
+          "version": "v4.0.1",
+          "language": "java",
+          "framework": "spring-boot",
+          "database": "postgresql",
+          "cache": "hazelcast",
+          "message_queue": "kafka",
+          "deployment": {
+            "replicas": 4,
+            "cpu_request": "500m",
+            "memory_request": "1Gi",
+            "cpu_limit": "2000m",
+            "memory_limit": "4Gi",
+            "auto_scaling": {
+              "enabled": true,
+              "min_replicas": 3,
+              "max_replicas": 15,
+              "target_cpu_utilization": 60,
+              "target_memory_utilization": 70
+            }
+          },
+          "security": {
+            "pci_compliance": true,
+            "encryption_at_rest": true,
+            "encryption_in_transit": true,
+            "access_logging": true,
+            "data_masking": true
+          },
+          "dependencies": [
+            "user-management-service",
+            "fraud-detection-service",
+            "audit-service"
+          ],
+          "endpoints": [
+            {
+              "path": "/api/v1/payments",
+              "methods": ["POST"],
+              "authentication": "required",
+              "rate_limit": 500,
+              "security": "high"
+            },
+            {
+              "path": "/api/v1/refunds",
+              "methods": ["POST"],
+              "authentication": "required",
+              "rate_limit": 100,
+              "security": "high"
+            }
+          ]
+        },
+        {
+          "name": "notification-service",
+          "description": "Manages email, SMS, and push notifications",
+          "version": "v1.8.7",
+          "language": "python",
+          "framework": "fastapi",
+          "database": "postgresql",
+          "cache": "redis",
+          "message_queue": "celery",
+          "deployment": {
+            "replicas": 3,
+            "cpu_request": "100m",
+            "memory_request": "256Mi",
+            "cpu_limit": "500m",
+            "memory_limit": "1Gi",
+            "auto_scaling": {
+              "enabled": true,
+              "min_replicas": 2,
+              "max_replicas": 10,
+              "target_cpu_utilization": 75,
+              "target_memory_utilization": 85
+            }
+          },
+          "external_integrations": [
+            "sendgrid",
+            "twilio",
+            "firebase",
+            "slack"
+          ],
+          "endpoints": [
+            {
+              "path": "/api/v1/notifications/email",
+              "methods": ["POST"],
+              "authentication": "required",
+              "rate_limit": 10000
+            },
+            {
+              "path": "/api/v1/notifications/sms",
+              "methods": ["POST"],
+              "authentication": "required",
+              "rate_limit": 1000
+            }
+          ]
+        }
+      ],
+
+      "data_layer": {
+        "primary_databases": [
+          {
+            "name": "user-database",
+            "type": "postgresql",
+            "version": "15.4",
+            "instance_type": "db.r6g.xlarge",
+            "storage": {
+              "type": "gp3",
+              "size": "500GB",
+              "iops": 3000,
+              "throughput": 125
+            },
+            "backup": {
+              "automated": true,
+              "retention_period": 30,
+              "backup_window": "03:00-04:00",
+              "maintenance_window": "sun:04:00-sun:05:00"
+            },
+            "high_availability": {
+              "multi_az": true,
+              "read_replicas": 2,
+              "cross_region_replica": true
+            },
+            "monitoring": {
+              "performance_insights": true,
+              "enhanced_monitoring": true,
+              "cloudwatch_logs": true
+            }
+          },
+          {
+            "name": "order-database",
+            "type": "mongodb",
+            "version": "6.0",
+            "deployment_type": "replica_set",
+            "instance_type": "m6g.large",
+            "storage": {
+              "type": "provisioned_iops",
+              "size": "1TB",
+              "iops": 3000
+            },
+            "sharding": {
+              "enabled": true,
+              "shard_key": "customer_id",
+              "number_of_shards": 4
+            },
+            "backup": {
+              "continuous": true,
+              "point_in_time_recovery": true,
+              "retention_period": 30
+            }
+          }
+        ],
+        "caching_layer": [
+          {
+            "name": "session-cache",
+            "type": "redis",
+            "version": "7.0",
+            "node_type": "cache.r6g.large",
+            "num_cache_nodes": 3,
+            "configuration": {
+              "maxmemory_policy": "allkeys-lru",
+              "timeout": 300,
+              "tcp_keepalive": 60
+            },
+            "backup": {
+              "snapshot_retention_limit": 7,
+              "snapshot_window": "05:00-07:00"
+            }
+          },
+          {
+            "name": "application-cache",
+            "type": "memcached",
+            "version": "1.6",
+            "node_type": "cache.t4g.medium",
+            "num_cache_nodes": 2,
+            "configuration": {
+              "max_item_size": "1m"
+            }
+          }
+        ],
+        "message_queues": [
+          {
+            "name": "order-events",
+            "type": "kafka",
+            "version": "3.5.0",
+            "instance_type": "kafka.m5.large",
+            "number_of_broker_nodes": 3,
+            "storage": {
+              "volume_size": 100,
+              "volume_type": "gp3"
+            },
+            "configuration": {
+              "auto_create_topics_enable": false,
+              "default_replication_factor": 3,
+              "min_insync_replicas": 2,
+              "num_partitions": 12
+            },
+            "topics": [
+              {
+                "name": "order-created",
+                "partitions": 12,
+                "replication_factor": 3,
+                "retention_hours": 168
+              },
+              {
+                "name": "payment-processed",
+                "partitions": 6,
+                "replication_factor": 3,
+                "retention_hours": 72
+              }
+            ]
+          }
+        ]
+      }
+    },
+
+    "infrastructure_as_code": {
+      "terraform": {
+        "version": "1.6.0",
+        "backend": {
+          "type": "s3",
+          "bucket": "company-terraform-state",
+          "key": "infrastructure/production.tfstate",
+          "region": "us-west-2",
+          "dynamodb_table": "terraform-locks",
+          "encrypt": true
+        },
+        "modules": [
+          {
+            "name": "vpc",
+            "source": "terraform-aws-modules/vpc/aws",
+            "version": "5.0.0",
+            "inputs": {
+              "name": "production-vpc",
+              "cidr": "10.0.0.0/16",
+              "azs": ["us-west-2a", "us-west-2b", "us-west-2c"],
+              "private_subnets": ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"],
+              "public_subnets": ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"],
+              "enable_nat_gateway": true,
+              "enable_vpn_gateway": true,
+              "enable_dns_hostnames": true,
+              "enable_dns_support": true
+            }
+          },
+          {
+            "name": "eks",
+            "source": "terraform-aws-modules/eks/aws",
+            "version": "19.0.0",
+            "inputs": {
+              "cluster_name": "production-cluster",
+              "cluster_version": "1.28",
+              "vpc_id": "module.vpc.vpc_id",
+              "subnet_ids": "module.vpc.private_subnets",
+              "cluster_endpoint_private_access": true,
+              "cluster_endpoint_public_access": true,
+              "cluster_addons": {
+                "coredns": {
+                  "version": "v1.10.1-eksbuild.1"
+                },
+                "kube-proxy": {
+                  "version": "v1.28.1-eksbuild.1"
+                },
+                "vpc-cni": {
+                  "version": "v1.14.1-eksbuild.1"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "helm_charts": [
+        {
+          "name": "prometheus-stack",
+          "repository": "prometheus-community/kube-prometheus-stack",
+          "version": "51.0.0",
+          "namespace": "monitoring",
+          "values": {
+            "prometheus": {
+              "prometheusSpec": {
+                "retention": "30d",
+                "storageSpec": {
+                  "volumeClaimTemplate": {
+                    "spec": {
+                      "resources": {
+                        "requests": {
+                          "storage": "50Gi"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "grafana": {
+              "persistence": {
+                "enabled": true,
+                "size": "10Gi"
+              }
+            }
+          }
+        },
+        {
+          "name": "nginx-ingress",
+          "repository": "ingress-nginx/ingress-nginx",
+          "version": "4.7.0",
+          "namespace": "ingress-nginx",
+          "values": {
+            "controller": {
+              "metrics": {
+                "enabled": true
+              },
+              "service": {
+                "type": "LoadBalancer",
+                "annotations": {
+                  "service.beta.kubernetes.io/aws-load-balancer-type": "nlb"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+
+    "continuous_integration_delivery": {
+      "ci_cd_platform": "jenkins",
+      "version": "2.414.1",
+      "deployment": {
+        "type": "kubernetes",
+        "namespace": "jenkins",
+        "persistence": {
+          "enabled": true,
+          "size": "50Gi"
+        },
+        "agents": {
+          "type": "kubernetes",
+          "templates": [
+            {
+              "name": "java-agent",
+              "image": "jenkins/inbound-agent:jdk11",
+              "resources": {
+                "cpu": "500m",
+                "memory": "1Gi"
+              }
+            },
+            {
+              "name": "nodejs-agent",
+              "image": "node:18-alpine",
+              "resources": {
+                "cpu": "300m",
+                "memory": "512Mi"
+              }
+            }
+          ]
+        }
+      },
+      "pipelines": [
+        {
+          "name": "user-service-pipeline",
+          "trigger": "SCM",
+          "stages": [
+            {
+              "name": "checkout",
+              "steps": ["git clone", "git checkout"]
+            },
+            {
+              "name": "test",
+              "steps": ["unit tests", "integration tests", "security scan"]
+            },
+            {
+              "name": "build",
+              "steps": ["compile", "package", "docker build"]
+            },
+            {
+              "name": "deploy-staging",
+              "steps": ["helm upgrade", "health check", "smoke tests"]
+            },
+            {
+              "name": "deploy-production",
+              "approval_required": true,
+              "steps": ["helm upgrade", "health check", "rollback on failure"]
+            }
+          ]
+        }
+      ],
+      "quality_gates": {
+        "code_coverage": {
+          "minimum": 80,
+          "tools": ["jacoco", "jest"]
+        },
+        "security_scanning": {
+          "sast": "sonarqube",
+          "dast": "owasp-zap",
+          "dependency_check": "snyk"
+        },
+        "performance_testing": {
+          "load_testing": "jmeter",
+          "stress_testing": "gatling"
+        }
+      }
+    },
+
+    "monitoring_and_observability": {
+      "metrics": {
+        "prometheus": {
+          "version": "2.45.0",
+          "retention": "30d",
+          "storage_size": "50Gi",
+          "scrape_interval": "15s",
+          "evaluation_interval": "15s",
+          "external_labels": {
+            "cluster": "production",
+            "environment": "prod"
+          },
+          "rule_files": [
+            "infrastructure.rules.yml",
+            "application.rules.yml",
+            "business.rules.yml"
+          ],
+          "alertmanager_configs": [
+            {
+              "static_configs": [
+                {
+                  "targets": ["alertmanager:9093"]
+                }
+              ]
+            }
+          ]
+        },
+        "custom_metrics": [
+          {
+            "name": "business_transactions_total",
+            "type": "counter",
+            "description": "Total number of business transactions",
+            "labels": ["service", "transaction_type", "status"]
+          },
+          {
+            "name": "user_sessions_active",
+            "type": "gauge",
+            "description": "Number of active user sessions",
+            "labels": ["service", "session_type"]
+          }
+        ]
+      },
+      "logging": {
+        "centralized_logging": {
+          "platform": "elasticsearch",
+          "version": "8.8.0",
+          "cluster_size": 3,
+          "storage_per_node": "100Gi",
+          "retention_policy": {
+            "hot": "7d",
+            "warm": "30d",
+            "cold": "90d",
+            "delete": "365d"
+          }
+        },
+        "log_shippers": [
+          {
+            "name": "fluentd",
+            "version": "v1.16.0",
+            "deployment": "daemonset",
+            "configuration": {
+              "buffer_chunk_limit": "2M",
+              "buffer_queue_limit": 8,
+              "flush_interval": "5s"
+            }
+          }
+        ],
+        "log_parsing": {
+          "structured_logging": true,
+          "log_level": "INFO",
+          "correlation_id": true,
+          "sensitive_data_masking": true
+        }
+      },
+      "distributed_tracing": {
+        "jaeger": {
+          "version": "1.47.0",
+          "deployment": "all-in-one",
+          "storage": "elasticsearch",
+          "sampling_strategy": {
+            "type": "probabilistic",
+            "param": 0.1
+          },
+          "retention": "7d"
+        },
+        "instrumentation": {
+          "opentelemetry": {
+            "version": "1.0.0",
+            "auto_instrumentation": true,
+            "supported_languages": ["java", "nodejs", "python", "go"]
+          }
+        }
+      }
+    },
+
+    "security_and_compliance": {
+      "identity_and_access_management": {
+        "authentication": {
+          "provider": "okta",
+          "sso_enabled": true,
+          "mfa_required": true,
+          "session_timeout": 3600
+        },
+        "authorization": {
+          "rbac": true,
+          "attribute_based": true,
+          "policy_engine": "open-policy-agent"
+        }
+      },
+      "network_security": {
+        "zero_trust": true,
+        "micro_segmentation": true,
+        "east_west_encryption": true,
+        "north_south_encryption": true,
+        "ddos_protection": true
+      },
+      "data_protection": {
+        "encryption_at_rest": true,
+        "encryption_in_transit": true,
+        "key_management": "aws-kms",
+        "data_classification": true,
+        "data_loss_prevention": true
+      },
+      "vulnerability_management": {
+        "image_scanning": true,
+        "runtime_security": true,
+        "dependency_scanning": true,
+        "compliance_scanning": true
+      },
+      "compliance_frameworks": [
+        {
+          "name": "SOC2",
+          "type": "Type II",
+          "audit_frequency": "annual",
+          "controls": 67,
+          "last_audit": "2023-12-01"
+        },
+        {
+          "name": "ISO27001",
+          "certification_date": "2023-06-15",
+          "renewal_date": "2026-06-15",
+          "controls": 114
+        }
+      ]
+    }
+  }
+}

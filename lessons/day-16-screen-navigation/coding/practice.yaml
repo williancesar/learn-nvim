@@ -1,0 +1,306 @@
+# Enterprise Container Orchestration Platform
+# Long configuration file for screen navigation practice (H M L gg G ctrl+u ctrl+d)
+# Navigate through this 100+ line configuration file using screen navigation commands
+
+global:
+  environment: production
+  region: us-west-2
+  cluster: enterprise-prod
+  domain: company.enterprise.com
+  timezone: UTC
+  logLevel: info
+  debugMode: false
+  maintenanceMode: false
+  backupEnabled: true
+  monitoringEnabled: true
+  securityScanningEnabled: true
+  complianceMode: strict
+  dataRetentionDays: 90
+  maxConcurrentJobs: 50
+
+infrastructure:
+  compute:
+    masters:
+      count: 3
+      instanceType: c5.2xlarge
+      diskSize: 100
+      diskType: gp3
+      availabilityZones:
+        - us-west-2a
+        - us-west-2b
+        - us-west-2c
+
+    workers:
+      count: 10
+      instanceType: c5.4xlarge
+      diskSize: 200
+      diskType: gp3
+      autoScaling:
+        enabled: true
+        minSize: 5
+        maxSize: 50
+        targetCPUUtilization: 70
+        scaleUpCooldown: 300
+        scaleDownCooldown: 600
+
+    storage:
+      count: 3
+      instanceType: r5.2xlarge
+      diskSize: 1000
+      diskType: io2
+      iops: 10000
+      encryption: true
+      snapshotSchedule: "0 2 * * *"
+
+networking:
+  vpc:
+    cidr: 10.0.0.0/16
+    enableDnsHostnames: true
+    enableDnsSupport: true
+
+  subnets:
+    public:
+      - cidr: 10.0.1.0/24
+        availabilityZone: us-west-2a
+      - cidr: 10.0.2.0/24
+        availabilityZone: us-west-2b
+      - cidr: 10.0.3.0/24
+        availabilityZone: us-west-2c
+
+    private:
+      - cidr: 10.0.10.0/24
+        availabilityZone: us-west-2a
+      - cidr: 10.0.20.0/24
+        availabilityZone: us-west-2b
+      - cidr: 10.0.30.0/24
+        availabilityZone: us-west-2c
+
+  loadBalancer:
+    type: application
+    scheme: internet-facing
+    ipAddressType: ipv4
+    deletionProtection: true
+    idleTimeout: 60
+    crossZoneLoadBalancing: true
+
+  cdn:
+    provider: cloudfront
+    priceClass: PriceClass_All
+    cacheBehaviors:
+      - pathPattern: "/api/*"
+        ttl: 0
+        compress: true
+      - pathPattern: "/static/*"
+        ttl: 86400
+        compress: true
+      - pathPattern: "*.js"
+        ttl: 604800
+        compress: true
+      - pathPattern: "*.css"
+        ttl: 604800
+        compress: true
+
+security:
+  authentication:
+    provider: oauth2
+    issuer: https://auth.company.com
+    audience: api.company.com
+    tokenValidation:
+      algorithm: RS256
+      clockSkew: 5
+      leeway: 10
+
+  authorization:
+    rbac:
+      enabled: true
+      policies:
+        - name: admin-policy
+          rules:
+            - apiGroups: ["*"]
+              resources: ["*"]
+              verbs: ["*"]
+        - name: developer-policy
+          rules:
+            - apiGroups: ["apps", ""]
+              resources: ["deployments", "services", "pods"]
+              verbs: ["get", "list", "create", "update"]
+        - name: viewer-policy
+          rules:
+            - apiGroups: ["*"]
+              resources: ["*"]
+              verbs: ["get", "list"]
+
+  networkPolicies:
+    defaultDeny: true
+    allowedIngress:
+      - from:
+          - namespaceSelector:
+              matchLabels:
+                name: frontend
+        ports:
+          - protocol: TCP
+            port: 8080
+      - from:
+          - podSelector:
+              matchLabels:
+                app: api-gateway
+        ports:
+          - protocol: TCP
+            port: 3000
+
+  encryption:
+    atRest:
+      enabled: true
+      kmsKeyId: arn:aws:kms:us-west-2:123456789012:key/12345678-1234-1234-1234-123456789012
+    inTransit:
+      enabled: true
+      minTlsVersion: "1.2"
+      cipherSuites:
+        - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+
+databases:
+  postgresql:
+    primary:
+      instanceClass: db.r5.2xlarge
+      allocatedStorage: 1000
+      storageType: gp3
+      iops: 12000
+      multiAZ: true
+      backupRetentionPeriod: 30
+      backupWindow: "03:00-04:00"
+      maintenanceWindow: "sun:04:00-sun:05:00"
+      deletionProtection: true
+
+    readReplicas:
+      - instanceClass: db.r5.large
+        allocatedStorage: 500
+        region: us-west-2
+      - instanceClass: db.r5.large
+        allocatedStorage: 500
+        region: us-east-1
+
+  redis:
+    cluster:
+      nodeType: cache.r6g.xlarge
+      numCacheNodes: 3
+      replicationGroupId: enterprise-cache
+      description: "Enterprise Redis Cluster"
+      engine: redis
+      engineVersion: "7.0"
+      parameterGroupName: default.redis7
+      port: 6379
+      subnetGroupName: enterprise-cache-subnet
+      securityGroupIds:
+        - sg-0123456789abcdef0
+      snapshotRetentionLimit: 5
+      snapshotWindow: "03:00-05:00"
+
+monitoring:
+  prometheus:
+    server:
+      retention: 15d
+      storageSize: 100Gi
+      resources:
+        limits:
+          memory: 8Gi
+          cpu: 2000m
+        requests:
+          memory: 4Gi
+          cpu: 1000m
+      scrapeConfigs:
+        - jobName: kubernetes-apiservers
+          scrapeInterval: 30s
+          scrapeTimeout: 10s
+        - jobName: kubernetes-nodes
+          scrapeInterval: 30s
+          scrapeTimeout: 10s
+        - jobName: kubernetes-pods
+          scrapeInterval: 30s
+          scrapeTimeout: 10s
+
+  grafana:
+    adminPassword: SecurePassword123!
+    persistence:
+      enabled: true
+      size: 10Gi
+    resources:
+      limits:
+        memory: 2Gi
+        cpu: 500m
+      requests:
+        memory: 1Gi
+        cpu: 250m
+    plugins:
+      - grafana-piechart-panel
+      - grafana-worldmap-panel
+      - grafana-clock-panel
+
+  alertmanager:
+    config:
+      global:
+        smtp_smarthost: smtp.company.com:587
+        smtp_from: alerts@company.com
+      route:
+        group_by: ['alertname']
+        group_wait: 10s
+        group_interval: 10s
+        repeat_interval: 1h
+        receiver: web.hook
+      receivers:
+        - name: web.hook
+          webhook_configs:
+            - url: https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+
+logging:
+  aggregation:
+    type: elasticsearch
+    cluster:
+      nodes: 3
+      instanceType: m5.large.elasticsearch
+      storageSize: 100
+      storageType: gp3
+      indexRetention: 30
+
+  shipping:
+    type: fluentd
+    config:
+      inputs:
+        - type: tail
+          path: /var/log/containers/*.log
+          format: json
+          time_key: time
+          time_format: "%Y-%m-%dT%H:%M:%S.%NZ"
+      filters:
+        - type: kubernetes_metadata
+          merge_json_log: true
+          preserve_json_log: true
+      outputs:
+        - type: elasticsearch
+          host: elasticsearch.logging.svc.cluster.local
+          port: 9200
+          index_name: kubernetes-logs
+
+backup:
+  schedule: "0 2 * * *"
+  retention: 30
+  destinations:
+    - type: s3
+      bucket: enterprise-backups
+      region: us-west-2
+      prefix: production/
+      encryption: AES256
+    - type: glacier
+      vault: enterprise-long-term
+      region: us-west-2
+
+disaster_recovery:
+  rpo: 1  # Recovery Point Objective in hours
+  rto: 4  # Recovery Time Objective in hours
+  replication:
+    enabled: true
+    region: us-east-1
+    frequency: hourly
+  testing:
+    schedule: monthly
+    notification: team-lead@company.com

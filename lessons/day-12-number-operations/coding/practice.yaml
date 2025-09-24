@@ -1,0 +1,523 @@
+# Infrastructure Configuration with Extensive Numeric Values
+# Practice Ctrl+A and Ctrl+X for incrementing/decrementing numbers
+# Focus on ports, versions, timeouts, replicas, and resource limits
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: infrastructure-config
+  namespace: platform
+  labels:
+    version: "2.1.0"
+    revision: "1247"
+data:
+  cluster.yaml: |
+    cluster:
+      version: "1.28.3"
+      nodes:
+        master:
+          count: 3
+          cpu_cores: 8
+          memory_gb: 32
+          disk_gb: 200
+        workers:
+          count: 15
+          cpu_cores: 16
+          memory_gb: 64
+          disk_gb: 500
+      networking:
+        pod_cidr: "10.244.0.0/16"
+        service_cidr: "10.96.0.0/12"
+        cluster_dns: "10.96.0.10"
+        max_pods_per_node: 110
+
+  services.yaml: |
+    services:
+      api_gateway:
+        image: "nginx:1.25.3"
+        replicas: 5
+        ports:
+          http: 80
+          https: 443
+          metrics: 9113
+          health: 8080
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+          limits:
+            cpu: "2000m"
+            memory: "4Gi"
+        autoscaling:
+          min_replicas: 3
+          max_replicas: 20
+          target_cpu: 70
+          target_memory: 80
+        timeouts:
+          proxy_connect: 60
+          proxy_send: 60
+          proxy_read: 60
+          client_body: 60
+        rate_limiting:
+          requests_per_second: 1000
+          burst: 2000
+          connections: 10000
+
+      user_service:
+        image: "golang:1.21.5"
+        replicas: 8
+        ports:
+          grpc: 9000
+          http: 8080
+          metrics: 9090
+          pprof: 6060
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "512Mi"
+          limits:
+            cpu: "1000m"
+            memory: "2Gi"
+        database:
+          max_open_connections: 25
+          max_idle_connections: 5
+          connection_max_lifetime: 3600
+          connection_max_idle_time: 1800
+        cache:
+          ttl_seconds: 300
+          max_entries: 10000
+          cleanup_interval: 600
+
+      order_service:
+        image: "openjdk:17.0.2"
+        replicas: 6
+        ports:
+          http: 8080
+          actuator: 8081
+          jmx: 9999
+        resources:
+          requests:
+            cpu: "300m"
+            memory: "768Mi"
+          limits:
+            cpu: "1500m"
+            memory: "3Gi"
+        jvm:
+          heap_size_mb: 2048
+          metaspace_size_mb: 256
+          gc_threads: 4
+          max_gc_pause_ms: 200
+        database:
+          hikari:
+            maximum_pool_size: 20
+            minimum_idle: 5
+            connection_timeout: 30000
+            idle_timeout: 600000
+            max_lifetime: 1800000
+
+      payment_service:
+        image: "node:18.19.0"
+        replicas: 4
+        ports:
+          http: 3000
+          metrics: 9464
+          inspector: 9229
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+          limits:
+            cpu: "800m"
+            memory: "1Gi"
+        node:
+          max_old_space_size: 768
+          max_semi_space_size: 64
+          optimize_for_size: true
+        timeouts:
+          server: 30000
+          keep_alive: 5000
+          headers: 60000
+          request: 300000
+
+      notification_service:
+        image: "python:3.11.7"
+        replicas: 3
+        ports:
+          http: 8000
+          metrics: 8001
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        workers:
+          processes: 4
+          threads: 8
+          timeout: 30
+          keep_alive: 2
+          max_requests: 1000
+          max_requests_jitter: 100
+
+  databases.yaml: |
+    databases:
+      postgresql:
+        version: "15.5"
+        port: 5432
+        replicas:
+          primary: 1
+          read_replicas: 2
+        resources:
+          primary:
+            cpu_cores: 8
+            memory_gb: 32
+            storage_gb: 1000
+            iops: 3000
+          replica:
+            cpu_cores: 4
+            memory_gb: 16
+            storage_gb: 1000
+            iops: 1500
+        configuration:
+          max_connections: 200
+          shared_buffers_mb: 8192
+          effective_cache_size_mb: 24576
+          work_mem_mb: 64
+          maintenance_work_mem_mb: 2048
+          checkpoint_completion_target: 0.9
+          wal_buffers_mb: 256
+          random_page_cost: 1.1
+          seq_page_cost: 1.0
+          min_wal_size_mb: 1024
+          max_wal_size_mb: 4096
+        backup:
+          retention_days: 30
+          schedule_hour: 2
+          schedule_minute: 30
+          parallel_jobs: 4
+          compression_level: 9
+
+      redis:
+        version: "7.2.4"
+        mode: "cluster"
+        nodes: 6
+        port: 6379
+        sentinel_port: 26379
+        resources_per_node:
+          cpu_cores: 2
+          memory_gb: 8
+          storage_gb: 100
+        configuration:
+          maxmemory_policy: "allkeys-lru"
+          timeout: 300
+          tcp_keepalive: 300
+          tcp_backlog: 511
+          databases: 16
+          save_900: 1
+          save_300: 10
+          save_60: 10000
+          rdbcompression: true
+          rdbchecksum: true
+          cluster_node_timeout: 15000
+          cluster_migration_barrier: 1
+
+      elasticsearch:
+        version: "8.11.3"
+        port: 9200
+        cluster:
+          master_nodes: 3
+          data_nodes: 4
+          ingest_nodes: 2
+        resources:
+          master:
+            cpu_cores: 4
+            memory_gb: 8
+            storage_gb: 200
+          data:
+            cpu_cores: 8
+            memory_gb: 32
+            storage_gb: 2000
+          ingest:
+            cpu_cores: 4
+            memory_gb: 16
+            storage_gb: 500
+        configuration:
+          heap_size_gb: 16
+          index_refresh_interval: 30
+          index_number_of_shards: 3
+          index_number_of_replicas: 1
+          search_max_buckets: 10000
+          indices_memory_index_buffer_size: "10%"
+          cluster_routing_allocation_disk_threshold_enabled: true
+          cluster_routing_allocation_disk_watermark_low: "85%"
+          cluster_routing_allocation_disk_watermark_high: "90%"
+
+  monitoring.yaml: |
+    monitoring:
+      prometheus:
+        version: "2.48.1"
+        port: 9090
+        retention_days: 90
+        storage_gb: 500
+        scrape_interval: 15
+        evaluation_interval: 15
+        query_timeout: 30
+        resources:
+          cpu_cores: 4
+          memory_gb: 16
+        remote_write:
+          queue_capacity: 2500
+          max_shards: 200
+          min_shards: 1
+          max_samples_per_send: 500
+          batch_send_deadline: 5
+          min_backoff: 30
+          max_backoff: 100
+
+      grafana:
+        version: "10.2.3"
+        port: 3000
+        resources:
+          cpu_cores: 2
+          memory_gb: 4
+          storage_gb: 50
+        configuration:
+          session_life_time: 86400
+          cookie_max_age: 86400
+          login_maximum_inactive_lifetime_days: 7
+          login_maximum_lifetime_days: 30
+          dashboard_versions_to_keep: 20
+          min_refresh_interval: "1s"
+        database:
+          max_open_connections: 25
+          max_idle_connections: 25
+          connection_max_lifetime: 14400
+
+      jaeger:
+        version: "1.53.0"
+        ports:
+          jaeger_agent: 6831
+          jaeger_collector_grpc: 14250
+          jaeger_collector_http: 14268
+          jaeger_query: 16686
+          jaeger_admin: 14269
+        resources:
+          collector:
+            cpu_cores: 2
+            memory_gb: 4
+          query:
+            cpu_cores: 1
+            memory_gb: 2
+        configuration:
+          sampling_rate: 0.01
+          max_traces_per_second: 10000
+          memory_max_traces: 50000
+          cassandra_keyspace_replication_factor: 2
+          cassandra_span_store_ttl: 172800
+
+      alertmanager:
+        version: "0.26.0"
+        port: 9093
+        cluster_port: 9094
+        replicas: 3
+        resources:
+          cpu_cores: 1
+          memory_gb: 2
+          storage_gb: 10
+        configuration:
+          group_wait: 10
+          group_interval: 10
+          repeat_interval: 3600
+          smtp_smarthost_port: 587
+          webhook_timeout: 30
+          inhibit_rules: 5
+          route_group_by_limit: 20
+
+  networking.yaml: |
+    networking:
+      ingress_nginx:
+        version: "1.9.5"
+        replicas: 3
+        resources:
+          cpu_cores: 2
+          memory_gb: 4
+        configuration:
+          worker_processes: 4
+          worker_connections: 16384
+          worker_rlimit_nofile: 65536
+          keepalive_timeout: 75
+          keepalive_requests: 100
+          client_max_body_size: "1m"
+          client_body_buffer_size: "128k"
+          client_header_buffer_size: "1k"
+          large_client_header_buffers: "4 8k"
+          proxy_connect_timeout: 60
+          proxy_send_timeout: 60
+          proxy_read_timeout: 60
+          proxy_buffer_size: "4k"
+          proxy_buffers: "8 4k"
+          ssl_session_cache: "shared:SSL:10m"
+          ssl_session_timeout: "10m"
+          ssl_protocols: "TLSv1.2 TLSv1.3"
+          rate_limit_rps: 100
+          rate_limit_connections: 20
+
+      istio:
+        version: "1.20.2"
+        pilot:
+          replicas: 3
+          cpu_cores: 2
+          memory_gb: 4
+          trace_sampling: 1.0
+        proxy:
+          cpu_cores: 1
+          memory_gb: 1
+          concurrency: 2
+          status_port: 15020
+          readiness_initial_delay_seconds: 1
+          readiness_period_seconds: 2
+          readiness_failure_threshold: 30
+        gateways:
+          ingress:
+            replicas: 5
+            cpu_cores: 2
+            memory_gb: 2
+            ports:
+              http: 80
+              https: 443
+              status: 15021
+              prometheus: 15090
+          egress:
+            replicas: 2
+            cpu_cores: 1
+            memory_gb: 1
+
+  security.yaml: |
+    security:
+      cert_manager:
+        version: "1.13.3"
+        webhook_port: 10250
+        metrics_port: 9402
+        replicas: 3
+        resources:
+          cpu_cores: 1
+          memory_gb: 1
+        configuration:
+          max_concurrent_challenges: 60
+          acme_http01_solver_image: ""
+          dns01_recursive_nameservers: "8.8.8.8:53,1.1.1.1:53"
+          dns01_recursive_nameservers_only: false
+
+      vault:
+        version: "1.15.4"
+        port: 8200
+        cluster_port: 8201
+        replicas: 5
+        resources:
+          cpu_cores: 2
+          memory_gb: 4
+          storage_gb: 100
+        configuration:
+          default_lease_ttl: "768h"
+          max_lease_ttl: "8760h"
+          cluster_name: "vault-cluster"
+          ui: true
+          log_level: "Info"
+          disable_mlock: false
+
+      falco:
+        version: "0.36.2"
+        resources:
+          cpu_cores: 1
+          memory_gb: 1
+        configuration:
+          syscall_event_drops:
+            threshold: 0.1
+            actions: ["log", "alert"]
+            rate: 0.03333
+            max_burst: 10
+          buffered_outputs: false
+          outputs_rate: 1
+          outputs_max_burst: 1000
+          syslog_output_enabled: true
+          file_output_enabled: false
+          stdout_output_enabled: true
+
+  storage.yaml: |
+    storage:
+      persistent_volumes:
+        database:
+          size_gb: 1000
+          iops: 3000
+          throughput_mb: 250
+          type: "gp3"
+          backup_retention_days: 30
+        monitoring:
+          size_gb: 500
+          iops: 1500
+          throughput_mb: 125
+          type: "gp3"
+        logs:
+          size_gb: 200
+          iops: 500
+          throughput_mb: 50
+          type: "gp2"
+
+      object_storage:
+        buckets:
+          application_backups:
+            versioning: true
+            lifecycle_rules: 3
+            transition_to_ia_days: 30
+            transition_to_glacier_days: 90
+            expiration_days: 2555
+          static_assets:
+            versioning: false
+            lifecycle_rules: 1
+            expiration_days: 365
+          log_archives:
+            versioning: true
+            lifecycle_rules: 2
+            transition_to_ia_days: 7
+            transition_to_glacier_days: 30
+            expiration_days: 2555
+
+  autoscaling.yaml: |
+    autoscaling:
+      cluster_autoscaler:
+        version: "1.28.2"
+        scale_down_delay_after_add: 600
+        scale_down_unneeded_time: 600
+        scale_down_utilization_threshold: 0.5
+        skip_nodes_with_local_storage: true
+        skip_nodes_with_system_pods: true
+        max_node_provision_time: 900
+        scan_interval: 10
+        max_nodes_total: 100
+        cores_total: "0:6400"
+        memory_total: "0:6400Gi"
+
+      horizontal_pod_autoscaler:
+        stabilization_window_seconds: 300
+        scale_up_stabilization_window: 60
+        scale_down_stabilization_window: 300
+        scale_up_percent: 100
+        scale_up_pods: 4
+        scale_down_percent: 10
+        scale_down_pods: 2
+        sync_period: 15
+        tolerance: 0.1
+
+      vertical_pod_autoscaler:
+        version: "0.14.0"
+        recommender_interval: 60
+        updater_interval: 60
+        min_replicas: 2
+        cpu_histogram_bucket_size: 0.1
+        memory_histogram_bucket_size: 104857600
+        storage_histogram_bucket_size: 10737418240
+        histogram_memory_aggregation_interval: 3600
+        histogram_memory_aggregation_count: 8
+        memory_aggregation_interval_count: 8
+        cpu_aggregation_interval_count: 8

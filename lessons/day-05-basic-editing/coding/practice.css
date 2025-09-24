@@ -1,0 +1,637 @@
+/*
+PRACTICE INSTRUCTIONS FOR DAY 05: BASIC EDITING - CSS
+
+Basic Editing Practice in CSS:
+- Use 'i' to insert missing property values
+- Use 'a' to append missing semicolons or values at line ends
+- Use 'o' to add new CSS properties below current line
+- Use 'O' to add new CSS rules above current rule
+- Use 's' to substitute incorrect values
+- Use 'c' with motions (cw, c$, etc.) to change property names or values
+- Use 'r' to replace single characters (like changing colors)
+- Use 'u' to undo changes and Ctrl+r to redo
+
+This file has missing properties, values, and incomplete CSS rules!
+*/
+
+/* CSS Variables - Missing values and properties */
+:root {
+    --primary-color: ;
+    /* TODO: Add primary color value like #3b82f6 */
+
+    --secondary-color: #1e40af;
+    --accent-color:
+    /* MISSING: Add accent color value */
+
+    --text-color: #1f2937;
+    --background-color: ;
+    /* TODO: Add background color */
+
+    /* MISSING: Add --border-radius variable */
+
+    --spacing-xs: 0.25rem;
+    --spacing-sm: ;
+    /* TODO: Add small spacing value */
+    --spacing-md: 1rem;
+    --spacing-lg:
+    /* MISSING: Add large spacing value */
+    --spacing-xl: 2rem;
+
+    /* TODO: Add font family variables */
+    --font-sans:
+    --font-mono:
+}
+
+/* Universal Reset - Missing properties */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: ;
+    /* TODO: Add padding: 0 */
+}
+
+html {
+    font-size: 16px;
+    line-height: ;
+    /* MISSING: Add line-height value like 1.6 */
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-sans);
+    color: var(--text-color);
+    background-color:
+    /* TODO: Add background-color variable */
+
+    /* MISSING: Add line-height property */
+}
+
+/* Header Styles - Incomplete */
+.main-header {
+    background: ;
+    /* TODO: Add background gradient or color */
+
+    padding: var(--spacing-md) 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: ;
+    /* MISSING: Add position: sticky */
+    top: 0;
+    z-index:
+    /* TODO: Add z-index value */
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+    display: flex;
+    justify-content: ;
+    /* MISSING: Add justify-content value */
+    align-items: center;
+    gap:
+    /* TODO: Add gap property */
+}
+
+/* Navigation - Missing styles */
+.primary-nav {
+    /* TODO: Add display property */
+}
+
+.nav-list {
+    display: flex;
+    list-style: ;
+    /* MISSING: Add list-style: none */
+    gap: var(--spacing-md);
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item {
+    /* TODO: Add nav-item styles */
+}
+
+.nav-link {
+    color: ;
+    /* MISSING: Add link color */
+    text-decoration: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: ;
+    /* TODO: Add border-radius */
+    transition: ;
+    /* MISSING: Add transition property */
+    font-weight:
+    /* TODO: Add font-weight */
+}
+
+.nav-link:hover {
+    /* MISSING: Add hover styles */
+    background-color:
+    color:
+    transform:
+}
+
+/* Search Form - Incomplete */
+.search-form {
+    display: ;
+    /* TODO: Add display: flex */
+    gap: var(--spacing-sm);
+    align-items:
+    /* MISSING: Add align-items property */
+}
+
+.search-form input {
+    padding: ;
+    /* TODO: Add padding */
+    border: ;
+    /* MISSING: Add border */
+    border-radius: var(--border-radius);
+    font-size: ;
+    /* TODO: Add font-size */
+}
+
+.search-form button {
+    /* MISSING: Add complete button styles */
+    padding:
+    background:
+    color:
+    border:
+    border-radius:
+    cursor:
+}
+
+/* Main Content - Missing properties */
+.main-content {
+    min-height: ;
+    /* TODO: Add min-height */
+    padding: var(--spacing-xl) 0;
+}
+
+/* Hero Section - Incomplete */
+.hero-section {
+    background: ;
+    /* MISSING: Add background */
+    padding: var(--spacing-xl);
+    text-align: ;
+    /* TODO: Add text-align */
+    margin-bottom: var(--spacing-xl);
+    border-radius:
+    /* MISSING: Add border-radius */
+
+    /* TODO: Add display and grid properties for layout */
+    display:
+    grid-template-columns:
+    gap:
+    align-items:
+}
+
+.hero-content h1 {
+    font-size: ;
+    /* TODO: Add font-size */
+    font-weight: ;
+    /* MISSING: Add font-weight */
+    color: var(--primary-color);
+    margin-bottom: ;
+    /* TODO: Add margin-bottom */
+    line-height:
+    /* MISSING: Add line-height */
+}
+
+.hero-subtitle {
+    font-size: ;
+    /* TODO: Add font-size */
+    color: ;
+    /* MISSING: Add color */
+    margin-bottom: var(--spacing-lg);
+    font-weight:
+    /* TODO: Add font-weight */
+}
+
+/* Hero Actions - Missing styles */
+.hero-actions {
+    display: ;
+    /* TODO: Add display: flex */
+    gap: ;
+    /* MISSING: Add gap */
+    justify-content: ;
+    /* TODO: Add justify-content */
+    margin-top:
+    /* MISSING: Add margin-top */
+}
+
+/* Buttons - Incomplete */
+.btn {
+    padding: ;
+    /* TODO: Add padding */
+    border: ;
+    /* MISSING: Add border */
+    border-radius: ;
+    /* TODO: Add border-radius */
+    font-size: ;
+    /* MISSING: Add font-size */
+    font-weight: ;
+    /* TODO: Add font-weight */
+    cursor: ;
+    /* MISSING: Add cursor */
+    transition: ;
+    /* TODO: Add transition */
+    text-decoration:
+    /* MISSING: Add text-decoration */
+}
+
+.btn-primary {
+    background: ;
+    /* TODO: Add background */
+    color: ;
+    /* MISSING: Add color */
+}
+
+.btn-primary:hover {
+    /* TODO: Add hover styles */
+    background:
+    transform:
+    box-shadow:
+}
+
+.btn-secondary {
+    background: ;
+    /* MISSING: Add background */
+    color: ;
+    /* TODO: Add color */
+    border: ;
+    /* MISSING: Add border */
+}
+
+.btn-secondary:hover {
+    /* TODO: Add secondary button hover styles */
+}
+
+/* Features Section - Missing properties */
+.features-section {
+    padding: var(--spacing-xl) 0;
+    background: ;
+    /* TODO: Add background */
+}
+
+.container {
+    max-width: ;
+    /* MISSING: Add max-width */
+    margin: 0 auto;
+    padding: 0 ;
+    /* TODO: Add horizontal padding */
+}
+
+.section-title {
+    font-size: ;
+    /* TODO: Add font-size */
+    font-weight: ;
+    /* MISSING: Add font-weight */
+    text-align: ;
+    /* TODO: Add text-align */
+    margin-bottom: ;
+    /* MISSING: Add margin-bottom */
+    color:
+    /* TODO: Add color */
+}
+
+.features-grid {
+    display: ;
+    /* TODO: Add display: grid */
+    grid-template-columns: ;
+    /* MISSING: Add grid-template-columns */
+    gap: ;
+    /* TODO: Add gap */
+    margin-top:
+    /* MISSING: Add margin-top */
+}
+
+/* Feature Cards - Incomplete */
+.feature-card {
+    background: ;
+    /* TODO: Add background */
+    padding: ;
+    /* MISSING: Add padding */
+    border-radius: ;
+    /* TODO: Add border-radius */
+    box-shadow: ;
+    /* MISSING: Add box-shadow */
+    transition: ;
+    /* TODO: Add transition */
+    border:
+    /* MISSING: Add border */
+}
+
+.feature-card:hover {
+    /* TODO: Add hover effects */
+    transform:
+    box-shadow:
+}
+
+.feature-icon {
+    font-size: ;
+    /* TODO: Add font-size */
+    margin-bottom: ;
+    /* MISSING: Add margin-bottom */
+    text-align:
+    /* TODO: Add text-align */
+}
+
+.feature-title {
+    font-size: ;
+    /* MISSING: Add font-size */
+    font-weight: ;
+    /* TODO: Add font-weight */
+    margin-bottom: ;
+    /* MISSING: Add margin-bottom */
+    color:
+    /* TODO: Add color */
+}
+
+.feature-description {
+    color: ;
+    /* TODO: Add color */
+    line-height: ;
+    /* MISSING: Add line-height */
+    margin-bottom:
+    /* TODO: Add margin-bottom */
+}
+
+.feature-list {
+    list-style: ;
+    /* MISSING: Add list-style */
+    padding:
+    /* TODO: Add padding */
+}
+
+.feature-list li {
+    padding: ;
+    /* TODO: Add padding */
+    border-left: ;
+    /* MISSING: Add border-left */
+    padding-left: ;
+    /* TODO: Add padding-left */
+    margin-bottom:
+    /* MISSING: Add margin-bottom */
+}
+
+/* About Section - Missing styles */
+.about-section {
+    padding: ;
+    /* TODO: Add padding */
+    background:
+    /* MISSING: Add background */
+}
+
+.about-content {
+    display: ;
+    /* TODO: Add display */
+    grid-template-columns: ;
+    /* MISSING: Add grid-template-columns */
+    gap: ;
+    /* TODO: Add gap */
+    align-items:
+    /* MISSING: Add align-items */
+}
+
+.about-text p {
+    margin-bottom: ;
+    /* TODO: Add margin-bottom */
+    line-height: ;
+    /* MISSING: Add line-height */
+    color:
+    /* TODO: Add color */
+}
+
+/* Stats Container - Incomplete */
+.stats-container {
+    display: ;
+    /* TODO: Add display */
+    gap: ;
+    /* MISSING: Add gap */
+    margin-top: ;
+    /* TODO: Add margin-top */
+    padding: ;
+    /* MISSING: Add padding */
+    background: ;
+    /* TODO: Add background */
+    border-radius:
+    /* MISSING: Add border-radius */
+}
+
+.stat-item {
+    text-align: ;
+    /* TODO: Add text-align */
+}
+
+.stat-number {
+    display: ;
+    /* MISSING: Add display */
+    font-size: ;
+    /* TODO: Add font-size */
+    font-weight: ;
+    /* MISSING: Add font-weight */
+    color:
+    /* TODO: Add color */
+}
+
+.stat-label {
+    font-size: ;
+    /* TODO: Add font-size */
+    color: ;
+    /* MISSING: Add color */
+    text-transform:
+    /* TODO: Add text-transform */
+}
+
+/* Services Section - Missing properties */
+.services-section {
+    padding: ;
+    /* TODO: Add padding */
+    background:
+    /* MISSING: Add background */
+}
+
+.services-grid {
+    display: ;
+    /* TODO: Add display */
+    grid-template-columns: ;
+    /* MISSING: Add grid-template-columns */
+    gap:
+    /* TODO: Add gap */
+}
+
+.service-card {
+    background: ;
+    /* MISSING: Add background */
+    padding: ;
+    /* TODO: Add padding */
+    border-radius: ;
+    /* MISSING: Add border-radius */
+    box-shadow: ;
+    /* TODO: Add box-shadow */
+    transition:
+    /* MISSING: Add transition */
+}
+
+/* Contact Form - Incomplete */
+.contact-section {
+    padding: ;
+    /* TODO: Add padding */
+}
+
+.contact-content {
+    display: ;
+    /* MISSING: Add display */
+    grid-template-columns: ;
+    /* TODO: Add grid-template-columns */
+    gap:
+    /* MISSING: Add gap */
+}
+
+.contact-form {
+    background: ;
+    /* TODO: Add background */
+    padding: ;
+    /* MISSING: Add padding */
+    border-radius:
+    /* TODO: Add border-radius */
+}
+
+.form-group {
+    margin-bottom: ;
+    /* MISSING: Add margin-bottom */
+}
+
+.form-group label {
+    display: ;
+    /* TODO: Add display */
+    margin-bottom: ;
+    /* MISSING: Add margin-bottom */
+    font-weight: ;
+    /* TODO: Add font-weight */
+    color:
+    /* MISSING: Add color */
+}
+
+.form-group input,
+.form-group textarea {
+    width: ;
+    /* TODO: Add width */
+    padding: ;
+    /* MISSING: Add padding */
+    border: ;
+    /* TODO: Add border */
+    border-radius: ;
+    /* MISSING: Add border-radius */
+    font-size: ;
+    /* TODO: Add font-size */
+    font-family:
+    /* MISSING: Add font-family */
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: ;
+    /* TODO: Add outline */
+    border-color: ;
+    /* MISSING: Add border-color */
+    box-shadow:
+    /* TODO: Add box-shadow */
+}
+
+/* Footer - Missing styles */
+.main-footer {
+    background: ;
+    /* TODO: Add background */
+    color: ;
+    /* MISSING: Add color */
+    padding: ;
+    /* TODO: Add padding */
+    margin-top:
+    /* MISSING: Add margin-top */
+}
+
+.footer-container {
+    max-width: ;
+    /* TODO: Add max-width */
+    margin: ;
+    /* MISSING: Add margin */
+    padding: ;
+    /* TODO: Add padding */
+    display: ;
+    /* MISSING: Add display */
+    grid-template-columns: ;
+    /* TODO: Add grid-template-columns */
+    gap:
+    /* MISSING: Add gap */
+}
+
+.footer-section h3 {
+    font-size: ;
+    /* TODO: Add font-size */
+    margin-bottom: ;
+    /* MISSING: Add margin-bottom */
+    color:
+    /* TODO: Add color */
+}
+
+.footer-links {
+    list-style: ;
+    /* MISSING: Add list-style */
+    padding:
+    /* TODO: Add padding */
+}
+
+.footer-links a {
+    color: ;
+    /* TODO: Add color */
+    text-decoration: ;
+    /* MISSING: Add text-decoration */
+    transition:
+    /* TODO: Add transition */
+}
+
+.footer-links a:hover {
+    color: ;
+    /* MISSING: Add hover color */
+}
+
+/* Footer Bottom - Incomplete */
+.footer-bottom {
+    border-top: ;
+    /* TODO: Add border-top */
+    margin-top: ;
+    /* MISSING: Add margin-top */
+    padding-top:
+    /* TODO: Add padding-top */
+}
+
+.copyright {
+    font-size: ;
+    /* MISSING: Add font-size */
+    color:
+    /* TODO: Add color */
+}
+
+/* Responsive Design - Missing media queries */
+@media (max-width: 768px) {
+    .hero-section {
+        grid-template-columns: ;
+        /* TODO: Add single column layout */
+        text-align:
+        /* MISSING: Add text-align */
+    }
+
+    .features-grid {
+        grid-template-columns: ;
+        /* TODO: Add single column grid */
+    }
+
+    .about-content {
+        grid-template-columns: ;
+        /* MISSING: Add single column layout */
+    }
+
+    /* TODO: Add more responsive styles */
+}

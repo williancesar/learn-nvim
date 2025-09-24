@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 02: Basic Navigation Practice</title>
+    <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+    <!--
+    PRACTICE INSTRUCTIONS FOR DAY 02: BASIC NAVIGATION
+
+    Navigation Commands Practice:
+    h - Move left one character
+    j - Move down one line
+    k - Move up one line
+    l - Move right one character
+
+    Advanced Navigation:
+    0 - Beginning of line
+    $ - End of line
+    gg - Beginning of file
+    G - End of file
+    Ctrl+f - Page down
+    Ctrl+b - Page up
+    H - Top of screen
+    M - Middle of screen
+    L - Bottom of screen
+
+    Practice navigating through this complex nested structure using only keyboard commands!
+    -->
+
+    <header class="site-header">
+        <div class="header-container">
+            <div class="logo-section">
+                <img src="logo.png" alt="Company Logo" class="logo-image">
+                <h1 class="site-title">Navigation Practice Site</h1>
+            </div>
+            <nav class="main-navigation">
+                <ul class="nav-primary">
+                    <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
+                    <li class="nav-item dropdown">
+                        <a href="#products" class="nav-link">Products</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#web-dev" class="dropdown-link">Web Development</a></li>
+                            <li><a href="#mobile-dev" class="dropdown-link">Mobile Development</a></li>
+                            <li><a href="#data-science" class="dropdown-link">Data Science</a></li>
+                            <li><a href="#cloud-services" class="dropdown-link">Cloud Services</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+                    <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="nav-secondary">
+                    <button class="search-toggle" aria-label="Toggle search">🔍</button>
+                    <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section id="hero" class="hero-section">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Master Vim Navigation</h1>
+                    <p class="hero-subtitle">Learn to navigate code efficiently using keyboard commands</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary">Get Started</button>
+                        <button class="btn btn-secondary">Watch Demo</button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <figure class="hero-figure">
+                        <img src="hero-image.jpg" alt="Vim navigation illustration">
+                        <figcaption class="hero-caption">Navigate like a pro</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features-section">
+            <div class="container">
+                <h2 class="section-title">Navigation Features</h2>
+                <div class="features-grid">
+                    <article class="feature-card">
+                        <div class="feature-icon">⌨️</div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Keyboard First</h3>
+                            <p class="feature-description">Navigate entirely with keyboard commands for maximum efficiency</p>
+                            <ul class="feature-list">
+                                <li class="feature-item">Character-level movement</li>
+                                <li class="feature-item">Line-based navigation</li>
+                                <li class="feature-item">Screen positioning</li>
+                            </ul>
+                        </div>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Precision Control</h3>
+                            <p class="feature-description">Move exactly where you need to be with surgical precision</p>
+                            <div class="feature-demo">
+                                <code class="demo-code">
+                                    <span class="demo-line">function navigateCode() {</span>
+                                    <span class="demo-line">  const cursor = getCurrentPosition();</span>
+                                    <span class="demo-line">  return moveTo(target);</span>
+                                    <span class="demo-line">}</span>
+                                </code>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <div class="feature-content">
+                            <h3 class="feature-title">Lightning Fast</h3>
+                            <p class="feature-description">Reduce context switching and maintain flow state</p>
+                            <table class="speed-comparison">
+                                <thead>
+                                    <tr>
+                                        <th>Method</th>
+                                        <th>Speed</th>
+                                        <th>Efficiency</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Mouse</td>
+                                        <td>Slow</td>
+                                        <td>Low</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Arrow Keys</td>
+                                        <td>Medium</td>
+                                        <td>Medium</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Vim Keys</td>
+                                        <td>Fast</td>
+                                        <td>High</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="practice-areas" class="practice-section">
+            <div class="container">
+                <h2 class="section-title">Practice Navigation</h2>
+
+                <div class="practice-grid">
+                    <div class="practice-column">
+                        <h3 class="practice-heading">Character Movement</h3>
+                        <div class="practice-content">
+                            <p class="practice-instruction">Use h, j, k, l to navigate through this nested structure:</p>
+                            <div class="nested-structure">
+                                <div class="level-1">
+                                    <span class="target">Target A</span>
+                                    <div class="level-2">
+                                        <span class="target">Target B</span>
+                                        <div class="level-3">
+                                            <span class="target">Target C</span>
+                                            <div class="level-4">
+                                                <span class="target">Target D</span>
+                                                <div class="level-5">
+                                                    <span class="target">Target E</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="practice-column">
+                        <h3 class="practice-heading">Line Navigation</h3>
+                        <div class="practice-content">
+                            <p class="practice-instruction">Practice 0 (line start) and $ (line end):</p>
+                            <div class="code-block">
+                                <pre class="code-lines">
+<span class="line-number">1</span>  <span class="code-content">const shortLine = 'start';</span>
+<span class="line-number">2</span>  <span class="code-content">const mediumLengthLine = 'navigate to beginning and end';</span>
+<span class="line-number">3</span>  <span class="code-content">const veryLongLineWithLotsOfContentThatYouNeedToNavigateToTheEndOfUsingDollarSign = 'end';</span>
+<span class="line-number">4</span>  <span class="code-content">let x = 1;</span>
+<span class="line-number">5</span>  <span class="code-content">let anotherVariableWithALongerNameForPracticeNavigatingToTheEndOfTheLine = true;</span>
+<span class="line-number">6</span>  <span class="code-content">return result;</span>
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="practice-column">
+                        <h3 class="practice-heading">File Navigation</h3>
+                        <div class="practice-content">
+                            <p class="practice-instruction">Practice gg (file start) and G (file end):</p>
+                            <div class="file-structure">
+                                <div class="file-header">
+                                    <span class="file-marker">FILE START (gg)</span>
+                                </div>
+                                <div class="file-body">
+                                    <div class="content-block">Content Block 1</div>
+                                    <div class="content-block">Content Block 2</div>
+                                    <div class="content-block">Content Block 3</div>
+                                    <div class="content-block">Content Block 4</div>
+                                    <div class="content-block">Content Block 5</div>
+                                    <div class="content-block">Content Block 6</div>
+                                    <div class="content-block">Content Block 7</div>
+                                    <div class="content-block">Content Block 8</div>
+                                    <div class="content-block">Content Block 9</div>
+                                    <div class="content-block">Content Block 10</div>
+                                </div>
+                                <div class="file-footer">
+                                    <span class="file-marker">FILE END (G)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="complex-navigation">
+                    <h3 class="practice-heading">Complex Navigation Challenge</h3>
+                    <div class="navigation-maze">
+                        <div class="maze-row">
+                            <span class="maze-cell">A1</span>
+                            <span class="maze-cell">B1</span>
+                            <span class="maze-cell">C1</span>
+                            <span class="maze-cell">D1</span>
+                            <span class="maze-cell">E1</span>
+                        </div>
+                        <div class="maze-row">
+                            <span class="maze-cell">A2</span>
+                            <span class="maze-cell">B2</span>
+                            <span class="maze-cell">C2</span>
+                            <span class="maze-cell">D2</span>
+                            <span class="maze-cell">E2</span>
+                        </div>
+                        <div class="maze-row">
+                            <span class="maze-cell">A3</span>
+                            <span class="maze-cell">B3</span>
+                            <span class="maze-cell target-cell">TARGET</span>
+                            <span class="maze-cell">D3</span>
+                            <span class="maze-cell">E3</span>
+                        </div>
+                        <div class="maze-row">
+                            <span class="maze-cell">A4</span>
+                            <span class="maze-cell">B4</span>
+                            <span class="maze-cell">C4</span>
+                            <span class="maze-cell">D4</span>
+                            <span class="maze-cell">E4</span>
+                        </div>
+                        <div class="maze-row">
+                            <span class="maze-cell">A5</span>
+                            <span class="maze-cell">B5</span>
+                            <span class="maze-cell">C5</span>
+                            <span class="maze-cell">D5</span>
+                            <span class="maze-cell">E5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <aside class="sidebar">
+            <div class="sidebar-content">
+                <h2 class="sidebar-title">Navigation Cheatsheet</h2>
+                <div class="cheatsheet">
+                    <div class="command-group">
+                        <h3 class="group-title">Basic Movement</h3>
+                        <dl class="command-list">
+                            <dt class="command-key">h</dt>
+                            <dd class="command-desc">Move left</dd>
+                            <dt class="command-key">j</dt>
+                            <dd class="command-desc">Move down</dd>
+                            <dt class="command-key">k</dt>
+                            <dd class="command-desc">Move up</dd>
+                            <dt class="command-key">l</dt>
+                            <dd class="command-desc">Move right</dd>
+                        </dl>
+                    </div>
+
+                    <div class="command-group">
+                        <h3 class="group-title">Line Navigation</h3>
+                        <dl class="command-list">
+                            <dt class="command-key">0</dt>
+                            <dd class="command-desc">Start of line</dd>
+                            <dt class="command-key">$</dt>
+                            <dd class="command-desc">End of line</dd>
+                            <dt class="command-key">^</dt>
+                            <dd class="command-desc">First non-blank</dd>
+                        </dl>
+                    </div>
+
+                    <div class="command-group">
+                        <h3 class="group-title">File Navigation</h3>
+                        <dl class="command-list">
+                            <dt class="command-key">gg</dt>
+                            <dd class="command-desc">Start of file</dd>
+                            <dt class="command-key">G</dt>
+                            <dd class="command-desc">End of file</dd>
+                            <dt class="command-key">Ctrl+f</dt>
+                            <dd class="command-desc">Page down</dd>
+                            <dt class="command-key">Ctrl+b</dt>
+                            <dd class="command-desc">Page up</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3 class="footer-title">Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#home" class="footer-link">Home</a></li>
+                    <li><a href="#tutorials" class="footer-link">Tutorials</a></li>
+                    <li><a href="#documentation" class="footer-link">Documentation</a></li>
+                    <li><a href="#support" class="footer-link">Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-title">Resources</h3>
+                <ul class="footer-links">
+                    <li><a href="#vim-tips" class="footer-link">Vim Tips</a></li>
+                    <li><a href="#keyboard-shortcuts" class="footer-link">Keyboard Shortcuts</a></li>
+                    <li><a href="#practice-exercises" class="footer-link">Practice Exercises</a></li>
+                    <li><a href="#community" class="footer-link">Community</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <p class="footer-text">Navigate efficiently, code effectively.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

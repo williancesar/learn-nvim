@@ -1,0 +1,115 @@
+{
+  "visual_block_practice": {
+    "server_list": [
+      "server001  192.168.1.100  web-frontend     active    nginx-1.21",
+      "server002  192.168.1.101  web-frontend     active    nginx-1.21",
+      "server003  192.168.1.102  web-frontend     inactive  nginx-1.20",
+      "server004  192.168.1.103  api-backend      active    node-18.15",
+      "server005  192.168.1.104  api-backend      active    node-18.15",
+      "server006  192.168.1.105  api-backend      inactive  node-16.14",
+      "server007  192.168.1.106  database         active    postgres-15",
+      "server008  192.168.1.107  database         active    postgres-15",
+      "server009  192.168.1.108  cache            active    redis-7.0",
+      "server010  192.168.1.109  cache            active    redis-7.0"
+    ],
+    "port_mapping": [
+      "service          internal_port  external_port  protocol  status",
+      "frontend         3000           80             http      running",
+      "frontend-ssl     3000           443            https     running",
+      "api-gateway      8080           8080           http      running",
+      "api-gateway-ssl  8080           8443           https     running",
+      "user-service     8081           8081           http      running",
+      "order-service    8082           8082           http      running",
+      "payment-service  8083           8083           http      running",
+      "database         5432           5432           tcp       running",
+      "cache            6379           6379           tcp       running",
+      "monitoring       9090           9090           http      running"
+    ],
+    "user_table": [
+      "id    username        email                   role        status    created_date",
+      "001   admin           admin@company.com       admin       active    2024-01-15",
+      "002   john_doe        john.doe@company.com    developer   active    2024-01-16",
+      "003   jane_smith      jane.smith@company.com  developer   active    2024-01-17",
+      "004   bob_wilson      bob.wilson@company.com  manager     active    2024-01-18",
+      "005   alice_brown     alice.brown@company.com designer    active    2024-01-19",
+      "006   charlie_davis   charlie@company.com     developer   inactive  2024-01-20",
+      "007   diana_miller    diana.miller@company.com manager    active    2024-01-21",
+      "008   frank_jones     frank.jones@company.com qa_tester   active    2024-01-22",
+      "009   grace_taylor    grace.taylor@company.com developer   active    2024-01-23",
+      "010   henry_white     henry.white@company.com admin       active    2024-01-24"
+    ],
+    "configuration_matrix": {
+      "environments": [
+        "environment    cpu_limit  memory_limit  disk_space  replicas  auto_scale",
+        "development    1000m      2Gi           50Gi        1         false",
+        "testing        2000m      4Gi           100Gi       2         false",
+        "staging        4000m      8Gi           200Gi       3         true",
+        "production     8000m      16Gi          500Gi       5         true",
+        "disaster       4000m      8Gi           200Gi       3         true"
+      ],
+      "services": [
+        "service_name     cpu_req   mem_req   cpu_lim   mem_lim   replicas  hpa_enabled",
+        "frontend         250m      512Mi     500m      1Gi       3         true",
+        "api-gateway      500m      1Gi       1000m     2Gi       2         true",
+        "user-service     250m      512Mi     500m      1Gi       3         true",
+        "order-service    500m      1Gi       1000m     2Gi       3         true",
+        "payment-service  1000m     2Gi       2000m     4Gi       2         true",
+        "notification     250m      256Mi     500m      512Mi     2         false",
+        "scheduler        500m      512Mi     1000m     1Gi       1         false",
+        "worker           1000m     1Gi       2000m     2Gi       5         true"
+      ]
+    },
+    "database_schema": [
+      "table_name       columns     indexes     constraints   size_mb   last_backup",
+      "users            15          5           8             2500      2024-03-15",
+      "orders           25          12          15            15000     2024-03-15",
+      "products         20          8           10            8000      2024-03-15",
+      "payments         18          6           12            12000     2024-03-15",
+      "inventory        12          4           6             5000      2024-03-15",
+      "categories       8           3           4             500       2024-03-15",
+      "reviews          10          4           5             3000      2024-03-15",
+      "sessions         6           2           3             1000      2024-03-15",
+      "audit_logs       20          8           5             25000     2024-03-15",
+      "notifications    12          4           6             2000      2024-03-15"
+    ],
+    "metrics_data": [
+      "timestamp         cpu_usage  memory_usage  disk_usage  network_in  network_out",
+      "2024-03-15_10:00  45.2       67.8          23.5        125.6       89.3",
+      "2024-03-15_10:15  52.1       71.2          24.1        132.4       95.7",
+      "2024-03-15_10:30  48.9       69.5          24.8        128.9       92.1",
+      "2024-03-15_10:45  55.3       73.1          25.2        145.2       102.8",
+      "2024-03-15_11:00  61.7       76.4          25.9        158.7       108.4",
+      "2024-03-15_11:15  58.2       74.8          26.3        142.1       99.6",
+      "2024-03-15_11:30  63.5       78.9          26.8        165.3       115.2",
+      "2024-03-15_11:45  59.8       75.6          27.1        149.8       105.7",
+      "2024-03-15_12:00  66.1       81.2          27.5        171.9       118.9",
+      "2024-03-15_12:15  62.4       77.3          28.0        156.4       110.3"
+    ],
+    "api_endpoints": [
+      "method  endpoint                    rate_limit  cache_ttl  auth_required  version",
+      "GET     /api/v1/users               1000        300        true           v1.2.3",
+      "POST    /api/v1/users               100         0          true           v1.2.3",
+      "PUT     /api/v1/users/{id}          200         0          true           v1.2.3",
+      "DELETE  /api/v1/users/{id}          50          0          true           v1.2.3",
+      "GET     /api/v1/orders              500         600        true           v1.1.0",
+      "POST    /api/v1/orders              200         0          true           v1.1.0",
+      "GET     /api/v1/products            2000        3600       false          v2.0.0",
+      "POST    /api/v1/products            100         0          true           v2.0.0",
+      "GET     /api/v1/health              unlimited   0          false          v1.0.0",
+      "GET     /api/v1/metrics             unlimited   0          true           v1.0.0"
+    ],
+    "container_resources": [
+      "container_name    cpu_request  memory_request  cpu_limit  memory_limit  restart_count",
+      "nginx-frontend    100m         128Mi           200m       256Mi         0",
+      "node-backend      250m         512Mi           500m       1Gi           2",
+      "postgres-db       500m         1Gi             1000m      2Gi           1",
+      "redis-cache       100m         256Mi           200m       512Mi         0",
+      "elasticsearch     1000m        2Gi             2000m      4Gi           3",
+      "kibana            250m         512Mi           500m       1Gi           1",
+      "prometheus        500m         1Gi             1000m      2Gi           0",
+      "grafana           250m         512Mi           500m       1Gi           0",
+      "jaeger            500m         1Gi             1000m      2Gi           2",
+      "fluentd           200m         256Mi           400m       512Mi         1"
+    ]
+  }
+}

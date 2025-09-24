@@ -1,0 +1,567 @@
+/* Day 23 - Line Numbers and Tag Matching CSS */
+/* Structured styling for line-based navigation practice */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.line-container {
+    font-family: 'Fira Code', 'Monaco', 'Consolas', monospace;
+    line-height: 1.8;
+    color: #2c3e50;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.main-header {
+    background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+    color: white;
+    padding: 40px;
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.main-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.main-header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.content {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* Line practice section */
+.line-practice {
+    margin-bottom: 50px;
+    padding: 30px;
+    background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+    border-radius: 10px;
+    border-left: 5px solid #27ae60;
+}
+
+.line-practice h2 {
+    color: #27ae60;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #27ae60;
+}
+
+.numbered-content {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #27ae60;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.numbered-content p {
+    margin-bottom: 15px;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    border-left: 3px solid #27ae60;
+    font-family: 'Monaco', monospace;
+}
+
+.line-examples {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #27ae60;
+}
+
+.line-examples h3 {
+    color: #27ae60;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.line-examples ul {
+    list-style-type: decimal;
+    padding-left: 25px;
+    margin-bottom: 20px;
+}
+
+.line-examples li {
+    margin-bottom: 8px;
+    padding: 5px 0;
+    font-family: 'Monaco', monospace;
+}
+
+/* Tag matching section */
+.tag-matching {
+    margin-bottom: 50px;
+    padding: 30px;
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-radius: 10px;
+    border-left: 5px solid #2196f3;
+}
+
+.tag-matching h2 {
+    color: #2196f3;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #2196f3;
+}
+
+.nested-tags {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #2196f3;
+}
+
+.outer-div {
+    background: #f3f4f6;
+    padding: 20px;
+    border-radius: 6px;
+    border: 2px solid #3498db;
+    margin-bottom: 15px;
+}
+
+.inner-div {
+    background: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #3498db;
+    margin: 10px 0;
+}
+
+.nested-span {
+    background: #e3f2fd;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #2196f3;
+    display: inline-block;
+    margin: 5px 0;
+}
+
+.nested-list {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    border-left: 3px solid #3498db;
+    margin-top: 15px;
+}
+
+.nested-list li {
+    margin-bottom: 5px;
+    padding: 3px 0;
+}
+
+.complex-structure {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #2196f3;
+}
+
+.main-article {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 6px;
+    border: 2px solid #2196f3;
+}
+
+.article-header {
+    background: #e3f2fd;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    border-left: 4px solid #2196f3;
+}
+
+.meta-info {
+    background: white;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+    border: 1px solid #bbdefb;
+}
+
+.meta-info span {
+    background: #e3f2fd;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-right: 10px;
+    font-size: 0.9rem;
+}
+
+.article-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 15px 0;
+    border: 1px solid #bbdefb;
+}
+
+.quote-block {
+    background: #f0f0f0;
+    padding: 15px;
+    border-radius: 5px;
+    border-left: 4px solid #9e9e9e;
+    margin: 15px 0;
+    font-style: italic;
+}
+
+.code-example {
+    background: #2c3e50;
+    border-radius: 5px;
+    margin: 15px 0;
+    overflow-x: auto;
+}
+
+.code-example pre {
+    color: #ecf0f1;
+    padding: 15px;
+    margin: 0;
+    font-family: 'Monaco', monospace;
+    font-size: 0.9rem;
+}
+
+.article-footer {
+    background: #e3f2fd;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+.tags {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.tag {
+    background: #2196f3;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+}
+
+.bracket-examples {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #2196f3;
+}
+
+.bracket-examples h3 {
+    color: #2196f3;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.math-expressions,
+.nested-brackets {
+    background: #f3f4f6;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+    border-left: 3px solid #2196f3;
+}
+
+.math-expressions p,
+.nested-brackets p {
+    font-family: 'Monaco', monospace;
+    background: white;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+/* Practice exercises section */
+.practice-exercises {
+    margin-bottom: 40px;
+    padding: 30px;
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    border-radius: 10px;
+    border-left: 5px solid #ff9800;
+}
+
+.practice-exercises h2 {
+    color: #ff9800;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ff9800;
+}
+
+.exercise-one,
+.exercise-two,
+.exercise-three {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #ff9800;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.exercise-one h3,
+.exercise-two h3,
+.exercise-three h3 {
+    color: #e65100;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+}
+
+.exercise-one ol,
+.exercise-three ol {
+    list-style-type: decimal;
+    padding-left: 25px;
+    margin-bottom: 15px;
+}
+
+.exercise-one li,
+.exercise-three li {
+    margin-bottom: 8px;
+    padding: 5px 0;
+    font-family: 'Monaco', monospace;
+}
+
+.drill-content {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 6px;
+    margin: 15px 0;
+    border-left: 3px solid #ff9800;
+}
+
+.drill-example {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 15px 0;
+    border: 1px solid #ffcc02;
+}
+
+.example-section {
+    background: #fff8e1;
+    padding: 15px;
+    border-radius: 5px;
+    border: 2px solid #ff9800;
+}
+
+.example-article {
+    background: white;
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid #ffcc02;
+}
+
+.example-header {
+    background: #fff3e0;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    border-left: 3px solid #ff9800;
+}
+
+.header-nav {
+    background: white;
+    padding: 10px;
+    border-radius: 3px;
+    margin-top: 8px;
+    border: 1px solid #ffe0b2;
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+.nav-item {
+    background: #fff3e0;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.nav-link {
+    display: block;
+    padding: 5px 10px;
+    color: #e65100;
+    text-decoration: none;
+}
+
+.example-main {
+    background: white;
+    padding: 15px;
+    border-radius: 4px;
+    margin: 10px 0;
+    border: 1px solid #ffe0b2;
+}
+
+.content-wrapper {
+    background: #f9f9f9;
+    padding: 12px;
+    border-radius: 4px;
+    border-left: 3px solid #ff9800;
+}
+
+.sidebar {
+    background: #fff8e1;
+    padding: 10px;
+    border-radius: 3px;
+    margin-top: 10px;
+    border: 1px solid #ffcc02;
+}
+
+.widget {
+    background: white;
+    padding: 8px;
+    border-radius: 3px;
+    border: 1px solid #ffe0b2;
+}
+
+.highlight {
+    background: #ffeb3b;
+    padding: 2px 4px;
+    border-radius: 2px;
+}
+
+.practice-target {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 6px;
+    margin: 15px 0;
+    border-left: 3px solid #ff9800;
+}
+
+.target-span,
+.target-div {
+    background: white;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 8px 0;
+    border: 1px solid #ffcc02;
+    display: block;
+}
+
+.target-div {
+    padding: 15px;
+}
+
+.target-div p,
+.target-div strong,
+.target-div em,
+.target-div code {
+    background: #fff3e0;
+    padding: 5px 8px;
+    border-radius: 3px;
+    margin: 5px 0;
+    display: block;
+    border-left: 2px solid #ff9800;
+}
+
+.target-div blockquote {
+    background: #f0f0f0;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+    border-left: 4px solid #9e9e9e;
+}
+
+.target-div ul {
+    background: #fff8e1;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+    border: 1px solid #ffcc02;
+}
+
+.target-div li {
+    background: white;
+    padding: 5px 8px;
+    border-radius: 3px;
+    margin: 3px 0;
+    border-left: 2px solid #ff9800;
+}
+
+/* Footer */
+.main-footer {
+    background: linear-gradient(135deg, #37474f 0%, #263238 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.main-footer p {
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.main-footer p:last-child {
+    margin-bottom: 0;
+    font-weight: bold;
+    color: #4fc3f7;
+    font-family: 'Monaco', monospace;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .line-container {
+        padding: 10px;
+    }
+
+    .content {
+        padding: 25px 15px;
+    }
+
+    .main-header {
+        padding: 25px 15px;
+    }
+
+    .main-header h1 {
+        font-size: 2rem;
+    }
+
+    .line-practice,
+    .tag-matching,
+    .practice-exercises {
+        padding: 20px 15px;
+    }
+
+    .line-practice h2,
+    .tag-matching h2,
+    .practice-exercises h2 {
+        font-size: 1.6rem;
+    }
+
+    .nav-list {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .tags {
+        gap: 5px;
+    }
+}

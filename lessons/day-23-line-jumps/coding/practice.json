@@ -1,0 +1,355 @@
+{
+  "line_jump_practice": {
+    "configuration": {
+      "servers": [
+        {
+          "id": 1,
+          "name": "web-server-01",
+          "type": "nginx",
+          "config": {
+            "listen": [80, 443],
+            "server_name": "api.company.com",
+            "ssl": {
+              "certificate": "/etc/ssl/certs/server.crt",
+              "private_key": "/etc/ssl/private/server.key",
+              "protocols": ["TLSv1.2", "TLSv1.3"]
+            },
+            "locations": [
+              {
+                "path": "/",
+                "proxy_pass": "http://backend",
+                "headers": {
+                  "Host": "$host",
+                  "X-Real-IP": "$remote_addr",
+                  "X-Forwarded-For": "$proxy_add_x_forwarded_for"
+                }
+              },
+              {
+                "path": "/api/",
+                "proxy_pass": "http://api-backend/",
+                "timeout": {
+                  "connect": "10s",
+                  "send": "10s",
+                  "read": "30s"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": 2,
+          "name": "database-server-01",
+          "type": "postgresql",
+          "config": {
+            "version": "15.2",
+            "port": 5432,
+            "max_connections": 200,
+            "shared_buffers": "256MB",
+            "effective_cache_size": "1GB",
+            "work_mem": "4MB",
+            "maintenance_work_mem": "64MB",
+            "checkpoint_completion_target": 0.9,
+            "wal_buffers": "16MB",
+            "default_statistics_target": 100,
+            "random_page_cost": 1.1,
+            "effective_io_concurrency": 200,
+            "min_wal_size": "1GB",
+            "max_wal_size": "4GB"
+          }
+        }
+      ],
+      "line_50_marker": "=== LINE 50 REFERENCE POINT ===",
+      "applications": [
+        {
+          "id": 3,
+          "name": "user-service",
+          "language": "java",
+          "framework": "spring-boot",
+          "config": {
+            "server": {
+              "port": 8080,
+              "servlet": {
+                "context-path": "/api/v1"
+              }
+            },
+            "spring": {
+              "datasource": {
+                "url": "jdbc:postgresql://db:5432/users",
+                "username": "app_user",
+                "password": "secure_password",
+                "driver-class-name": "org.postgresql.Driver",
+                "hikari": {
+                  "connection-timeout": 20000,
+                  "idle-timeout": 300000,
+                  "max-lifetime": 1200000,
+                  "maximum-pool-size": 20,
+                  "minimum-idle": 5
+                }
+              },
+              "jpa": {
+                "hibernate": {
+                  "ddl-auto": "validate",
+                  "naming": {
+                    "physical-strategy": "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl"
+                  }
+                },
+                "show-sql": false,
+                "properties": {
+                  "hibernate": {
+                    "dialect": "org.hibernate.dialect.PostgreSQLDialect",
+                    "format_sql": true,
+                    "use_sql_comments": true,
+                    "jdbc": {
+                      "batch_size": 20,
+                      "fetch_size": 100
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "id": 4,
+          "name": "order-service",
+          "language": "nodejs",
+          "framework": "express",
+          "config": {
+            "port": 3000,
+            "database": {
+              "type": "mongodb",
+              "connection": {
+                "host": "mongo",
+                "port": 27017,
+                "database": "orders",
+                "options": {
+                  "useNewUrlParser": true,
+                  "useUnifiedTopology": true,
+                  "maxPoolSize": 20,
+                  "minPoolSize": 5,
+                  "maxIdleTimeMS": 30000,
+                  "serverSelectionTimeoutMS": 5000,
+                  "socketTimeoutMS": 45000,
+                  "bufferMaxEntries": 0,
+                  "bufferCommands": false
+                }
+              }
+            },
+            "redis": {
+              "host": "redis",
+              "port": 6379,
+              "db": 0,
+              "password": "redis_password",
+              "keyPrefix": "orders:",
+              "retryDelayOnFailover": 100,
+              "enableOfflineQueue": false,
+              "maxRetriesPerRequest": 3,
+              "lazyConnect": true,
+              "keepAlive": 30000
+            }
+          }
+        }
+      ],
+      "line_100_marker": "=== LINE 100 REFERENCE POINT ===",
+      "monitoring": {
+        "prometheus": {
+          "server": {
+            "global": {
+              "scrape_interval": "15s",
+              "evaluation_interval": "15s"
+            },
+            "scrape_configs": [
+              {
+                "job_name": "prometheus",
+                "static_configs": [
+                  {
+                    "targets": ["localhost:9090"]
+                  }
+                ]
+              },
+              {
+                "job_name": "node-exporter",
+                "static_configs": [
+                  {
+                    "targets": [
+                      "node-exporter-1:9100",
+                      "node-exporter-2:9100",
+                      "node-exporter-3:9100"
+                    ]
+                  }
+                ]
+              },
+              {
+                "job_name": "application-metrics",
+                "metrics_path": "/actuator/prometheus",
+                "static_configs": [
+                  {
+                    "targets": [
+                      "user-service:8080",
+                      "order-service:3000",
+                      "payment-service:8081"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "rule_files": [
+              "alert_rules.yml",
+              "recording_rules.yml"
+            ],
+            "alerting": {
+              "alertmanagers": [
+                {
+                  "static_configs": [
+                    {
+                      "targets": ["alertmanager:9093"]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        "grafana": {
+          "security": {
+            "admin_user": "admin",
+            "admin_password": "secure_grafana_password"
+          },
+          "database": {
+            "type": "postgres",
+            "host": "grafana-db:5432",
+            "name": "grafana",
+            "user": "grafana",
+            "password": "grafana_db_password",
+            "ssl_mode": "require"
+          },
+          "dashboards": {
+            "providers": [
+              {
+                "name": "default",
+                "type": "file",
+                "path": "/var/lib/grafana/dashboards"
+              }
+            ]
+          }
+        }
+      },
+      "line_150_marker": "=== LINE 150 REFERENCE POINT ===",
+      "security": {
+        "oauth2": {
+          "providers": [
+            {
+              "name": "google",
+              "client_id": "123456789012-abcdefghijklmnopqrstuvwxyz123456.apps.googleusercontent.com",
+              "client_secret": "GOCSPX-abcdefghijklmnopqrstuvwxyz123456",
+              "redirect_uri": "https://app.company.com/auth/google/callback",
+              "scopes": ["openid", "profile", "email"]
+            },
+            {
+              "name": "github",
+              "client_id": "Iv1.abcdefghijklmnop",
+              "client_secret": "abcdefghijklmnopqrstuvwxyz1234567890abcdef",
+              "redirect_uri": "https://app.company.com/auth/github/callback",
+              "scopes": ["user:email", "read:user"]
+            }
+          ]
+        },
+        "jwt": {
+          "secret": "super-secret-jwt-key-that-should-be-in-env-vars",
+          "algorithm": "HS256",
+          "expiresIn": "1h",
+          "issuer": "https://auth.company.com",
+          "audience": "https://api.company.com"
+        },
+        "cors": {
+          "allowed_origins": [
+            "https://app.company.com",
+            "https://admin.company.com",
+            "https://staging.company.com"
+          ],
+          "allowed_methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+          "allowed_headers": [
+            "Origin",
+            "X-Requested-With",
+            "Content-Type",
+            "Accept",
+            "Authorization"
+          ],
+          "exposed_headers": ["X-Total-Count"],
+          "credentials": true,
+          "max_age": 86400
+        }
+      },
+      "line_200_marker": "=== LINE 200 REFERENCE POINT ===",
+      "deployment": {
+        "kubernetes": {
+          "clusters": [
+            {
+              "name": "production",
+              "region": "us-west-2",
+              "node_groups": [
+                {
+                  "name": "control-plane",
+                  "instance_type": "t3.medium",
+                  "min_size": 3,
+                  "max_size": 3,
+                  "desired_capacity": 3,
+                  "labels": {
+                    "node-role.kubernetes.io/control-plane": ""
+                  },
+                  "taints": [
+                    {
+                      "key": "node-role.kubernetes.io/control-plane",
+                      "effect": "NoSchedule"
+                    }
+                  ]
+                },
+                {
+                  "name": "worker-nodes",
+                  "instance_type": "t3.large",
+                  "min_size": 5,
+                  "max_size": 20,
+                  "desired_capacity": 10,
+                  "labels": {
+                    "node-role.kubernetes.io/worker": "",
+                    "workload-type": "general"
+                  },
+                  "auto_scaling": {
+                    "enabled": true,
+                    "scale_up_policy": {
+                      "adjustment_type": "PercentChangeInCapacity",
+                      "scaling_adjustment": 100,
+                      "cooldown": 300
+                    },
+                    "scale_down_policy": {
+                      "adjustment_type": "PercentChangeInCapacity",
+                      "scaling_adjustment": -10,
+                      "cooldown": 300
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "docker": {
+          "registry": "company.azurecr.io",
+          "images": [
+            {
+              "name": "frontend",
+              "tag": "v2.1.0",
+              "build_context": "./frontend",
+              "dockerfile": "Dockerfile.prod"
+            },
+            {
+              "name": "backend-api",
+              "tag": "v1.5.3",
+              "build_context": "./backend",
+              "dockerfile": "Dockerfile"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

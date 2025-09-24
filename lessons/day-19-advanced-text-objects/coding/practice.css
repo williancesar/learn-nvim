@@ -1,0 +1,725 @@
+/* Day 19 - Advanced Text Objects Practice CSS */
+/* Complex CSS patterns with comments and advanced structures */
+
+/*
+ * Global reset and base styles
+ * Practice selecting and modifying comment blocks
+ * Use text objects to manipulate entire comment sections
+ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/*
+ * Root variables for theming
+ * Complex custom property definitions with calculations
+ */
+:root {
+    /* Primary color palette */
+    --primary-hue: 260;
+    --primary-saturation: 70%;
+    --primary-lightness: 55%;
+    --primary-color: hsl(
+        var(--primary-hue),
+        var(--primary-saturation),
+        var(--primary-lightness)
+    );
+
+    /* Derived colors using HSL manipulation */
+    --primary-light: hsl(
+        var(--primary-hue),
+        calc(var(--primary-saturation) * 0.8),
+        calc(var(--primary-lightness) + 25%)
+    );
+    --primary-dark: hsl(
+        var(--primary-hue),
+        calc(var(--primary-saturation) * 1.2),
+        calc(var(--primary-lightness) - 25%)
+    );
+
+    /* Semantic color assignments */
+    --color-background: #fafafa;
+    --color-surface: #ffffff;
+    --color-text-primary: #2c3e50;
+    --color-text-secondary: #7f8c8d;
+    --color-border: #e1e8ed;
+    --color-shadow: rgba(0, 0, 0, 0.1);
+
+    /* Typography scale */
+    --font-family-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-family-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    --font-size-xs: clamp(0.75rem, 1.5vw, 0.875rem);
+    --font-size-sm: clamp(0.875rem, 2vw, 1rem);
+    --font-size-base: clamp(1rem, 2.5vw, 1.125rem);
+    --font-size-lg: clamp(1.125rem, 3vw, 1.25rem);
+    --font-size-xl: clamp(1.25rem, 3.5vw, 1.5rem);
+    --font-size-2xl: clamp(1.5rem, 4vw, 2rem);
+    --font-size-3xl: clamp(2rem, 5vw, 3rem);
+
+    /* Spacing scale */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+    --space-3xl: 4rem;
+
+    /* Border radius scale */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+
+    /* Animation properties */
+    --transition-fast: 150ms ease-out;
+    --transition-normal: 250ms ease-out;
+    --transition-slow: 350ms ease-out;
+    --animation-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/*
+ * Dark theme overrides
+ * Complex selector with custom properties
+ */
+[data-theme="dark"] {
+    --color-background: #0f0f23; /* Deep purple-black background */
+    --color-surface: #1a1a2e;    /* Slightly lighter surface */
+    --color-text-primary: #eee;   /* Light text for readability */
+    --color-text-secondary: #bbb; /* Dimmed secondary text */
+    --color-border: #333;         /* Subtle borders */
+    --color-shadow: rgba(0, 0, 0, 0.3); /* Deeper shadows */
+
+    /* Adjust primary colors for dark theme */
+    --primary-lightness: 65%;     /* Brighter primary in dark mode */
+}
+
+/*
+ * Base typography and layout
+ * Complex inheritance and calculation patterns
+ */
+body {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    color: var(--color-text-primary);
+    background: linear-gradient(
+        135deg,
+        var(--color-background) 0%,
+        color-mix(in srgb, var(--color-background) 95%, var(--primary-color) 5%) 100%
+    );
+    min-height: 100vh;
+    padding: var(--space-lg);
+}
+
+/*
+ * Container and layout components
+ * Advanced flexbox and grid patterns
+ */
+.container {
+    max-width: min(1400px, 95vw); /* Responsive max-width with viewport units */
+    margin: 0 auto;
+    background: var(--color-surface);
+    border-radius: var(--radius-xl);
+    box-shadow:
+        0 4px 6px var(--color-shadow),
+        0 1px 3px var(--color-shadow);
+    overflow: hidden;
+    /* Complex backdrop filter for glass effect */
+    backdrop-filter: blur(10px) saturate(180%);
+    -webkit-backdrop-filter: blur(10px) saturate(180%);
+}
+
+/*
+ * Header component with complex gradient and positioning
+ * Multiple pseudo-elements and advanced selectors
+ */
+.main-header {
+    position: relative;
+    background: linear-gradient(
+        135deg,
+        var(--primary-dark) 0%,
+        var(--primary-color) 50%,
+        var(--primary-light) 100%
+    );
+    color: white;
+    padding: var(--space-3xl) var(--space-2xl);
+    text-align: center;
+    overflow: hidden; /* Contain pseudo-element animations */
+}
+
+/* Complex pseudo-element patterns for visual effects */
+.main-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    right: -50%;
+    bottom: -50%;
+    background:
+        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+    animation: float 20s ease-in-out infinite;
+    pointer-events: none; /* Prevent interaction interference */
+}
+
+.main-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 100%
+    );
+}
+
+/* Animation keyframes for complex effects */
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    33% {
+        transform: translate(2%, -2%) rotate(1deg);
+    }
+    66% {
+        transform: translate(-1%, 1%) rotate(-0.5deg);
+    }
+}
+
+/*
+ * Header content styling with advanced typography
+ * Complex text effects and responsive scaling
+ */
+.header-content {
+    position: relative;
+    z-index: 1; /* Ensure content appears above pseudo-elements */
+}
+
+.main-header h1 {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    margin-bottom: var(--space-lg);
+    /* Advanced text shadow for depth */
+    text-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.3),
+        0 4px 8px rgba(0, 0, 0, 0.2),
+        0 8px 16px rgba(0, 0, 0, 0.1);
+    /* Gradient text effect (where supported) */
+    background: linear-gradient(45deg, #fff, rgba(255, 255, 255, 0.8));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* Fallback for unsupported browsers */
+    color: white;
+}
+
+/* Support check for gradient text */
+@supports (background-clip: text) {
+    .main-header h1 {
+        color: transparent;
+    }
+}
+
+.main-header p {
+    font-size: var(--font-size-lg);
+    opacity: 0.9;
+    margin-bottom: var(--space-xl);
+    /* Subtle animation on load */
+    animation: slideInUp var(--transition-slow) var(--animation-bounce);
+}
+
+/* Complex navigation component */
+.primary-navigation {
+    margin-top: var(--space-xl);
+}
+
+.nav-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-lg);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Advanced navigation link styling */
+.nav-list > li > a {
+    display: inline-block;
+    padding: var(--space-sm) var(--space-lg);
+    color: white;
+    text-decoration: none;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--radius-lg);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all var(--transition-normal);
+    /* Complex transform origin for hover effects */
+    transform-origin: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Pseudo-element for hover animation */
+.nav-list > li > a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left var(--transition-normal);
+}
+
+.nav-list > li > a:hover::before {
+    left: 100%;
+}
+
+.nav-list > li > a:hover {
+    border-color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/*
+ * Dropdown navigation (complex nested selectors)
+ * Advanced positioning and animation
+ */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.15),
+        0 20px 40px rgba(0, 0, 0, 0.1);
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all var(--transition-normal);
+    /* Complex z-index management */
+    z-index: 1000;
+}
+
+.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+}
+
+.dropdown-menu li {
+    list-style: none;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: var(--space-sm) var(--space-md);
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: background-color var(--transition-fast);
+}
+
+.dropdown-menu a:hover {
+    background: color-mix(in srgb, var(--primary-color) 10%, transparent);
+    color: var(--primary-dark);
+}
+
+/*
+ * Main content area styling
+ * Complex grid and flexbox combinations
+ */
+.content-wrapper {
+    padding: var(--space-3xl) var(--space-2xl);
+    /* CSS Grid for complex layouts */
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3xl);
+    /* Advanced grid auto-placement */
+    grid-auto-rows: minmax(min-content, max-content);
+}
+
+/*
+ * Section component with advanced styling
+ * Multiple background patterns and effects
+ */
+.content-section {
+    position: relative;
+    padding: var(--space-2xl);
+    background:
+        /* Subtle pattern overlay */
+        radial-gradient(circle at 1px 1px, rgba(0,0,0,0.03) 1px, transparent 0),
+        /* Main background */
+        var(--color-surface);
+    background-size: 20px 20px, auto;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    box-shadow:
+        0 2px 4px var(--color-shadow),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    /* Complex transition for hover effects */
+    transition:
+        transform var(--transition-normal),
+        box-shadow var(--transition-normal),
+        border-color var(--transition-normal);
+}
+
+.content-section:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    border-color: color-mix(in srgb, var(--primary-color) 30%, var(--color-border));
+}
+
+/* Section headers with complex styling */
+.content-section h2 {
+    font-size: var(--font-size-2xl);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-md);
+    /* Complex border gradient */
+    border-bottom: 3px solid;
+    border-image: linear-gradient(
+        90deg,
+        var(--primary-color) 0%,
+        var(--primary-light) 50%,
+        transparent 100%
+    ) 1;
+    /* Text gradient effect */
+    background: linear-gradient(135deg, var(--color-text-primary), var(--primary-dark));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* Fallback for browsers without support */
+    color: var(--color-text-primary);
+}
+
+/*
+ * Code and syntax highlighting
+ * Complex patterns for different code types
+ */
+code {
+    font-family: var(--font-family-mono);
+    font-size: 0.9em;
+    background: color-mix(in srgb, var(--primary-color) 10%, var(--color-surface));
+    color: var(--primary-dark);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    border: 1px solid color-mix(in srgb, var(--primary-color) 20%, transparent);
+    /* Subtle text shadow for better readability */
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+pre {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: #ecf0f1;
+    padding: var(--space-xl);
+    border-radius: var(--radius-lg);
+    overflow-x: auto;
+    margin: var(--space-lg) 0;
+    /* Complex border and shadow effects */
+    border: 1px solid #34495e;
+    box-shadow:
+        inset 0 1px 3px rgba(0, 0, 0, 0.3),
+        0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Custom scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: #7f8c8d #2c3e50;
+}
+
+/* Webkit scrollbar customization */
+pre::-webkit-scrollbar {
+    height: 8px;
+}
+
+pre::-webkit-scrollbar-track {
+    background: #2c3e50;
+    border-radius: var(--radius-sm);
+}
+
+pre::-webkit-scrollbar-thumb {
+    background: #7f8c8d;
+    border-radius: var(--radius-sm);
+}
+
+pre::-webkit-scrollbar-thumb:hover {
+    background: #95a5a6;
+}
+
+/* Code within pre blocks */
+pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    border: none;
+    text-shadow: none;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+/*
+ * Complex example containers
+ * Multiple background layers and effects
+ */
+.comment-examples,
+.delimiter-examples,
+.nested-examples {
+    margin: var(--space-xl) 0;
+    padding: var(--space-xl);
+    background:
+        /* Gradient overlay */
+        linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.4) 100%),
+        /* Pattern background */
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 10px,
+            rgba(0, 0, 0, 0.02) 10px,
+            rgba(0, 0, 0, 0.02) 20px
+        );
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    /* Complex box shadow with multiple layers */
+    box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.05),
+        0 8px 16px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* Nested structure styling */
+.complex-layout {
+    padding: var(--space-lg);
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-lg);
+    margin: var(--space-lg) 0;
+}
+
+.grid-item {
+    padding: var(--space-lg);
+    background:
+        linear-gradient(135deg, var(--color-surface) 0%, rgba(255, 255, 255, 0.5) 100%);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    /* Complex transform effects */
+    transition:
+        transform var(--transition-normal),
+        box-shadow var(--transition-normal);
+}
+
+.grid-item:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Featured item styling */
+.grid-item.featured {
+    /* Double border effect */
+    border: 2px solid var(--primary-color);
+    box-shadow:
+        0 0 0 1px var(--primary-light),
+        0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.grid-item.featured::before {
+    content: '⭐';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--primary-color);
+    color: white;
+    padding: var(--space-xs);
+    border-radius: 50%;
+    font-size: 0.8rem;
+}
+
+/*
+ * Footer component styling
+ * Complex multi-column layout and typography
+ */
+.main-footer {
+    background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+    color: white;
+    padding: var(--space-3xl) var(--space-2xl);
+    margin-top: var(--space-3xl);
+    /* Advanced clip-path for interesting shapes */
+    clip-path: polygon(0 20px, 100% 0, 100% 100%, 0 100%);
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-2xl);
+    margin-bottom: var(--space-2xl);
+}
+
+.footer-section h3 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-md);
+    color: var(--primary-light);
+    /* Text decoration with gradient */
+    border-bottom: 2px solid var(--primary-light);
+    padding-bottom: var(--space-xs);
+    display: inline-block;
+}
+
+/* Social links with icon effects */
+.social-links {
+    display: flex;
+    gap: var(--space-md);
+    list-style: none;
+    margin-top: var(--space-md);
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    text-decoration: none;
+    border-radius: 50%;
+    transition: all var(--transition-normal);
+    /* Complex backdrop effects */
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.social-links a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px) scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Media queries with complex responsive patterns */
+@media (max-width: 768px) {
+    /* Mobile-first responsive adjustments */
+    .container {
+        margin: var(--space-sm);
+        border-radius: var(--radius-md);
+    }
+
+    .main-header {
+        padding: var(--space-2xl) var(--space-lg);
+    }
+
+    .main-header h1 {
+        font-size: var(--font-size-2xl);
+    }
+
+    .nav-list {
+        flex-direction: column;
+        gap: var(--space-sm);
+    }
+
+    .content-wrapper {
+        padding: var(--space-xl) var(--space-lg);
+        gap: var(--space-2xl);
+    }
+
+    .content-section {
+        padding: var(--space-lg);
+    }
+
+    .grid-container {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+    }
+
+    .footer-sections {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+    }
+
+    /* Adjust custom properties for mobile */
+    :root {
+        --space-3xl: 2rem;
+        --space-2xl: 1.5rem;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    :root {
+        --color-border: #000;
+        --color-text-primary: #000;
+        --color-text-secondary: #333;
+    }
+
+    .main-header {
+        background: linear-gradient(135deg, #000 0%, #333 100%);
+    }
+
+    code {
+        background: #f0f0f0;
+        color: #000;
+        border: 2px solid #000;
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .main-header::before {
+        animation: none;
+    }
+}
+
+/* Print styles */
+@media print {
+    * {
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+    }
+
+    .main-header {
+        background: white !important;
+        color: black !important;
+    }
+
+    .dropdown-menu {
+        position: static !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+}

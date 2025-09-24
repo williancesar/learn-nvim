@@ -1,0 +1,495 @@
+# Kubernetes Deployment Configuration - Contains intentional errors for undo/redo practice
+# Multi-environment microservices deployment with GitOps workflow
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: microservices
+  labels:
+    app: microservices
+    environment: production
+    cost-center: engineering
+  annotations:
+    description: "Microservices application namespace"
+    contact: "devops@example.com"
+---
+# Error: Wrong apiVersion
+apiVersion: apps/v2
+kind: Deployment
+metadata:
+  name: user-service
+  namespace: microservices
+  labels:
+    app: user-service
+    version: v1.2.3
+    component: backend
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps/v1","kind":"Deployment"}
+spec:
+  replicas: 3
+  # Error: Wrong selector field name
+  selector:
+    matchLabels:
+      application: user-service
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: user-service
+        version: v1.2.3
+        component: backend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: user-service
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+      - name: user-service
+        image: myregistry.azurecr.io/user-service:v1.2.3
+        # Error: Wrong port field name
+        port:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        - containerPort: 9090
+          name: metrics
+          protocol: TCP
+        env:
+        - name: PORT
+          value: "8080"
+        - name: DB_HOST
+          value: postgresql.microservices.svc.cluster.local
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_NAME
+          value: microservices_db
+        - name: DB_USER
+          value: postgres
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secret
+              key: postgres-password
+        - name: REDIS_HOST
+          value: redis-master.microservices.svc.cluster.local
+        - name: REDIS_PORT
+          value: "6379"
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redis-secret
+              key: redis-password
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: user-service-secret
+              key: jwt-secret
+        - name: LOG_LEVEL
+          value: info
+        - name: METRICS_ENABLED
+          value: "true"
+        resources:
+          requests:
+            cpu: 200m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+          readOnly: true
+        - name: secrets
+          mountPath: /app/secrets
+          readOnly: true
+        - name: tmp
+          mountPath: /tmp
+      volumes:
+      - name: config
+        configMap:
+          name: user-service-config
+      - name: secrets
+        secret:
+          secretName: user-service-secret
+      - name: tmp
+        emptyDir: {}
+      nodeSelector:
+        kubernetes.io/arch: amd64
+        node-type: application
+      tolerations:
+      - key: "application"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - user-service
+              topologyKey: kubernetes.io/hostname
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+  namespace: microservices
+  labels:
+    app: user-service
+    component: backend
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: nlb
+    external-dns.alpha.kubernetes.io/hostname: user-service.example.com
+spec:
+  selector:
+    app: user-service
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    protocol: TCP
+  - name: metrics
+    port: 9090
+    targetPort: 9090
+    protocol: TCP
+  type: ClusterIP
+  sessionAffinity: None
+---
+# Error: Missing required field
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: user-service-hpa
+  namespace: microservices
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: user-service
+  minReplicas: 2
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 15
+      - type: Pods
+        value: 4
+        periodSeconds: 15
+      selectPolicy: Max
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: user-service-netpol
+  namespace: microservices
+spec:
+  podSelector:
+    matchLabels:
+      app: user-service
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: ingress-nginx
+    - podSelector:
+        matchLabels:
+          app: api-gateway
+    ports:
+    - protocol: TCP
+      port: 8080
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: monitoring
+    ports:
+    - protocol: TCP
+      port: 9090
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: postgresql
+    ports:
+    - protocol: TCP
+      port: 5432
+  - to:
+    - podSelector:
+        matchLabels:
+          app: redis
+    ports:
+    - protocol: TCP
+      port: 6379
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 443
+---
+# Error: Indentation problem
+apiVersion: v1
+kind: ConfigMap
+metadata:
+name: user-service-config
+  namespace: microservices
+  labels:
+    app: user-service
+    component: config
+data:
+  application.yaml: |
+    server:
+      port: 8080
+      servlet:
+        context-path: /
+
+    spring:
+      application:
+        name: user-service
+
+      datasource:
+        url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+        username: ${DB_USER}
+        password: ${DB_PASSWORD}
+        driver-class-name: org.postgresql.Driver
+        hikari:
+          maximum-pool-size: 20
+          minimum-idle: 5
+          connection-timeout: 30000
+          idle-timeout: 600000
+          max-lifetime: 1800000
+
+      redis:
+        host: ${REDIS_HOST}
+        port: ${REDIS_PORT}
+        password: ${REDIS_PASSWORD}
+        database: 0
+        timeout: 2000ms
+        lettuce:
+          pool:
+            max-active: 20
+            max-idle: 10
+            min-idle: 5
+
+      jpa:
+        hibernate:
+          ddl-auto: validate
+        show-sql: false
+        properties:
+          hibernate:
+            dialect: org.hibernate.dialect.PostgreSQLDialect
+            format_sql: true
+
+    jwt:
+      secret: ${JWT_SECRET}
+      expiration: 86400
+      refresh-expiration: 2592000
+
+    logging:
+      level:
+        com.example.userservice: ${LOG_LEVEL}
+        org.springframework.security: DEBUG
+        org.hibernate.SQL: DEBUG
+      pattern:
+        console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+        file: "%d{ISO8601} [%thread] %-5level %logger{36} - %msg%n"
+
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: health,info,metrics,prometheus
+      endpoint:
+        health:
+          show-details: always
+      metrics:
+        export:
+          prometheus:
+            enabled: ${METRICS_ENABLED}
+
+    # Error: Wrong YAML syntax for list
+    cors:
+      allowed-origins: "*"
+      allowed-methods:
+        - GET
+        - POST
+        - PUT
+        - DELETE
+        - OPTIONS
+      allowed-headers:
+        - "Content-Type"
+        - "Authorization"
+        - "X-Requested-With"
+      max-age: 3600
+
+  logback-spring.xml: |
+    <?xml version="1.0" encoding="UTF-8"?>
+    <configuration>
+      <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+      <springProfile name="!production">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+          <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+          </encoder>
+        </appender>
+        <root level="INFO">
+          <appender-ref ref="CONSOLE"/>
+        </root>
+      </springProfile>
+
+      <springProfile name="production">
+        <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
+          <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+              <timestamp/>
+              <logLevel/>
+              <loggerName/>
+              <message/>
+              <mdc/>
+              <stackTrace/>
+            </providers>
+          </encoder>
+        </appender>
+        <root level="INFO">
+          <appender-ref ref="JSON"/>
+        </root>
+      </springProfile>
+    </configuration>
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: user-service-secret
+  namespace: microservices
+  labels:
+    app: user-service
+    component: secret
+type: Opaque
+data:
+  # Error: Invalid base64 encoding
+  jwt-secret: bXlfc3VwZXJfc2VjcmV0X2p3dF9rZXkK==invalid
+---
+# Error: Wrong resource name
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: user-service-monitor
+  namespace: monitoring
+  labels:
+    app: user-service
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: user-service
+  endpoints:
+  - port: metrics
+    path: /actuator/prometheus
+    interval: 30s
+    scrapeTimeout: 10s
+  namespaceSelector:
+    matchNames:
+    - microservics
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: user-service-pdb
+  namespace: microservices
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: user-service
+---
+# Error: Missing closing quote
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: user-service-ingress
+  namespace: microservices
+  annotations:
+    kubernetes.io/ingress.class: "nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  tls:
+  - hosts:
+    - user-service.example.com
+    secretName: user-service-tls
+  rules:
+  - host: user-service.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: user-service
+            port:
+              number: 80

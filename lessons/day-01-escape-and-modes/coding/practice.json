@@ -1,0 +1,121 @@
+{
+  "_practice_instructions": {
+    "description": "Day 01 - Escape & Modes Practice",
+    "objectives": [
+      "Practice entering INSERT mode with 'i', 'a', 'o', 'A', 'I', 'O'",
+      "Practice returning to NORMAL mode with <Esc>",
+      "Navigate between mode practice markers using 'j' and 'k'",
+      "Use VISUAL mode 'v' to select text between markers"
+    ],
+    "markers": "Look for <<<PRACTICE>>> markers throughout this file"
+  },
+  "application": {
+    "name": "neovim-config-manager",
+    "version": "1.2.0",
+    "description": "Configuration management system for Neovim",
+    "author": {
+      "name": "Vim Master",
+      "email": "vim.master@example.com"
+    }
+  },
+  "server": {
+    "host": "localhost",
+    "port": 8080,
+    "ssl": {
+      "enabled": true,
+      "certificate": "/path/to/cert.pem",
+      "private_key": "/path/to/key.pem"
+    },
+    "_mode_practice_1": "<<<PRACTICE>>> Use 'i' to enter INSERT mode here and add a comment",
+    "timeout": 30000,
+    "max_connections": 100
+  },
+  "database": {
+    "driver": "postgresql",
+    "host": "db.example.com",
+    "port": 5432,
+    "name": "nvim_configs",
+    "username": "admin",
+    "_mode_practice_2": "<<<PRACTICE>>> Use 'A' to enter INSERT mode at end of line and add password field",
+    "ssl_mode": "require",
+    "pool": {
+      "min": 5,
+      "max": 20,
+      "idle_timeout": 10000
+    }
+  },
+  "features": {
+    "syntax_highlighting": true,
+    "auto_completion": true,
+    "lsp_integration": true,
+    "_mode_practice_3": "<<<PRACTICE>>> Use 'o' to create new line below and add 'plugin_manager': true",
+    "treesitter": {
+      "enabled": true,
+      "parsers": ["lua", "vim", "json", "yaml", "python", "javascript"]
+    },
+    "telescope": {
+      "enabled": true,
+      "find_files": true,
+      "live_grep": true,
+      "_mode_practice_4": "<<<PRACTICE>>> Use 'I' to enter INSERT mode at beginning of line and add comment"
+    }
+  },
+  "keymaps": {
+    "leader": " ",
+    "mappings": {
+      "file_explorer": "<leader>e",
+      "find_files": "<leader>ff",
+      "live_grep": "<leader>fg",
+      "buffers": "<leader>fb",
+      "_mode_practice_5": "<<<PRACTICE>>> Use 'v' to select this entire line in VISUAL mode",
+      "git_status": "<leader>gs",
+      "git_blame": "<leader>gb"
+    }
+  },
+  "plugins": {
+    "package_manager": "lazy.nvim",
+    "colorscheme": "tokyonight",
+    "status_line": "lualine",
+    "_mode_practice_6": "<<<PRACTICE>>> Use 'O' to create new line above and add 'file_tree': 'nvim-tree'",
+    "completion": {
+      "engine": "nvim-cmp",
+      "sources": ["nvim_lsp", "buffer", "path", "luasnip"]
+    },
+    "lsp": {
+      "servers": ["lua_ls", "pyright", "tsserver", "rust_analyzer"],
+      "formatters": ["stylua", "black", "prettier", "rustfmt"]
+    }
+  },
+  "ui": {
+    "theme": "dark",
+    "transparency": 0.9,
+    "_mode_practice_7": "<<<PRACTICE>>> Position cursor here and press <Esc> to return to NORMAL mode",
+    "font": {
+      "family": "JetBrains Mono",
+      "size": 14,
+      "ligatures": true
+    },
+    "sidebar": {
+      "width": 30,
+      "position": "left",
+      "auto_close": false
+    }
+  },
+  "performance": {
+    "lazy_loading": true,
+    "startup_time_target": 50,
+    "_mode_practice_8": "<<<PRACTICE>>> Use 'a' to enter INSERT mode after cursor and add optimization settings",
+    "memory": {
+      "max_usage": "512MB",
+      "gc_frequency": "auto"
+    }
+  },
+  "development": {
+    "debug_mode": false,
+    "log_level": "info",
+    "hot_reload": true,
+    "_mode_practice_9": "<<<PRACTICE>>> Final practice - cycle through all INSERT modes (i,a,o,A,I,O) then <Esc>",
+    "test_framework": "busted",
+    "code_coverage": true
+  }
+}

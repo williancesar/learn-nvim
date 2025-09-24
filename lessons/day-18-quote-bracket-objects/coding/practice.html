@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote and Bracket Objects Practice - Day 18</title>
+    <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <h1>Quote and Bracket Text Objects</h1>
+            <p>Practice with "quotes", 'single quotes', (parentheses), [brackets], {braces}, and more</p>
+        </header>
+
+        <main class="content">
+            <section class="quote-basics">
+                <h2>Understanding Quote Text Objects</h2>
+                <p>Quote text objects in Vim allow you to manipulate text contained within various types of quotation marks. The commands "di"" (delete inner double quotes), "da'" (delete around single quotes), and similar patterns work with different quote types including "double quotes", 'single quotes', and `backticks` commonly used in programming.</p>
+
+                <p>The key insight is that Vim can automatically find matching quote pairs and operate on their contents. When your cursor is anywhere inside "quoted text like this", you can use quote text objects to quickly select, delete, change, or copy the quoted content without having to manually position your cursor at quote boundaries.</p>
+
+                <div class="quote-examples">
+                    <h3>Basic Quote Operations</h3>
+                    <ul>
+                        <li><code>di"</code> - delete inside double quotes: "example text"</li>
+                        <li><code>da'</code> - delete around single quotes: 'example text'</li>
+                        <li><code>ci`</code> - change inside backticks: `example text`</li>
+                        <li><code>yi"</code> - yank inside double quotes: "copy this"</li>
+                        <li><code>va'</code> - visually select around single quotes: 'select this'</li>
+                    </ul>
+                </div>
+
+                <div class="mixed-quotes">
+                    <h3>Mixed Quote Types for Practice</h3>
+                    <p>Here are various quote combinations: "double quoted text", 'single quoted text', `backtick quoted text`, and even "nested 'quote combinations' within quotes". Practice selecting different quote levels and types.</p>
+
+                    <p>JavaScript examples: const message = "Hello, world!"; const name = 'John Doe'; const template = `Hello, ${name}!`; These demonstrate common programming quote usage patterns.</p>
+
+                    <p>HTML attributes: &lt;div class="container" id='main-content' data-value=`dynamic`&gt; show how different quote types appear in markup contexts.</p>
+                </div>
+            </section>
+
+            <section class="bracket-basics">
+                <h2>Bracket and Parentheses Text Objects</h2>
+                <p>Bracket text objects work with (parentheses), [square brackets], {curly braces}, and &lt;angle brackets&gt;. These are essential for programming where brackets define function calls like `calculateTotal(price, tax, discount)`, array access like `items[index]`, and object definitions like `{name: "John", age: 30}`.</p>
+
+                <p>Understanding bracket matching is crucial because brackets often nest within each other. For example: `function processData(items, {sortBy: "date", order: "desc"}) { return items.sort((a, b) => a[sortBy] - b[sortBy]); }` contains multiple bracket types at different nesting levels.</p>
+
+                <div class="bracket-examples">
+                    <h3>Bracket Text Object Commands</h3>
+                    <ul>
+                        <li><code>di(</code> or <code>dib</code> - delete inside parentheses: (content)</li>
+                        <li><code>da[</code> - delete around square brackets: [content]</li>
+                        <li><code>ci{</code> or <code>diB</code> - change inside curly braces: {content}</li>
+                        <li><code>yi&lt;</code> - yank inside angle brackets: &lt;content&gt;</li>
+                        <li><code>va(</code> - visually select around parentheses: (content)</li>
+                    </ul>
+                </div>
+
+                <div class="nested-brackets">
+                    <h3>Nested Bracket Practice</h3>
+                    <p>Complex nesting: `array.map((item, index) => ({ id: item.id, name: item.name, position: index }))` provides multiple bracket levels for practice.</p>
+
+                    <p>Function with object parameter: `createUser({name: "Alice", email: "alice@example.com", preferences: {theme: "dark", notifications: true}})` shows deep nesting patterns.</p>
+
+                    <p>Array of objects: `[{x: 10, y: 20}, {x: 30, y: 40}, {x: 50, y: 60}]` demonstrates bracket combinations common in data structures.</p>
+                </div>
+            </section>
+
+            <section class="programming-examples">
+                <h2>Programming Context Practice</h2>
+                <p>Real-world programming involves complex combinations of quotes and brackets. JavaScript object literals like `{name: "John", greet: function() { return "Hello, " + this.name + "!"; }}` combine multiple text object types in realistic patterns.</p>
+
+                <div class="javascript-examples">
+                    <h3>JavaScript Code Snippets</h3>
+                    <pre><code>const config = {
+    "apiUrl": "https://api.example.com",
+    'timeout': 5000,
+    `environment`: "production",
+    headers: {
+        "Content-Type": "application/json",
+        'Authorization': `Bearer ${token}`,
+        "X-Custom-Header": 'custom-value'
+    }
+};</code></pre>
+
+                    <pre><code>function processData(items, options = {}) {
+    const filtered = items.filter((item) => {
+        return item.status === "active" &&
+               item.category in options.categories;
+    });
+
+    return filtered.map((item) => ({
+        ...item,
+        displayName: `${item.name} (${item.category})`
+    }));
+}</code></pre>
+                </div>
+
+                <div class="html-examples">
+                    <h3>HTML with Quotes and Brackets</h3>
+                    <pre><code>&lt;div class="user-card" data-user-id="12345"&gt;
+    &lt;img src="avatar.jpg" alt="User avatar" style="width: 50px; height: 50px;"&gt;
+    &lt;span class='username'&gt;john_doe&lt;/span&gt;
+    &lt;button onclick="showProfile('john_doe')" class="btn-primary"&gt;View Profile&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+
+                    <pre><code>&lt;script&gt;
+    const userData = {
+        "name": "John Doe",
+        'email': "john@example.com",
+        `role`: "admin"
+    };
+
+    document.querySelector('[data-user-id="12345"]').addEventListener('click', function(event) {
+        console.log("User clicked:", userData.name);
+    });
+&lt;/script&gt;</code></pre>
+                </div>
+
+                <div class="css-examples">
+                    <h3>CSS with Brackets and Quotes</h3>
+                    <pre><code>.selector[data-attribute="value"] {
+    background-image: url("images/background.jpg");
+    font-family: "Helvetica Neue", 'Arial', sans-serif;
+    content: "Before content with quotes";
+}
+
+@media screen and (max-width: 768px) {
+    .responsive-element {
+        transform: translateX(calc(100% - 20px));
+        background: linear-gradient(45deg, rgba(255, 0, 0, 0.5), rgba(0, 255, 0, 0.5));
+    }
+}</code></pre>
+                </div>
+            </section>
+
+            <section class="complex-patterns">
+                <h2>Complex Quote and Bracket Patterns</h2>
+                <p>Advanced text editing often involves working with complex patterns that combine multiple types of delimiters. Regular expressions like `/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/` use brackets for character classes and quantifiers.</p>
+
+                <div class="regex-examples">
+                    <h3>Regular Expression Patterns</h3>
+                    <ul>
+                        <li>Email validation: <code>/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/</code></li>
+                        <li>Phone number: <code>/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/</code></li>
+                        <li>URL pattern: <code>/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/</code></li>
+                        <li>Date format: <code>/^(\d{4})-(\d{2})-(\d{2})$/</code></li>
+                    </ul>
+                </div>
+
+                <div class="json-examples">
+                    <h3>JSON Data Structures</h3>
+                    <pre><code>{
+    "users": [
+        {
+            "id": 1,
+            "name": "Alice Johnson",
+            "email": "alice@example.com",
+            "preferences": {
+                "theme": "dark",
+                "notifications": {
+                    "email": true,
+                    "push": false,
+                    "sms": true
+                },
+                "languages": ["en", "es", "fr"]
+            }
+        },
+        {
+            "id": 2,
+            "name": "Bob Smith",
+            "email": "bob@example.com",
+            "preferences": {
+                "theme": "light",
+                "notifications": {
+                    "email": false,
+                    "push": true,
+                    "sms": false
+                },
+                "languages": ["en"]
+            }
+        }
+    ],
+    "metadata": {
+        "total": 2,
+        "page": 1,
+        "limit": 10,
+        "filters": {
+            "active": true,
+            "role": ["admin", "user"]
+        }
+    }
+}</code></pre>
+                </div>
+
+                <div class="template-examples">
+                    <h3>Template Strings and Interpolation</h3>
+                    <pre><code>const template = `
+    &lt;div class="${className}" id="${elementId}"&gt;
+        &lt;h2&gt;${title}&lt;/h2&gt;
+        &lt;p&gt;Welcome, ${user.name}! You have ${user.notifications.length} new messages.&lt;/p&gt;
+        &lt;ul&gt;
+            ${user.notifications.map(n =&gt; `&lt;li&gt;${n.message}&lt;/li&gt;`).join('')}
+        &lt;/ul&gt;
+    &lt;/div&gt;
+`;
+
+const sqlQuery = `
+    SELECT users.name, users.email, profiles.bio
+    FROM users
+    JOIN profiles ON users.id = profiles.user_id
+    WHERE users.active = true
+    AND profiles.visibility = 'public'
+    AND users.created_at &gt; '${startDate}'
+    ORDER BY users.name ASC
+    LIMIT ${limit} OFFSET ${offset}
+`;
+
+const regex = new RegExp(`^${prefix}[a-zA-Z0-9_]{${minLength},${maxLength}}${suffix}$`, 'i');</code></pre>
+                </div>
+            </section>
+
+            <section class="practice-exercises">
+                <h2>Structured Practice Exercises</h2>
+                <p>These exercises are designed to build muscle memory with quote and bracket text objects in realistic editing scenarios.</p>
+
+                <div class="exercise-1">
+                    <h3>Exercise 1: Basic Quote Manipulation</h3>
+                    <p>Practice changing these quoted strings: "old value", 'another value', `template value`. Use ci", ca', di`, etc.</p>
+                    <p>Mixed quotes in HTML: &lt;input type="text" placeholder='Enter your name' data-value=`${dynamicValue}`&gt;</p>
+                    <p>Nested quotes: "The user said: 'I love this feature!' and clicked the button."</p>
+                </div>
+
+                <div class="exercise-2">
+                    <h3>Exercise 2: Bracket Navigation</h3>
+                    <p>Function calls: calculateTax(price, rate), array access: items[0], object properties: user.preferences.theme</p>
+                    <p>Complex nesting: processData(items.filter((item) =&gt; item.active), {sortBy: "name", order: "asc"})</p>
+                    <p>Mathematical expressions: ((a + b) * (c - d)) / (e + f)</p>
+                </div>
+
+                <div class="exercise-3">
+                    <h3>Exercise 3: Mixed Delimiters</h3>
+                    <p>Object with methods: {name: "Test", execute: function(params) { return `Result: ${params.join(", ")}`; }}</p>
+                    <p>Array of objects: [{id: 1, name: "First"}, {id: 2, name: "Second"}]</p>
+                    <p>Conditional logic: if (user.role === "admin" && user.permissions.includes("write")) { /* code */ }</p>
+                </div>
+
+                <div class="exercise-4">
+                    <h3>Exercise 4: Real-world Code Patterns</h3>
+                    <pre><code>class UserManager {
+    constructor(config = {}) {
+        this.apiUrl = config.apiUrl || "https://api.example.com";
+        this.timeout = config.timeout || 5000;
+        this.headers = {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${config.token || ''}`
+        };
+    }
+
+    async fetchUser(userId, options = {}) {
+        const response = await fetch(`${this.apiUrl}/users/${userId}`, {
+            method: options.method || "GET",
+            headers: {...this.headers, ...options.headers},
+            timeout: options.timeout || this.timeout
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
+    }
+}</code></pre>
+                </div>
+
+                <div class="exercise-5">
+                    <h3>Exercise 5: Complex Template Strings</h3>
+                    <pre><code>const generateReport = (data, options) =&gt; {
+    const template = `
+        &lt;div class="report ${options.theme || 'default'}"&gt;
+            &lt;header&gt;
+                &lt;h1&gt;${data.title}&lt;/h1&gt;
+                &lt;p&gt;Generated on ${new Date().toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                })}&lt;/p&gt;
+            &lt;/header&gt;
+            &lt;main&gt;
+                ${data.sections.map(section =&gt; `
+                    &lt;section class="${section.type}"&gt;
+                        &lt;h2&gt;${section.title}&lt;/h2&gt;
+                        &lt;div class="content"&gt;
+                            ${section.content}
+                        &lt;/div&gt;
+                        ${section.charts ? section.charts.map(chart =&gt; `
+                            &lt;div class="chart" data-type="${chart.type}" data-config='${JSON.stringify(chart.config)}'&gt;
+                                &lt;canvas id="${chart.id}"&gt;&lt;/canvas&gt;
+                            &lt;/div&gt;
+                        `).join('') : ''}
+                    &lt;/section&gt;
+                `).join('')}
+            &lt;/main&gt;
+        &lt;/div&gt;
+    `;
+
+    return template;
+};</code></pre>
+                </div>
+            </section>
+
+            <section class="tips-section">
+                <h2>Tips for Mastering Quote and Bracket Objects</h2>
+                <p>Effective use of quote and bracket text objects requires understanding both the commands and the context in which they're most useful.</p>
+
+                <div class="tips-container">
+                    <h3>Essential Techniques</h3>
+                    <ul>
+                        <li>Use "inner" objects (di", di() when you want to preserve the delimiters</li>
+                        <li>Use "around" objects (da", da[) when you want to remove the entire construct</li>
+                        <li>Practice cursor positioning - you can be anywhere inside the delimited text</li>
+                        <li>Learn the difference between 'ib' and 'i(' - they work with different bracket types</li>
+                        <li>Use visual mode with text objects (vi", va() for complex selections</li>
+                        <li>Combine with search to quickly navigate to specific quoted or bracketed content</li>
+                        <li>Remember that text objects work with nested structures automatically</li>
+                    </ul>
+                </div>
+
+                <div class="common-patterns">
+                    <h3>Common Editing Patterns</h3>
+                    <ul>
+                        <li>Change string values: ci" to replace "old" with "new"</li>
+                        <li>Extract function parameters: yi( to copy (param1, param2)</li>
+                        <li>Modify array contents: di[ to delete array elements</li>
+                        <li>Update object properties: ci{ to change object content</li>
+                        <li>Replace quoted text: da' to remove quotes and content together</li>
+                        <li>Select entire constructs: va( for function calls, va{ for code blocks</li>
+                    </ul>
+                </div>
+
+                <div class="troubleshooting">
+                    <h3>Common Issues and Solutions</h3>
+                    <ul>
+                        <li>Unmatched quotes/brackets: Vim will search for the nearest matching pair</li>
+                        <li>Nested quotes: Position cursor carefully to target the correct level</li>
+                        <li>Escaped quotes: \" or \' may affect text object behavior in some contexts</li>
+                        <li>Multiple line structures: Text objects work across lines for bracket matching</li>
+                        <li>Mixed quote types: Each quote type is handled separately</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="advanced-techniques">
+                <h2>Advanced Techniques and Workflows</h2>
+                <p>Master-level usage of quote and bracket text objects involves combining them with other Vim features for powerful editing workflows.</p>
+
+                <div class="workflow-examples">
+                    <h3>Advanced Workflow Patterns</h3>
+                    <p>Search and replace within delimited text: Use search to find specific quoted strings, then apply text object operations. For example, search for `"api"` and use `ci"` to change the API endpoint.</p>
+
+                    <p>Macro integration: Record macros that use text objects for repeatable editing patterns. A macro might find the next quoted string and apply a consistent transformation.</p>
+
+                    <p>Multiple cursor simulation: Use text objects with search and replace to modify similar structures throughout a file efficiently.</p>
+                </div>
+
+                <div class="integration-examples">
+                    <h3>Integration with Other Features</h3>
+                    <ul>
+                        <li>Marks: Set marks before complex text object operations for easy navigation back</li>
+                        <li>Registers: Yank different types of delimited content to different registers</li>
+                        <li>Visual block: Combine with visual block mode for column-based operations</li>
+                        <li>Fold operations: Use text objects to define folding boundaries</li>
+                        <li>Search patterns: Create search patterns that complement text object usage</li>
+                    </ul>
+                </div>
+
+                <p>The key to mastery is recognizing patterns in your editing tasks and building personal shortcuts that combine text objects with other Vim features to create efficient, repeatable workflows.</p>
+            </section>
+        </main>
+
+        <footer class="main-footer">
+            <p>Quote and bracket text objects provide precise control over delimited content in any programming or markup language.</p>
+            <p>Key commands: di"/da" (quotes), di(/da( (parentheses), di[/da[ (brackets), di{/da{ (braces)</p>
+        </footer>
+    </div>
+</body>
+</html>

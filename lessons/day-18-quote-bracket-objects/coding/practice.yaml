@@ -1,0 +1,279 @@
+# Complex YAML with Nested Quotes and Brackets
+# Practice file for quote and bracket text objects (i" a" i' a' i) a) i] a] i} a})
+# Contains multiple levels of nesting and various quote types
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: complex-app
+  labels:
+    app: "complex-app"
+    version: "v2.1.0"
+    environment: "production"
+  annotations:
+    deployment.kubernetes.io/revision: "3"
+    kubernetes.io/description: "Complex application with nested configurations [version: 2.1.0]"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "complex-app"
+  template:
+    metadata:
+      labels:
+        app: "complex-app"
+        version: "v2.1.0"
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "8080"
+    spec:
+      containers:
+        - name: "main-container"
+          image: "nginx:1.21.0"
+          ports:
+            - containerPort: 8080
+              name: "http"
+              protocol: "TCP"
+          env:
+            - name: "DATABASE_URL"
+              value: "postgresql://user:password@host:5432/db?sslmode=require&connect_timeout=10"
+            - name: "REDIS_URL"
+              value: "redis://default:secret@redis-cluster:6379/0?pool_size=20&timeout=2s"
+            - name: "API_KEYS"
+              value: '{"stripe": "sk_live_xxxxxxxx", "sendgrid": "SG.xxxxxxxx", "twilio": "ACxxxxxxxx"}'
+            - name: "FEATURE_FLAGS"
+              value: '{"experimental_feature": true, "beta_ui": false, "advanced_caching": {"enabled": true, "ttl": 3600}}'
+            - name: "LOGGING_CONFIG"
+              value: '{"level": "info", "format": "json", "outputs": ["stdout", "file"], "file_path": "/var/log/app.log"}'
+          volumeMounts:
+            - name: "config-volume"
+              mountPath: "/etc/config"
+              readOnly: true
+            - name: "secret-volume"
+              mountPath: "/etc/secrets"
+              readOnly: true
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: "/health"
+              port: 8080
+              httpHeaders:
+                - name: "X-Health-Check"
+                  value: "liveness"
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: "/ready"
+              port: 8080
+              httpHeaders:
+                - name: "X-Health-Check"
+                  value: "readiness"
+            initialDelaySeconds: 5
+            periodSeconds: 5
+        - name: "sidecar-container"
+          image: "fluentd:v1.14.0"
+          env:
+            - name: "FLUENTD_CONF"
+              value: "fluent.conf"
+            - name: "FLUENTD_OUTPUT"
+              value: '{"type": "elasticsearch", "host": "elasticsearch.logging", "port": 9200, "index": "app-logs"}'
+          volumeMounts:
+            - name: "log-volume"
+              mountPath: "/var/log"
+      volumes:
+        - name: "config-volume"
+          configMap:
+            name: "app-config"
+            items:
+              - key: "app.yaml"
+                path: "application.yaml"
+              - key: "database.json"
+                path: "database.json"
+        - name: "secret-volume"
+          secret:
+            secretName: "app-secrets"
+            items:
+              - key: "api-key"
+                path: "api.key"
+              - key: "tls-cert"
+                path: "tls.crt"
+        - name: "log-volume"
+          emptyDir: {}
+      serviceAccountName: "complex-app"
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 2000
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: "kubernetes.io/arch"
+                    operator: "In"
+                    values: ["amd64", "arm64"]
+                  - key: "node-type"
+                    operator: "NotIn"
+                    values: ["spot", "preemptible"]
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: "app"
+                      operator: "In"
+                      values: ["complex-app"]
+                topologyKey: "kubernetes.io/hostname"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "complex-app-service"
+  labels:
+    app: "complex-app"
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "tcp"
+spec:
+  type: "LoadBalancer"
+  ports:
+    - port: 80
+      targetPort: 8080
+      protocol: "TCP"
+      name: "http"
+    - port: 443
+      targetPort: 8080
+      protocol: "TCP"
+      name: "https"
+  selector:
+    app: "complex-app"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "app-config"
+data:
+  app.yaml: |
+    server:
+      port: 8080
+      host: "0.0.0.0"
+    database:
+      connections: {"read": 10, "write": 5}
+      timeout: "30s"
+      retry: {"attempts": 3, "delay": "1s"}
+    cache:
+      type: "redis"
+      urls: ["redis://redis-0:6379", "redis://redis-1:6379", "redis://redis-2:6379"]
+      pool: {"min": 5, "max": 20}
+    monitoring:
+      metrics: {"enabled": true, "path": "/metrics"}
+      tracing: {"enabled": true, "sampler": {"type": "probabilistic", "param": 0.1}}
+  database.json: |
+    {
+      "connections": {
+        "primary": {
+          "host": "postgres-primary.db.local",
+          "port": 5432,
+          "database": "maindb",
+          "ssl": {"mode": "require", "ca": "/etc/ssl/ca.pem"},
+          "pool": {"min": 5, "max": 20, "idle_timeout": "10m"}
+        },
+        "replica": {
+          "host": "postgres-replica.db.local",
+          "port": 5432,
+          "database": "maindb",
+          "ssl": {"mode": "prefer", "ca": "/etc/ssl/ca.pem"},
+          "pool": {"min": 2, "max": 10, "idle_timeout": "5m"}
+        }
+      },
+      "migrations": {
+        "enabled": true,
+        "path": "/migrations",
+        "auto": {"enabled": false, "backup": true}
+      }
+    }
+  nginx.conf: |
+    events {
+        worker_connections 1024;
+    }
+    http {
+        upstream backend {
+            server app-1:8080 weight=3;
+            server app-2:8080 weight=2;
+            server app-3:8080 weight=1 backup;
+        }
+        server {
+            listen 80;
+            server_name "example.com" "www.example.com";
+            location / {
+                proxy_pass http://backend;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+            }
+            location /api/ {
+                proxy_pass http://backend/api/;
+                proxy_timeout 30s;
+                proxy_read_timeout 30s;
+                proxy_connect_timeout 10s;
+            }
+        }
+    }
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: "app-secrets"
+type: "Opaque"
+data:
+  api-key: "YWJjZGVmZ2hpams="  # base64 encoded
+  database-password: "cGFzc3dvcmQxMjM="
+  jwt-secret: "bXlfc2VjcmV0X2tleV8xMjM="
+stringData:
+  config.json: |
+    {
+      "api": {
+        "keys": {
+          "stripe": "sk_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "sendgrid": "SG.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "twilio": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        "endpoints": {
+          "payment": "https://api.stripe.com/v1",
+          "email": "https://api.sendgrid.com/v3",
+          "sms": "https://api.twilio.com/2010-04-01"
+        }
+      },
+      "database": {
+        "credentials": {
+          "username": "secure_user",
+          "password": "very_secure_password_123!",
+          "connection_string": "postgresql://secure_user:very_secure_password_123!@postgres:5432/maindb?sslmode=require"
+        }
+      },
+      "oauth": {
+        "providers": {
+          "google": {
+            "client_id": "123456789012-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com",
+            "client_secret": "GOCSPX-xxxxxxxxxxxxxxxxxxxxxxxx"
+          },
+          "github": {
+            "client_id": "Iv1.xxxxxxxxxxxxxxxx",
+            "client_secret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+          }
+        }
+      }
+    }

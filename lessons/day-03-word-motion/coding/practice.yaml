@@ -1,0 +1,187 @@
+# Day 03 - Word Motion Practice
+# Objectives:
+# - Use 'w' (next word), 'b' (previous word), 'e' (end of word)
+# - Practice 'W', 'B', 'E' for WORD motion (punctuation-aware)
+# - Navigate between different naming conventions efficiently
+# - Practice word motions on camelCase, snake_case, kebab-case, PascalCase
+# Naming Conventions: This file contains mixed naming styles for practice
+
+apiConfiguration:
+  base_url: https://api.example.com/v1
+  timeout_milliseconds: 5000
+  max_retry_attempts: 3
+  exponential-backoff-delay: 1000
+  user-agent-string: MyApp/1.0.0
+  defaultHeaders:
+    Content-Type: application/json
+    Accept-Language: en-US,en;q=0.9
+    X-API-Version: "2023-09-01"
+    Cache-Control: no-cache, no-store, must-revalidate
+
+  authenticationMethods:
+    oauth2_client_credentials:
+      client_id: "${OAUTH_CLIENT_ID}"
+      client_secret: "${OAUTH_CLIENT_SECRET}"
+      token_endpoint: /oauth/token
+      grant_type: client_credentials
+      scope: read:users write:users read:products
+
+    api_key_authentication:
+      header_name: X-API-Key
+      query_parameter: api_key
+      environment_variable: API_SECRET_KEY
+
+    bearerTokenAuth:
+      token_type: Bearer
+      token_storage: memory
+      refresh_before_expiry: 300
+      auto_refresh_enabled: true
+
+database_connection_pools:
+  primaryMasterDB:
+    driver_name: postgresql
+    connection_string: postgresql://user:pass@primary-db:5432/main
+    max_open_connections: 25
+    max_idle_connections: 10
+    connection_max_lifetime: 1h
+    connection_max_idle_time: 10m
+
+  read_replica_cluster:
+    load_balancing_strategy: round-robin
+    health_check_interval: 30s
+    failover_timeout: 5s
+    replica_nodes:
+      - node_identifier: replica-node-01
+        connection_string: postgresql://user:pass@replica1:5432/main
+        weight_factor: 1.0
+        is_primary_eligible: false
+      - node_identifier: replica-node-02
+        connection_string: postgresql://user:pass@replica2:5432/main
+        weight_factor: 0.8
+        is_primary_eligible: true
+
+  cache_layer_redis:
+    cluster_mode_enabled: true
+    sentinel_configuration:
+      master_name: redis-master
+      sentinel_nodes:
+        - redis-sentinel-1:26379
+        - redis-sentinel-2:26379
+        - redis-sentinel-3:26379
+      password_authentication: "${REDIS_PASSWORD}"
+      database_number: 0
+    connection_pool_settings:
+      min_idle_connections: 5
+      max_active_connections: 50
+      connection_timeout: 5s
+      read_timeout: 3s
+      write_timeout: 3s
+
+feature_flags_and_toggles:
+  global_feature_switches:
+    enable_new_user_interface: true
+    use_advanced_search_algorithm: false
+    enable_real_time_notifications: true
+    beta_feature_access: false
+
+  user_segment_targeting:
+    premium_users_only:
+      feature_name: advanced-analytics-dashboard
+      target_percentage: 100
+      rollout_strategy: immediate
+    geographic_region_europe:
+      feature_name: gdpr-compliance-tools
+      target_percentage: 100
+      rollout_strategy: gradual
+    mobile_app_users:
+      feature_name: push-notification-center
+      target_percentage: 75
+      rollout_strategy: a-b-testing
+
+  experimental_features:
+    machine_learning_recommendations:
+      enabled_for_testing: true
+      test_group_percentage: 10
+      success_metrics:
+        - click-through-rate
+        - conversion-rate
+      failure_threshold: 0.05
+    voice_command_interface:
+      enabled_for_testing: false
+      target_devices:
+        - smartphone
+        - smart-speaker
+      supported_languages:
+        - en-US
+        - en-GB
+        - es-ES
+
+logging_and_monitoring:
+  structured_logging_config:
+    log_level: info
+    output_format: json
+    timestamp_format: "2006-01-02T15:04:05.000Z"
+    include_caller_info: true
+    log_file_rotation:
+      max_file_size: 100MB
+      max_backup_count: 10
+      compress_old_files: true
+      rotation_schedule: daily
+
+  metrics_collection_endpoints:
+    prometheus_metrics: /metrics
+    health_check_endpoint: /health
+    readiness_probe: /ready
+    liveness_probe: /live
+
+  distributed_tracing:
+    jaeger_collector_endpoint: http://jaeger:14268/api/traces
+    sampling_rate: 0.1
+    trace_id_header: X-Trace-ID
+    span_id_header: X-Span-ID
+
+  error_tracking_service:
+    sentry_dsn: "${SENTRY_DSN_URL}"
+    environment_name: production
+    release_version: v1.2.3
+    sample_rate: 1.0
+    max_breadcrumbs: 50
+
+security_and_compliance:
+  cors_policy_configuration:
+    allowed_origins:
+      - https://app.example.com
+      - https://admin.example.com
+    allowed_methods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+    allowed_headers:
+      - Content-Type
+      - Authorization
+      - X-Requested-With
+      - X-API-Key
+    expose_headers:
+      - X-Total-Count
+      - X-Rate-Limit
+    allow_credentials: true
+    max_age_seconds: 3600
+
+  rate_limiting_policies:
+    per_user_rate_limit:
+      requests_per_minute: 100
+      burst_allowance: 20
+      window_size: 1m
+    per_ip_address_limit:
+      requests_per_hour: 1000
+      burst_allowance: 50
+      window_size: 1h
+    api_endpoint_specific:
+      search_api:
+        requests_per_second: 10
+        burst_allowance: 5
+      upload_api:
+        requests_per_minute: 5
+        burst_allowance: 2

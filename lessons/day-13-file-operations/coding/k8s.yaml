@@ -1,0 +1,922 @@
+# Kubernetes Manifests for E-Commerce Platform
+# Practice file operations: gf (go to file), Ctrl+^ (alternate file), :tabnew, :split
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ecommerce
+  labels:
+    name: ecommerce
+    environment: production
+    team: platform
+  annotations:
+    description: "E-commerce platform services"
+    contact: "platform-team@company.com"
+
+---
+# Configuration and Secrets
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: ecommerce
+  labels:
+    app: ecommerce
+    component: config
+data:
+  # Common configuration
+  LOG_LEVEL: "info"
+  METRICS_ENABLED: "true"
+  TRACING_ENABLED: "true"
+  RATE_LIMITING_ENABLED: "true"
+
+  # External services
+  ELASTICSEARCH_URL: "http://elasticsearch.monitoring.svc.cluster.local:9200"
+  JAEGER_AGENT_HOST: "jaeger-agent.monitoring.svc.cluster.local"
+  JAEGER_AGENT_PORT: "6831"
+  PROMETHEUS_ENDPOINT: "http://prometheus.monitoring.svc.cluster.local:9090"
+
+  # File references for multi-file navigation practice
+  nginx.conf: |
+    # Reference: ../config/nginx/nginx.conf
+    worker_processes auto;
+    worker_connections 1024;
+
+    events {
+        use epoll;
+        multi_accept on;
+    }
+
+    http {
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+
+        # Logging configuration from logs/nginx-access.log
+        log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+                       '$status $body_bytes_sent "$http_referer" '
+                       '"$http_user_agent" "$http_x_forwarded_for"';
+
+        access_log /var/log/nginx/access.log main;
+        error_log /var/log/nginx/error.log warn;
+
+        sendfile on;
+        tcp_nopush on;
+        tcp_nodelay on;
+        keepalive_timeout 65;
+
+        gzip on;
+        gzip_vary on;
+        gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+
+        upstream api_gateway {
+            server api-gateway:8080;
+            keepalive 32;
+        }
+
+        server {
+            listen 80;
+            server_name ecommerce.local;
+
+            location / {
+                proxy_pass http://api_gateway;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+            }
+        }
+    }
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-secrets
+  namespace: ecommerce
+  labels:
+    app: ecommerce
+    component: secrets
+type: Opaque
+data:
+  # Base64 encoded secrets
+  JWT_SECRET: bXktc3VwZXItc2VjcmV0LWp3dC1rZXktZm9yLWF1dGhlbnRpY2F0aW9u
+  POSTGRES_PASSWORD: cG9zdGdyZXNxbC1zdXBlci1zZWN1cmUtcGFzc3dvcmQ=
+  REDIS_PASSWORD: cmVkaXMtcGFzc3dvcmQ=
+  MONGODB_PASSWORD: bW9uZ29kYi1wYXNzd29yZA==
+  STRIPE_SECRET_KEY: c2tfdGVzdF8xMjM0NTY3ODkwYWJjZGVm
+  STRIPE_WEBHOOK_SECRET: d2hzZWNfMTIzNDU2Nzg5MGFiY2RlZg==
+  SENDGRID_API_KEY: U0cuMTIzNDU2Nzg5MC5hYmNkZWZnaGlqa2xtbm9wcXJzdA==
+
+---
+# API Gateway Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  namespace: ecommerce
+  labels:
+    app: api-gateway
+    version: v2.1.0
+    component: gateway
+  annotations:
+    # Reference other files for navigation practice
+    deployment.kubernetes.io/revision: "1"
+    config.linkerd.io/proxy-cpu-request: "100m"
+    config.linkerd.io/proxy-memory-request: "20Mi"
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: api-gateway
+      version: v2.1.0
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+        version: v2.1.0
+        component: gateway
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
+        linkerd.io/inject: enabled
+        # Configuration file references
+        config.alpha.linkerd.io/proxy-wait-before-exit-seconds: "0"
+    spec:
+      serviceAccountName: api-gateway
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+      - name: api-gateway
+        image: ecommerce/api-gateway:v2.1.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        - name: https
+          containerPort: 8443
+          protocol: TCP
+        - name: metrics
+          containerPort: 9090
+          protocol: TCP
+        env:
+        - name: PORT
+          value: "8080"
+        - name: SSL_PORT
+          value: "8443"
+        - name: METRICS_PORT
+          value: "9090"
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: JWT_SECRET
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: LOG_LEVEL
+        # Service URLs for file navigation practice
+        - name: USER_SERVICE_URL
+          value: "http://user-service.ecommerce.svc.cluster.local:8081"
+        - name: PRODUCT_SERVICE_URL
+          value: "http://product-service.ecommerce.svc.cluster.local:8082"
+        - name: ORDER_SERVICE_URL
+          value: "http://order-service.ecommerce.svc.cluster.local:8083"
+        - name: PAYMENT_SERVICE_URL
+          value: "http://payment-service.ecommerce.svc.cluster.local:8084"
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+        livenessProbe:
+          httpGet:
+            path: /health/live
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+        volumeMounts:
+        - name: config
+          mountPath: /app/config
+          readOnly: true
+        - name: ssl-certs
+          mountPath: /app/ssl
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: app-config
+      - name: ssl-certs
+        secret:
+          secretName: ssl-certificates
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-gateway
+  namespace: ecommerce
+  labels:
+    app: api-gateway
+    component: gateway
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    external-dns.alpha.kubernetes.io/hostname: "api.ecommerce.com"
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    protocol: TCP
+  - name: https
+    port: 443
+    targetPort: 8443
+    protocol: TCP
+  - name: metrics
+    port: 9090
+    targetPort: 9090
+    protocol: TCP
+  selector:
+    app: api-gateway
+
+---
+# User Service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+  namespace: ecommerce
+  labels:
+    app: user-service
+    version: v1.8.2
+    component: backend
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: user-service
+      version: v1.8.2
+  template:
+    metadata:
+      labels:
+        app: user-service
+        version: v1.8.2
+        component: backend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9091"
+        prometheus.io/path: "/actuator/prometheus"
+    spec:
+      serviceAccountName: user-service
+      containers:
+      - name: user-service
+        image: ecommerce/user-service:v1.8.2
+        ports:
+        - name: http
+          containerPort: 8081
+        - name: actuator
+          containerPort: 9091
+        env:
+        - name: SERVER_PORT
+          value: "8081"
+        - name: MANAGEMENT_PORT
+          value: "9091"
+        - name: SPRING_PROFILES_ACTIVE
+          value: "kubernetes,production"
+        - name: DATABASE_URL
+          value: "jdbc:postgresql://postgres.data.svc.cluster.local:5432/users"
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: POSTGRES_PASSWORD
+        - name: REDIS_URL
+          value: "redis://redis.data.svc.cluster.local:6379/0"
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: JWT_SECRET
+        resources:
+          requests:
+            cpu: 250m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 9091
+          initialDelaySeconds: 90
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 9091
+          initialDelaySeconds: 30
+          periodSeconds: 5
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-service
+  namespace: ecommerce
+  labels:
+    app: user-service
+    component: backend
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 8081
+    targetPort: 8081
+  - name: actuator
+    port: 9091
+    targetPort: 9091
+  selector:
+    app: user-service
+
+---
+# Product Service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-service
+  namespace: ecommerce
+  labels:
+    app: product-service
+    version: v1.5.3
+    component: backend
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: product-service
+      version: v1.5.3
+  template:
+    metadata:
+      labels:
+        app: product-service
+        version: v1.5.3
+        component: backend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9092"
+    spec:
+      serviceAccountName: product-service
+      containers:
+      - name: product-service
+        image: ecommerce/product-service:v1.5.3
+        ports:
+        - name: http
+          containerPort: 8082
+        - name: metrics
+          containerPort: 9092
+        env:
+        - name: PORT
+          value: "8082"
+        - name: METRICS_PORT
+          value: "9092"
+        - name: NODE_ENV
+          value: "production"
+        - name: MONGODB_URL
+          value: "mongodb://mongodb.data.svc.cluster.local:27017/products"
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: MONGODB_PASSWORD
+        - name: REDIS_URL
+          value: "redis://redis.data.svc.cluster.local:6379/1"
+        - name: ELASTICSEARCH_URL
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: ELASTICSEARCH_URL
+        resources:
+          requests:
+            cpu: 200m
+            memory: 384Mi
+          limits:
+            cpu: 800m
+            memory: 1536Mi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8082
+          initialDelaySeconds: 60
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8082
+          initialDelaySeconds: 30
+          periodSeconds: 5
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-service
+  namespace: ecommerce
+  labels:
+    app: product-service
+    component: backend
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 8082
+    targetPort: 8082
+  - name: metrics
+    port: 9092
+    targetPort: 9092
+  selector:
+    app: product-service
+
+---
+# Order Service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+  namespace: ecommerce
+  labels:
+    app: order-service
+    version: v1.3.1
+    component: backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: order-service
+      version: v1.3.1
+  template:
+    metadata:
+      labels:
+        app: order-service
+        version: v1.3.1
+        component: backend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9093"
+    spec:
+      serviceAccountName: order-service
+      containers:
+      - name: order-service
+        image: ecommerce/order-service:v1.3.1
+        ports:
+        - name: http
+          containerPort: 8083
+        - name: metrics
+          containerPort: 9093
+        env:
+        - name: PORT
+          value: "8083"
+        - name: METRICS_PORT
+          value: "9093"
+        - name: ENVIRONMENT
+          value: "production"
+        - name: DATABASE_URL
+          value: "postgresql://postgres:password@postgres.data.svc.cluster.local:5432/orders"
+        - name: REDIS_URL
+          value: "redis://redis.data.svc.cluster.local:6379/2"
+        - name: USER_SERVICE_URL
+          value: "http://user-service.ecommerce.svc.cluster.local:8081"
+        - name: PRODUCT_SERVICE_URL
+          value: "http://product-service.ecommerce.svc.cluster.local:8082"
+        - name: PAYMENT_SERVICE_URL
+          value: "http://payment-service.ecommerce.svc.cluster.local:8084"
+        resources:
+          requests:
+            cpu: 300m
+            memory: 768Mi
+          limits:
+            cpu: 1200m
+            memory: 3Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8083
+          initialDelaySeconds: 60
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8083
+          initialDelaySeconds: 30
+          periodSeconds: 5
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+  namespace: ecommerce
+  labels:
+    app: order-service
+    component: backend
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 8083
+    targetPort: 8083
+  - name: metrics
+    port: 9093
+    targetPort: 9093
+  selector:
+    app: order-service
+
+---
+# Payment Service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-service
+  namespace: ecommerce
+  labels:
+    app: payment-service
+    version: v2.0.4
+    component: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: payment-service
+      version: v2.0.4
+  template:
+    metadata:
+      labels:
+        app: payment-service
+        version: v2.0.4
+        component: backend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9094"
+    spec:
+      serviceAccountName: payment-service
+      containers:
+      - name: payment-service
+        image: ecommerce/payment-service:v2.0.4
+        ports:
+        - name: http
+          containerPort: 8084
+        - name: metrics
+          containerPort: 9094
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+        - name: ASPNETCORE_URLS
+          value: "http://+:8084"
+        - name: ConnectionStrings__DefaultConnection
+          value: "Host=postgres.data.svc.cluster.local;Port=5432;Database=payments;Username=postgres"
+        - name: ConnectionStrings__Redis
+          value: "redis.data.svc.cluster.local:6379"
+        - name: Stripe__SecretKey
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: STRIPE_SECRET_KEY
+        - name: Stripe__WebhookSecret
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: STRIPE_WEBHOOK_SECRET
+        resources:
+          requests:
+            cpu: 400m
+            memory: 1Gi
+          limits:
+            cpu: 1600m
+            memory: 4Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8084
+          initialDelaySeconds: 60
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8084
+          initialDelaySeconds: 30
+          periodSeconds: 5
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-service
+  namespace: ecommerce
+  labels:
+    app: payment-service
+    component: backend
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 8084
+    targetPort: 8084
+  - name: metrics
+    port: 9094
+    targetPort: 9094
+  selector:
+    app: payment-service
+
+---
+# Horizontal Pod Autoscaler for API Gateway
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: api-gateway-hpa
+  namespace: ecommerce
+  labels:
+    app: api-gateway
+    component: autoscaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api-gateway
+  minReplicas: 3
+  maxReplicas: 20
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 30
+
+---
+# Network Policy for security
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ecommerce-network-policy
+  namespace: ecommerce
+  labels:
+    app: ecommerce
+    component: security
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: istio-system
+    - namespaceSelector:
+        matchLabels:
+          name: monitoring
+  - from:
+    - podSelector:
+        matchLabels:
+          component: gateway
+    ports:
+    - protocol: TCP
+      port: 8080
+    - protocol: TCP
+      port: 8081
+    - protocol: TCP
+      port: 8082
+    - protocol: TCP
+      port: 8083
+    - protocol: TCP
+      port: 8084
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          name: data
+    ports:
+    - protocol: TCP
+      port: 5432
+    - protocol: TCP
+      port: 6379
+    - protocol: TCP
+      port: 27017
+  - to: []
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+    - protocol: TCP
+      port: 443
+
+---
+# ServiceAccount for services
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: api-gateway
+  namespace: ecommerce
+  labels:
+    app: api-gateway
+    component: rbac
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: user-service
+  namespace: ecommerce
+  labels:
+    app: user-service
+    component: rbac
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: product-service
+  namespace: ecommerce
+  labels:
+    app: product-service
+    component: rbac
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: order-service
+  namespace: ecommerce
+  labels:
+    app: order-service
+    component: rbac
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: payment-service
+  namespace: ecommerce
+  labels:
+    app: payment-service
+    component: rbac
+
+---
+# Ingress for external access
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ecommerce-ingress
+  namespace: ecommerce
+  labels:
+    app: ecommerce
+    component: ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+spec:
+  tls:
+  - hosts:
+    - api.ecommerce.com
+    - www.ecommerce.com
+    secretName: ecommerce-tls
+  rules:
+  - host: api.ecommerce.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: api-gateway
+            port:
+              number: 80
+  - host: www.ecommerce.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: api-gateway
+            port:
+              number: 80
+
+---
+# Pod Disruption Budget
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: api-gateway-pdb
+  namespace: ecommerce
+  labels:
+    app: api-gateway
+    component: availability
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: api-gateway
+
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: user-service-pdb
+  namespace: ecommerce
+  labels:
+    app: user-service
+    component: availability
+spec:
+  minAvailable: 3
+  selector:
+    matchLabels:
+      app: user-service
+
+---
+# ServiceMonitor for Prometheus
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: ecommerce-services
+  namespace: ecommerce
+  labels:
+    app: ecommerce
+    component: monitoring
+spec:
+  selector:
+    matchLabels:
+      component: backend
+  endpoints:
+  - port: metrics
+    path: /metrics
+    interval: 30s
+    scrapeTimeout: 10s
+  - port: actuator
+    path: /actuator/prometheus
+    interval: 30s
+    scrapeTimeout: 10s
+  namespaceSelector:
+    matchNames:
+    - ecommerce
+
+# File references for navigation practice:
+# - ../config/api-gateway.yaml
+# - ../config/user-service.yaml
+# - ../config/product-service.yaml
+# - ../config/order-service.yaml
+# - ../config/payment-service.yaml
+# - ../monitoring/prometheus.yaml
+# - ../monitoring/grafana.yaml
+# - ../security/network-policies.yaml
+# - ../secrets/ssl-certificates.yaml
+# - logs/application.log
+# - scripts/deploy.sh
+# - scripts/rollback.sh

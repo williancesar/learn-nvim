@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 06: Delete Operations Practice</title>
+    <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+    <!--
+    PRACTICE INSTRUCTIONS FOR DAY 06: DELETE OPERATIONS
+
+    Delete Commands:
+    x - Delete character under cursor
+    X - Delete character before cursor
+    dw - Delete word from cursor to end
+    db - Delete word from cursor to beginning
+    dd - Delete entire line
+    d$ or D - Delete from cursor to end of line
+    d0 - Delete from cursor to beginning of line
+    dG - Delete from cursor to end of file
+    dgg - Delete from cursor to beginning of file
+
+    Visual Mode Deletions:
+    v + movement + d - Delete selected text
+    V + movement + d - Delete selected lines
+    Ctrl+v + movement + d - Delete selected block
+
+    This file has redundant elements, duplicate content, and unnecessary comments to delete!
+    -->
+
+    <!-- DELETE ME: This is an unnecessary comment -->
+    <header class="main-header redundant-class">
+        <!-- TODO: Remove the redundant-class from above -->
+        <div class="header-container">
+            <!-- DELETE: Remove this debug comment -->
+            <div class="logo-section">
+                <img src="logo.svg" alt="Company Logo" class="logo-image">
+                <img src="logo.svg" alt="Company Logo" class="logo-image duplicate-logo">
+                <!-- DELETE ME: The second logo image above is redundant -->
+                <h1 class="site-title">Delete Operations Practice Site</h1>
+                <h1 class="site-title duplicate-title" style="display: none;">Delete Operations Practice Site</h1>
+                <!-- TODO: Delete the duplicate title above -->
+            </div>
+
+            <nav class="main-navigation" role="navigation">
+                <!-- DELETE: Remove role attribute as it's redundant for nav element -->
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="#home" class="nav-link duplicate-home">Home</a></li>
+                    <!-- DELETE ME: Duplicate home link above -->
+                    <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+                    <li class="nav-item"><a href="#services" class="nav-link">Services</a></li>
+                    <li class="nav-item"><a href="#portfolio" class="nav-link">Portfolio</a></li>
+                    <li class="nav-item"><a href="#blog" class="nav-link">Blog</a></li>
+                    <!-- DELETE: Remove blog link as it's not needed -->
+                    <li class="nav-item"><a href="#testimonials" class="nav-link">Testimonials</a></li>
+                    <!-- TODO: Delete testimonials link - not part of main nav -->
+                    <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+
+            <!-- DELETE THIS ENTIRE SECTION: Redundant search form -->
+            <form class="search-form obsolete-search" method="GET" action="/search">
+                <input type="search" name="query" placeholder="Search..." class="search-input">
+                <button type="submit" class="search-button">Search</button>
+            </form>
+            <!-- END DELETE SECTION -->
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Hero Section with redundant elements -->
+        <section id="hero" class="hero-section banner-section">
+            <!-- TODO: Remove banner-section class as it's redundant -->
+            <div class="hero-content">
+                <h1 class="hero-title primary-heading main-title">
+                    <!-- DELETE: Remove primary-heading and main-title classes -->
+                    Master Delete Operations in Vim
+                </h1>
+                <h2 class="hero-subtitle duplicate-subtitle" style="display: none;">
+                    Learn Advanced Text Deletion Techniques
+                </h2>
+                <!-- DELETE ME: Hidden duplicate subtitle above -->
+
+                <p class="hero-description">
+                    Learn to efficiently delete text, words, lines, and blocks in Vim.
+                    <!-- DELETE: Remove this extra sentence --> This will improve your editing speed significantly.
+                    Master these commands to become a more efficient developer.
+                    <!-- TODO: Delete this redundant sentence about efficiency -->
+                </p>
+
+                <!-- DELETE THIS: Duplicate description paragraph -->
+                <p class="hero-description-duplicate" style="opacity: 0;">
+                    Learn to efficiently delete text, words, lines, and blocks in Vim.
+                    Master these commands to become a more efficient developer.
+                </p>
+
+                <div class="hero-actions">
+                    <button class="btn btn-primary cta-button">Get Started</button>
+                    <!-- DELETE: Remove cta-button class -->
+                    <button class="btn btn-secondary learn-more-btn">Learn More</button>
+                    <button class="btn btn-secondary duplicate-learn-more" style="display: none;">Learn More</button>
+                    <!-- TODO: Delete the duplicate Learn More button above -->
+                </div>
+            </div>
+
+            <div class="hero-image-container">
+                <!-- DELETE: Remove unnecessary container div -->
+                <div class="hero-image">
+                    <img src="vim-delete-operations.jpg" alt="Vim delete operations illustration" class="hero-img">
+                    <!-- DELETE THIS: Redundant decorative image -->
+                    <img src="decoration.png" alt="" class="decorative-img obsolete-decoration">
+                </div>
+            </div>
+        </section>
+
+        <!-- DELETE THIS ENTIRE SECTION: Unnecessary announcement banner -->
+        <section class="announcement-banner deprecated-section" style="background: yellow; padding: 10px;">
+            <div class="container">
+                <p class="announcement-text">
+                    🚨 This is an old announcement that should be deleted! 🚨
+                </p>
+            </div>
+        </section>
+        <!-- END DELETE SECTION -->
+
+        <!-- Features Section with duplicate content -->
+        <section id="features" class="features-section content-section">
+            <!-- TODO: Remove content-section class -->
+            <div class="container">
+                <h2 class="section-title features-heading">Delete Operation Features</h2>
+                <!-- DELETE: Remove features-heading class -->
+
+                <!-- DELETE THIS: Duplicate section title -->
+                <h2 class="section-title duplicate-features-title" hidden>Delete Operation Features</h2>
+
+                <div class="features-grid">
+                    <!-- Feature 1: Character Deletion -->
+                    <div class="feature-card char-deletion-card">
+                        <!-- TODO: Remove char-deletion-card class -->
+                        <div class="feature-icon">✂️</div>
+                        <h3 class="feature-title">Character Deletion</h3>
+                        <p class="feature-description">
+                            Delete single characters with precision using x and X commands.
+                            <!-- DELETE: Remove this extra explanation --> Use x to delete the character under the cursor.
+                        </p>
+
+                        <!-- DELETE THIS: Redundant feature list -->
+                        <ul class="feature-list redundant-list" style="color: #ccc;">
+                            <li>x - Delete character under cursor</li>
+                            <li>X - Delete character before cursor</li>
+                            <li>nx - Delete n characters forward</li>
+                        </ul>
+
+                        <ul class="feature-list">
+                            <li>x - Delete character under cursor</li>
+                            <li>X - Delete character before cursor</li>
+                            <li>Precise character-level control</li>
+                            <li>Combine with counts for multiple deletions</li>
+                            <!-- DELETE: Remove this redundant item about counts -->
+                        </ul>
+                    </div>
+
+                    <!-- Feature 2: Word Deletion -->
+                    <div class="feature-card word-deletion-card extra-padding">
+                        <!-- TODO: Remove word-deletion-card and extra-padding classes -->
+                        <div class="feature-icon">🔤</div>
+                        <h3 class="feature-title">Word Deletion</h3>
+                        <p class="feature-description">
+                            Delete entire words efficiently with dw, db, and related commands.
+                        </p>
+
+                        <ul class="feature-list">
+                            <li>dw - Delete word forward</li>
+                            <li>db - Delete word backward</li>
+                            <li>de - Delete to end of word</li>
+                            <li>daw - Delete around word (including spaces)</li>
+                            <li>diw - Delete inner word (excluding spaces)</li>
+                            <!-- DELETE THIS: Redundant explanation item -->
+                            <li class="redundant-explanation">These commands work on word boundaries</li>
+                        </ul>
+
+                        <!-- DELETE THIS ENTIRE DUPLICATE LIST -->
+                        <ul class="feature-list duplicate-word-list" style="display: none;">
+                            <li>dw - Delete word forward</li>
+                            <li>db - Delete word backward</li>
+                            <li>de - Delete to end of word</li>
+                        </ul>
+                    </div>
+
+                    <!-- Feature 3: Line Deletion -->
+                    <div class="feature-card line-deletion-card">
+                        <div class="feature-icon">📝</div>
+                        <h3 class="feature-title">Line Deletion</h3>
+                        <!-- DELETE THIS: Unnecessary subtitle -->
+                        <h4 class="feature-subtitle obsolete-subtitle">Advanced Line Operations</h4>
+
+                        <p class="feature-description">
+                            Delete entire lines or parts of lines with powerful line-based commands.
+                            <!-- TODO: Delete this redundant sentence about power -->
+                            These are some of the most powerful commands in Vim.
+                        </p>
+
+                        <ul class="feature-list">
+                            <li>dd - Delete entire line</li>
+                            <li>D or d$ - Delete to end of line</li>
+                            <li>d0 - Delete to beginning of line</li>
+                            <li>dG - Delete to end of file</li>
+                            <li>dgg - Delete to beginning of file</li>
+                            <!-- DELETE: Remove this tip item -->
+                            <li class="tip-item">Tip: Use counts like 5dd to delete 5 lines</li>
+                        </ul>
+                    </div>
+
+                    <!-- DELETE THIS ENTIRE FEATURE CARD: Redundant advanced section -->
+                    <div class="feature-card advanced-deletion-card obsolete-feature" style="opacity: 0.5;">
+                        <div class="feature-icon">🎯</div>
+                        <h3 class="feature-title">Advanced Deletion</h3>
+                        <p class="feature-description">
+                            This section is redundant and should be deleted.
+                        </p>
+                        <ul class="feature-list">
+                            <li>This entire card is unnecessary</li>
+                            <li>Delete this whole section</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Practice Section with deletable content -->
+        <section id="practice" class="practice-section training-area exercise-zone">
+            <!-- TODO: Remove training-area and exercise-zone classes -->
+            <div class="container">
+                <h2 class="section-title">Practice Delete Operations</h2>
+
+                <!-- DELETE THIS: Unnecessary instruction box -->
+                <div class="instruction-box obsolete-instructions" style="border: 2px dashed red;">
+                    <p>This instruction box is outdated and should be deleted!</p>
+                    <p>The content below provides better guidance.</p>
+                </div>
+
+                <div class="practice-content">
+                    <!-- Practice Area 1: Character Deletion -->
+                    <div class="practice-area char-practice-area">
+                        <!-- DELETE: Remove char-practice-area class -->
+                        <h3 class="practice-title">Character Deletion Practice</h3>
+
+                        <!-- DELETE THESE: Extra heading tags -->
+                        <h3 class="practice-title duplicate-char-title" style="display: none;">Character Deletion Practice</h3>
+                        <h4 class="practice-subtitle redundant-subtitle">Character Level Operations</h4>
+
+                        <div class="practice-text">
+                            <p>
+                                Thiss texxt hass exttra letterrs thhat neeed too bee deeleted.
+                                <!-- DELETE: Remove extra letters using x command -->
+                                Use the x command to delete unwanted characters!!
+                                <!-- TODO: Delete extra exclamation marks -->
+
+                                Alsso, usee X too deelete chaaracteers befoore thee cursoor.
+                                <!-- DELETE: Remove doubled letters using X command -->
+                            </p>
+
+                            <!-- DELETE THIS ENTIRE PARAGRAPH: Duplicate content -->
+                            <p class="duplicate-practice-text" style="color: #999;">
+                                This is duplicate practice text that should be deleted.
+                                It serves no purpose and clutters the interface.
+                            </p>
+
+                            <code class="code-sample">
+                                let variableName = "delete_these_extra_underscores___";
+                                <!-- DELETE: Remove extra underscores -->
+                                const anotherVariable = "remove::extra::colons";
+                                <!-- TODO: Delete extra colons -->
+                                function deletePractice(param1,, param2) {
+                                    <!-- DELETE: Remove extra comma -->
+                                    return param1 + param2;;
+                                    <!-- TODO: Delete extra semicolon -->
+                                }
+                            </code>
+                        </div>
+                    </div>
+
+                    <!-- Practice Area 2: Word Deletion -->
+                    <div class="practice-area word-practice-area">
+                        <h3 class="practice-title">Word Deletion Practice</h3>
+
+                        <div class="practice-text">
+                            <p>
+                                Delete unnecessary unnecessary words words from from this this sentence sentence.
+                                <!-- DELETE: Remove duplicate words using dw -->
+
+                                Remove extra words: very very extremely quite really really important information.
+                                <!-- TODO: Delete redundant adverbs -->
+
+                                Clean up this phrase: the the main main primary key important essential point.
+                                <!-- DELETE: Remove duplicate articles and redundant adjectives -->
+                            </p>
+
+                            <!-- DELETE THIS: Entire redundant code block -->
+                            <div class="redundant-code-block obsolete-block">
+                                <code>
+                                    // This entire code block is redundant
+                                    function obsoleteFunction() {
+                                        console.log("Delete this whole function");
+                                        return null;
+                                    }
+
+                                    // End of redundant block
+                                </code>
+                            </div>
+
+                            <div class="word-examples">
+                                <p>Practice deleting these highlighted words:</p>
+                                <ul>
+                                    <li>Remove the word <span class="delete-target">EXTRA</span> from this sentence.</li>
+                                    <!-- DELETE: Remove the span with EXTRA -->
+                                    <li>Delete <span class="delete-target">unnecessary</span> and <span class="delete-target">redundant</span> words.</li>
+                                    <!-- TODO: Delete both spans above -->
+                                    <li>Clean up: word1 <span class="delete-target">DELETE_ME</span> word2 <span class="delete-target">REMOVE_THIS</span> word3.</li>
+                                    <!-- DELETE: Remove both DELETE_ME and REMOVE_THIS spans -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Practice Area 3: Line Deletion -->
+                    <div class="practice-area line-practice-area">
+                        <h3 class="practice-title">Line Deletion Practice</h3>
+
+                        <div class="practice-text">
+                            <!-- DELETE THIS ENTIRE LINE -->
+                            <p class="delete-this-line">This entire line should be deleted using dd command.</p>
+
+                            <p>Keep this line, but delete from here onwards...</p>
+                            <!-- DELETE: Everything after "onwards" using d$ -->
+
+                            <!-- DELETE THIS LINE: Debug information -->
+                            <p class="debug-line">DEBUG: This line contains debug info and should be removed.</p>
+
+                            <p>This line is fine and should remain.</p>
+
+                            <!-- DELETE THIS LINE: Commented out code -->
+                            <!-- <p class="old-content">This commented paragraph should be deleted.</p> -->
+
+                            <!-- DELETE THE NEXT 3 LINES: Obsolete content -->
+                            <p class="obsolete-content">This content is obsolete.</p>
+                            <p class="obsolete-content">This is also obsolete.</p>
+                            <p class="obsolete-content">Delete these three lines using 3dd.</p>
+
+                            <p>This content should remain after deletions.</p>
+                        </div>
+
+                        <!-- DELETE THIS ENTIRE SECTION: Old version -->
+                        <div class="old-version-section deprecated-section">
+                            <h4>Old Version (Delete This Section)</h4>
+                            <p>This entire section represents an old version of the content.</p>
+                            <p>Use visual mode to select and delete this whole section.</p>
+                            <ul>
+                                <li>Old feature 1</li>
+                                <li>Old feature 2</li>
+                                <li>Old feature 3</li>
+                            </ul>
+                            <p>End of section to delete.</p>
+                        </div>
+                    </div>
+
+                    <!-- DELETE THIS ENTIRE PRACTICE AREA: Duplicate section -->
+                    <div class="practice-area duplicate-practice-area" style="background: #f0f0f0; border: 1px dashed #ccc;">
+                        <h3 class="practice-title">Duplicate Practice Area (DELETE ME)</h3>
+                        <p>This entire practice area is a duplicate and should be deleted.</p>
+                        <p>Use visual mode to select from the opening div to the closing div.</p>
+                        <div class="nested-content">
+                            <p>Even nested content should be deleted.</p>
+                            <ul>
+                                <li>Delete item 1</li>
+                                <li>Delete item 2</li>
+                                <li>Delete item 3</li>
+                            </ul>
+                        </div>
+                        <p>End of duplicate section.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DELETE THIS ENTIRE SECTION: Outdated testimonials -->
+        <section class="testimonials-section deprecated-testimonials" style="background: #ffe6e6;">
+            <div class="container">
+                <h2 class="section-title">Outdated Testimonials (DELETE THIS SECTION)</h2>
+                <div class="testimonials-grid">
+                    <blockquote class="testimonial">
+                        <p>"This testimonial is outdated and should be deleted."</p>
+                        <cite>- Former User</cite>
+                    </blockquote>
+                    <blockquote class="testimonial">
+                        <p>"Another old testimonial to remove."</p>
+                        <cite>- Ex-Customer</cite>
+                    </blockquote>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section with redundant elements -->
+        <section id="contact" class="contact-section contact-area contact-zone">
+            <!-- TODO: Remove contact-area and contact-zone classes -->
+            <div class="container">
+                <h2 class="section-title">Contact Us</h2>
+
+                <!-- DELETE THIS: Duplicate contact heading -->
+                <h2 class="section-title duplicate-contact-title" style="display: none;">Get In Touch</h2>
+
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <h3>Email</h3>
+                            <p>contact@example.com</p>
+                            <!-- DELETE: Remove old email below -->
+                            <p class="old-email" style="text-decoration: line-through;">old-email@example.com</p>
+                        </div>
+
+                        <div class="contact-item">
+                            <h3>Phone</h3>
+                            <p>+1 (555) 123-4567</p>
+                            <!-- DELETE THIS: Old phone number -->
+                            <p class="old-phone deprecated-contact">(555) 999-9999 (Disconnected)</p>
+                        </div>
+
+                        <!-- DELETE THIS ENTIRE CONTACT ITEM: Redundant address -->
+                        <div class="contact-item duplicate-address obsolete-address">
+                            <h3>Old Address (DELETE ME)</h3>
+                            <p>123 Old Street, Previous City, State 12345</p>
+                            <p>This address is no longer valid.</p>
+                        </div>
+
+                        <div class="contact-item">
+                            <h3>Address</h3>
+                            <p>456 New Street, Current City, State 67890</p>
+                        </div>
+                    </div>
+
+                    <form class="contact-form" method="POST" action="/contact">
+                        <!-- DELETE THESE: Hidden duplicate fields -->
+                        <input type="hidden" name="duplicate_field_1" value="delete_me">
+                        <input type="hidden" name="duplicate_field_2" value="remove_this">
+                        <input type="hidden" name="obsolete_tracking" value="old_system">
+
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                            <!-- DELETE: Remove placeholder comment -->
+                            <!-- placeholder="Enter your name" -->
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+
+                        <!-- DELETE THIS: Redundant email confirmation field -->
+                        <div class="form-group obsolete-field" style="display: none;">
+                            <label for="email_confirm">Confirm Email (DELETE ME)</label>
+                            <input type="email" id="email_confirm" name="email_confirm">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+
+                        <!-- DELETE THESE: Unnecessary honeypot fields -->
+                        <div class="honeypot-fields" style="display: none;">
+                            <input type="text" name="honeypot_1" tabindex="-1">
+                            <input type="email" name="honeypot_2" tabindex="-1">
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary submit-button">Send Message</button>
+                            <!-- DELETE: Remove submit-button class -->
+
+                            <!-- DELETE THIS: Unnecessary reset button -->
+                            <button type="reset" class="btn btn-secondary reset-btn obsolete-button">Reset Form</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer with redundant content -->
+    <footer class="main-footer site-footer page-footer">
+        <!-- TODO: Remove site-footer and page-footer classes -->
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <!-- DELETE: Remove outdated link below -->
+                    <li><a href="#blog" class="obsolete-link">Blog (Discontinued)</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- DELETE THIS ENTIRE SECTION: Old social media links -->
+            <div class="footer-section obsolete-social-section">
+                <h3>Old Social Media (DELETE THIS SECTION)</h3>
+                <ul class="social-links">
+                    <li><a href="#" class="social-link">Facebook (Inactive)</a></li>
+                    <li><a href="#" class="social-link">Twitter (Deleted)</a></li>
+                    <li><a href="#" class="social-link">Instagram (Archived)</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p>Email: contact@example.com</p>
+                <p>Phone: +1 (555) 123-4567</p>
+                <!-- DELETE: Remove old contact info -->
+                <p class="old-contact" style="opacity: 0.5;">Old Email: old@example.com</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Subscribe to our newsletter for updates.</p>
+                <!-- DELETE THIS: Old newsletter signup -->
+                <form class="newsletter-form old-newsletter" style="display: none;">
+                    <input type="email" placeholder="Old newsletter signup">
+                    <button type="submit">Subscribe (Obsolete)</button>
+                </form>
+
+                <form class="newsletter-form" method="POST" action="/newsletter">
+                    <input type="email" name="email" placeholder="Your email" required>
+                    <button type="submit" class="btn btn-primary newsletter-btn">Subscribe</button>
+                    <!-- DELETE: Remove newsletter-btn class -->
+                </form>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-container">
+                <p class="copyright">
+                    &copy; 2024 Delete Operations Practice. All rights reserved.
+                    <!-- DELETE: Remove extra copyright notice -->
+                    &copy; 2023 Old Company Name.
+                </p>
+
+                <!-- DELETE THESE: Outdated legal links -->
+                <nav class="footer-legal obsolete-legal">
+                    <a href="#" class="legal-link">Old Privacy Policy</a>
+                    <a href="#" class="legal-link">Outdated Terms</a>
+                </nav>
+
+                <nav class="footer-legal">
+                    <a href="#privacy" class="legal-link">Privacy Policy</a>
+                    <a href="#terms" class="legal-link">Terms of Service</a>
+                </nav>
+            </div>
+        </div>
+    </footer>
+
+    <!-- DELETE THIS ENTIRE SCRIPT SECTION: Obsolete tracking -->
+    <script type="text/javascript">
+        // Old tracking code - DELETE THIS ENTIRE SCRIPT TAG
+        console.log("Obsolete tracking initialized");
+
+        function oldTrackingFunction() {
+            // This function is no longer needed
+            return false;
+        }
+
+        // More obsolete code to delete
+        var oldVariable = "delete me";
+        var anotherOldVar = "remove this too";
+    </script>
+
+    <script>
+        // Modern JavaScript - keep this
+        document.addEventListener('DOMContentLoaded', function() {
+            // DELETE: Remove console.log statements
+            console.log('Debug: Page loaded');
+            console.log('Debug: Initialize components');
+
+            // Form validation
+            const contactForm = document.querySelector('.contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    // Form submission logic
+                    console.log('Debug: Form submitted'); // DELETE: Remove debug log
+                });
+            }
+
+            // DELETE THESE: Old event listeners
+            // const oldButton = document.querySelector('.obsolete-button');
+            // if (oldButton) {
+            //     oldButton.addEventListener('click', function() {
+            //         console.log('Obsolete button clicked');
+            //     });
+            // }
+
+            // Newsletter subscription
+            const newsletterForm = document.querySelector('.newsletter-form');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // Newsletter logic
+                });
+            }
+        });
+
+        // DELETE THIS ENTIRE FUNCTION: Unused utility
+        function unusedUtilityFunction() {
+            console.log("This function is never called and should be deleted");
+            return null;
+        }
+
+        // DELETE THESE: Unused variables
+        const UNUSED_CONSTANT = "delete me";
+        let unusedVariable = "remove this";
+        var anotherUnusedVar = 12345;
+    </script>
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 03: Word Motion Practice</title>
+    <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+    <!--
+    PRACTICE INSTRUCTIONS FOR DAY 03: WORD MOTION
+
+    Word Movement Commands:
+    w - Move forward to beginning of next word
+    b - Move backward to beginning of previous word
+    e - Move forward to end of current/next word
+    ge - Move backward to end of previous word
+
+    WORD Movement Commands (non-alphanumeric delimited):
+    W - Move forward to beginning of next WORD
+    B - Move backward to beginning of previous WORD
+    E - Move forward to end of current/next WORD
+    gE - Move backward to end of previous WORD
+
+    This file contains various naming conventions and attribute styles to practice word motion!
+    -->
+
+    <header data-component="site-header" data-theme="primary-gradient" class="main-header-component">
+        <div id="header-container" class="flex-container align-items-center">
+            <div class="logo-brand-section" data-logo-size="medium" data-brand-visible="true">
+                <img src="logo-image.svg" alt="company-logo-image" class="brand-logo-image"
+                     data-img-width="48px" data-img-height="48px" loading="lazy">
+                <h1 class="site-brand-title" data-text-size="extra-large" data-font-weight="bold">
+                    WordMotionPractice.com
+                </h1>
+            </div>
+
+            <nav role="navigation" aria-label="primary-navigation" class="primary-nav-component">
+                <ul class="nav-list-container" data-direction="horizontal" data-spacing="medium">
+                    <li class="nav-list-item" data-nav-type="standard">
+                        <a href="#home-section" class="nav-item-link" data-link-style="primary">
+                            home_page
+                        </a>
+                    </li>
+                    <li class="nav-list-item dropdown-nav-item" data-nav-type="dropdown">
+                        <a href="#products-overview" class="nav-item-link dropdown-trigger"
+                           data-link-style="primary" aria-haspopup="true">
+                            product_categories
+                        </a>
+                        <ul class="dropdown-menu-container" data-dropdown-direction="down">
+                            <li><a href="#web-development-tools" class="dropdown-menu-link">web_dev_tools</a></li>
+                            <li><a href="#mobile-app-frameworks" class="dropdown-menu-link">mobile_frameworks</a></li>
+                            <li><a href="#data-science-libraries" class="dropdown-menu-link">data_science_libs</a></li>
+                            <li><a href="#cloud-computing-services" class="dropdown-menu-link">cloud_services</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-list-item" data-nav-type="standard">
+                        <a href="#about-company" class="nav-item-link" data-link-style="primary">
+                            about_us
+                        </a>
+                    </li>
+                    <li class="nav-list-item" data-nav-type="standard">
+                        <a href="#contact-information" class="nav-item-link" data-link-style="primary">
+                            contact_info
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="header-action-buttons" data-button-group="utility">
+                <button type="button" class="search-toggle-btn" data-toggle-target="search-overlay"
+                        aria-label="toggle-search-functionality">
+                    🔍 search_function
+                </button>
+                <button type="button" class="theme-switcher-btn" data-theme-options="light,dark,auto"
+                        aria-label="change-color-theme">
+                    🌓 theme_switcher
+                </button>
+                <button type="button" class="mobile-menu-btn" data-menu-target="mobile-navigation"
+                        aria-label="toggle-mobile-menu" data-visible-breakpoint="mobile">
+                    ☰ mobile_menu
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content-area" class="primary-content-container">
+        <section id="hero-banner-section" class="hero-marketing-section" data-section-type="hero">
+            <div class="hero-content-wrapper" data-layout="two-column" data-alignment="center">
+                <div class="hero-text-content" data-content-type="marketing-copy">
+                    <h1 class="hero-main-title" data-title-level="primary" data-text-transform="capitalize">
+                        Master Word-Based Navigation Techniques
+                    </h1>
+                    <p class="hero-subtitle-text" data-subtitle-style="large" data-color-scheme="muted">
+                        Learn to navigate through code efficiently using word-motion commands in vim-style editors
+                    </p>
+
+                    <div class="hero-action-buttons" data-button-layout="horizontal" data-button-spacing="medium">
+                        <button class="cta-primary-btn" data-button-style="primary" data-button-size="large"
+                                data-action="start-tutorial" data-track-event="hero-cta-click">
+                            start_learning_now
+                        </button>
+                        <button class="cta-secondary-btn" data-button-style="secondary" data-button-size="large"
+                                data-action="view-demo" data-track-event="hero-demo-click">
+                            watch_demonstration
+                        </button>
+                    </div>
+
+                    <div class="hero-stats-container" data-stats-layout="inline" data-stats-separator="pipe">
+                        <div class="stat-item" data-stat-type="users">
+                            <span class="stat-number" data-number-format="abbreviated">50k+</span>
+                            <span class="stat-label" data-label-style="small">active_users</span>
+                        </div>
+                        <div class="stat-item" data-stat-type="tutorials">
+                            <span class="stat-number" data-number-format="abbreviated">200+</span>
+                            <span class="stat-label" data-label-style="small">practice_exercises</span>
+                        </div>
+                        <div class="stat-item" data-stat-type="completion">
+                            <span class="stat-number" data-number-format="percentage">95%</span>
+                            <span class="stat-label" data-label-style="small">completion_rate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-visual-content" data-content-type="illustration">
+                    <figure class="hero-image-figure" data-image-treatment="enhanced">
+                        <img src="word-motion-illustration.png" alt="vim-word-motion-visualization"
+                             class="hero-main-image" data-image-priority="high" loading="eager"
+                             data-image-effects="shadow,border-radius">
+                        <figcaption class="image-caption-text" data-caption-position="bottom">
+                            word_motion_commands_visualization
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <section id="word-types-explanation" class="educational-content-section" data-section-purpose="education">
+            <div class="section-container" data-container-width="standard">
+                <h2 class="section-main-heading" data-heading-style="section-primary">
+                    Understanding Different Word Types
+                </h2>
+
+                <div class="concept-explanation-grid" data-grid-columns="2" data-grid-gap="large">
+                    <article class="concept-card" data-card-type="explanation" data-concept="lowercase-words">
+                        <div class="concept-header" data-header-style="compact">
+                            <h3 class="concept-title" data-title-emphasis="strong">lowercase words (w, b, e)</h3>
+                        </div>
+                        <div class="concept-content" data-content-format="educational">
+                            <p class="concept-description" data-text-style="informative">
+                                Navigate by alphanumeric words separated by non-alphanumeric characters
+                            </p>
+
+                            <div class="code-example-container" data-example-type="word-boundaries">
+                                <pre class="code-sample" data-language="mixed" data-highlight="word-boundaries">
+<span class="word-highlight">const</span> <span class="word-highlight">user</span><span class="separator-highlight">_</span><span class="word-highlight">profile</span><span class="separator-highlight">_</span><span class="word-highlight">data</span> <span class="separator-highlight">=</span> <span class="separator-highlight">{</span>
+  <span class="word-highlight">first</span><span class="separator-highlight">_</span><span class="word-highlight">name</span><span class="separator-highlight">:</span> <span class="separator-highlight">'</span><span class="word-highlight">John</span><span class="separator-highlight">',</span>
+  <span class="word-highlight">last</span><span class="separator-highlight">_</span><span class="word-highlight">name</span><span class="separator-highlight">:</span> <span class="separator-highlight">'</span><span class="word-highlight">Doe</span><span class="separator-highlight">',</span>
+  <span class="word-highlight">email</span><span class="separator-highlight">_</span><span class="word-highlight">address</span><span class="separator-highlight">:</span> <span class="separator-highlight">'</span><span class="word-highlight">john</span><span class="separator-highlight">.</span><span class="word-highlight">doe</span><span class="separator-highlight">@</span><span class="word-highlight">example</span><span class="separator-highlight">.</span><span class="word-highlight">com</span><span class="separator-highlight">'</span>
+<span class="separator-highlight">};</span>
+                                </pre>
+                                <p class="example-explanation" data-explanation-style="technical">
+                                    Each highlighted section represents a single 'word' for w/b/e commands
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="concept-card" data-card-type="explanation" data-concept="uppercase-words">
+                        <div class="concept-header" data-header-style="compact">
+                            <h3 class="concept-title" data-title-emphasis="strong">UPPERCASE WORDS (W, B, E)</h3>
+                        </div>
+                        <div class="concept-content" data-content-format="educational">
+                            <p class="concept-description" data-text-style="informative">
+                                Navigate by whitespace-separated sequences, ignoring punctuation within
+                            </p>
+
+                            <div class="code-example-container" data-example-type="word-boundaries">
+                                <pre class="code-sample" data-language="mixed" data-highlight="word-boundaries">
+<span class="word-block-highlight">const user_profile_data = {</span>
+  <span class="word-block-highlight">first_name: 'John',</span>
+  <span class="word-block-highlight">last_name: 'Doe',</span>
+  <span class="word-block-highlight">email_address: 'john.doe@example.com'</span>
+<span class="word-block-highlight">};</span>
+                                </pre>
+                                <p class="example-explanation" data-explanation-style="technical">
+                                    Each highlighted block represents a single 'WORD' for W/B/E commands
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="practice-playground" class="interactive-practice-section" data-section-purpose="practice">
+            <div class="section-container" data-container-width="wide">
+                <h2 class="section-main-heading" data-heading-style="section-primary">
+                    Word Motion Practice Playground
+                </h2>
+
+                <div class="practice-area-grid" data-grid-layout="masonry" data-grid-columns="3">
+                    <div class="practice-exercise-card" data-exercise-type="camelCase" data-difficulty="beginner">
+                        <h3 class="exercise-title" data-title-style="practice-heading">camelCase Variables</h3>
+                        <div class="exercise-content" data-content-type="code-practice">
+                            <div class="variable-examples" data-naming-convention="camelCase">
+                                <p>const userName = 'john_doe';</p>
+                                <p>let userProfileImage = 'avatar.jpg';</p>
+                                <p>var isUserLoggedIn = true;</p>
+                                <p>const maxConnectionTimeout = 5000;</p>
+                                <p>let currentPageNavigation = '/home';</p>
+                                <p>const apiEndpointConfiguration = {};</p>
+                                <p>var backgroundProcessingQueue = [];</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="practice-exercise-card" data-exercise-type="snake_case" data-difficulty="beginner">
+                        <h3 class="exercise-title" data-title-style="practice-heading">snake_case Identifiers</h3>
+                        <div class="exercise-content" data-content-type="code-practice">
+                            <div class="variable-examples" data-naming-convention="snake_case">
+                                <p>const user_name = 'jane_smith';</p>
+                                <p>let profile_image_url = 'profile.png';</p>
+                                <p>var is_authenticated_user = false;</p>
+                                <p>const max_retry_attempts = 3;</p>
+                                <p>let current_session_token = 'abc123';</p>
+                                <p>const database_connection_string = 'mysql://';</p>
+                                <p>var background_task_scheduler = null;</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="practice-exercise-card" data-exercise-type="kebab-case" data-difficulty="intermediate">
+                        <h3 class="exercise-title" data-title-style="practice-heading">kebab-case Attributes</h3>
+                        <div class="exercise-content" data-content-type="html-practice">
+                            <div class="html-examples" data-naming-convention="kebab-case">
+                                <p>&lt;div class="user-profile-container"&gt;</p>
+                                <p>&lt;img data-image-src="user-avatar.jpg"&gt;</p>
+                                <p>&lt;button data-action-type="submit-form"&gt;</p>
+                                <p>&lt;span data-tooltip-position="bottom-right"&gt;</p>
+                                <p>&lt;input data-validation-rules="required"&gt;</p>
+                                <p>&lt;div data-component-state="loading"&gt;</p>
+                                <p>&lt;section data-scroll-behavior="smooth"&gt;</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="practice-exercise-card" data-exercise-type="PascalCase" data-difficulty="intermediate">
+                        <h3 class="exercise-title" data-title-style="practice-heading">PascalCase Components</h3>
+                        <div class="exercise-content" data-content-type="component-practice">
+                            <div class="component-examples" data-naming-convention="PascalCase">
+                                <p>class UserProfileComponent extends React.Component</p>
+                                <p>function NavigationMenuContainer(props)</p>
+                                <p>const ImageCarouselWidget = styled.div</p>
+                                <p>export default SearchFilterDropdown;</p>
+                                <p>import { DataTablePagination } from './components';</p>
+                                <p>const ModalDialogOverlay = React.lazy(() =&gt;</p>
+                                <p>type UserAuthenticationState = 'loading' | 'success';</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="practice-exercise-card" data-exercise-type="mixed-punctuation" data-difficulty="advanced">
+                        <h3 class="exercise-title" data-title-style="practice-heading">Mixed Punctuation</h3>
+                        <div class="exercise-content" data-content-type="complex-practice">
+                            <div class="complex-examples" data-complexity="high">
+                                <p>const api_url = 'https://api.example.com/v1/users';</p>
+                                <p>const email_regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;</p>
+                                <p>const query_string = '?sort=name&amp;filter=active&amp;limit=10';</p>
+                                <p>const css_selector = '.user-profile .avatar-image:hover';</p>
+                                <p>const file_path = '/home/user/documents/project-files/';</p>
+                                <p>const version_number = 'v2.1.4-beta.3+build.1234';</p>
+                                <p>const json_response = { status: 'success', data: null };</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="practice-exercise-card" data-exercise-type="programming-constructs" data-difficulty="advanced">
+                        <h3 class="exercise-title" data-title-style="practice-heading">Programming Constructs</h3>
+                        <div class="exercise-content" data-content-type="syntax-practice">
+                            <div class="syntax-examples" data-language-features="mixed">
+                                <p>for (let i = 0; i &lt; array.length; i++)</p>
+                                <p>if (user?.profile?.settings?.theme === 'dark')</p>
+                                <p>const { name, email, ...rest } = userObject;</p>
+                                <p>const promise = fetch('/api/data').then(response =&gt;</p>
+                                <p>const result = await Promise.all([fetch1(), fetch2()]);</p>
+                                <p>const callback = (error, data) =&gt; { /* ... */ };</p>
+                                <p>export { UserService as default } from './services';</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="motion-cheatsheet" class="reference-documentation-section" data-section-purpose="reference">
+            <div class="section-container" data-container-width="standard">
+                <h2 class="section-main-heading" data-heading-style="section-primary">
+                    Word Motion Quick Reference
+                </h2>
+
+                <div class="reference-table-container" data-table-style="comprehensive">
+                    <table class="motion-commands-table" data-table-type="reference">
+                        <thead class="table-header" data-header-style="emphasized">
+                            <tr class="header-row">
+                                <th class="command-column" data-column-type="command">Command</th>
+                                <th class="direction-column" data-column-type="direction">Direction</th>
+                                <th class="boundary-column" data-column-type="boundary">Word Boundary</th>
+                                <th class="position-column" data-column-type="position">Cursor Position</th>
+                                <th class="example-column" data-column-type="example">Example Usage</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-body" data-body-style="striped">
+                            <tr class="command-row" data-command-type="forward-word">
+                                <td class="command-cell" data-command="w">w</td>
+                                <td class="direction-cell" data-direction="forward">Forward</td>
+                                <td class="boundary-cell" data-boundary="alphanumeric">Alphanumeric</td>
+                                <td class="position-cell" data-position="beginning">Beginning of word</td>
+                                <td class="example-cell" data-example="basic">user_name → _name</td>
+                            </tr>
+                            <tr class="command-row" data-command-type="backward-word">
+                                <td class="command-cell" data-command="b">b</td>
+                                <td class="direction-cell" data-direction="backward">Backward</td>
+                                <td class="boundary-cell" data-boundary="alphanumeric">Alphanumeric</td>
+                                <td class="position-cell" data-position="beginning">Beginning of word</td>
+                                <td class="example-cell" data-example="basic">user_name ← user_</td>
+                            </tr>
+                            <tr class="command-row" data-command-type="end-word">
+                                <td class="command-cell" data-command="e">e</td>
+                                <td class="direction-cell" data-direction="forward">Forward</td>
+                                <td class="boundary-cell" data-boundary="alphanumeric">Alphanumeric</td>
+                                <td class="position-cell" data-position="end">End of word</td>
+                                <td class="example-cell" data-example="basic">user_name → user_</td>
+                            </tr>
+                            <tr class="command-row" data-command-type="backward-end">
+                                <td class="command-cell" data-command="ge">ge</td>
+                                <td class="direction-cell" data-direction="backward">Backward</td>
+                                <td class="boundary-cell" data-boundary="alphanumeric">Alphanumeric</td>
+                                <td class="position-cell" data-position="end">End of word</td>
+                                <td class="example-cell" data-example="basic">user_name ← name</td>
+                            </tr>
+                            <tr class="command-row" data-command-type="forward-word-caps">
+                                <td class="command-cell" data-command="W">W</td>
+                                <td class="direction-cell" data-direction="forward">Forward</td>
+                                <td class="boundary-cell" data-boundary="whitespace">Whitespace</td>
+                                <td class="position-cell" data-position="beginning">Beginning of WORD</td>
+                                <td class="example-cell" data-example="complex">user_name = 'value';</td>
+                            </tr>
+                            <tr class="command-row" data-command-type="backward-word-caps">
+                                <td class="command-cell" data-command="B">B</td>
+                                <td class="direction-cell" data-direction="backward">Backward</td>
+                                <td class="boundary-cell" data-boundary="whitespace">Whitespace</td>
+                                <td class="position-cell" data-position="beginning">Beginning of WORD</td>
+                                <td class="example-cell" data-example="complex">= 'value'; ← user_name</td>
+                            </tr>
+                            <tr class="command-row" data-command-type="end-word-caps">
+                                <td class="command-cell" data-command="E">E</td>
+                                <td class="direction-cell" data-direction="forward">Forward</td>
+                                <td class="boundary-cell" data-boundary="whitespace">Whitespace</td>
+                                <td class="position-cell" data-position="end">End of WORD</td>
+                                <td class="example-cell" data-example="complex">user_name → name</td>
+                            </tr>
+                            <tr class="command-row" data-command-type="backward-end-caps">
+                                <td class="command-cell" data-command="gE">gE</td>
+                                <td class="direction-cell" data-direction="backward">Backward</td>
+                                <td class="boundary-cell" data-boundary="whitespace">Whitespace</td>
+                                <td class="position-cell" data-position="end">End of WORD</td>
+                                <td class="example-cell" data-example="complex">'value'; ← 'value';</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <aside id="practice-sidebar" class="supplementary-content-sidebar" data-sidebar-position="floating">
+        <div class="sidebar-content-wrapper" data-content-organization="sectioned">
+            <h2 class="sidebar-main-heading" data-heading-level="secondary">Practice Tips</h2>
+
+            <div class="tip-section-container" data-tip-category="basics">
+                <h3 class="tip-section-title" data-section-emphasis="medium">Basic Word Motion</h3>
+                <ul class="tip-list" data-list-style="compact">
+                    <li class="tip-item" data-tip-importance="high">Start with w and b for basic navigation</li>
+                    <li class="tip-item" data-tip-importance="medium">Use e when you need to reach word endings</li>
+                    <li class="tip-item" data-tip-importance="medium">Practice ge for backward end movement</li>
+                </ul>
+            </div>
+
+            <div class="tip-section-container" data-tip-category="advanced">
+                <h3 class="tip-section-title" data-section-emphasis="medium">Advanced WORD Motion</h3>
+                <ul class="tip-list" data-list-style="compact">
+                    <li class="tip-item" data-tip-importance="high">Use W/B/E for punctuation-heavy code</li>
+                    <li class="tip-item" data-tip-importance="medium">WORD commands ignore underscores and hyphens</li>
+                    <li class="tip-item" data-tip-importance="low">gE is rarely used but can be helpful</li>
+                </ul>
+            </div>
+
+            <div class="practice-challenge-container" data-challenge-type="daily">
+                <h3 class="challenge-title" data-title-urgency="moderate">Today's Challenge</h3>
+                <p class="challenge-description" data-text-style="encouraging">
+                    Navigate through the code-examples using only word-motion commands.
+                    Try to avoid using h/j/k/l for this exercise!
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    <footer id="site-footer" class="primary-site-footer" data-footer-style="comprehensive">
+        <div class="footer-content-container" data-container-layout="grid">
+            <div class="footer-section" data-section-type="navigation">
+                <h3 class="footer-section-heading" data-heading-style="footer-primary">Quick Navigation</h3>
+                <ul class="footer-link-list" data-link-style="footer-standard">
+                    <li><a href="#home-section" class="footer-nav-link" data-link-type="internal">home_page</a></li>
+                    <li><a href="#tutorial-sections" class="footer-nav-link" data-link-type="internal">tutorial_sections</a></li>
+                    <li><a href="#practice-exercises" class="footer-nav-link" data-link-type="internal">practice_exercises</a></li>
+                    <li><a href="#reference-documentation" class="footer-nav-link" data-link-type="internal">reference_docs</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section" data-section-type="resources">
+                <h3 class="footer-section-heading" data-heading-style="footer-primary">Learning Resources</h3>
+                <ul class="footer-link-list" data-link-style="footer-standard">
+                    <li><a href="#vim-motion-guide" class="footer-resource-link" data-resource-type="guide">vim_motion_guide</a></li>
+                    <li><a href="#keyboard-shortcuts-reference" class="footer-resource-link" data-resource-type="reference">keyboard_shortcuts</a></li>
+                    <li><a href="#practice-file-downloads" class="footer-resource-link" data-resource-type="download">practice_files</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

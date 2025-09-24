@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Blog - Visual Selection Practice</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #1a202c;
+            background-color: #f7fafc;
+        }
+
+        /* Container utility */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Header section with nested elements for selection practice */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: #ffd700;
+        }
+
+        /* Navigation with multiple nested elements */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav ul li {
+            position: relative;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        /* Main content area with article structure */
+        main {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            margin: 3rem 0;
+        }
+
+        /* Article content with various text blocks for selection */
+        .content {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .article-header {
+            padding: 2rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .article-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #2d3748;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .article-meta .author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .article-meta .date {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .article-meta .tags {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background: #e6fffa;
+            color: #234e52;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Article body with multiple paragraphs for selection practice */
+        .article-body {
+            padding: 2rem;
+        }
+
+        .article-body h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem 0;
+            color: #2d3748;
+            position: relative;
+        }
+
+        .article-body h2::before {
+            content: '#';
+            color: #667eea;
+            margin-right: 0.5rem;
+            font-weight: bold;
+        }
+
+        .article-body h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.75rem 0;
+            color: #4a5568;
+        }
+
+        .article-body p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            color: #2d3748;
+        }
+
+        .article-body blockquote {
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: #4a5568;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .article-body ul {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        .article-body ul li {
+            margin-bottom: 0.75rem;
+            color: #2d3748;
+        }
+
+        .article-body ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        .article-body ol li {
+            margin-bottom: 0.75rem;
+            color: #2d3748;
+        }
+
+        /* Code blocks for selection practice */
+        .article-body pre {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 2rem 0;
+            font-family: 'Fira Code', 'Monaco', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .article-body code {
+            background: #edf2f7;
+            color: #d53f8c;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', 'Monaco', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Sidebar with multiple widgets for selection */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .widget {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .widget h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #2d3748;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+
+        .widget ul {
+            list-style: none;
+        }
+
+        .widget ul li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e2e8f0;
+            transition: background-color 0.2s ease;
+        }
+
+        .widget ul li:last-child {
+            border-bottom: none;
+        }
+
+        .widget ul li:hover {
+            background-color: #f7fafc;
+            margin: 0 -1.5rem;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        .widget ul li a {
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .widget ul li a:hover {
+            color: #667eea;
+        }
+
+        /* Author info widget */
+        .author-widget {
+            text-align: center;
+        }
+
+        .author-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 1rem auto;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .author-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .author-bio {
+            color: #718096;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Social links */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f7fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4a5568;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Footer with multiple sections */
+        footer {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 3rem 0 2rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #ffd700;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: #cbd5e0;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: #ffd700;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #4a5568;
+            color: #a0aec0;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            main {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            header .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            .article-header h1 {
+                font-size: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header section with multiple nested elements -->
+    <header>
+        <div class="container">
+            <div class="logo">
+                Tech<span>Blog</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#articles">Articles</a></li>
+                    <li><a href="#tutorials">Tutorials</a></li>
+                    <li><a href="#resources">Resources</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <main>
+            <!-- Main article content -->
+            <article class="content">
+                <header class="article-header">
+                    <h1>Mastering Modern JavaScript: A Complete Guide to ES6+ Features</h1>
+                    <div class="article-meta">
+                        <div class="author">
+                            <span>👤</span>
+                            <span>Sarah Johnson</span>
+                        </div>
+                        <div class="date">
+                            <span>📅</span>
+                            <time datetime="2024-01-15">January 15, 2024</time>
+                        </div>
+                        <div class="tags">
+                            <span class="tag">JavaScript</span>
+                            <span class="tag">ES6</span>
+                            <span class="tag">Web Development</span>
+                            <span class="tag">Programming</span>
+                        </div>
+                    </div>
+                </header>
+
+                <div class="article-body">
+                    <p>JavaScript has evolved tremendously over the past decade, with ES6 (ECMAScript 2015) marking a significant milestone in the language's development. This comprehensive guide will walk you through the most important modern JavaScript features that every developer should master.</p>
+
+                    <h2>Introduction to Modern JavaScript</h2>
+                    <p>The JavaScript ecosystem has transformed dramatically since the introduction of ES6 in 2015. What started as a simple scripting language for web pages has become a powerful, versatile programming language used for everything from front-end user interfaces to server-side applications, mobile development, and even desktop applications.</p>
+
+                    <p>Understanding modern JavaScript features is crucial for any developer working in today's web development landscape. These features not only make your code more readable and maintainable but also improve performance and provide better development experiences.</p>
+
+                    <blockquote>
+                        "JavaScript is the world's most misunderstood programming language. Some of this is because of the language's flaws, but most of it is because of the way it's used." - Douglas Crockford
+                    </blockquote>
+
+                    <h2>Essential ES6+ Features</h2>
+                    <p>Let's explore the most important features introduced in ES6 and later versions that have revolutionized how we write JavaScript code.</p>
+
+                    <h3>1. Arrow Functions</h3>
+                    <p>Arrow functions provide a more concise syntax for writing functions and have some important differences in how they handle the <code>this</code> context compared to traditional function declarations.</p>
+
+                    <pre><code>// Traditional function
+function add(a, b) {
+    return a + b;
+}
+
+// Arrow function
+const add = (a, b) => a + b;
+
+// Arrow function with block body
+const multiply = (a, b) => {
+    const result = a * b;
+    return result;
+};
+
+// Arrow function in array methods
+const numbers = [1, 2, 3, 4, 5];
+const doubled = numbers.map(n => n * 2);
+console.log(doubled); // [2, 4, 6, 8, 10]</code></pre>
+
+                    <h3>2. Destructuring Assignment</h3>
+                    <p>Destructuring allows you to extract values from arrays and objects into distinct variables, making your code more readable and concise.</p>
+
+                    <pre><code>// Array destructuring
+const [first, second, ...rest] = [1, 2, 3, 4, 5];
+console.log(first); // 1
+console.log(second); // 2
+console.log(rest); // [3, 4, 5]
+
+// Object destructuring
+const person = { name: 'John', age: 30, city: 'New York' };
+const { name, age } = person;
+console.log(name); // 'John'
+console.log(age); // 30
+
+// Nested destructuring
+const user = {
+    id: 1,
+    profile: {
+        name: 'Alice',
+        email: 'alice@example.com'
+    }
+};
+const { profile: { name: userName, email } } = user;</code></pre>
+
+                    <h3>3. Template Literals</h3>
+                    <p>Template literals provide an elegant way to create strings with embedded expressions, multi-line strings, and tagged templates.</p>
+
+                    <pre><code>const name = 'World';
+const greeting = `Hello, ${name}!`;
+
+// Multi-line strings
+const html = `
+    &lt;div class="container"&gt;
+        &lt;h1&gt;${greeting}&lt;/h1&gt;
+        &lt;p&gt;Welcome to our website!&lt;/p&gt;
+    &lt;/div&gt;
+`;
+
+// Tagged templates
+function highlight(strings, ...values) {
+    return strings.reduce((result, string, i) => {
+        return result + string + (values[i] ? `&lt;mark&gt;${values[i]}&lt;/mark&gt;` : '');
+    }, '');
+}</code></pre>
+
+                    <h3>4. Classes and Inheritance</h3>
+                    <p>ES6 classes provide a more familiar syntax for creating objects and implementing inheritance, though they're still built on JavaScript's prototypal inheritance system.</p>
+
+                    <pre><code>class Animal {
+    constructor(name, species) {
+        this.name = name;
+        this.species = species;
+    }
+
+    speak() {
+        return `${this.name} makes a sound`;
+    }
+
+    static getKingdom() {
+        return 'Animalia';
+    }
+}
+
+class Dog extends Animal {
+    constructor(name, breed) {
+        super(name, 'Canine');
+        this.breed = breed;
+    }
+
+    speak() {
+        return `${this.name} barks`;
+    }
+
+    wagTail() {
+        return `${this.name} is wagging their tail`;
+    }
+}
+
+const dog = new Dog('Buddy', 'Golden Retriever');
+console.log(dog.speak()); // 'Buddy barks'</code></pre>
+
+                    <h2>Advanced JavaScript Patterns</h2>
+                    <p>Beyond the basic ES6+ features, there are several advanced patterns and concepts that are essential for writing robust JavaScript applications.</p>
+
+                    <h3>Async/Await and Promises</h3>
+                    <p>Asynchronous programming is a cornerstone of JavaScript development. Understanding Promises and async/await syntax is crucial for handling asynchronous operations effectively.</p>
+
+                    <ul>
+                        <li><strong>Promise-based APIs:</strong> Modern browser APIs and libraries use Promises for asynchronous operations</li>
+                        <li><strong>Error handling:</strong> Proper error handling with try/catch blocks in async functions</li>
+                        <li><strong>Parallel execution:</strong> Using Promise.all() and Promise.allSettled() for concurrent operations</li>
+                        <li><strong>Sequential vs. parallel:</strong> Understanding when to use different execution patterns</li>
+                    </ul>
+
+                    <h3>Modules and Import/Export</h3>
+                    <p>ES6 modules provide a standardized way to organize and share code between files, replacing older systems like CommonJS and AMD.</p>
+
+                    <ol>
+                        <li><strong>Named exports:</strong> Export multiple values from a single module</li>
+                        <li><strong>Default exports:</strong> Export a single main value from a module</li>
+                        <li><strong>Dynamic imports:</strong> Load modules dynamically at runtime for code splitting</li>
+                        <li><strong>Re-exports:</strong> Create module aggregation patterns for better organization</li>
+                    </ol>
+
+                    <h2>Best Practices and Common Pitfalls</h2>
+                    <p>Writing modern JavaScript effectively requires understanding not just the syntax, but also the best practices and common pitfalls to avoid.</p>
+
+                    <p>One of the most important aspects of modern JavaScript development is understanding the event loop and how asynchronous operations work. This knowledge is fundamental to writing performant applications and avoiding common bugs related to timing and state management.</p>
+
+                    <blockquote>
+                        "The key to understanding JavaScript is not to focus on what it's missing, but to understand what it does well and use those strengths to your advantage."
+                    </blockquote>
+
+                    <p>Performance optimization is another critical consideration. Modern JavaScript engines are incredibly sophisticated, but understanding concepts like closures, memory management, and algorithm complexity can help you write more efficient code.</p>
+
+                    <h2>Conclusion</h2>
+                    <p>Mastering modern JavaScript is an ongoing journey. The language continues to evolve with new features and improvements being added regularly. The key is to build a strong foundation with the core concepts and patterns, then stay current with new developments in the JavaScript ecosystem.</p>
+
+                    <p>Remember that good code is not just about using the latest features, but about writing clean, maintainable, and performant solutions to real-world problems. Focus on understanding the underlying principles, and you'll be well-equipped to adapt to new changes as the language evolves.</p>
+
+                    <p>Practice regularly, contribute to open-source projects, and engage with the JavaScript community to continue improving your skills. The investment in learning modern JavaScript will pay dividends throughout your development career.</p>
+                </div>
+            </article>
+
+            <!-- Sidebar with multiple widgets -->
+            <aside class="sidebar">
+                <!-- Author widget -->
+                <div class="widget author-widget">
+                    <h3>About the Author</h3>
+                    <div class="author-avatar">SJ</div>
+                    <div class="author-name">Sarah Johnson</div>
+                    <p class="author-bio">Senior full-stack developer with 8+ years of experience. Passionate about modern web technologies, clean code, and developer education.</p>
+                    <div class="social-links">
+                        <a href="#" title="Twitter">🐦</a>
+                        <a href="#" title="LinkedIn">💼</a>
+                        <a href="#" title="GitHub">👨‍💻</a>
+                        <a href="#" title="Blog">📝</a>
+                    </div>
+                </div>
+
+                <!-- Recent articles widget -->
+                <div class="widget">
+                    <h3>Recent Articles</h3>
+                    <ul>
+                        <li><a href="#">Understanding React Hooks: A Comprehensive Guide</a></li>
+                        <li><a href="#">CSS Grid vs Flexbox: When to Use Which?</a></li>
+                        <li><a href="#">Building Scalable Node.js Applications</a></li>
+                        <li><a href="#">The Complete Guide to TypeScript</a></li>
+                        <li><a href="#">Modern CSS Techniques for 2024</a></li>
+                        <li><a href="#">Web Performance Optimization Strategies</a></li>
+                    </ul>
+                </div>
+
+                <!-- Categories widget -->
+                <div class="widget">
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="#">JavaScript (24)</a></li>
+                        <li><a href="#">React (18)</a></li>
+                        <li><a href="#">CSS (15)</a></li>
+                        <li><a href="#">Node.js (12)</a></li>
+                        <li><a href="#">TypeScript (9)</a></li>
+                        <li><a href="#">Web Performance (8)</a></li>
+                        <li><a href="#">Testing (6)</a></li>
+                        <li><a href="#">DevOps (4)</a></li>
+                    </ul>
+                </div>
+
+                <!-- Popular tags widget -->
+                <div class="widget">
+                    <h3>Popular Tags</h3>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                        <span class="tag">ES6</span>
+                        <span class="tag">React</span>
+                        <span class="tag">Hooks</span>
+                        <span class="tag">Async</span>
+                        <span class="tag">Promise</span>
+                        <span class="tag">CSS Grid</span>
+                        <span class="tag">Flexbox</span>
+                        <span class="tag">Node.js</span>
+                        <span class="tag">Express</span>
+                        <span class="tag">MongoDB</span>
+                        <span class="tag">REST API</span>
+                        <span class="tag">GraphQL</span>
+                    </div>
+                </div>
+
+                <!-- Newsletter widget -->
+                <div class="widget">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to get the latest articles and tutorials delivered to your inbox weekly.</p>
+                    <form style="margin-top: 1rem;">
+                        <input type="email" placeholder="Your email address" style="width: 100%; padding: 0.75rem; border: 2px solid #e2e8f0; border-radius: 6px; margin-bottom: 1rem;">
+                        <button type="submit" style="width: 100%; padding: 0.75rem; background: #667eea; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">Subscribe</button>
+                    </form>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- Footer with multiple sections -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Articles</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Categories</h4>
+                    <ul>
+                        <li><a href="#">Frontend Development</a></li>
+                        <li><a href="#">Backend Development</a></li>
+                        <li><a href="#">Full Stack</a></li>
+                        <li><a href="#">DevOps</a></li>
+                        <li><a href="#">Mobile Development</a></li>
+                        <li><a href="#">Web Design</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Code Examples</a></li>
+                        <li><a href="#">Cheat Sheets</a></li>
+                        <li><a href="#">Tools & Libraries</a></li>
+                        <li><a href="#">Books & Courses</a></li>
+                        <li><a href="#">Community</a></li>
+                        <li><a href="#">Newsletter Archive</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">LinkedIn</a></li>
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">YouTube</a></li>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">RSS Feed</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TechBlog. All rights reserved. Built with HTML, CSS, and lots of coffee ☕</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

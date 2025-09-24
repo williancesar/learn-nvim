@@ -1,0 +1,331 @@
+{
+  "version": "1.0",
+  "apiVersion": "legacy-v1",
+  "projectName": "E-Commerce Legacy System",
+  "description": "Legacy configuration requiring modernization - practice change operations",
+  "lastUpdated": "2018-03-15",
+  "configurations": {
+    "server": {
+      "hostname": "legacy-server.company.local",
+      "port": "8080",
+      "protocol": "http",
+      "sslEnabled": "false",
+      "maxConnections": "100",
+      "timeout": "30000",
+      "keepAliveTimeout": "5000",
+      "compressionEnabled": "true",
+      "compressionLevel": "6"
+    },
+    "database": {
+      "databaseType": "mysql",
+      "host": "mysql-server.company.local",
+      "port": "3306",
+      "databaseName": "ecommerce_legacy",
+      "username": "root",
+      "password": "plaintext_password",
+      "maxPoolSize": "50",
+      "minPoolSize": "5",
+      "connectionTimeout": "30000",
+      "idleTimeout": "600000",
+      "maxLifetime": "1800000",
+      "autoReconnect": "true",
+      "useSSL": "false",
+      "allowPublicKeyRetrieval": "true"
+    },
+    "cache": {
+      "cacheType": "memcached",
+      "servers": [
+        "memcached-1.company.local:11211",
+        "memcached-2.company.local:11211"
+      ],
+      "defaultExpiration": "3600",
+      "compressionEnabled": "false",
+      "binaryProtocol": "false"
+    },
+    "logging": {
+      "logLevel": "DEBUG",
+      "logFile": "/var/log/application.log",
+      "logFormat": "text",
+      "maxFileSize": "100MB",
+      "maxFiles": "10",
+      "consoleLogging": "true",
+      "timestampFormat": "yyyy-MM-dd HH:mm:ss"
+    },
+    "session": {
+      "sessionProvider": "memory",
+      "sessionTimeout": "1800",
+      "cookieName": "JSESSIONID",
+      "cookiePath": "/",
+      "cookieDomain": ".company.com",
+      "cookieSecure": "false",
+      "cookieHttpOnly": "false",
+      "cookieSameSite": "none"
+    },
+    "security": {
+      "authenticationMethod": "basic",
+      "passwordEncryption": "md5",
+      "sessionFixation": "none",
+      "csrfProtection": "false",
+      "clickjackingProtection": "false",
+      "contentTypeSniffing": "true",
+      "cors": {
+        "enabled": "false",
+        "allowedOrigins": "*",
+        "allowedMethods": "GET,POST",
+        "allowedHeaders": "*",
+        "exposedHeaders": "",
+        "allowCredentials": "false",
+        "maxAge": "86400"
+      },
+      "headers": {
+        "xFrameOptions": "DENY",
+        "xContentTypeOptions": "nosniff",
+        "xXssProtection": "1; mode=block",
+        "strictTransportSecurity": "",
+        "contentSecurityPolicy": ""
+      }
+    },
+    "api": {
+      "version": "v1",
+      "basePath": "/api/v1",
+      "format": "xml",
+      "compressionEnabled": "false",
+      "rateLimiting": {
+        "enabled": "false",
+        "maxRequests": "1000",
+        "windowSize": "3600",
+        "strategy": "fixed-window"
+      },
+      "authentication": {
+        "type": "api-key",
+        "location": "query",
+        "parameterName": "api_key",
+        "headerName": "",
+        "tokenExpiration": "86400"
+      },
+      "endpoints": {
+        "users": {
+          "enabled": "true",
+          "methods": ["GET", "POST", "PUT", "DELETE"],
+          "cacheable": "false",
+          "cacheExpiration": "300",
+          "pagination": {
+            "enabled": "true",
+            "defaultPageSize": "20",
+            "maxPageSize": "100",
+            "pageParameter": "page",
+            "sizeParameter": "size"
+          }
+        },
+        "products": {
+          "enabled": "true",
+          "methods": ["GET"],
+          "cacheable": "true",
+          "cacheExpiration": "3600",
+          "searchEnabled": "false",
+          "filteringEnabled": "false"
+        },
+        "orders": {
+          "enabled": "true",
+          "methods": ["GET", "POST"],
+          "cacheable": "false",
+          "asyncProcessing": "false",
+          "webhookUrl": "",
+          "retryAttempts": "3",
+          "retryDelay": "5000"
+        }
+      }
+    },
+    "monitoring": {
+      "metricsEnabled": "false",
+      "healthCheckEnabled": "true",
+      "healthCheckPath": "/health",
+      "metricsPath": "/metrics",
+      "metricsFormat": "text",
+      "jmxEnabled": "true",
+      "jmxPort": "9999",
+      "customMetrics": []
+    },
+    "email": {
+      "smtpHost": "smtp.company.com",
+      "smtpPort": "25",
+      "smtpUsername": "",
+      "smtpPassword": "",
+      "smtpAuth": "false",
+      "smtpStartTls": "false",
+      "smtpSsl": "false",
+      "fromAddress": "noreply@company.com",
+      "fromName": "E-Commerce System",
+      "templates": {
+        "welcomeEmail": "/templates/welcome.html",
+        "orderConfirmation": "/templates/order-confirmation.html",
+        "passwordReset": "/templates/password-reset.html"
+      }
+    },
+    "payment": {
+      "providers": {
+        "paypal": {
+          "enabled": "true",
+          "environment": "sandbox",
+          "clientId": "paypal_client_id",
+          "clientSecret": "paypal_client_secret",
+          "webhookId": "",
+          "ipnUrl": "/paypal/ipn"
+        },
+        "stripe": {
+          "enabled": "false",
+          "publicKey": "",
+          "secretKey": "",
+          "webhookSecret": "",
+          "apiVersion": "2020-08-27"
+        }
+      },
+      "currency": "USD",
+      "taxCalculation": "simple",
+      "shippingCalculation": "flat-rate",
+      "fraudDetection": "none"
+    },
+    "search": {
+      "provider": "database",
+      "indexingEnabled": "false",
+      "fullTextSearch": "false",
+      "fuzzyMatching": "false",
+      "synonyms": "false",
+      "stemming": "false",
+      "stopWords": "false",
+      "facetedSearch": "false",
+      "autoComplete": "false",
+      "searchAnalytics": "false"
+    },
+    "cdn": {
+      "enabled": "false",
+      "provider": "",
+      "baseUrl": "",
+      "cacheControl": "public, max-age=3600",
+      "compression": "true",
+      "minification": "false",
+      "versioning": "false"
+    },
+    "backup": {
+      "enabled": "true",
+      "schedule": "0 2 * * *",
+      "retention": "30",
+      "compression": "gzip",
+      "location": "/backups",
+      "remoteStorage": "false",
+      "remoteUrl": "",
+      "encryption": "false"
+    },
+    "clustering": {
+      "enabled": "false",
+      "nodes": [],
+      "sessionReplication": "false",
+      "loadBalancing": "round-robin",
+      "failover": "manual",
+      "heartbeatInterval": "10000"
+    },
+    "development": {
+      "debugMode": "true",
+      "hotReload": "false",
+      "profiling": "false",
+      "sqlLogging": "true",
+      "errorDisplay": "full",
+      "cacheDisabled": "true",
+      "mockExternalServices": "true"
+    },
+    "legacy_features": {
+      "flashSupport": "true",
+      "ie8Support": "true",
+      "xmlOnlyApi": "true",
+      "ftpUpload": "true",
+      "telnetAccess": "true",
+      "plainTextPasswords": "true",
+      "deprecatedCiphers": "true",
+      "insecureProtocols": "true"
+    },
+    "deprecated_settings": {
+      "registerGlobals": "on",
+      "magicQuotes": "on",
+      "allowUrlInclude": "on",
+      "exposePhp": "on",
+      "sessionAutoStart": "on",
+      "shortOpenTag": "on"
+    }
+  },
+  "environments": {
+    "development": {
+      "inherit": "default",
+      "override": {
+        "server.hostname": "localhost",
+        "database.host": "localhost",
+        "logging.logLevel": "TRACE",
+        "security.csrfProtection": "false",
+        "cache.cacheType": "none"
+      }
+    },
+    "staging": {
+      "inherit": "default",
+      "override": {
+        "server.hostname": "staging.company.com",
+        "database.host": "staging-db.company.local",
+        "logging.logLevel": "INFO",
+        "security.csrfProtection": "true"
+      }
+    },
+    "production": {
+      "inherit": "default",
+      "override": {
+        "server.hostname": "www.company.com",
+        "database.host": "prod-db.company.local",
+        "logging.logLevel": "WARN",
+        "security.csrfProtection": "true",
+        "security.cookieSecure": "true",
+        "monitoring.metricsEnabled": "true"
+      }
+    }
+  },
+  "migration_notes": {
+    "required_updates": [
+      "Update apiVersion from legacy-v1 to v1",
+      "Change string booleans to actual boolean values",
+      "Replace plaintext passwords with secure credential references",
+      "Update database from MySQL to PostgreSQL",
+      "Replace memcached with Redis",
+      "Update authentication from basic to OAuth2/JWT",
+      "Change password encryption from MD5 to bcrypt",
+      "Enable HTTPS and update security headers",
+      "Replace XML API format with JSON",
+      "Add proper rate limiting configuration",
+      "Enable monitoring and metrics collection",
+      "Update email configuration to use modern SMTP with TLS",
+      "Replace legacy payment providers with modern alternatives",
+      "Add search provider configuration (Elasticsearch)",
+      "Enable CDN and modern asset optimization",
+      "Update backup configuration with encryption",
+      "Add container orchestration configuration",
+      "Remove deprecated PHP settings",
+      "Remove legacy browser support configurations"
+    ],
+    "security_improvements": [
+      "Enable CSRF protection",
+      "Add proper CORS configuration",
+      "Implement secure session management",
+      "Add content security policy headers",
+      "Enable HTTPS everywhere",
+      "Implement proper authentication and authorization",
+      "Add input validation and sanitization",
+      "Enable audit logging",
+      "Add rate limiting and DDoS protection"
+    ],
+    "performance_optimizations": [
+      "Implement connection pooling",
+      "Add caching layers",
+      "Enable compression",
+      "Add CDN integration",
+      "Implement database query optimization",
+      "Add async processing for heavy operations",
+      "Enable monitoring and alerting",
+      "Add load balancing configuration"
+    ]
+  }
+}

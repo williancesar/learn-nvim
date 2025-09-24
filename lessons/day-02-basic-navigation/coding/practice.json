@@ -1,0 +1,242 @@
+{
+  "_navigation_instructions": {
+    "description": "Day 02 - Basic Navigation Practice",
+    "objectives": [
+      "Use 'h' (left), 'l' (right), 'j' (down), 'k' (up) for navigation",
+      "Practice navigating nested JSON structures",
+      "Use '0' (beginning of line) and '$' (end of line)",
+      "Practice 'gg' (top of file) and 'G' (bottom of file)",
+      "Navigate between deeply nested objects and arrays"
+    ],
+    "tips": "Focus on accuracy over speed - build muscle memory"
+  },
+  "microservices_architecture": {
+    "api_gateway": {
+      "service_name": "gateway-service",
+      "port": 8080,
+      "routes": {
+        "user_service": {
+          "path": "/api/v1/users",
+          "upstream": "http://user-service:3001",
+          "methods": ["GET", "POST", "PUT", "DELETE"],
+          "authentication": {
+            "required": true,
+            "type": "jwt",
+            "secret_key": "${JWT_SECRET}",
+            "expiry": "24h"
+          },
+          "rate_limiting": {
+            "requests_per_minute": 100,
+            "burst_size": 20,
+            "window": "1m"
+          }
+        },
+        "product_service": {
+          "path": "/api/v1/products",
+          "upstream": "http://product-service:3002",
+          "methods": ["GET", "POST", "PUT", "DELETE"],
+          "caching": {
+            "enabled": true,
+            "ttl": 300,
+            "cache_key_prefix": "products:",
+            "strategies": {
+              "read_through": true,
+              "write_behind": false,
+              "refresh_ahead": true
+            }
+          },
+          "circuit_breaker": {
+            "failure_threshold": 5,
+            "recovery_timeout": "30s",
+            "half_open_max_calls": 3
+          }
+        },
+        "order_service": {
+          "path": "/api/v1/orders",
+          "upstream": "http://order-service:3003",
+          "methods": ["GET", "POST", "PUT"],
+          "timeout": {
+            "connect": "5s",
+            "read": "30s",
+            "write": "10s"
+          },
+          "retry": {
+            "max_attempts": 3,
+            "backoff": "exponential",
+            "initial_delay": "100ms"
+          }
+        }
+      }
+    },
+    "services": {
+      "user_service": {
+        "image": "user-service:latest",
+        "replicas": 3,
+        "resources": {
+          "limits": {
+            "cpu": "500m",
+            "memory": "512Mi"
+          },
+          "requests": {
+            "cpu": "250m",
+            "memory": "256Mi"
+          }
+        },
+        "environment": {
+          "DATABASE_URL": "postgresql://user:pass@postgres:5432/users",
+          "REDIS_URL": "redis://redis:6379/0",
+          "LOG_LEVEL": "info",
+          "PORT": "3001"
+        },
+        "health_checks": {
+          "liveness": {
+            "path": "/health/live",
+            "interval": "30s",
+            "timeout": "5s"
+          },
+          "readiness": {
+            "path": "/health/ready",
+            "interval": "10s",
+            "timeout": "3s"
+          }
+        }
+      },
+      "product_service": {
+        "image": "product-service:latest",
+        "replicas": 2,
+        "database": {
+          "type": "mongodb",
+          "connection": {
+            "host": "mongodb://mongo:27017",
+            "database": "products",
+            "options": {
+              "maxPoolSize": 10,
+              "retryWrites": true,
+              "w": "majority"
+            }
+          },
+          "collections": {
+            "products": {
+              "indexes": [
+                {"fields": ["category", "price"], "type": "compound"},
+                {"fields": ["name"], "type": "text"},
+                {"fields": ["created_at"], "type": "single"}
+              ]
+            },
+            "categories": {
+              "indexes": [
+                {"fields": ["slug"], "type": "unique"},
+                {"fields": ["parent_id"], "type": "single"}
+              ]
+            }
+          }
+        },
+        "caching": {
+          "redis": {
+            "host": "redis",
+            "port": 6379,
+            "database": 1,
+            "key_prefix": "product:",
+            "default_ttl": 3600
+          }
+        }
+      },
+      "order_service": {
+        "image": "order-service:latest",
+        "replicas": 2,
+        "messaging": {
+          "rabbitmq": {
+            "host": "rabbitmq",
+            "port": 5672,
+            "vhost": "/orders",
+            "queues": {
+              "order_created": {
+                "durable": true,
+                "auto_delete": false,
+                "arguments": {
+                  "x-message-ttl": 86400000,
+                  "x-max-retries": 3
+                }
+              },
+              "order_updated": {
+                "durable": true,
+                "auto_delete": false,
+                "routing_key": "order.updated"
+              },
+              "payment_processing": {
+                "durable": true,
+                "auto_delete": false,
+                "dead_letter_exchange": "payment.dlx"
+              }
+            },
+            "exchanges": {
+              "orders": {
+                "type": "topic",
+                "durable": true
+              },
+              "payments": {
+                "type": "direct",
+                "durable": true
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "monitoring": {
+    "prometheus": {
+      "enabled": true,
+      "port": 9090,
+      "scrape_configs": [
+        {
+          "job_name": "api-gateway",
+          "static_configs": [
+            {
+              "targets": ["gateway-service:8080"]
+            }
+          ],
+          "metrics_path": "/metrics",
+          "scrape_interval": "15s"
+        },
+        {
+          "job_name": "microservices",
+          "static_configs": [
+            {
+              "targets": [
+                "user-service:3001",
+                "product-service:3002",
+                "order-service:3003"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "grafana": {
+      "enabled": true,
+      "port": 3000,
+      "dashboards": {
+        "api_performance": {
+          "panels": [
+            {
+              "title": "Request Rate",
+              "type": "graph",
+              "query": "rate(http_requests_total[5m])"
+            },
+            {
+              "title": "Response Time",
+              "type": "graph",
+              "query": "histogram_quantile(0.95, http_request_duration_seconds_bucket)"
+            },
+            {
+              "title": "Error Rate",
+              "type": "stat",
+              "query": "rate(http_requests_total{status=~\"5..\"}[5m])"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

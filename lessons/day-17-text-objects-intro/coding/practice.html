@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Objects Practice - Day 17</title>
+    <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <h1>Text Objects in Vim</h1>
+            <p>Practice with words, sentences, paragraphs, and HTML tags</p>
+        </header>
+
+        <main class="content">
+            <section class="intro-section">
+                <h2>Understanding Text Objects</h2>
+                <p>Text objects in Vim represent logical units of text that you can manipulate as cohesive blocks. The most common text objects include words (w), sentences (s), paragraphs (p), and various bracketed or quoted text segments. These objects can be combined with operators like delete (d), yank (y), or change (c) to perform powerful editing operations.</p>
+
+                <p>The key insight about text objects is that they allow you to think in terms of meaningful content units rather than individual characters or arbitrary selections. When you use "daw" (delete a word), you're operating on the concept of a word, including any surrounding whitespace. This semantic approach to editing makes your operations more predictable and often more useful than character-based selections.</p>
+
+                <div class="example-container">
+                    <h3>Basic Text Object Examples</h3>
+                    <ul class="example-list">
+                        <li><code>diw</code> - delete inner word (cursor anywhere in word)</li>
+                        <li><code>daw</code> - delete a word (includes surrounding whitespace)</li>
+                        <li><code>dis</code> - delete inner sentence (without ending punctuation)</li>
+                        <li><code>das</code> - delete a sentence (includes ending punctuation and whitespace)</li>
+                        <li><code>dip</code> - delete inner paragraph (text only)</li>
+                        <li><code>dap</code> - delete a paragraph (includes blank lines)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="word-practice">
+                <h2>Word Object Practice</h2>
+                <p>Words are fundamental text objects in Vim. Practice using <em>word</em> operations with these <strong>examples</strong>. Try using <code>ciw</code> to change inner word while your cursor is positioned anywhere within a target word. Notice how the operation affects only the word itself, without including surrounding spaces or punctuation.</p>
+
+                <p>Different types of words require different approaches. CamelCase words, hyphenated-words, and words with special characters like under_scores or dots.in.names all behave differently depending on your Vim configuration and the specific text object you choose.</p>
+
+                <div class="word-examples">
+                    <p>Here are various word types for practice:</p>
+                    <ul>
+                        <li>simple lowercase words</li>
+                        <li>UPPERCASE WORDS for emphasis</li>
+                        <li>CamelCaseWords commonly used in programming</li>
+                        <li>hyphenated-words that span multiple parts</li>
+                        <li>under_scored_variables typical in code</li>
+                        <li>file.extension.names with dots</li>
+                        <li>URLs like https://example.com/path</li>
+                        <li>email@addresses.com with special characters</li>
+                    </ul>
+                </div>
+
+                <p>When practicing word objects, pay attention to where your cursor is positioned. The behavior of "inner" versus "a" text objects can vary based on cursor placement, especially at word boundaries or in whitespace between words.</p>
+            </section>
+
+            <section class="sentence-practice">
+                <h2>Sentence Object Practice</h2>
+                <p>Sentences are larger text objects that span from one sentence boundary to another. In this practice section, you'll work with various sentence structures. Try using "dis" to delete the inner content of a sentence without removing the ending punctuation. Then practice "das" to delete entire sentences including their punctuation and trailing whitespace.</p>
+
+                <p>Vim recognizes sentences by looking for specific punctuation marks followed by whitespace or end-of-line. The typical sentence-ending characters include periods, exclamation marks, and question marks. However, abbreviations and decimal numbers can sometimes confuse sentence detection, so it's important to understand how Vim interprets sentence boundaries in different contexts.</p>
+
+                <div class="sentence-examples">
+                    <p>Here are different sentence types to practice with:</p>
+                    <p>This is a simple declarative sentence. This is an exclamatory sentence! Is this a question sentence? Here's a sentence with an abbreviation like Mr. Smith or Dr. Jones. Sometimes sentences contain numbers like 3.14159 or percentages like 99.9% which can affect boundary detection.</p>
+
+                    <p>Complex sentences may contain multiple clauses, semicolons; and other punctuation that doesn't end the sentence. "Quoted sentences can be tricky," because the quotes don't necessarily indicate sentence boundaries. (Parenthetical statements also don't create sentence breaks.) However, each of these examples should be treated as separate sentences for text object purposes.</p>
+                </div>
+
+                <p>Practice moving between sentences using "(" and ")" motion commands, then combine them with operations like "c)" to change from cursor to sentence end, or "d(" to delete from cursor to sentence beginning.</p>
+            </section>
+
+            <section class="paragraph-practice">
+                <h2>Paragraph Object Practice</h2>
+                <p>Paragraph text objects operate on larger blocks of text separated by blank lines. This paragraph contains multiple sentences that should be treated as a single unit when using paragraph text objects. Practice using "dip" to delete the inner content of this paragraph, or "dap" to delete the entire paragraph including surrounding blank lines.</p>
+
+                <p>Understanding paragraph boundaries is crucial for effective use of paragraph text objects. Vim considers a paragraph to be any block of text surrounded by blank lines, certain formatting commands, or specific markup elements in structured documents.</p>
+
+                <p>Different file types may have different paragraph definitions. In HTML files like this one, paragraph tags create natural boundaries, but Vim also recognizes other block-level elements as paragraph separators. In plain text files, only blank lines typically create paragraph boundaries.</p>
+
+                <div class="paragraph-examples">
+                    <h3>Multiple Paragraph Example</h3>
+                    <p>This is the first paragraph in a multi-paragraph example. It contains several sentences to provide adequate content for practicing paragraph text objects. Notice how this paragraph is separated from others by blank lines or different HTML elements.</p>
+
+                    <p>This is the second paragraph, clearly separated from the first. It demonstrates how paragraph boundaries work in HTML context. You can practice selecting entire paragraphs using visual mode combined with paragraph text objects.</p>
+
+                    <p>The third paragraph shows how consistent paragraph structure makes text object operations predictable and useful. Each paragraph can be manipulated as a complete unit, which is particularly valuable for reorganizing content or applying formatting changes.</p>
+                </div>
+
+                <p>Advanced paragraph operations include combining paragraph text objects with visual selection modes. Try "vip" to visually select an inner paragraph, or "vap" to select a paragraph including its boundaries.</p>
+            </section>
+
+            <section class="tag-practice">
+                <h2>HTML Tag Object Practice</h2>
+                <p>HTML and XML tags create natural text object boundaries that Vim can recognize and manipulate. The tag text objects "it" (inner tag) and "at" (a tag) are particularly useful when editing markup documents like this HTML file.</p>
+
+                <div class="tag-examples">
+                    <h3>Tag Object Examples</h3>
+                    <p>This paragraph contains <strong>bold text</strong> and <em>italic text</em> that can be selected using tag objects. Try placing your cursor inside the strong or em tags and using "dit" to delete the inner tag content, or "dat" to delete the entire tag including the markup.</p>
+
+                    <p>More complex examples include <span class="highlight">spans with classes</span> and <a href="#example">links with attributes</a>. These demonstrate how tag objects work with elements that have attributes and nested content.</p>
+
+                    <div class="nested-example">
+                        <p>This div contains nested elements that create a hierarchy of tag objects. You can practice with <code>nested code elements</code> and <strong>nested <em>multiple levels</em> of emphasis</strong>.</p>
+                    </div>
+
+                    <ul class="practice-list">
+                        <li>List items are also tags that can be manipulated</li>
+                        <li>Each <strong>list item</strong> can contain other elements</li>
+                        <li>Practice selecting <em>different tag levels</em> in the hierarchy</li>
+                    </ul>
+                </div>
+
+                <p>Understanding tag object scope is important. When your cursor is inside nested tags, Vim selects the innermost tag by default. You can use commands like "2dit" to select two levels up in the tag hierarchy, or position your cursor strategically to target specific tag levels.</p>
+
+                <blockquote class="quote-example">
+                    <p>Blockquotes provide another example of block-level tags that create text object boundaries. This blockquote contains multiple elements and demonstrates how tag objects work with complex nested structures.</p>
+                    <cite>— Practice using tag objects with this citation element</cite>
+                </blockquote>
+            </section>
+
+            <section class="advanced-practice">
+                <h2>Advanced Text Object Combinations</h2>
+                <p>Mastering text objects involves understanding how to combine them with different operators and how to work with nested or complex text structures. This section provides examples for practicing advanced text object operations.</p>
+
+                <div class="combination-examples">
+                    <h3>Operator + Text Object Combinations</h3>
+                    <table class="example-table">
+                        <thead>
+                            <tr>
+                                <th>Operation</th>
+                                <th>Command</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Change word</td>
+                                <td><code>ciw</code></td>
+                                <td>Change inner word (cursor anywhere in word)</td>
+                            </tr>
+                            <tr>
+                                <td>Delete sentence</td>
+                                <td><code>das</code></td>
+                                <td>Delete a sentence including punctuation</td>
+                            </tr>
+                            <tr>
+                                <td>Yank paragraph</td>
+                                <td><code>yip</code></td>
+                                <td>Yank inner paragraph content</td>
+                            </tr>
+                            <tr>
+                                <td>Select tag</td>
+                                <td><code>vat</code></td>
+                                <td>Visually select a tag including markup</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p>Complex documents often require combining multiple text object operations to achieve the desired result. For example, you might use "dap" to delete a paragraph, then "p" to paste it elsewhere, creating a paragraph move operation.</p>
+
+                <div class="nested-structure">
+                    <h3>Nested Structure Practice</h3>
+                    <div class="outer-container">
+                        <div class="inner-container">
+                            <p>This deeply nested structure provides opportunities to practice text object selection at different levels. Each level of nesting creates different possibilities for text object manipulation.</p>
+                            <span class="nested-span">Inline elements like this span create additional text object boundaries within the paragraph structure.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <p>Practice with count prefixes to extend text object operations. Commands like "3daw" delete three words, while "2dap" deletes two paragraphs. These counted operations allow for efficient manipulation of multiple text objects simultaneously.</p>
+            </section>
+
+            <section class="practice-exercises">
+                <h2>Practice Exercises</h2>
+                <p>Use this section to practice various text object operations. Each exercise focuses on specific text object types and common editing scenarios you'll encounter in real-world editing tasks.</p>
+
+                <div class="exercise-container">
+                    <h3>Exercise 1: Word Manipulation</h3>
+                    <p>In this exercise sentence, practice changing individual words using ciw. Try changing the word "individual" to "specific" and "words" to "terms". Notice how the cursor position affects the operation and how whitespace is handled.</p>
+
+                    <h3>Exercise 2: Sentence Operations</h3>
+                    <p>This exercise contains multiple sentences for practice. Delete this sentence using das. Change the next sentence using cas. Copy a sentence using yas and paste it elsewhere.</p>
+
+                    <h3>Exercise 3: Paragraph Management</h3>
+                    <p>This paragraph is designed for paragraph text object practice. Try selecting it with vip, copying it with yap, or moving it by deleting with dap and pasting elsewhere with p.</p>
+
+                    <p>This second paragraph in the exercise allows you to practice operations between paragraphs. Try deleting one paragraph and duplicating another to understand how paragraph boundaries affect text object behavior.</p>
+
+                    <h3>Exercise 4: Tag Selection</h3>
+                    <p>Practice with these <strong>inline elements</strong> and <em>emphasized text</em>. Use dit to change content, dat to delete entire tags, and vit to select tag contents. Try working with <span class="example">spans</span> and <code>code elements</code> as well.</p>
+
+                    <div class="exercise-block">
+                        <p>This div contains <strong>nested <em>elements</em></strong> for practicing tag object selection at different levels.</p>
+                    </div>
+                </div>
+
+                <p>Regular practice with text objects will make them feel natural and automatic. Start with simple operations and gradually work up to complex combinations that integrate text objects with other Vim features like marks, macros, and visual selections.</p>
+            </section>
+
+            <section class="tips-and-tricks">
+                <h2>Tips and Best Practices</h2>
+                <p>Effective use of text objects requires understanding not just the commands, but also when and how to apply them for maximum efficiency. This section covers practical tips for integrating text objects into your editing workflow.</p>
+
+                <div class="tips-list">
+                    <h3>Essential Tips for Text Object Mastery</h3>
+                    <ul>
+                        <li>Always think in terms of logical text units rather than character positions</li>
+                        <li>Use "inner" text objects (iw, is, ip, it) when you want to preserve surrounding structure</li>
+                        <li>Use "a" text objects (aw, as, ap, at) when you want to include boundaries and whitespace</li>
+                        <li>Combine text objects with visual mode for complex selections</li>
+                        <li>Practice cursor positioning to target the correct text object level</li>
+                        <li>Use count prefixes to operate on multiple text objects simultaneously</li>
+                        <li>Learn to recognize text object boundaries in different file types</li>
+                    </ul>
+                </div>
+
+                <p>Understanding the difference between "inner" and "a" text objects is crucial for predictable editing. Inner objects preserve structure by operating only on content, while "a" objects include boundaries and are better for deletion or movement operations.</p>
+
+                <div class="workflow-integration">
+                    <h3>Integrating Text Objects with Other Features</h3>
+                    <p>Text objects become more powerful when combined with other Vim features. Visual mode selections can use text objects to define boundaries. Macros can incorporate text object operations for repeatable editing patterns. Search and replace operations can target specific text object types for precise modifications.</p>
+                </div>
+
+                <p>Building muscle memory with text objects requires consistent practice with real content. Use your actual work files to practice these operations, starting with simple cases and gradually working up to complex editing scenarios that require multiple text object operations.</p>
+            </section>
+        </main>
+
+        <footer class="main-footer">
+            <p>Text objects provide semantic editing capabilities that transform how you manipulate text in Vim.</p>
+            <p>Master the basics: iw/aw (words), is/as (sentences), ip/ap (paragraphs), it/at (tags)</p>
+        </footer>
+    </div>
+</body>
+</html>

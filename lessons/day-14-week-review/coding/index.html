@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <!-- Meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TaskFlow Pro - Advanced project management platform with real-time collaboration">
+    <meta name="keywords" content="project management, collaboration, productivity, task tracking">
+    <meta name="author" content="CodeCraft Studio">
+
+    <!-- Open Graph meta tags -->
+    <meta property="og:title" content="TaskFlow Pro - Project Management Platform">
+    <meta property="og:description" content="Streamline your workflow with our advanced project management tools">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://taskflow.pro">
+    <meta property="og:image" content="assets/images/og-image.png">
+
+    <!-- Twitter Card meta tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="TaskFlow Pro - Project Management Platform">
+    <meta name="twitter:description" content="Streamline your workflow with our advanced project management tools">
+    <meta name="twitter:image" content="assets/images/twitter-card.png">
+
+    <title>TaskFlow Pro - Advanced Project Management Platform</title>
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="styles/main.css" as="style">
+    <link rel="preload" href="styles/components.css" as="style">
+    <link rel="preload" href="scripts/main.js" as="script">
+
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//api.taskflow.pro">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/responsive.css">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Critical inline CSS for above-the-fold content -->
+    <style>
+        /* Critical styles to prevent FOUC */
+        body { opacity: 0; transition: opacity 0.3s ease; }
+        body.loaded { opacity: 1; }
+
+        .loading-spinner {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e5e7eb;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 9999;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+    </style>
+</head>
+<body data-loading="true">
+    <!-- Loading Spinner -->
+    <div class="loading-spinner" id="loading-spinner"></div>
+
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Application Shell -->
+    <div id="app" class="app-container" data-app-version="1.4.2" data-build="2024-01-15">
+
+        <!-- Top Navigation Bar -->
+        <header class="top-nav" id="top-nav">
+            <div class="nav-container">
+                <!-- Brand/Logo -->
+                <div class="nav-brand">
+                    <a href="/" class="brand-link" aria-label="TaskFlow Pro Home">
+                        <div class="brand-icon">
+                            <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+                                <path d="M16 2L21.09 8.26L29 9.27L22.5 15.14L24.18 23L16 18.77L7.82 23L9.5 15.14L3 9.27L10.91 8.26L16 2Z"/>
+                            </svg>
+                        </div>
+                        <span class="brand-text">TaskFlow Pro</span>
+                        <span class="brand-version">v1.4</span>
+                    </a>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="search-container" data-feature="global-search">
+                    <form class="search-form" role="search" aria-label="Search projects and tasks">
+                        <div class="search-input-wrapper">
+                            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                            <input
+                                type="search"
+                                class="search-input"
+                                placeholder="Search projects, tasks, or people..."
+                                data-search-shortcut="cmd+k"
+                                autocomplete="off"
+                                spellcheck="false"
+                                aria-label="Search"
+                            >
+                            <kbd class="search-shortcut" aria-hidden="true">⌘K</kbd>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Navigation Actions -->
+                <div class="nav-actions">
+                    <!-- Notifications -->
+                    <button
+                        class="nav-button notification-button"
+                        data-notification-count="7"
+                        aria-label="Notifications (7 unread)"
+                        data-tooltip="Notifications"
+                    >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                        </svg>
+                        <span class="notification-badge" aria-hidden="true">7</span>
+                    </button>
+
+                    <!-- Quick Actions -->
+                    <div class="dropdown" data-dropdown="quick-actions">
+                        <button class="nav-button dropdown-trigger" aria-label="Quick Actions" data-tooltip="Quick Actions">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                                <circle cx="12" cy="12" r="1"/>
+                                <circle cx="12" cy="5" r="1"/>
+                                <circle cx="12" cy="19" r="1"/>
+                            </svg>
+                        </button>
+                        <div class="dropdown-menu" role="menu">
+                            <a href="#" class="dropdown-item" role="menuitem" data-action="new-project">
+                                <span class="item-icon">📁</span>
+                                New Project
+                                <kbd class="item-shortcut">⌘N</kbd>
+                            </a>
+                            <a href="#" class="dropdown-item" role="menuitem" data-action="new-task">
+                                <span class="item-icon">✅</span>
+                                New Task
+                                <kbd class="item-shortcut">⌘T</kbd>
+                            </a>
+                            <a href="#" class="dropdown-item" role="menuitem" data-action="invite-user">
+                                <span class="item-icon">👥</span>
+                                Invite Team Member
+                                <kbd class="item-shortcut">⌘I</kbd>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item" role="menuitem" data-action="settings">
+                                <span class="item-icon">⚙️</span>
+                                Settings
+                                <kbd class="item-shortcut">⌘,</kbd>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <button
+                        class="nav-button theme-toggle"
+                        data-action="toggle-theme"
+                        aria-label="Toggle dark mode"
+                        data-tooltip="Toggle Theme"
+                    >
+                        <svg class="theme-icon theme-icon-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                            <circle cx="12" cy="12" r="5"/>
+                            <line x1="12" y1="1" x2="12" y2="3"/>
+                            <line x1="12" y1="21" x2="12" y2="23"/>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                            <line x1="1" y1="12" x2="3" y2="12"/>
+                            <line x1="21" y1="12" x2="23" y2="12"/>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                        </svg>
+                        <svg class="theme-icon theme-icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                    </button>
+
+                    <!-- User Profile -->
+                    <div class="dropdown user-dropdown" data-dropdown="user-menu">
+                        <button class="user-avatar dropdown-trigger" aria-label="User menu" data-tooltip="Profile">
+                            <img
+                                src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%233b82f6'/%3E%3Ctext x='50' y='55' fill='white' text-anchor='middle' font-family='Inter, sans-serif' font-size='24' font-weight='600'%3EJD%3C/text%3E%3C/svg%3E"
+                                alt="John Doe"
+                                class="avatar-image"
+                                width="32"
+                                height="32"
+                            >
+                            <div class="user-status" data-status="online" title="Online"></div>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" role="menu">
+                            <div class="user-info">
+                                <div class="user-name">John Doe</div>
+                                <div class="user-email">john.doe@company.com</div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <a href="pages/profile.html" class="dropdown-item" role="menuitem">
+                                <span class="item-icon">👤</span>
+                                Profile
+                            </a>
+                            <a href="pages/settings.html" class="dropdown-item" role="menuitem">
+                                <span class="item-icon">⚙️</span>
+                                Settings
+                            </a>
+                            <a href="pages/billing.html" class="dropdown-item" role="menuitem">
+                                <span class="item-icon">💳</span>
+                                Billing
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item" role="menuitem" data-action="sign-out">
+                                <span class="item-icon">🚪</span>
+                                Sign Out
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main App Layout -->
+        <div class="app-layout">
+
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar" id="sidebar" data-collapsed="false">
+                <div class="sidebar-content">
+
+                    <!-- Workspace Selector -->
+                    <div class="workspace-selector">
+                        <div class="dropdown" data-dropdown="workspace">
+                            <button class="workspace-button dropdown-trigger" aria-label="Select workspace">
+                                <div class="workspace-avatar">
+                                    <span class="workspace-initial">AC</span>
+                                </div>
+                                <div class="workspace-info">
+                                    <div class="workspace-name">Acme Corp</div>
+                                    <div class="workspace-plan">Pro Plan</div>
+                                </div>
+                                <svg class="workspace-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <polyline points="6,9 12,15 18,9"/>
+                                </svg>
+                            </button>
+                            <div class="dropdown-menu" role="menu">
+                                <div class="workspace-list">
+                                    <a href="#" class="workspace-item active" role="menuitem">
+                                        <div class="workspace-avatar">
+                                            <span class="workspace-initial">AC</span>
+                                        </div>
+                                        <div class="workspace-details">
+                                            <div class="workspace-name">Acme Corp</div>
+                                            <div class="workspace-members">24 members</div>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="workspace-item" role="menuitem">
+                                        <div class="workspace-avatar">
+                                            <span class="workspace-initial">ST</span>
+                                        </div>
+                                        <div class="workspace-details">
+                                            <div class="workspace-name">Startup Inc</div>
+                                            <div class="workspace-members">8 members</div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item" role="menuitem" data-action="create-workspace">
+                                    <span class="item-icon">➕</span>
+                                    Create Workspace
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Menu -->
+                    <nav class="sidebar-nav" role="navigation" aria-label="Main navigation">
+                        <ul class="nav-list" role="menubar">
+                            <li class="nav-item" role="none">
+                                <a href="/" class="nav-link active" role="menuitem" data-page="dashboard">
+                                    <span class="nav-icon">📊</span>
+                                    <span class="nav-text">Dashboard</span>
+                                    <span class="nav-badge" data-count="3">3</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item" role="none">
+                                <a href="pages/projects.html" class="nav-link" role="menuitem" data-page="projects">
+                                    <span class="nav-icon">📁</span>
+                                    <span class="nav-text">Projects</span>
+                                    <span class="nav-badge" data-count="12">12</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item" role="none">
+                                <a href="pages/tasks.html" class="nav-link" role="menuitem" data-page="tasks">
+                                    <span class="nav-icon">✅</span>
+                                    <span class="nav-text">My Tasks</span>
+                                    <span class="nav-badge urgent" data-count="8">8</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item" role="none">
+                                <a href="pages/calendar.html" class="nav-link" role="menuitem" data-page="calendar">
+                                    <span class="nav-icon">📅</span>
+                                    <span class="nav-text">Calendar</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item" role="none">
+                                <a href="pages/team.html" class="nav-link" role="menuitem" data-page="team">
+                                    <span class="nav-icon">👥</span>
+                                    <span class="nav-text">Team</span>
+                                    <span class="nav-badge online" data-count="15">15</span>
+                                </a>
+                            </li>
+
+                            <li class="nav-item" role="none">
+                                <a href="pages/reports.html" class="nav-link" role="menuitem" data-page="reports">
+                                    <span class="nav-icon">📈</span>
+                                    <span class="nav-text">Reports</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <!-- Favorites Section -->
+                        <div class="nav-section">
+                            <div class="nav-section-header">
+                                <button class="nav-section-toggle" data-section="favorites" aria-expanded="true">
+                                    <svg class="section-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <polyline points="6,9 12,15 18,9"/>
+                                    </svg>
+                                    <span class="section-title">Favorites</span>
+                                </button>
+                                <button class="section-action" data-action="add-favorite" aria-label="Add favorite">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <line x1="12" y1="5" x2="12" y2="19"/>
+                                        <line x1="5" y1="12" x2="19" y2="12"/>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <ul class="nav-subsection" data-section="favorites">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link" data-project-id="proj-123">
+                                        <span class="project-color" style="background-color: #ef4444;"></span>
+                                        <span class="nav-text">Website Redesign</span>
+                                        <span class="nav-badge" data-count="5">5</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link" data-project-id="proj-456">
+                                        <span class="project-color" style="background-color: #10b981;"></span>
+                                        <span class="nav-text">Mobile App v2.0</span>
+                                        <span class="nav-badge" data-count="12">12</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link" data-project-id="proj-789">
+                                        <span class="project-color" style="background-color: #8b5cf6;"></span>
+                                        <span class="nav-text">Q4 Planning</span>
+                                        <span class="nav-badge" data-count="3">3</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Recent Projects -->
+                        <div class="nav-section">
+                            <div class="nav-section-header">
+                                <button class="nav-section-toggle" data-section="recent" aria-expanded="false">
+                                    <svg class="section-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <polyline points="6,9 12,15 18,9"/>
+                                    </svg>
+                                    <span class="section-title">Recent</span>
+                                </button>
+                            </div>
+
+                            <ul class="nav-subsection collapsed" data-section="recent">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link" data-project-id="proj-001">
+                                        <span class="project-color" style="background-color: #f59e0b;"></span>
+                                        <span class="nav-text">Brand Guidelines</span>
+                                        <span class="nav-badge" data-count="2">2</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link" data-project-id="proj-002">
+                                        <span class="project-color" style="background-color: #06b6d4;"></span>
+                                        <span class="nav-text">API Documentation</span>
+                                        <span class="nav-badge" data-count="1">1</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+
+                    <!-- Sidebar Footer -->
+                    <div class="sidebar-footer">
+                        <div class="storage-info">
+                            <div class="storage-label">Storage</div>
+                            <div class="storage-usage">
+                                <div class="storage-bar">
+                                    <div class="storage-fill" style="width: 68%;"></div>
+                                </div>
+                                <div class="storage-text">6.8 GB of 10 GB</div>
+                            </div>
+                        </div>
+
+                        <button class="upgrade-button" data-action="upgrade-plan">
+                            <span class="upgrade-icon">⚡</span>
+                            <span class="upgrade-text">Upgrade Plan</span>
+                        </button>
+
+                        <button class="sidebar-collapse-btn" data-action="toggle-sidebar" aria-label="Collapse sidebar">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <polyline points="15,18 9,12 15,6"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="main-content" id="main-content">
+
+                <!-- Page Header -->
+                <header class="page-header">
+                    <div class="header-content">
+                        <div class="header-title-section">
+                            <h1 class="page-title">
+                                Dashboard
+                                <span class="title-badge">Overview</span>
+                            </h1>
+                            <p class="page-description">
+                                Welcome back, John! Here's what's happening with your projects today.
+                            </p>
+                        </div>
+
+                        <div class="header-actions">
+                            <div class="date-range-picker" data-component="date-picker">
+                                <button class="date-range-button" data-range="7d">
+                                    <span class="date-icon">📅</span>
+                                    <span class="date-text">Last 7 days</span>
+                                    <svg class="date-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <polyline points="6,9 12,15 18,9"/>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <button class="btn btn-primary" data-action="new-project">
+                                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <line x1="12" y1="5" x2="12" y2="19"/>
+                                    <line x1="5" y1="12" x2="19" y2="12"/>
+                                </svg>
+                                New Project
+                            </button>
+
+                            <div class="dropdown" data-dropdown="export">
+                                <button class="btn btn-secondary dropdown-trigger">
+                                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                        <polyline points="17,8 12,3 7,8"/>
+                                        <line x1="12" y1="3" x2="12" y2="15"/>
+                                    </svg>
+                                    Export
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a href="#" class="dropdown-item" data-export="pdf">Export as PDF</a>
+                                    <a href="#" class="dropdown-item" data-export="csv">Export as CSV</a>
+                                    <a href="#" class="dropdown-item" data-export="xlsx">Export as Excel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Quick Stats Grid -->
+                <section class="stats-section" aria-labelledby="stats-title">
+                    <h2 id="stats-title" class="section-title sr-only">Project Statistics</h2>
+
+                    <div class="stats-grid">
+                        <div class="stat-card" data-stat="active-projects">
+                            <div class="stat-header">
+                                <div class="stat-icon stat-icon-primary">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-menu">
+                                    <button class="stat-menu-button" aria-label="More options">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <circle cx="12" cy="12" r="1"/>
+                                            <circle cx="12" cy="5" r="1"/>
+                                            <circle cx="12" cy="19" r="1"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="stat-content">
+                                <div class="stat-value" data-counter="12">12</div>
+                                <div class="stat-label">Active Projects</div>
+                                <div class="stat-change positive" data-change="+15%">
+                                    <svg class="change-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/>
+                                        <polyline points="17,6 23,6 23,12"/>
+                                    </svg>
+                                    <span class="change-text">+15% from last month</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card" data-stat="completed-tasks">
+                            <div class="stat-header">
+                                <div class="stat-icon stat-icon-success">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <polyline points="20,6 9,17 4,12"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-menu">
+                                    <button class="stat-menu-button" aria-label="More options">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <circle cx="12" cy="12" r="1"/>
+                                            <circle cx="12" cy="5" r="1"/>
+                                            <circle cx="12" cy="19" r="1"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="stat-content">
+                                <div class="stat-value" data-counter="247">247</div>
+                                <div class="stat-label">Tasks Completed</div>
+                                <div class="stat-change positive" data-change="+23%">
+                                    <svg class="change-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/>
+                                        <polyline points="17,6 23,6 23,12"/>
+                                    </svg>
+                                    <span class="change-text">+23% from last week</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card" data-stat="team-members">
+                            <div class="stat-header">
+                                <div class="stat-icon stat-icon-info">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="9" cy="7" r="4"/>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-menu">
+                                    <button class="stat-menu-button" aria-label="More options">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <circle cx="12" cy="12" r="1"/>
+                                            <circle cx="12" cy="5" r="1"/>
+                                            <circle cx="12" cy="19" r="1"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="stat-content">
+                                <div class="stat-value" data-counter="24">24</div>
+                                <div class="stat-label">Team Members</div>
+                                <div class="stat-change positive" data-change="+3">
+                                    <svg class="change-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/>
+                                        <polyline points="17,6 23,6 23,12"/>
+                                    </svg>
+                                    <span class="change-text">+3 new this month</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card" data-stat="productivity">
+                            <div class="stat-header">
+                                <div class="stat-icon stat-icon-warning">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <polyline points="12,6 12,12 16,14"/>
+                                    </svg>
+                                </div>
+                                <div class="stat-menu">
+                                    <button class="stat-menu-button" aria-label="More options">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <circle cx="12" cy="12" r="1"/>
+                                            <circle cx="12" cy="5" r="1"/>
+                                            <circle cx="12" cy="19" r="1"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="stat-content">
+                                <div class="stat-value" data-counter="87" data-suffix="%">87%</div>
+                                <div class="stat-label">Productivity Score</div>
+                                <div class="stat-change negative" data-change="-5%">
+                                    <svg class="change-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <polyline points="23,18 13.5,8.5 8.5,13.5 1,6"/>
+                                        <polyline points="17,18 23,18 23,12"/>
+                                    </svg>
+                                    <span class="change-text">-5% from last week</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Dashboard Content Grid -->
+                <div class="dashboard-grid">
+
+                    <!-- Recent Activity -->
+                    <section class="dashboard-card activity-card" data-card="activity">
+                        <div class="card-header">
+                            <h2 class="card-title">Recent Activity</h2>
+                            <div class="card-actions">
+                                <button class="card-action-btn" data-action="refresh-activity" aria-label="Refresh activity">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <polyline points="23,4 23,10 17,10"/>
+                                        <polyline points="1,20 1,14 7,14"/>
+                                        <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+                                    </svg>
+                                </button>
+                                <button class="card-action-btn" data-action="view-all-activity" aria-label="View all activity">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                        <circle cx="12" cy="12" r="3"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card-content">
+                            <div class="activity-list" data-component="activity-feed">
+                                <div class="activity-item" data-activity-type="task-completed" data-timestamp="2024-01-15T10:30:00Z">
+                                    <div class="activity-avatar">
+                                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%2310b981'/%3E%3Ctext x='50' y='55' fill='white' text-anchor='middle' font-family='Inter, sans-serif' font-size='24' font-weight='600'%3ESM%3C/text%3E%3C/svg%3E" alt="Sarah Miller" width="32" height="32">
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">
+                                            <strong>Sarah Miller</strong> completed task
+                                            <a href="#" class="activity-link">"Update landing page copy"</a>
+                                            in <span class="project-name">Website Redesign</span>
+                                        </div>
+                                        <div class="activity-time" data-relative-time="30 minutes ago">30 minutes ago</div>
+                                    </div>
+                                    <div class="activity-status success">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <polyline points="20,6 9,17 4,12"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div class="activity-item" data-activity-type="comment-added" data-timestamp="2024-01-15T09:45:00Z">
+                                    <div class="activity-avatar">
+                                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%238b5cf6'/%3E%3Ctext x='50' y='55' fill='white' text-anchor='middle' font-family='Inter, sans-serif' font-size='24' font-weight='600'%3EMJ%3C/text%3E%3C/svg%3E" alt="Mike Johnson" width="32" height="32">
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">
+                                            <strong>Mike Johnson</strong> commented on
+                                            <a href="#" class="activity-link">"API Integration"</a>
+                                            in <span class="project-name">Mobile App v2.0</span>
+                                        </div>
+                                        <div class="activity-time" data-relative-time="1 hour ago">1 hour ago</div>
+                                    </div>
+                                    <div class="activity-status comment">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div class="activity-item" data-activity-type="file-uploaded" data-timestamp="2024-01-15T08:15:00Z">
+                                    <div class="activity-avatar">
+                                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23f59e0b'/%3E%3Ctext x='50' y='55' fill='white' text-anchor='middle' font-family='Inter, sans-serif' font-size='24' font-weight='600'%3EAK%3C/text%3E%3C/svg%3E" alt="Anna Kim" width="32" height="32">
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">
+                                            <strong>Anna Kim</strong> uploaded
+                                            <a href="#" class="activity-link">design-mockups-v3.fig</a>
+                                            to <span class="project-name">Brand Guidelines</span>
+                                        </div>
+                                        <div class="activity-time" data-relative-time="3 hours ago">3 hours ago</div>
+                                    </div>
+                                    <div class="activity-status upload">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                            <polyline points="14,2 14,8 20,8"/>
+                                            <line x1="16" y1="13" x2="8" y2="13"/>
+                                            <line x1="16" y1="17" x2="8" y2="17"/>
+                                            <polyline points="10,9 9,9 8,9"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div class="activity-item" data-activity-type="project-created" data-timestamp="2024-01-14T16:20:00Z">
+                                    <div class="activity-avatar">
+                                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%233b82f6'/%3E%3Ctext x='50' y='55' fill='white' text-anchor='middle' font-family='Inter, sans-serif' font-size='24' font-weight='600'%3EJD%3C/text%3E%3C/svg%3E" alt="John Doe" width="32" height="32">
+                                    </div>
+                                    <div class="activity-content">
+                                        <div class="activity-text">
+                                            <strong>You</strong> created new project
+                                            <a href="#" class="activity-link">"Q1 Marketing Campaign"</a>
+                                        </div>
+                                        <div class="activity-time" data-relative-time="Yesterday">Yesterday</div>
+                                    </div>
+                                    <div class="activity-status created">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <line x1="12" y1="5" x2="12" y2="19"/>
+                                            <line x1="5" y1="12" x2="19" y2="12"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Project Progress Chart -->
+                    <section class="dashboard-card chart-card" data-card="progress-chart">
+                        <div class="card-header">
+                            <h2 class="card-title">Project Progress</h2>
+                            <div class="card-tabs" role="tablist">
+                                <button class="tab-button active" role="tab" data-tab="weekly">Weekly</button>
+                                <button class="tab-button" role="tab" data-tab="monthly">Monthly</button>
+                                <button class="tab-button" role="tab" data-tab="quarterly">Quarterly</button>
+                            </div>
+                        </div>
+
+                        <div class="card-content">
+                            <div class="chart-container" data-component="progress-chart">
+                                <div class="chart-placeholder"
+                                     data-chart-type="line"
+                                     data-datasets="3"
+                                     data-points="7"
+                                     data-max-value="100">
+                                    <div class="chart-mock-content">
+                                        <div class="chart-legend">
+                                            <div class="legend-item">
+                                                <span class="legend-color" style="background-color: #3b82f6;"></span>
+                                                <span class="legend-label">Completed Tasks</span>
+                                                <span class="legend-value">247</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="legend-color" style="background-color: #10b981;"></span>
+                                                <span class="legend-label">In Progress</span>
+                                                <span class="legend-value">89</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <span class="legend-color" style="background-color: #f59e0b;"></span>
+                                                <span class="legend-label">Pending</span>
+                                                <span class="legend-value">34</span>
+                                            </div>
+                                        </div>
+                                        <div class="chart-mock-bars">
+                                            <div class="mock-bar" style="height: 67%;"></div>
+                                            <div class="mock-bar" style="height: 83%;"></div>
+                                            <div class="mock-bar" style="height: 45%;"></div>
+                                            <div class="mock-bar" style="height: 92%;"></div>
+                                            <div class="mock-bar" style="height: 56%;"></div>
+                                            <div class="mock-bar" style="height: 78%;"></div>
+                                            <div class="mock-bar" style="height: 89%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Upcoming Deadlines -->
+                    <section class="dashboard-card deadlines-card" data-card="deadlines">
+                        <div class="card-header">
+                            <h2 class="card-title">Upcoming Deadlines</h2>
+                            <div class="card-actions">
+                                <button class="card-action-btn" data-action="add-deadline" aria-label="Add deadline">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <line x1="12" y1="5" x2="12" y2="19"/>
+                                        <line x1="5" y1="12" x2="19" y2="12"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card-content">
+                            <div class="deadlines-list">
+                                <div class="deadline-item urgent" data-deadline="2024-01-17" data-project="website-redesign">
+                                    <div class="deadline-status"></div>
+                                    <div class="deadline-content">
+                                        <div class="deadline-task">
+                                            <a href="#" class="deadline-link">Homepage wireframes review</a>
+                                        </div>
+                                        <div class="deadline-project">Website Redesign</div>
+                                        <div class="deadline-date">
+                                            <span class="deadline-time">Due in 2 days</span>
+                                        </div>
+                                    </div>
+                                    <div class="deadline-assignee">
+                                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23ef4444'/%3E%3Ctext x='50' y='55' fill='white' text-anchor='middle' font-family='Inter, sans-serif' font-size='24' font-weight='600'%3ELC%3C/text%3E%3C/svg%3E" alt="Lisa Chen" width="24" height="24">
+                                    </div>
+                                </div>
+
+                                <div class="deadline-item warning" data-deadline="2024-01-20" data-project="mobile-app">
+                                    <div class="deadline-status"></div>
+                                    <div class="deadline-content">
+                                        <div class="deadline-task">
+                                            <a href="#" class="deadline-link">User authentication testing</a>
+                                        </div>
+                                        <div class="deadline-project">Mobile App v2.0</div>
+                                        <div class="deadline-date">
+                                            <span class="deadline-time">Due in 5 days</span>
+                                        </div>
+                                    </div>
+                                    <div class="deadline-assignee">
+                                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23f59e0b'/%3E%3Ctext x='50' y='55' fill='white' text-anchor='middle' font-family='Inter, sans-serif' font-size='24' font-weight='600'%3ERT%3C/text%3E%3C/svg%3E" alt="Robert Taylor" width="24" height="24">
+                                    </div>
+                                </div>
+
+                                <div class="deadline-item normal" data-deadline="2024-01-25" data-project="brand-guidelines">
+                                    <div class="deadline-status"></div>
+                                    <div class="deadline-content">
+                                        <div class="deadline-task">
+                                            <a href="#" class="deadline-link">Final logo variations</a>
+                                        </div>
+                                        <div class="deadline-project">Brand Guidelines</div>
+                                        <div class="deadline-date">
+                                            <span class="deadline-time">Due in 10 days</span>
+                                        </div>
+                                    </div>
+                                    <div class="deadline-assignee">
+                                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%2310b981'/%3E%3Ctext x='50' y='55' fill='white' text-anchor='middle' font-family='Inter, sans-serif' font-size='24' font-weight='600'%3EAK%3C/text%3E%3C/svg%3E" alt="Anna Kim" width="24" height="24">
+                                    </div>
+                                </div>
+
+                                <div class="deadline-item normal" data-deadline="2024-02-01" data-project="api-docs">
+                                    <div class="deadline-status"></div>
+                                    <div class="deadline-content">
+                                        <div class="deadline-task">
+                                            <a href="#" class="deadline-link">API documentation review</a>
+                                        </div>
+                                        <div class="deadline-project">API Documentation</div>
+                                        <div class="deadline-date">
+                                            <span class="deadline-time">Due in 17 days</span>
+                                        </div>
+                                    </div>
+                                    <div class="deadline-assignee">
+                                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%238b5cf6'/%3E%3Ctext x='50' y='55' fill='white' text-anchor='middle' font-family='Inter, sans-serif' font-size='24' font-weight='600'%3EMJ%3C/text%3E%3C/svg%3E" alt="Mike Johnson" width="24" height="24">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Team Performance -->
+                    <section class="dashboard-card team-card" data-card="team-performance">
+                        <div class="card-header">
+                            <h2 class="card-title">Team Performance</h2>
+                            <div class="card-actions">
+                                <button class="card-action-btn" data-action="team-report" aria-label="Generate team report">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14,2 14,8 20,8"/>
+                                        <line x1="16" y1="13" x2="8" y2="13"/>
+                                        <line x1="16" y1="17" x2="8" y2="17"/>
+                                        <polyline points="10,9 9,9 8,9"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card-content">
+                            <div class="team-stats">
+                                <div class="team-stat">
+                                    <div class="stat-number" data-counter="24">24</div>
+                                    <div class="stat-label">Team Members</div>
+                                </div>
+                                <div class="team-stat">
+                                    <div class="stat-number" data-counter="89" data-suffix="%">89%</div>
+                                    <div class="stat-label">Avg Productivity</div>
+                                </div>
+                                <div class="team-stat">
+                                    <div class="stat-number" data-counter="156">156</div>
+                                    <div class="stat-label">Tasks This Week</div>
+                                </div>
+                            </div>
+
+                            <div class="team-members-list">
+                                <div class="team-member" data-member-id="sarah-miller">
+                                    <div class="member-avatar">
+                                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%2310b981'/%3E%3Ctext x='50' y='55' fill='white' text-anchor='middle' font-family='Inter, sans-serif' font-size='24' font-weight='600'%3ESM%3C/text%3E%3C/svg%3E" alt="Sarah Miller" width="32" height="32">
+                                        <div class="member-status online" title="Online"></div>
+                                    </div>
+                                    <div class="member-info">
+                                        <div class="member-name">Sarah Miller</div>
+                                        <div class="member-role">Lead Designer</div>
+                                    </div>
+                                    <div class="member-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 92%;"></div>
+                                        </div>
+                                        <div class="progress-text">92%</div>
+                                    </div>
+                                    <div class="member-tasks">
+                                        <span class="task-count">12/13</span>
+                                    </div>
+                                </div>
+
+                                <div class="team-member" data-member-id="mike-johnson">
+                                    <div class="member-avatar">
+                                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%238b5cf6'/%3E%3Ctext x='50' y='55' fill='white' text-anchor='middle' font-family='Inter, sans-serif' font-size='24' font-weight='600'%3EMJ%3C/text%3E%3C/svg%3E" alt="Mike Johnson" width="32" height="32">
+                                        <div class="member-status away" title="Away"></div>
+                                    </div>
+                                    <div class="member-info">
+                                        <div class="member-name">Mike Johnson</div>
+                                        <div class="member-role">Backend Developer</div>
+                                    </div>
+                                    <div class="member-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 78%;"></div>
+                                        </div>
+                                        <div class="progress-text">78%</div>
+                                    </div>
+                                    <div class="member-tasks">
+                                        <span class="task-count">7/9</span>
+                                    </div>
+                                </div>
+
+                                <div class="team-member" data-member-id="anna-kim">
+                                    <div class="member-avatar">
+                                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23f59e0b'/%3E%3Ctext x='50' y='55' fill='white' text-anchor='middle' font-family='Inter, sans-serif' font-size='24' font-weight='600'%3EAK%3C/text%3E%3C/svg%3E" alt="Anna Kim" width="32" height="32">
+                                        <div class="member-status online" title="Online"></div>
+                                    </div>
+                                    <div class="member-info">
+                                        <div class="member-name">Anna Kim</div>
+                                        <div class="member-role">Brand Designer</div>
+                                    </div>
+                                    <div class="member-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 84%;"></div>
+                                        </div>
+                                        <div class="progress-text">84%</div>
+                                    </div>
+                                    <div class="member-tasks">
+                                        <span class="task-count">5/6</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Toast Container for notifications -->
+    <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Modal Container -->
+    <div id="modal-container" class="modal-container"></div>
+
+    <!-- JavaScript -->
+    <script type="module" src="scripts/main.js"></script>
+    <script type="module" src="scripts/components/dashboard.js"></script>
+    <script type="module" src="scripts/components/navigation.js"></script>
+    <script type="module" src="scripts/components/modal.js"></script>
+    <script type="module" src="scripts/components/search.js"></script>
+    <script type="module" src="scripts/utils/api.js"></script>
+    <script type="module" src="scripts/utils/storage.js"></script>
+    <script type="module" src="scripts/utils/helpers.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => console.log('SW registered: ', registration))
+                    .catch(registrationError => console.log('SW registration failed: ', registrationError));
+            });
+        }
+    </script>
+</body>
+</html>

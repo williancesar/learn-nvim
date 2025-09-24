@@ -1,0 +1,325 @@
+# Search Patterns Practice File
+# Practice using / and ? for searching patterns
+# Find emails, IPs, URLs, dates, UUIDs, and other patterns
+
+# ============================================
+# EMAIL ADDRESSES - Search with: /@\|\.com\|\.org
+# ============================================
+contacts:
+  admin_email: "admin@company.com"
+  support_email: "support@helpdesk.org"
+  developer_email: "dev@team.net"
+  sales_email: "sales@business.co.uk"
+  marketing_email: "marketing@enterprise.io"
+  hr_email: "hr@department.gov"
+  legal_email: "legal@firm.law"
+
+# ============================================
+# IP ADDRESSES - Search with: \d\+\.\d\+\.\d\+\.\d\+
+# ============================================
+server_ips:
+  web_server: "192.168.1.100"
+  database_server: "10.0.0.50"
+  cache_server: "172.16.0.25"
+  load_balancer: "203.0.113.10"
+  monitoring: "198.51.100.20"
+  backup_server: "172.31.255.1"
+  dns_server: "8.8.8.8"
+
+# ============================================
+# PHONE NUMBERS - Search with: \d\{3\}-\d\{3\}-\d\{4\}
+# ============================================
+contact_numbers:
+  main_office: "+1-555-123-4567"
+  support_line: "(555) 987-6543"
+  emergency: "555.456.7890"
+  international: "+44-20-7946-0958"
+  toll_free: "1-800-CALL-NOW"
+  tech_support: "555-TECH-HELP"
+  sales_direct: "+1-555-SALES-01"
+
+# ============================================
+# URLS - Search with: https\?\|ftp\|ws
+# ============================================
+api_endpoints:
+  user_service: "https://api.company.com/v1/users"
+  auth_service: "https://auth.company.com/oauth2/token"
+  file_service: "ftp://files.company.com/uploads"
+  websocket: "ws://realtime.company.com:8080"
+  health_check: "http://localhost:3000/health"
+  documentation: "https://docs.company.com/api/v2"
+  cdn_assets: "https://cdn.assets.io/static/images"
+
+# ============================================
+# VERSION NUMBERS - Search with: v\?\d\+\.\d\+\.\d\+
+# ============================================
+software_versions:
+  application: "v2.1.3"
+  database: "15.2.0"
+  cache: "v7.0.8"
+  web_server: "1.21.6"
+  api_gateway: "v3.2.1"
+  monitoring: "2.42.0"
+  logging: "v8.6.2"
+
+# ============================================
+# DATES - Search with: \d\{4\}-\d\{2\}-\d\{2\}
+# ============================================
+important_dates:
+  project_start: "2024-01-15"
+  beta_release: "2024-03-01"
+  production_launch: "2024-04-15"
+  quarterly_review: "2024-06-30"
+  security_audit: "2024-07-20"
+  major_upgrade: "2024-09-15"
+  end_of_support: "2025-12-31"
+
+# ============================================
+# UUIDs - Search with: [a-f0-9]\{8\}-[a-f0-9]\{4\}
+# ============================================
+resource_identifiers:
+  user_session: "550e8400-e29b-41d4-a716-446655440000"
+  api_request: "6ba7b810-9dad-11d1-80b4-00c04fd430c8"
+  transaction: "6ba7b811-9dad-11d1-80b4-00c04fd430c8"
+  correlation: "01234567-89ab-cdef-0123-456789abcdef"
+  trace_id: "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+  span_id: "12345678-1234-5678-9abc-123456789012"
+
+# ============================================
+# KUBERNETES RESOURCES - Search with: deployment\|service\|pod
+# ============================================
+k8s_resources:
+  deployments:
+    - "frontend-deployment"
+    - "backend-api-deployment"
+    - "database-deployment"
+    - "cache-redis-deployment"
+    - "monitoring-prometheus-deployment"
+    - "logging-elasticsearch-deployment"
+
+  services:
+    - "frontend-service"
+    - "backend-api-service"
+    - "database-service"
+    - "cache-service"
+    - "monitoring-service"
+    - "logging-service"
+
+  pods:
+    - "frontend-pod-abc123"
+    - "backend-pod-def456"
+    - "database-pod-ghi789"
+    - "cache-pod-jkl012"
+    - "monitoring-pod-mno345"
+
+# ============================================
+# LOG LEVELS - Search with: INFO\|ERROR\|WARN\|DEBUG
+# ============================================
+log_entries:
+  - timestamp: "2024-03-15T10:30:45Z"
+    level: "INFO"
+    message: "Application started successfully"
+    service: "user-service"
+
+  - timestamp: "2024-03-15T10:31:02Z"
+    level: "DEBUG"
+    message: "Database connection established"
+    service: "user-service"
+
+  - timestamp: "2024-03-15T10:31:15Z"
+    level: "WARN"
+    message: "High memory usage detected: 85%"
+    service: "cache-service"
+
+  - timestamp: "2024-03-15T10:32:30Z"
+    level: "ERROR"
+    message: "Failed to connect to external service"
+    service: "payment-service"
+
+  - timestamp: "2024-03-15T10:33:45Z"
+    level: "INFO"
+    message: "User authentication successful"
+    service: "auth-service"
+
+  - timestamp: "2024-03-15T10:34:12Z"
+    level: "DEBUG"
+    message: "Cache hit rate: 95.6%"
+    service: "cache-service"
+
+  - timestamp: "2024-03-15T10:35:20Z"
+    level: "FATAL"
+    message: "Database connection lost"
+    service: "order-service"
+
+# ============================================
+# HTTP METHODS - Search with: GET\|POST\|PUT\|DELETE
+# ============================================
+api_routes:
+  user_endpoints:
+    - method: "GET"
+      path: "/api/v1/users"
+      description: "List all users"
+    - method: "POST"
+      path: "/api/v1/users"
+      description: "Create new user"
+    - method: "PUT"
+      path: "/api/v1/users/{id}"
+      description: "Update user"
+    - method: "DELETE"
+      path: "/api/v1/users/{id}"
+      description: "Delete user"
+
+  order_endpoints:
+    - method: "GET"
+      path: "/api/v1/orders"
+      description: "List orders"
+    - method: "POST"
+      path: "/api/v1/orders"
+      description: "Create order"
+    - method: "PATCH"
+      path: "/api/v1/orders/{id}"
+      description: "Update order status"
+    - method: "GET"
+      path: "/api/v1/orders/{id}/status"
+      description: "Get order status"
+
+# ============================================
+# STATUS CODES - Search with: [45]\d\d\|200\|201
+# ============================================
+response_codes:
+  success_responses:
+    - code: 200
+      message: "OK"
+    - code: 201
+      message: "Created"
+    - code: 202
+      message: "Accepted"
+    - code: 204
+      message: "No Content"
+
+  client_errors:
+    - code: 400
+      message: "Bad Request"
+    - code: 401
+      message: "Unauthorized"
+    - code: 403
+      message: "Forbidden"
+    - code: 404
+      message: "Not Found"
+    - code: 409
+      message: "Conflict"
+    - code: 422
+      message: "Unprocessable Entity"
+
+  server_errors:
+    - code: 500
+      message: "Internal Server Error"
+    - code: 502
+      message: "Bad Gateway"
+    - code: 503
+      message: "Service Unavailable"
+    - code: 504
+      message: "Gateway Timeout"
+
+# ============================================
+# ENVIRONMENT VARIABLES - Search with: \${.*}\|\$[A-Z_]
+# ============================================
+environment_config:
+  database:
+    host: "${DATABASE_HOST}"
+    port: "${DATABASE_PORT}"
+    username: "${DATABASE_USERNAME}"
+    password: "${DATABASE_PASSWORD}"
+    ssl_mode: "${DATABASE_SSL_MODE}"
+
+  cache:
+    url: "${REDIS_URL}"
+    password: "${REDIS_PASSWORD}"
+    timeout: "${REDIS_TIMEOUT}"
+
+  application:
+    port: "${PORT}"
+    env: "${NODE_ENV}"
+    secret: "${JWT_SECRET}"
+    log_level: "${LOG_LEVEL}"
+    api_key: "${API_KEY}"
+
+  external_services:
+    stripe_key: "${STRIPE_API_KEY}"
+    sendgrid_key: "${SENDGRID_API_KEY}"
+    slack_webhook: "${SLACK_WEBHOOK_URL}"
+
+# ============================================
+# CONTAINER IMAGES - Search with: :\d\+\.\d\+\|alpine\|slim
+# ============================================
+container_registry:
+  base_images:
+    - "nginx:1.21.6"
+    - "postgres:15.2"
+    - "redis:7.0.8-alpine"
+    - "node:18.15.0-slim"
+    - "openjdk:17-jdk-slim"
+    - "python:3.11.2-alpine"
+    - "alpine:3.17.2"
+
+  application_images:
+    - "company/frontend:v2.1.0"
+    - "company/backend:v1.5.3"
+    - "company/worker:v1.2.7"
+    - "company/scheduler:v0.9.2"
+
+# ============================================
+# PORTS - Search with: :\d\{4,5\}\|port.*\d\+
+# ============================================
+service_ports:
+  web_services:
+    http: 80
+    https: 443
+    http_alt: 8080
+    https_alt: 8443
+
+  databases:
+    postgresql: 5432
+    mysql: 3306
+    mongodb: 27017
+    redis: 6379
+
+  monitoring:
+    prometheus: 9090
+    grafana: 3000
+    jaeger: 16686
+    elasticsearch: 9200
+
+  messaging:
+    rabbitmq: 5672
+    kafka: 9092
+    nats: 4222
+
+# ============================================
+# JSON PATHS - Search with: \.\w\+\[\|\]\.\w\+
+# ============================================
+json_configurations:
+  api_response_structure:
+    data:
+      users[0].id: "user-123"
+      users[0].email: "user@example.com"
+      users[0].profile.firstName: "John"
+      users[0].profile.lastName: "Doe"
+      users[0].settings.notifications.email: true
+      users[0].settings.notifications.sms: false
+
+  nested_config_paths:
+    server.database.connections[0].host: "primary-db"
+    server.database.connections[1].host: "replica-db"
+    server.cache.clusters[0].nodes[0].endpoint: "redis-1"
+    server.cache.clusters[0].nodes[1].endpoint: "redis-2"
+
+# ============================================
+# REGULAR EXPRESSIONS - Search for actual regex patterns
+# ============================================
+validation_patterns:
+  email_regex: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+  phone_regex: "^\\+?[1-9]\\d{1,14}$"
+  uuid_regex: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+  ip_regex: "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+  url_regex: "^https?://[a-zA-Z0-9.-]+(?:\\.[a-zA-Z]{2,})+(?:/[^\\s]*)?$"

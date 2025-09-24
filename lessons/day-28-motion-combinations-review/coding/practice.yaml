@@ -1,0 +1,244 @@
+# Comprehensive Review Practice File
+# This file combines all techniques learned in days 15-27
+# Practice navigation, text objects, visual block, indentation, and formatting
+
+# ============================================================================
+# SECTION A: Navigation and Search Practice (Days 15-16, 22-24)
+# Practice: Set mark 'a' here (ma), use paragraph motion { }, screen navigation H M L
+# ============================================================================
+database_configurations:
+  # Search practice: Find all IPs with /192\.168 or email with /@.*\.com
+  primary_cluster:
+    master:
+      host: "postgres-primary.db.cluster.local"
+      ip: "192.168.10.100"
+      port: 5432
+      admin_email: "dba@company.com"
+      version: "v15.2.0"
+
+    replicas:
+      - name: "replica-001"
+        host: "postgres-replica-1.db.cluster.local"
+        ip: "192.168.10.101"
+        port: 5432
+        status: "active"
+      - name: "replica-002"
+        host: "postgres-replica-2.db.cluster.local"
+        ip: "192.168.10.102"
+        port: 5432
+        status: "standby"
+
+  # Line jump practice: Go to line 50 with :50 or 50G
+  backup_configuration:
+    schedule: "0 2 * * *"  # Daily at 2 AM
+    retention: "30d"
+    storage: "s3://db-backups/"
+    encryption: true
+
+# ============================================================================
+# SECTION B: Text Objects and Nested Structures (Days 17-19)
+# Practice: Set mark 'b' here (mb), use text objects iw aw i" a" i) a) i} a}
+# ============================================================================
+api_gateway_configuration:
+  kong:
+    # Text object practice: Try ciw on service names, di" on URLs, da) on port numbers
+    upstream_services:
+      user_service:
+        url: "http://user-service.backend.svc.cluster.local:8080"
+        health_check: "/actuator/health"
+        timeout: 30000
+        tags: ["api", "users", "authentication"]
+
+      order_service:
+        url: "http://order-service.backend.svc.cluster.local:8081"
+        health_check: "/health"
+        timeout: 25000
+        tags: ["api", "orders", "business"]
+
+      payment_service:
+        url: "http://payment-service.backend.svc.cluster.local:8082"
+        health_check: "/health/live"
+        timeout: 15000
+        tags: ["api", "payments", "critical"]
+
+    # Nested quotes practice: Select text inside nested quotes with i" or a"
+    routing_rules:
+      - path: "/api/v1/users"
+        methods: ["GET", "POST"]
+        upstream: "user_service"
+        rate_limit: "1000/min"
+
+      - path: "/api/v1/orders"
+        methods: ["GET", "POST", "PUT"]
+        upstream: "order_service"
+        rate_limit: "500/min"
+
+# ============================================================================
+# SECTION C: Visual Block Operations (Day 25)
+# Practice: Set mark 'c' here (mc), use Ctrl+V to select columns
+# ============================================================================
+server_inventory:
+  # Visual block practice: Select columns with Ctrl+V, edit multiple lines
+  web_servers:
+    - name: web-01    ip: 192.168.1.100  port: 80    status: active   version: nginx-1.21
+    - name: web-02    ip: 192.168.1.101  port: 80    status: active   version: nginx-1.21
+    - name: web-03    ip: 192.168.1.102  port: 80    status: inactive version: nginx-1.20
+    - name: web-04    ip: 192.168.1.103  port: 80    status: active   version: nginx-1.21
+
+  api_servers:
+    - name: api-01    ip: 192.168.2.100  port: 8080  status: active   version: node-18.15
+    - name: api-02    ip: 192.168.2.101  port: 8080  status: active   version: node-18.15
+    - name: api-03    ip: 192.168.2.102  port: 8080  status: inactive version: node-16.14
+    - name: api-04    ip: 192.168.2.103  port: 8080  status: active   version: node-18.15
+
+  database_servers:
+    - name: db-01     ip: 192.168.3.100  port: 5432  status: active   version: postgres-15
+    - name: db-02     ip: 192.168.3.101  port: 5432  status: active   version: postgres-15
+    - name: db-03     ip: 192.168.3.102  port: 5432  status: standby  version: postgres-15
+
+# ============================================================================
+# SECTION D: Indentation Practice (Day 26)
+# Practice: Set mark 'd' here (md), fix the poor indentation with >> << =
+# ============================================================================
+monitoring_configuration:
+# Intentionally poor indentation - fix with = command
+prometheus:
+version: "2.42.0"
+server:
+host: "prometheus.monitoring.local"
+port: 9090
+retention: "15d"
+scrape_configs:
+- job_name: "kubernetes-pods"
+kubernetes_sd_configs:
+- role: "pod"
+relabel_configs:
+- source_labels: ["__meta_kubernetes_pod_annotation_prometheus_io_scrape"]
+action: "keep"
+regex: true
+- source_labels: ["__address__", "__meta_kubernetes_pod_annotation_prometheus_io_port"]
+action: "replace"
+regex: "([^:]+)(?::\\d+)?;(\\d+)"
+target_label: "__address__"
+replacement: "${1}:${2}"
+
+grafana:
+version: "9.4.0"
+server:
+host: "grafana.monitoring.local"
+port: 3000
+admin_password: "secure_password"
+database:
+type: "postgres"
+host: "grafana-db.monitoring.local"
+name: "grafana"
+
+# ============================================================================
+# SECTION E: Long Lines and Formatting (Day 27)
+# Practice: Set mark 'e' here (me), use J to join, gq to format
+# ============================================================================
+environment_configurations:
+  # These lines are intentionally long - practice using gq to format them
+  production: "NODE_ENV=production,API_URL=https://api.company.com,DATABASE_URL=postgresql://user:pass@postgres:5432/prod,REDIS_URL=redis://redis:6379/0,JWT_SECRET=super_secret_key,STRIPE_KEY=sk_live_xxx,LOG_LEVEL=info,METRICS_ENABLED=true,TRACING_ENABLED=true"
+
+  staging: "NODE_ENV=staging,API_URL=https://api-staging.company.com,DATABASE_URL=postgresql://user:pass@postgres-staging:5432/staging,REDIS_URL=redis://redis-staging:6379/1,JWT_SECRET=staging_secret,STRIPE_KEY=sk_test_xxx,LOG_LEVEL=debug,METRICS_ENABLED=true"
+
+  # Join these lines with J command
+  docker_command_parts:
+    - "docker run"
+    - "--detach"
+    - "--name enterprise-app"
+    - "--restart unless-stopped"
+    - "--network app-network"
+    - "--env-file .env.production"
+    - "--volume /var/log:/app/logs"
+    - "--publish 8080:8080"
+    - "enterprise/app:v2.1.0"
+
+# ============================================================================
+# SECTION F: Operator + Motion Combinations (Day 20)
+# Practice: Set mark 'f' here (mf), combine operators d c y with motions
+# ============================================================================
+api_endpoints_config:
+  # Practice operator+motion: dw, cw, yw, df), ct", y'a, etc.
+  user_endpoints:
+    get_users: "GET /api/v1/users?page=1&limit=50&sort=created_at"
+    create_user: "POST /api/v1/users"
+    update_user: "PUT /api/v1/users/{user_id}"
+    delete_user: "DELETE /api/v1/users/{user_id}"
+
+  order_endpoints:
+    list_orders: "GET /api/v1/orders?status=active&customer_id={id}"
+    create_order: "POST /api/v1/orders"
+    update_status: "PATCH /api/v1/orders/{order_id}/status"
+    cancel_order: "DELETE /api/v1/orders/{order_id}"
+
+  # Practice with various brackets and quotes
+  response_examples:
+    success: '{"status": "ok", "data": {"id": 123, "name": "John Doe"}}'
+    error: '{"status": "error", "message": "Invalid request", "code": 400}'
+    list: '{"status": "ok", "data": [{"id": 1}, {"id": 2}, {"id": 3}]}'
+
+# ============================================================================
+# SECTION G: Advanced Navigation (Days 21, 23-24)
+# Practice: Set mark 'g' here (mg), use jump history Ctrl+O Ctrl+I, line jumps
+# ============================================================================
+kubernetes_resources:
+  # Jump history practice: Navigate around, then use Ctrl+O and Ctrl+I
+  deployments:
+    frontend:
+      replicas: 3
+      image: "frontend:v2.1.0"
+      resources:
+        requests: {cpu: "250m", memory: "512Mi"}
+        limits: {cpu: "500m", memory: "1Gi"}
+
+    backend:
+      replicas: 5
+      image: "backend:v1.8.2"
+      resources:
+        requests: {cpu: "500m", memory: "1Gi"}
+        limits: {cpu: "1000m", memory: "2Gi"}
+
+  services:
+    frontend_service:
+      type: "LoadBalancer"
+      ports: [{port: 80, targetPort: 3000}]
+
+    backend_service:
+      type: "ClusterIP"
+      ports: [{port: 8080, targetPort: 8080}]
+
+# ============================================================================
+# SECTION H: Comprehensive Challenge Section
+# Practice: Set mark 'h' here (mh), combine all techniques
+# ============================================================================
+complex_configuration:
+  # Challenge: Use all learned techniques to edit this section
+  infrastructure:
+servers: [{name: "web-01", ip: "192.168.1.100", config: {nginx: {version: "1.21", workers: 4}}}, {name: "web-02", ip: "192.168.1.101", config: {nginx: {version: "1.21", workers: 4}}}]
+
+  # Fix this indentation and formatting
+  monitoring:
+metrics: {enabled: true, port: 9090, path: "/metrics"}
+logging: {level: "info", format: "json", destination: "stdout"}
+tracing: {enabled: true, endpoint: "http://jaeger:14268/api/traces"}
+
+  # Practice visual block on this table
+  resource_allocation:
+    - component: frontend     cpu: 250m   memory: 512Mi   replicas: 3
+    - component: backend      cpu: 500m   memory: 1Gi     replicas: 5
+    - component: database     cpu: 1000m  memory: 2Gi     replicas: 2
+    - component: cache        cpu: 250m   memory: 256Mi   replicas: 2
+
+# ============================================================================
+# REVIEW EXERCISES
+# ============================================================================
+# 1. Navigation: Jump between marks 'a' through 'h' using 'a, 'b, etc.
+# 2. Search: Find all version numbers using /v\d\+\.\d\+
+# 3. Text Objects: Change text inside quotes with ci"
+# 4. Visual Block: Select and edit the IP address column
+# 5. Indentation: Fix the poorly formatted sections with =
+# 6. Line Formatting: Break long lines and join short ones
+# 7. Operators: Delete, change, and yank using various motions
+# 8. Jump History: Navigate around and use Ctrl+O, Ctrl+I to go back/forward

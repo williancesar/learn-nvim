@@ -1,0 +1,149 @@
+# Visual Block Operations Practice File
+# Practice Ctrl+V to enter visual block mode
+# Select columns and edit multiple lines simultaneously
+
+# Server Configuration Table - Practice selecting columns
+servers:
+  web_servers:
+    - name: web-01    ip: 192.168.1.100  port: 80   status: active   version: nginx-1.21
+    - name: web-02    ip: 192.168.1.101  port: 80   status: active   version: nginx-1.21
+    - name: web-03    ip: 192.168.1.102  port: 80   status: inactive version: nginx-1.20
+    - name: web-04    ip: 192.168.1.103  port: 80   status: active   version: nginx-1.21
+    - name: web-05    ip: 192.168.1.104  port: 80   status: active   version: nginx-1.21
+
+  api_servers:
+    - name: api-01    ip: 192.168.2.100  port: 8080 status: active   version: node-18.15
+    - name: api-02    ip: 192.168.2.101  port: 8080 status: active   version: node-18.15
+    - name: api-03    ip: 192.168.2.102  port: 8080 status: inactive version: node-16.14
+    - name: api-04    ip: 192.168.2.103  port: 8080 status: active   version: node-18.15
+    - name: api-05    ip: 192.168.2.104  port: 8080 status: active   version: node-18.15
+
+  database_servers:
+    - name: db-01     ip: 192.168.3.100  port: 5432 status: active   version: postgres-15
+    - name: db-02     ip: 192.168.3.101  port: 5432 status: active   version: postgres-15
+    - name: db-03     ip: 192.168.3.102  port: 5432 status: standby  version: postgres-15
+
+# Port Configuration Table - Practice column editing
+network_ports:
+  frontend_ports:
+    - service: frontend      internal: 3000  external: 80    protocol: http   ssl: false
+    - service: frontend-ssl  internal: 3000  external: 443   protocol: https  ssl: true
+    - service: admin         internal: 3001  external: 8080  protocol: http   ssl: false
+    - service: admin-ssl     internal: 3001  external: 8443  protocol: https  ssl: true
+
+  backend_ports:
+    - service: user-api      internal: 8081  external: 8081  protocol: http   ssl: false
+    - service: order-api     internal: 8082  external: 8082  protocol: http   ssl: false
+    - service: payment-api   internal: 8083  external: 8083  protocol: http   ssl: false
+    - service: notification  internal: 8084  external: 8084  protocol: http   ssl: false
+
+  database_ports:
+    - service: postgres      internal: 5432  external: 5432  protocol: tcp    ssl: true
+    - service: redis         internal: 6379  external: 6379  protocol: tcp    ssl: false
+    - service: mongodb       internal: 27017 external: 27017 protocol: tcp    ssl: true
+
+# User Management Table - Practice block selection and editing
+users:
+  administrators:
+    - id: 001  username: admin           email: admin@company.com           role: admin      status: active
+    - id: 002  username: root            email: root@company.com            role: admin      status: active
+    - id: 003  username: superuser       email: superuser@company.com       role: admin      status: active
+
+  developers:
+    - id: 101  username: john_doe        email: john.doe@company.com        role: developer  status: active
+    - id: 102  username: jane_smith      email: jane.smith@company.com      role: developer  status: active
+    - id: 103  username: bob_wilson      email: bob.wilson@company.com      role: developer  status: inactive
+    - id: 104  username: alice_brown     email: alice.brown@company.com     role: developer  status: active
+    - id: 105  username: charlie_davis   email: charlie.davis@company.com   role: developer  status: active
+
+  managers:
+    - id: 201  username: mike_johnson    email: mike.johnson@company.com    role: manager    status: active
+    - id: 202  username: sarah_williams  email: sarah.williams@company.com  role: manager    status: active
+    - id: 203  username: david_brown     email: david.brown@company.com     role: manager    status: inactive
+
+# Resource Allocation Table - Practice visual block operations
+resources:
+  development:
+    - component: frontend     cpu: 250m   memory: 512Mi   disk: 10Gi   replicas: 1  hpa: false
+    - component: backend      cpu: 500m   memory: 1Gi     disk: 20Gi   replicas: 1  hpa: false
+    - component: database     cpu: 1000m  memory: 2Gi     disk: 50Gi   replicas: 1  hpa: false
+    - component: cache        cpu: 250m   memory: 256Mi   disk: 5Gi    replicas: 1  hpa: false
+
+  staging:
+    - component: frontend     cpu: 500m   memory: 1Gi     disk: 20Gi   replicas: 2  hpa: true
+    - component: backend      cpu: 1000m  memory: 2Gi     disk: 40Gi   replicas: 2  hpa: true
+    - component: database     cpu: 2000m  memory: 4Gi     disk: 100Gi  replicas: 1  hpa: false
+    - component: cache        cpu: 500m   memory: 512Mi   disk: 10Gi   replicas: 1  hpa: false
+
+  production:
+    - component: frontend     cpu: 1000m  memory: 2Gi     disk: 50Gi   replicas: 5  hpa: true
+    - component: backend      cpu: 2000m  memory: 4Gi     disk: 100Gi  replicas: 5  hpa: true
+    - component: database     cpu: 4000m  memory: 8Gi     disk: 500Gi  replicas: 3  hpa: false
+    - component: cache        cpu: 1000m  memory: 1Gi     disk: 20Gi   replicas: 3  hpa: true
+
+# Monitoring Metrics Table - Practice column selection
+metrics:
+  cpu_usage:
+    - timestamp: 2024-03-15_10:00  frontend: 45.2  backend: 67.8  database: 23.5  cache: 12.1
+    - timestamp: 2024-03-15_10:15  frontend: 52.1  backend: 71.2  database: 24.1  cache: 15.3
+    - timestamp: 2024-03-15_10:30  frontend: 48.9  backend: 69.5  database: 24.8  cache: 13.7
+    - timestamp: 2024-03-15_10:45  frontend: 55.3  backend: 73.1  database: 25.2  cache: 16.8
+    - timestamp: 2024-03-15_11:00  frontend: 61.7  backend: 76.4  database: 25.9  cache: 18.4
+
+  memory_usage:
+    - timestamp: 2024-03-15_10:00  frontend: 512Mi  backend: 1.2Gi  database: 3.5Gi  cache: 256Mi
+    - timestamp: 2024-03-15_10:15  frontend: 548Mi  backend: 1.3Gi  database: 3.6Gi  cache: 278Mi
+    - timestamp: 2024-03-15_10:30  frontend: 523Mi  backend: 1.25Gi database: 3.55Gi cache: 265Mi
+    - timestamp: 2024-03-15_10:45  frontend: 567Mi  backend: 1.35Gi database: 3.7Gi  cache: 289Mi
+    - timestamp: 2024-03-15_11:00  frontend: 591Mi  backend: 1.4Gi  database: 3.8Gi  cache: 301Mi
+
+# Configuration Environment Variables - Practice block editing
+environment_variables:
+  database_config:
+    - var: DATABASE_HOST        dev: localhost              staging: db-staging.local       prod: db-prod.cluster.local
+    - var: DATABASE_PORT        dev: 5432                   staging: 5432                   prod: 5432
+    - var: DATABASE_NAME        dev: app_dev                staging: app_staging             prod: app_production
+    - var: DATABASE_USER        dev: dev_user               staging: staging_user            prod: prod_user
+    - var: DATABASE_SSL         dev: disable                staging: prefer                  prod: require
+
+  cache_config:
+    - var: REDIS_HOST           dev: localhost              staging: redis-staging.local    prod: redis.cluster.local
+    - var: REDIS_PORT           dev: 6379                   staging: 6379                   prod: 6379
+    - var: REDIS_PASSWORD       dev: ""                     staging: staging_redis_pass     prod: prod_redis_pass
+    - var: REDIS_DB             dev: 0                      staging: 1                      prod: 0
+    - var: REDIS_SSL            dev: false                  staging: true                   prod: true
+
+  api_config:
+    - var: API_BASE_URL         dev: http://localhost:3000  staging: https://api-staging    prod: https://api.company.com
+    - var: API_TIMEOUT          dev: 30                     staging: 30                     prod: 15
+    - var: API_RETRIES          dev: 1                      staging: 3                      prod: 5
+    - var: API_RATE_LIMIT       dev: 1000                   staging: 500                    prod: 100
+    - var: API_AUTH_REQUIRED    dev: false                  staging: true                   prod: true
+
+# Service Discovery Table - Practice visual block mode
+service_discovery:
+  consul_services:
+    - name: user-service        address: 192.168.10.100  port: 8080  tags: [api, users]       health: passing
+    - name: order-service       address: 192.168.10.101  port: 8081  tags: [api, orders]      health: passing
+    - name: payment-service     address: 192.168.10.102  port: 8082  tags: [api, payments]    health: warning
+    - name: notification        address: 192.168.10.103  port: 8083  tags: [api, notify]      health: passing
+    - name: scheduler           address: 192.168.10.104  port: 8084  tags: [worker, cron]     health: passing
+
+  kubernetes_services:
+    - name: frontend            namespace: default       type: LoadBalancer  cluster_ip: 10.96.1.100  external_ip: pending
+    - name: backend             namespace: default       type: ClusterIP     cluster_ip: 10.96.1.101  external_ip: none
+    - name: database            namespace: data          type: ClusterIP     cluster_ip: 10.96.2.100  external_ip: none
+    - name: cache               namespace: data          type: ClusterIP     cluster_ip: 10.96.2.101  external_ip: none
+    - name: monitoring          namespace: monitoring    type: NodePort      cluster_ip: 10.96.3.100  external_ip: none
+
+# Load Balancer Configuration - Practice column operations
+load_balancers:
+  nginx_upstreams:
+    - name: backend_pool        server: backend-1.local  port: 8080  weight: 3  max_fails: 2  backup: false
+    - name: backend_pool        server: backend-2.local  port: 8080  weight: 2  max_fails: 2  backup: false
+    - name: backend_pool        server: backend-3.local  port: 8080  weight: 1  max_fails: 2  backup: true
+
+  haproxy_backends:
+    - name: web_servers         server: web-1.local      port: 80    weight: 100  check: true   backup: false
+    - name: web_servers         server: web-2.local      port: 80    weight: 100  check: true   backup: false
+    - name: web_servers         server: web-3.local      port: 80    weight: 50   check: true   backup: true

@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard - Number Operations Practice</title>
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #1e40af;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-color: #1f2937;
+            --light-color: #f8fafc;
+            --border-color: #e5e7eb;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+
+            --spacing-1: 4px;
+            --spacing-2: 8px;
+            --spacing-3: 12px;
+            --spacing-4: 16px;
+            --spacing-5: 20px;
+            --spacing-6: 24px;
+            --spacing-8: 32px;
+            --spacing-12: 48px;
+
+            --font-size-sm: 14px;
+            --font-size-base: 16px;
+            --font-size-lg: 18px;
+            --font-size-xl: 20px;
+            --font-size-2xl: 24px;
+            --font-size-3xl: 30px;
+
+            --border-radius-sm: 4px;
+            --border-radius: 8px;
+            --border-radius-lg: 12px;
+            --border-radius-xl: 16px;
+
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--light-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-6);
+        }
+
+        /* Header with numerical values */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: var(--spacing-6) 0;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-4);
+        }
+
+        .logo {
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+        }
+
+        .user-stats {
+            display: flex;
+            gap: var(--spacing-6);
+            font-size: var(--font-size-sm);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        .nav {
+            background: white;
+            padding: var(--spacing-4) 0;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: var(--spacing-8);
+            justify-content: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            padding: var(--spacing-2) var(--spacing-4);
+            border-radius: var(--border-radius);
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* Main dashboard layout */
+        .dashboard {
+            padding: var(--spacing-8) 0;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--spacing-6);
+            margin-bottom: var(--spacing-8);
+        }
+
+        /* Metric cards with lots of numbers */
+        .metric-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-6);
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-4);
+        }
+
+        .metric-title {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: var(--font-size-3xl);
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .metric-change {
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            margin-top: var(--spacing-2);
+        }
+
+        .metric-change.positive {
+            color: var(--success-color);
+        }
+
+        .metric-change.negative {
+            color: var(--danger-color);
+        }
+
+        .metric-change.neutral {
+            color: var(--text-secondary);
+        }
+
+        /* Data table with numerical values */
+        .data-section {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-6);
+            box-shadow: var(--shadow);
+            margin-bottom: var(--spacing-8);
+        }
+
+        .section-title {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            margin-bottom: var(--spacing-6);
+            color: var(--text-primary);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: var(--font-size-sm);
+        }
+
+        .data-table th {
+            background-color: var(--light-color);
+            padding: var(--spacing-4);
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .data-table td {
+            padding: var(--spacing-4);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table tr:hover {
+            background-color: #f9fafb;
+        }
+
+        /* Form section with numerical inputs */
+        .form-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-8);
+        }
+
+        .form-card {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-6);
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-5);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: var(--spacing-2);
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--spacing-3);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: var(--font-size-base);
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: var(--spacing-3) var(--spacing-6);
+            border-radius: var(--border-radius);
+            font-size: var(--font-size-base);
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .form-button:hover {
+            background: var(--secondary-color);
+        }
+
+        /* Chart placeholder with data attributes */
+        .chart-container {
+            background: white;
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-6);
+            box-shadow: var(--shadow);
+            margin-bottom: var(--spacing-8);
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            background: linear-gradient(45deg, #f1f5f9 25%, transparent 25%),
+                        linear-gradient(-45deg, #f1f5f9 25%, transparent 25%),
+                        linear-gradient(45deg, transparent 75%, #f1f5f9 75%),
+                        linear-gradient(-45deg, transparent 75%, #f1f5f9 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Responsive design breakpoints */
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+
+            .form-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 var(--spacing-4);
+            }
+
+            .header-content {
+                text-align: center;
+            }
+
+            .user-stats {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .nav-list {
+                flex-wrap: wrap;
+                gap: var(--spacing-4);
+            }
+
+            .metric-value {
+                font-size: var(--font-size-2xl);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with user statistics -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Analytics Pro</div>
+                <div class="user-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">1,247</div>
+                        <div>Active Users</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">89</div>
+                        <div>Sessions Today</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">15</div>
+                        <div>Alerts</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <ul class="nav-list">
+                <li><a href="#dashboard" class="nav-link">Dashboard</a></li>
+                <li><a href="#analytics" class="nav-link">Analytics</a></li>
+                <li><a href="#reports" class="nav-link">Reports</a></li>
+                <li><a href="#settings" class="nav-link">Settings</a></li>
+                <li><a href="#users" class="nav-link">Users</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main dashboard content -->
+    <main class="dashboard">
+        <div class="container">
+            <!-- Key metrics grid -->
+            <div class="dashboard-grid">
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-title">Total Revenue</div>
+                        <div>💰</div>
+                    </div>
+                    <div class="metric-value" data-amount="45892">$45,892</div>
+                    <div class="metric-change positive" data-increase="12.5">+12.5% from last month</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-title">Page Views</div>
+                        <div>👁️</div>
+                    </div>
+                    <div class="metric-value" data-views="234567">234,567</div>
+                    <div class="metric-change positive" data-increase="8.3">+8.3% from last week</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-title">Conversion Rate</div>
+                        <div>📈</div>
+                    </div>
+                    <div class="metric-value" data-rate="3.47">3.47%</div>
+                    <div class="metric-change negative" data-decrease="0.8">-0.8% from last month</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-title">Average Session</div>
+                        <div>⏱️</div>
+                    </div>
+                    <div class="metric-value" data-duration="4">4:23</div>
+                    <div class="metric-change positive" data-increase="15">+15 seconds from last week</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-title">Bounce Rate</div>
+                        <div>🚪</div>
+                    </div>
+                    <div class="metric-value" data-bounce="42.1">42.1%</div>
+                    <div class="metric-change negative" data-increase="2.3">+2.3% from last month</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-title">New Customers</div>
+                        <div>👥</div>
+                    </div>
+                    <div class="metric-value" data-customers="167">167</div>
+                    <div class="metric-change positive" data-increase="23">+23 from last week</div>
+                </div>
+            </div>
+
+            <!-- Chart section -->
+            <div class="chart-container">
+                <h2 class="section-title">Revenue Trends</h2>
+                <div class="chart-placeholder"
+                     data-points="12"
+                     data-max-value="50000"
+                     data-min-value="15000"
+                     data-average="32500"
+                     data-period="365">
+                    Chart visualization would go here
+                    <br>Max: 50,000 | Min: 15,000 | Avg: 32,500
+                </div>
+            </div>
+
+            <!-- Data table section -->
+            <div class="data-section">
+                <h2 class="section-title">Top Performing Pages</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Page</th>
+                            <th>Views</th>
+                            <th>Unique Visitors</th>
+                            <th>Avg. Duration</th>
+                            <th>Bounce Rate</th>
+                            <th>Conversions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>/home</td>
+                            <td data-views="45678">45,678</td>
+                            <td data-unique="32145">32,145</td>
+                            <td data-duration="3:45">3:45</td>
+                            <td data-bounce="35.2">35.2%</td>
+                            <td data-conversions="1247">1,247</td>
+                        </tr>
+                        <tr>
+                            <td>/products</td>
+                            <td data-views="34521">34,521</td>
+                            <td data-unique="28934">28,934</td>
+                            <td data-duration="5:12">5:12</td>
+                            <td data-bounce="28.7">28.7%</td>
+                            <td data-conversions="987">987</td>
+                        </tr>
+                        <tr>
+                            <td>/pricing</td>
+                            <td data-views="23456">23,456</td>
+                            <td data-unique="19876">19,876</td>
+                            <td data-duration="4:33">4:33</td>
+                            <td data-bounce="42.1">42.1%</td>
+                            <td data-conversions="567">567</td>
+                        </tr>
+                        <tr>
+                            <td>/about</td>
+                            <td data-views="18765">18,765</td>
+                            <td data-unique="15432">15,432</td>
+                            <td data-duration="2:56">2:56</td>
+                            <td data-bounce="58.3">58.3%</td>
+                            <td data-conversions="234">234</td>
+                        </tr>
+                        <tr>
+                            <td>/contact</td>
+                            <td data-views="12345">12,345</td>
+                            <td data-unique="10987">10,987</td>
+                            <td data-duration="3:21">3:21</td>
+                            <td data-bounce="45.6">45.6%</td>
+                            <td data-conversions="456">456</td>
+                        </tr>
+                        <tr>
+                            <td>/blog</td>
+                            <td data-views="34567">34,567</td>
+                            <td data-unique="27890">27,890</td>
+                            <td data-duration="6:45">6:45</td>
+                            <td data-bounce="23.4">23.4%</td>
+                            <td data-conversions="123">123</td>
+                        </tr>
+                        <tr>
+                            <td>/support</td>
+                            <td data-views="9876">9,876</td>
+                            <td data-unique="8765">8,765</td>
+                            <td data-duration="4:12">4:12</td>
+                            <td data-bounce="67.8">67.8%</td>
+                            <td data-conversions="89">89</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Configuration forms with numerical inputs -->
+            <div class="form-section">
+                <div class="form-card">
+                    <h2 class="section-title">Analytics Configuration</h2>
+                    <form>
+                        <div class="form-group">
+                            <label class="form-label" for="session-timeout">Session Timeout (minutes)</label>
+                            <input type="number"
+                                   id="session-timeout"
+                                   class="form-input"
+                                   value="30"
+                                   min="5"
+                                   max="120"
+                                   data-default="30">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="refresh-rate">Dashboard Refresh Rate (seconds)</label>
+                            <input type="number"
+                                   id="refresh-rate"
+                                   class="form-input"
+                                   value="60"
+                                   min="10"
+                                   max="300"
+                                   data-default="60">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="data-retention">Data Retention (days)</label>
+                            <input type="number"
+                                   id="data-retention"
+                                   class="form-input"
+                                   value="365"
+                                   min="30"
+                                   max="1095"
+                                   data-default="365">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="alert-threshold">Alert Threshold (%)</label>
+                            <input type="number"
+                                   id="alert-threshold"
+                                   class="form-input"
+                                   value="85"
+                                   min="50"
+                                   max="100"
+                                   step="5"
+                                   data-default="85">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="sample-rate">Sampling Rate (%)</label>
+                            <input type="number"
+                                   id="sample-rate"
+                                   class="form-input"
+                                   value="100"
+                                   min="1"
+                                   max="100"
+                                   data-default="100">
+                        </div>
+
+                        <button type="submit" class="form-button">Update Settings</button>
+                    </form>
+                </div>
+
+                <div class="form-card">
+                    <h2 class="section-title">Performance Targets</h2>
+                    <form>
+                        <div class="form-group">
+                            <label class="form-label" for="target-revenue">Monthly Revenue Target ($)</label>
+                            <input type="number"
+                                   id="target-revenue"
+                                   class="form-input"
+                                   value="50000"
+                                   min="1000"
+                                   step="1000"
+                                   data-target="50000">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="target-visitors">Monthly Visitor Target</label>
+                            <input type="number"
+                                   id="target-visitors"
+                                   class="form-input"
+                                   value="100000"
+                                   min="1000"
+                                   step="1000"
+                                   data-target="100000">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="target-conversion">Conversion Rate Target (%)</label>
+                            <input type="number"
+                                   id="target-conversion"
+                                   class="form-input"
+                                   value="4.5"
+                                   min="0.1"
+                                   max="10"
+                                   step="0.1"
+                                   data-target="4.5">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="target-session">Session Duration Target (minutes)</label>
+                            <input type="number"
+                                   id="target-session"
+                                   class="form-input"
+                                   value="5"
+                                   min="1"
+                                   max="30"
+                                   step="0.5"
+                                   data-target="5">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="max-bounce">Maximum Bounce Rate (%)</label>
+                            <input type="number"
+                                   id="max-bounce"
+                                   class="form-input"
+                                   value="40"
+                                   min="10"
+                                   max="80"
+                                   step="5"
+                                   data-max="40">
+                        </div>
+
+                        <button type="submit" class="form-button">Set Targets</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Additional metrics with timestamp data -->
+            <div class="data-section">
+                <h2 class="section-title">Server Performance Metrics</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+                    <div class="metric-card">
+                        <div class="metric-title">Server Response Time</div>
+                        <div class="metric-value" data-response-time="245">245ms</div>
+                        <div class="metric-change neutral" data-baseline="250">5ms faster than baseline</div>
+                        <small>Last updated: 2024-01-15 14:32:18</small>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-title">Database Queries/sec</div>
+                        <div class="metric-value" data-queries="1250">1,250</div>
+                        <div class="metric-change positive" data-increase="150">+150 from last hour</div>
+                        <small>Peak today: 1,847 at 12:15:32</small>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-title">Cache Hit Rate</div>
+                        <div class="metric-value" data-cache-rate="92.7">92.7%</div>
+                        <div class="metric-change positive" data-increase="1.2">+1.2% from yesterday</div>
+                        <small>Target: 95.0% | Minimum: 85.0%</small>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-title">Active Connections</div>
+                        <div class="metric-value" data-connections="456">456</div>
+                        <div class="metric-change neutral" data-max="500">44 below capacity limit</div>
+                        <small>Max capacity: 500 | Warning at: 450</small>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-title">Error Rate</div>
+                        <div class="metric-value" data-error-rate="0.12">0.12%</div>
+                        <div class="metric-change positive" data-decrease="0.03">-0.03% from last week</div>
+                        <small>Total errors today: 23 | Threshold: 1.00%</small>
+                    </div>
+
+                    <div class="metric-card">
+                        <div class="metric-title">Disk Usage</div>
+                        <div class="metric-value" data-disk="67.8">67.8%</div>
+                        <div class="metric-change negative" data-increase="2.1">+2.1% from last month</div>
+                        <small>Free space: 1.2TB | Total: 3.7TB</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Simulate real-time updates with numbers for practice
+        setInterval(() => {
+            const metrics = document.querySelectorAll('[data-views], [data-amount], [data-connections]');
+            metrics.forEach(element => {
+                const currentValue = parseInt(element.textContent.replace(/[^\d]/g, ''));
+                const change = Math.floor(Math.random() * 10) - 5; // -5 to +5
+                const newValue = Math.max(0, currentValue + change);
+
+                if (element.hasAttribute('data-views')) {
+                    element.textContent = newValue.toLocaleString();
+                } else if (element.hasAttribute('data-amount')) {
+                    element.textContent = '$' + newValue.toLocaleString();
+                } else if (element.hasAttribute('data-connections')) {
+                    element.textContent = newValue.toString();
+                }
+            });
+        }, 5000); // Update every 5 seconds
+    </script>
+</body>
+</html>

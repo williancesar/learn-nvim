@@ -1,0 +1,483 @@
+/* Day 20 - Operator + Motion Practice CSS */
+/* Structured styling for practicing operator-motion combinations */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Source Code Pro', 'Consolas', 'Monaco', monospace;
+    line-height: 1.7;
+    color: #2c3e50;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+/* Header for operator practice */
+.main-header {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    padding: 50px;
+    text-align: center;
+    position: relative;
+}
+
+.main-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><pattern id="ops" width="40" height="40" patternUnits="userSpaceOnUse"><text x="5" y="15" fill="white" opacity="0.1" font-size="12">d</text><text x="25" y="15" fill="white" opacity="0.1" font-size="12">c</text><text x="5" y="35" fill="white" opacity="0.1" font-size="12">y</text><text x="25" y="35" fill="white" opacity="0.1" font-size="12">w</text></pattern></defs><rect width="40" height="40" fill="url(%23ops)"/></svg>');
+}
+
+.main-header h1 {
+    font-size: 2.8rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+}
+
+.main-header p {
+    font-size: 1.3rem;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+}
+
+/* Main content area */
+.content {
+    padding: 50px;
+}
+
+/* Section styling for different operation types */
+section {
+    margin-bottom: 60px;
+    padding: 40px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border-left: 6px solid #e74c3c;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+section h2 {
+    color: #2c3e50;
+    font-size: 2.2rem;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #3498db;
+}
+
+section p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    text-align: justify;
+}
+
+/* Operator basics section */
+.operator-basics {
+    background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+    border-left-color: #27ae60;
+}
+
+.operator-examples {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin: 25px 0;
+    border: 2px solid #27ae60;
+}
+
+.operator-examples h3 {
+    color: #27ae60;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.operator-examples ul {
+    list-style: none;
+    padding: 0;
+}
+
+.operator-examples li {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    background: #e8f5e8;
+    border-radius: 5px;
+    border-left: 3px solid #27ae60;
+    font-family: 'Monaco', monospace;
+}
+
+/* Word operations section */
+.word-operations {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    border-left-color: #f39c12;
+}
+
+.word-practice {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin: 25px 0;
+    border: 2px solid #f39c12;
+}
+
+.word-practice h3 {
+    color: #e67e22;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.code-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.code-words code {
+    background: #2c3e50;
+    color: #1abc9c;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-family: 'Monaco', monospace;
+    font-weight: bold;
+}
+
+/* Line operations section */
+.line-operations {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-left-color: #2196f3;
+}
+
+.line-examples {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin: 25px 0;
+    border: 2px solid #2196f3;
+}
+
+.line-examples h3 {
+    color: #1976d2;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.line-examples pre {
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 15px 0;
+    font-family: 'Monaco', monospace;
+}
+
+.indented-lines {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 15px 0;
+    border-left: 4px solid #2196f3;
+}
+
+.indented-lines p {
+    font-family: 'Monaco', monospace;
+    margin-bottom: 8px;
+    background: white;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+/* Text object operations section */
+.text-object-operations {
+    background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+    border-left-color: #9c27b0;
+}
+
+.text-object-examples {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin: 25px 0;
+    border: 2px solid #9c27b0;
+}
+
+.text-object-examples h3 {
+    color: #7b1fa2;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.nested-structures {
+    background: #f3e5f5;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 15px 0;
+    border-left: 4px solid #9c27b0;
+}
+
+.nested-structures p {
+    font-family: 'Monaco', monospace;
+    background: white;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    word-break: break-all;
+    font-size: 0.95rem;
+}
+
+/* Motion combinations section */
+.motion-combinations {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    border-left-color: #f44336;
+}
+
+.search-operations,
+.pattern-practice {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin: 25px 0;
+    border: 2px solid #f44336;
+}
+
+.search-operations h3,
+.pattern-practice h3 {
+    color: #c62828;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.search-operations p,
+.pattern-practice p {
+    font-family: 'Monaco', monospace;
+    background: #ffebee;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    border-left: 3px solid #f44336;
+}
+
+/* Practical exercises section */
+.practical-exercises {
+    background: linear-gradient(135deg, #e0f2f1 0%, #b2dfdb 100%);
+    border-left-color: #009688;
+}
+
+.refactoring-example,
+.documentation-editing,
+.data-manipulation {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin: 25px 0;
+    border: 2px solid #009688;
+}
+
+.refactoring-example h3,
+.documentation-editing h3,
+.data-manipulation h3 {
+    color: #00695c;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.refactoring-example pre,
+.data-manipulation pre {
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 15px 0;
+    font-family: 'Monaco', monospace;
+    font-size: 0.9rem;
+}
+
+.refactoring-example ul,
+.data-manipulation ul {
+    list-style-type: disc;
+    padding-left: 25px;
+    margin: 15px 0;
+}
+
+.refactoring-example li,
+.data-manipulation li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.documentation-editing ul {
+    background: #e0f2f1;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 15px 0;
+    border-left: 4px solid #009688;
+}
+
+.documentation-editing li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+/* Efficiency tips section */
+.efficiency-tips {
+    background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+    border-left-color: #ffc107;
+}
+
+.efficiency-guidelines,
+.common-patterns,
+.practice-drills {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin: 25px 0;
+    border: 2px solid #ffc107;
+}
+
+.efficiency-guidelines h3,
+.common-patterns h3,
+.practice-drills h3 {
+    color: #f57c00;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.efficiency-guidelines ul {
+    list-style-type: disc;
+    padding-left: 25px;
+}
+
+.efficiency-guidelines li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.common-patterns p {
+    font-family: 'Monaco', monospace;
+    background: #fff8e1;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    border-left: 3px solid #ffc107;
+    font-size: 0.95rem;
+}
+
+.practice-drills p {
+    font-style: italic;
+    background: #fff8e1;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    border-left: 3px solid #ffc107;
+}
+
+/* Troubleshooting section */
+.troubleshooting {
+    background: linear-gradient(135deg, #fce4ec 0%, #f8bbd9 100%);
+    border-left-color: #e91e63;
+}
+
+.common-mistakes,
+.debugging-edits {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    margin: 25px 0;
+    border: 2px solid #e91e63;
+}
+
+.common-mistakes h3,
+.debugging-edits h3 {
+    color: #ad1457;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+}
+
+.common-mistakes ul {
+    list-style-type: disc;
+    padding-left: 25px;
+}
+
+.common-mistakes li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+/* Footer styling */
+.main-footer {
+    background: linear-gradient(135deg, #37474f 0%, #263238 100%);
+    color: white;
+    padding: 40px 50px;
+    text-align: center;
+}
+
+.main-footer p {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.main-footer p:last-child {
+    margin-bottom: 0;
+    font-weight: bold;
+    color: #4fc3f7;
+    font-family: 'Monaco', monospace;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .content {
+        padding: 30px 20px;
+    }
+
+    .main-header {
+        padding: 30px 20px;
+    }
+
+    .main-header h1 {
+        font-size: 2.2rem;
+    }
+
+    section {
+        padding: 25px 20px;
+    }
+
+    section h2 {
+        font-size: 1.8rem;
+    }
+
+    .main-footer {
+        padding: 25px 20px;
+    }
+
+    .code-words {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nested-structures p {
+        font-size: 0.85rem;
+        word-break: break-all;
+    }
+}

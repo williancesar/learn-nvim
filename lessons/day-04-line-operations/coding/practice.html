@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 04: Line Operations Practice</title>
+    <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+    <!--
+    PRACTICE INSTRUCTIONS FOR DAY 04: LINE OPERATIONS
+
+    Line Movement Commands:
+    j - Move down one line
+    k - Move up one line
+    10j - Move down 10 lines (number prefix)
+    5k - Move up 5 lines
+    :15 - Go to line 15
+    15G - Go to line 15
+    G - Go to last line of file
+    gg - Go to first line of file
+
+    Line Manipulation:
+    dd - Delete current line
+    yy - Copy current line
+    p - Paste below current line
+    P - Paste above current line
+    o - Open new line below
+    O - Open new line above
+
+    This is a long file with numbered sections - practice jumping to specific line numbers!
+    -->
+
+    <!-- Section 1: Header and Navigation (Lines 1-50) -->
+    <header id="section-001" class="main-site-header" data-line-range="1-50">
+        <div class="header-container">
+            <nav class="primary-navigation">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#section-001" class="nav-link">Section 001</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#section-002" class="nav-link">Section 002</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#section-003" class="nav-link">Section 003</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#section-004" class="nav-link">Section 004</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#section-005" class="nav-link">Section 005</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#section-006" class="nav-link">Section 006</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#section-007" class="nav-link">Section 007</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#section-008" class="nav-link">Section 008</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#section-009" class="nav-link">Section 009</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#section-010" class="nav-link">Section 010</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Section 2: Hero Banner (Lines 51-100) -->
+    <main id="section-002" class="main-content-area" data-line-range="51-100">
+        <section class="hero-banner">
+            <div class="hero-content">
+                <h1 class="hero-title">Master Line Operations in Vim</h1>
+                <p class="hero-subtitle">Learn to navigate and manipulate lines efficiently</p>
+                <p class="hero-description">
+                    This practice file contains multiple numbered sections to help you practice
+                    line-based navigation commands. Each section is clearly marked with line ranges
+                    so you can practice jumping to specific locations.
+                </p>
+                <div class="hero-actions">
+                    <button class="btn-primary">Get Started</button>
+                    <button class="btn-secondary">Learn More</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="vim-line-operations.jpg" alt="Vim line operations illustration">
+            </div>
+        </section>
+    </main>
+
+    <!-- Section 3: Line Navigation Tutorial (Lines 101-150) -->
+    <section id="section-003" class="tutorial-section" data-line-range="101-150">
+        <div class="container">
+            <h2 class="section-title">Line Navigation Commands</h2>
+            <div class="tutorial-content">
+                <article class="command-explanation">
+                    <h3>Basic Line Movement</h3>
+                    <ul>
+                        <li>j - Move cursor down one line</li>
+                        <li>k - Move cursor up one line</li>
+                        <li>10j - Move cursor down 10 lines</li>
+                        <li>5k - Move cursor up 5 lines</li>
+                    </ul>
+                </article>
+                <article class="command-explanation">
+                    <h3>Direct Line Jumping</h3>
+                    <ul>
+                        <li>:50 - Jump to line 50</li>
+                        <li>50G - Jump to line 50</li>
+                        <li>gg - Jump to first line</li>
+                        <li>G - Jump to last line</li>
+                    </ul>
+                </article>
+                <article class="command-explanation">
+                    <h3>Line Manipulation</h3>
+                    <ul>
+                        <li>dd - Delete current line</li>
+                        <li>yy - Copy current line</li>
+                        <li>p - Paste below current line</li>
+                        <li>P - Paste above current line</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Practice Area 1 (Lines 151-200) -->
+    <section id="section-004" class="practice-area-1" data-line-range="151-200">
+        <div class="container">
+            <h2 class="section-title">Practice Area 1: Basic Navigation</h2>
+            <div class="practice-content">
+                <p>Line 160: Practice jumping to this line using :160 or 160G</p>
+                <p>Line 161: This line is for j/k movement practice</p>
+                <p>Line 162: Move up and down between these lines</p>
+                <p>Line 163: Use 5j to jump down 5 lines from here</p>
+                <p>Line 164: Try 3k to move up 3 lines</p>
+                <p>Line 165: Practice line deletion with dd</p>
+                <p>Line 166: Copy this line with yy</p>
+                <p>Line 167: Paste copied line below with p</p>
+                <p>Line 168: This line should be jumped over (5j from 163)</p>
+                <p>Line 169: This is your destination from the 5j command</p>
+                <p>Line 170: Another practice line for movement</p>
+                <p>Line 171: Try jumping to line 180 from here</p>
+                <p>Line 172: This line can be deleted if needed</p>
+                <p>Line 173: Copy this line for pasting practice</p>
+                <p>Line 174: Use P to paste above this line</p>
+                <p>Line 175: Practice 10j to jump to line 185</p>
+                <p>Line 176: Move back up with 10k</p>
+                <p>Line 177: Try relative line jumps</p>
+                <p>Line 178: This is a target line for practice</p>
+                <p>Line 179: Another navigation checkpoint</p>
+                <p>Line 180: Destination for :180 jump command</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Code Block Practice (Lines 201-250) -->
+    <section id="section-005" class="code-practice" data-line-range="201-250">
+        <div class="container">
+            <h2 class="section-title">Code Block Line Operations</h2>
+            <div class="code-examples">
+                <pre class="code-block">
+<!-- Line 210 -->
+function calculateTotal(items) {
+    let total = 0;
+    for (let i = 0; i < items.length; i++) {
+        total += items[i].price;
+    }
+    return total;
+}
+
+<!-- Line 220 -->
+function processOrder(order) {
+    const items = order.items;
+    const total = calculateTotal(items);
+    const tax = total * 0.1;
+    const finalTotal = total + tax;
+
+    return {
+        subtotal: total,
+        tax: tax,
+        total: finalTotal
+    };
+}
+
+<!-- Line 235 -->
+class ShoppingCart {
+    constructor() {
+        this.items = [];
+        this.total = 0;
+    }
+
+    addItem(item) {
+        this.items.push(item);
+        this.updateTotal();
+    }
+
+    removeItem(itemId) {
+        this.items = this.items.filter(item => item.id !== itemId);
+        this.updateTotal();
+    }
+
+    updateTotal() {
+        this.total = calculateTotal(this.items);
+    }
+}
+                </pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: Data Tables (Lines 251-300) -->
+    <section id="section-006" class="data-tables" data-line-range="251-300">
+        <div class="container">
+            <h2 class="section-title">Data Tables for Line Practice</h2>
+            <table class="practice-table">
+                <thead>
+                    <tr>
+                        <th>Line Number</th>
+                        <th>Command</th>
+                        <th>Description</th>
+                        <th>Practice Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Line 270 -->
+                    <tr>
+                        <td>270</td>
+                        <td>:270</td>
+                        <td>Jump to this line</td>
+                        <td>Practice direct line jumping</td>
+                    </tr>
+                    <tr>
+                        <td>275</td>
+                        <td>5j from 270</td>
+                        <td>Move down 5 lines</td>
+                        <td>Relative movement practice</td>
+                    </tr>
+                    <tr>
+                        <td>280</td>
+                        <td>dd</td>
+                        <td>Delete this entire row</td>
+                        <td>Line deletion practice</td>
+                    </tr>
+                    <tr>
+                        <td>285</td>
+                        <td>yy</td>
+                        <td>Copy this entire row</td>
+                        <td>Line copying practice</td>
+                    </tr>
+                    <tr>
+                        <td>290</td>
+                        <td>p</td>
+                        <td>Paste below this line</td>
+                        <td>Paste operation practice</td>
+                    </tr>
+                    <tr>
+                        <td>295</td>
+                        <td>P</td>
+                        <td>Paste above this line</td>
+                        <td>Reverse paste practice</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Section 7: Form Practice (Lines 301-350) -->
+    <section id="section-007" class="form-practice" data-line-range="301-350">
+        <div class="container">
+            <h2 class="section-title">Form Elements Line Navigation</h2>
+            <form class="practice-form">
+                <!-- Line 310 -->
+                <div class="form-group">
+                    <label for="firstName">First Name (Line 312)</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+
+                <!-- Line 320 -->
+                <div class="form-group">
+                    <label for="lastName">Last Name (Line 322)</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+
+                <!-- Line 330 -->
+                <div class="form-group">
+                    <label for="email">Email Address (Line 332)</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <!-- Line 340 -->
+                <div class="form-group">
+                    <label for="message">Message (Line 342)</label>
+                    <textarea id="message" name="message" rows="4" placeholder="Enter your message here..."></textarea>
+                </div>
+
+                <!-- Line 348 -->
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Submit Form</button>
+                    <button type="reset" class="btn-secondary">Reset Form</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Section 8: List Practice (Lines 351-400) -->
+    <section id="section-008" class="list-practice" data-line-range="351-400">
+        <div class="container">
+            <h2 class="section-title">List Navigation Practice</h2>
+            <div class="list-container">
+                <h3>Unordered List (Starting Line 360)</h3>
+                <ul class="practice-list">
+                    <li>Line 362: First list item - practice dd here</li>
+                    <li>Line 363: Second list item - copy with yy</li>
+                    <li>Line 364: Third list item - paste below with p</li>
+                    <li>Line 365: Fourth list item - jump from line 360 using 5j</li>
+                    <li>Line 366: Fifth list item - target for relative jumps</li>
+                    <li>Line 367: Sixth list item - practice line operations</li>
+                    <li>Line 368: Seventh list item - delete and restore practice</li>
+                    <li>Line 369: Eighth list item - navigation checkpoint</li>
+                    <li>Line 370: Ninth list item - try 10k to jump up</li>
+                    <li>Line 371: Tenth list item - final item for this group</li>
+                </ul>
+
+                <h3>Ordered List (Starting Line 375)</h3>
+                <ol class="practice-numbered-list">
+                    <li>Line 377: Step one - navigate here with :377</li>
+                    <li>Line 378: Step two - move with j/k commands</li>
+                    <li>Line 379: Step three - practice line deletion</li>
+                    <li>Line 380: Step four - copy and paste operations</li>
+                    <li>Line 381: Step five - jump to specific lines</li>
+                    <li>Line 382: Step six - relative movement practice</li>
+                    <li>Line 383: Step seven - line manipulation drills</li>
+                    <li>Line 384: Step eight - advanced navigation</li>
+                    <li>Line 385: Step nine - complex line operations</li>
+                    <li>Line 386: Step ten - mastery checkpoint</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 9: Article Content (Lines 401-450) -->
+    <section id="section-009" class="article-content" data-line-range="401-450">
+        <div class="container">
+            <h2 class="section-title">Article Content for Line Practice</h2>
+            <article class="practice-article">
+                <h3>Understanding Vim Line Operations (Line 410)</h3>
+                <p>Line 412: Vim's line-based operations are fundamental to efficient text editing. Understanding how to navigate, manipulate, and work with lines will significantly improve your productivity.</p>
+
+                <h4>Basic Line Navigation (Line 415)</h4>
+                <p>Line 417: The most basic line navigation commands are j (down) and k (up). These single-character commands allow you to move through your document line by line.</p>
+                <p>Line 419: For faster navigation, you can prefix these commands with numbers. For example, 10j moves down 10 lines, while 5k moves up 5 lines.</p>
+
+                <h4>Direct Line Jumping (Line 422)</h4>
+                <p>Line 424: When you know exactly which line you want to reach, direct jumping is more efficient than relative movement.</p>
+                <p>Line 426: The :line_number command (like :100) takes you directly to that line. Alternatively, you can use line_numberG (like 100G) for the same result.</p>
+                <p>Line 428: Special cases include gg (first line) and G (last line) for document boundaries.</p>
+
+                <h4>Line Manipulation Commands (Line 431)</h4>
+                <p>Line 433: Once you can navigate efficiently, line manipulation becomes powerful. The dd command deletes an entire line, while yy copies it.</p>
+                <p>Line 435: Pasting works with p (paste below) and P (paste above). These commands work in conjunction with copying and cutting operations.</p>
+                <p>Line 437: Creating new lines is handled by o (open below) and O (open above), both of which enter insert mode on the new line.</p>
+
+                <h4>Advanced Techniques (Line 440)</h4>
+                <p>Line 442: Combining line operations with repetition creates powerful workflows. For instance, 3dd deletes 3 lines, while 5yy copies 5 lines.</p>
+                <p>Line 444: Visual line mode (V) allows you to select multiple lines for operations, extending these basic commands to work on blocks of text.</p>
+                <p>Line 446: Practice these commands regularly to build muscle memory and increase your editing efficiency.</p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Section 10: Final Practice Zone (Lines 451-500) -->
+    <section id="section-010" class="final-practice" data-line-range="451-500">
+        <div class="container">
+            <h2 class="section-title">Final Practice Zone</h2>
+            <div class="practice-challenges">
+                <h3>Line Operation Challenges</h3>
+
+                <!-- Line 460 -->
+                <div class="challenge-block">
+                    <h4>Challenge 1: Precision Jumping</h4>
+                    <p>Line 463: Jump directly to line 475 using :475</p>
+                    <p>Line 464: Then return here using :464</p>
+                    <p>Line 465: Practice this pattern to build muscle memory</p>
+                </div>
+
+                <!-- Line 470 -->
+                <div class="challenge-block">
+                    <h4>Challenge 2: Relative Movement</h4>
+                    <p>Line 473: From this line, use 10j to jump down</p>
+                    <p>Line 474: Then use 10k to return</p>
+                    <p>Line 475: This is your target destination for the 10j command</p>
+                </div>
+
+                <!-- Line 480 -->
+                <div class="challenge-block">
+                    <h4>Challenge 3: Line Manipulation</h4>
+                    <p>Line 483: Copy this line with yy</p>
+                    <p>Line 484: Delete this line with dd (then undo with u)</p>
+                    <p>Line 485: Paste the copied line below using p</p>
+                    <p>Line 486: Create a new line above using O</p>
+                </div>
+
+                <!-- Line 490 -->
+                <div class="challenge-block">
+                    <h4>Challenge 4: Combined Operations</h4>
+                    <p>Line 493: Jump to line 500, copy that line, return here, and paste</p>
+                    <p>Line 494: This tests your ability to chain line operations</p>
+                    <p>Line 495: Remember: :500, yy, :495, p</p>
+                </div>
+
+                <!-- Line 498 -->
+                <p>Line 498: Almost at the end of the practice file</p>
+                <p>Line 499: Use G to jump to the very last line</p>
+                <p>Line 500: Congratulations! You've reached the end. Copy this line for the final challenge.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section (Lines 501-550) -->
+    <footer id="section-footer" class="main-footer" data-line-range="501-550">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Quick Reference</h3>
+                <ul class="footer-links">
+                    <li>j/k - Move down/up one line</li>
+                    <li>10j/5k - Move down 10/up 5 lines</li>
+                    <li>:50 or 50G - Jump to line 50</li>
+                    <li>gg/G - Jump to first/last line</li>
+                    <li>dd/yy - Delete/copy current line</li>
+                    <li>p/P - Paste below/above current line</li>
+                    <li>o/O - Open new line below/above</li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Practice Summary</h3>
+                <ul class="footer-links">
+                    <li>Total lines: ~550</li>
+                    <li>Sections: 10 numbered sections</li>
+                    <li>Practice jumping between sections</li>
+                    <li>Try different line operation combinations</li>
+                    <li>Build muscle memory with repetition</li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Next Steps</h3>
+                <ul class="footer-links">
+                    <li>Practice daily with these commands</li>
+                    <li>Combine with other vim operations</li>
+                    <li>Use in real coding scenarios</li>
+                    <li>Time yourself for speed improvements</li>
+                    <li>Advanced: Learn visual line mode (V)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Line 540 -->
+        <div class="footer-bottom">
+            <p>Line 542: End of practice file - use gg to return to the beginning</p>
+            <p>Line 543: Practice jumping between line 1 and line 543</p>
+            <p>Line 544: Use gg and G repeatedly to build navigation speed</p>
+            <p>Line 545: Remember to practice line operations on code files too</p>
+            <p>Line 546: Master these basics before moving to advanced vim features</p>
+            <p>Line 547: Happy vim editing!</p>
+        </div>
+    </footer>
+</body>
+</html>

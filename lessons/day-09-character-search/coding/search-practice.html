@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Search Practice - Restaurant Menu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header with many f, F, t, T search targets */
+        header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: 2px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-style: italic;
+        }
+
+        /* Navigation with specific characters for f/F/t/T practice */
+        nav {
+            background-color: #34495e;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-list {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-list a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-list a:hover {
+            background-color: #ff6b6b;
+            transform: translateY(-2px);
+        }
+
+        /* Menu sections with various searchable characters */
+        .menu-section {
+            background: white;
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: #e74c3c;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(45deg, #ff6b6b, #ffa500);
+            border-radius: 2px;
+        }
+
+        /* Grid layout for menu items */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .menu-item {
+            border: 2px solid #ecf0f1;
+            border-radius: 10px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+        }
+
+        .menu-item:hover {
+            border-color: #ff6b6b;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .item-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-description {
+            color: #7f8c8d;
+            margin-bottom: 1rem;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .item-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #e74c3c;
+            text-align: right;
+        }
+
+        /* Special attributes for search practice */
+        .spicy {
+            border-left: 4px solid #e74c3c;
+        }
+
+        .vegetarian {
+            border-left: 4px solid #27ae60;
+        }
+
+        .gluten-free {
+            border-left: 4px solid #f39c12;
+        }
+
+        .chef-special {
+            border-left: 4px solid #9b59b6;
+        }
+
+        /* Footer with contact information */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            color: #ff6b6b;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .footer-section p, .footer-section li {
+            color: #bdc3c7;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: #ecf0f1;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #ff6b6b;
+        }
+
+        /* Special classes for character search practice */
+        .featured {
+            background: linear-gradient(45deg, #fff5cd 0%, #ffe4b5 100%);
+        }
+
+        .premium {
+            background: linear-gradient(45deg, #e8f5e8 0%, #f0fff0 100%);
+        }
+
+        .signature {
+            background: linear-gradient(45deg, #ffe4e1 0%, #ffd6cc 100%);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            .nav-list {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header section with frequent f, F, t, T targets -->
+    <header>
+        <div class="container">
+            <h1>Fantastic Food Festival</h1>
+            <p>Fresh flavors from around the world - featuring fine French, fabulous Italian & fantastic fusion cuisine</p>
+        </div>
+    </header>
+
+    <!-- Navigation with specific characters -->
+    <nav>
+        <div class="container">
+            <ul class="nav-list">
+                <li><a href="#appetizers">Appetizers & Starters</a></li>
+                <li><a href="#mains">Main Courses & Entrees</a></li>
+                <li><a href="#desserts">Desserts & Sweets</a></li>
+                <li><a href="#beverages">Beverages & Drinks</a></li>
+                <li><a href="#specials">Chef's Specials</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Appetizers section -->
+    <section id="appetizers" class="menu-section">
+        <div class="container">
+            <h2 class="section-title">Appetizers & Fresh Starters</h2>
+            <div class="menu-grid">
+                <div class="menu-item featured vegetarian" data-category="appetizer" data-prep-time="15" data-serves="2-3">
+                    <h3 class="item-name">Fantastic Focaccia Bread</h3>
+                    <p class="item-description">Freshly baked focaccia with fresh herbs, featuring fine olive oil, fragrant rosemary & fresh tomatoes. Perfect for sharing!</p>
+                    <p class="item-price">$12.99</p>
+                </div>
+                <div class="menu-item spicy" data-category="appetizer" data-prep-time="10" data-serves="1-2">
+                    <h3 class="item-name">Fiery Buffalo Wings</h3>
+                    <p class="item-description">Ten flame-grilled chicken wings tossed in our fiery buffalo sauce. Served with fresh celery & blue cheese dip.</p>
+                    <p class="item-price">$14.50</p>
+                </div>
+                <div class="menu-item premium gluten-free" data-category="appetizer" data-prep-time="20" data-serves="2-4">
+                    <h3 class="item-name">Fresh Tuna Tartare</h3>
+                    <p class="item-description">Premium yellowfin tuna, finely diced with fresh avocado, fragrant ginger & citrus. Truly fantastic!</p>
+                    <p class="item-price">$18.75</p>
+                </div>
+                <div class="menu-item vegetarian" data-category="appetizer" data-prep-time="12" data-serves="2-3">
+                    <h3 class="item-name">Mediterranean Mezze Platter</h3>
+                    <p class="item-description">Fresh hummus, feta cheese, olives, fresh vegetables & warm pita bread. Perfect for sharing & fantastic value.</p>
+                    <p class="item-price">$16.25</p>
+                </div>
+                <div class="menu-item chef-special" data-category="appetizer" data-prep-time="18" data-serves="1-2">
+                    <h3 class="item-name">Truffle Mac & Cheese Bites</h3>
+                    <p class="item-description">Creamy mac & cheese formed into bite-sized portions, truffle-infused & perfectly fried. Absolutely fantastic!</p>
+                    <p class="item-price">$13.80</p>
+                </div>
+                <div class="menu-item spicy gluten-free" data-category="appetizer" data-prep-time="15" data-serves="2-3">
+                    <h3 class="item-name">Spicy Shrimp Cocktail</h3>
+                    <p class="item-description">Fresh Gulf shrimp with spicy cocktail sauce, featuring fresh horseradish & a hint of fire. Fantastic flavor!</p>
+                    <p class="item-price">$15.90</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main courses section -->
+    <section id="mains" class="menu-section">
+        <div class="container">
+            <h2 class="section-title">Main Courses & Entrees</h2>
+            <div class="menu-grid">
+                <div class="menu-item signature" data-category="main" data-prep-time="25" data-serves="1">
+                    <h3 class="item-name">Filet Mignon with Truffle Sauce</h3>
+                    <p class="item-description">Premium 8oz filet mignon, perfectly grilled & topped with fantastic truffle cream sauce. Served with fresh seasonal vegetables.</p>
+                    <p class="item-price">$42.99</p>
+                </div>
+                <div class="menu-item featured" data-category="main" data-prep-time="20" data-serves="1">
+                    <h3 class="item-name">Fresh Atlantic Salmon</h3>
+                    <p class="item-description">Wild-caught Atlantic salmon, perfectly seared with fresh dill & lemon butter. Fantastic with our famous rice pilaf.</p>
+                    <p class="item-price">$28.75</p>
+                </div>
+                <div class="menu-item vegetarian" data-category="main" data-prep-time="22" data-serves="1">
+                    <h3 class="item-name">Fantastic Vegetable Risotto</h3>
+                    <p class="item-description">Creamy Arborio rice with fresh seasonal vegetables, finished with fresh herbs & Parmesan. Truly fantastic!</p>
+                    <p class="item-price">$21.50</p>
+                </div>
+                <div class="menu-item spicy" data-category="main" data-prep-time="30" data-serves="1">
+                    <h3 class="item-name">Fiery Thai Curry</h3>
+                    <p class="item-description">Traditional Thai red curry with fresh vegetables, fragrant basil & your choice of protein. Fantastically spicy!</p>
+                    <p class="item-price">$24.25</p>
+                </div>
+                <div class="menu-item premium" data-category="main" data-prep-time="35" data-serves="1">
+                    <h3 class="item-name">French Duck à l'Orange</h3>
+                    <p class="item-description">Classic French preparation featuring tender duck breast with fresh orange glaze. Fantastic traditional flavors!</p>
+                    <p class="item-price">$36.80</p>
+                </div>
+                <div class="menu-item chef-special gluten-free" data-category="main" data-prep-time="28" data-serves="1">
+                    <h3 class="item-name">Grilled Lamb with Fresh Mint</h3>
+                    <p class="item-description">Tender lamb chops, perfectly grilled & finished with fresh mint chimichurri. Fantastically flavorful!</p>
+                    <p class="item-price">$33.50</p>
+                </div>
+                <div class="menu-item featured" data-category="main" data-prep-time="18" data-serves="1">
+                    <h3 class="item-name">Fish & Chips - British Style</h3>
+                    <p class="item-description">Fresh cod in our famous beer batter with hand-cut fries & fresh mushy peas. A fantastic classic!</p>
+                    <p class="item-price">$19.75</p>
+                </div>
+                <div class="menu-item signature" data-category="main" data-prep-time="32" data-serves="1">
+                    <h3 class="item-name">Lobster Thermidor</h3>
+                    <p class="item-description">Fresh lobster tail with creamy thermidor sauce, featuring fresh herbs & fine cheese. Fantastically luxurious!</p>
+                    <p class="item-price">$48.99</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Desserts section -->
+    <section id="desserts" class="menu-section">
+        <div class="container">
+            <h2 class="section-title">Desserts & Sweet Treats</h2>
+            <div class="menu-grid">
+                <div class="menu-item featured" data-category="dessert" data-prep-time="5" data-serves="1">
+                    <h3 class="item-name">Fantastic Chocolate Fondant</h3>
+                    <p class="item-description">Warm chocolate fondant with molten center, served with fresh vanilla ice cream. Fantastically rich!</p>
+                    <p class="item-price">$9.50</p>
+                </div>
+                <div class="menu-item vegetarian" data-category="dessert" data-prep-time="8" data-serves="1">
+                    <h3 class="item-name">Fresh Fruit Tart</h3>
+                    <p class="item-description">Buttery pastry filled with fresh seasonal fruits & vanilla custard. Fantastically fresh & light!</p>
+                    <p class="item-price">$8.75</p>
+                </div>
+                <div class="menu-item signature" data-category="dessert" data-prep-time="10" data-serves="1">
+                    <h3 class="item-name">Tiramisu - Italian Classic</h3>
+                    <p class="item-description">Traditional tiramisu with fresh mascarpone, featuring coffee-soaked ladyfingers. Fantastically authentic!</p>
+                    <p class="item-price">$10.25</p>
+                </div>
+                <div class="menu-item gluten-free" data-category="dessert" data-prep-time="3" data-serves="1">
+                    <h3 class="item-name">Fresh Berry Parfait</h3>
+                    <p class="item-description">Layers of fresh berries, vanilla yogurt & honey. Light, fresh & fantastically healthy!</p>
+                    <p class="item-price">$7.50</p>
+                </div>
+                <div class="menu-item premium" data-category="dessert" data-prep-time="12" data-serves="1">
+                    <h3 class="item-name">Crème Brûlée - French Style</h3>
+                    <p class="item-description">Classic French custard with caramelized sugar top, featuring fresh vanilla. Fantastically traditional!</p>
+                    <p class="item-price">$11.80</p>
+                </div>
+                <div class="menu-item chef-special" data-category="dessert" data-prep-time="15" data-serves="2">
+                    <h3 class="item-name">Flambéed Bananas Foster</h3>
+                    <p class="item-description">Fresh bananas flambéed tableside with rum & brown sugar, served with vanilla ice cream. Fantastic show!</p>
+                    <p class="item-price">$14.99</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Beverages section -->
+    <section id="beverages" class="menu-section">
+        <div class="container">
+            <h2 class="section-title">Beverages & Refreshing Drinks</h2>
+            <div class="menu-grid">
+                <div class="menu-item featured" data-category="beverage" data-prep-time="2" data-serves="1">
+                    <h3 class="item-name">Fresh Fruit Smoothies</h3>
+                    <p class="item-description">Blend of fresh seasonal fruits with yogurt. Choose from fantastic flavors: mango, berry, or tropical mix!</p>
+                    <p class="item-price">$6.50</p>
+                </div>
+                <div class="menu-item premium" data-category="beverage" data-prep-time="5" data-serves="1">
+                    <h3 class="item-name">French Press Coffee</h3>
+                    <p class="item-description">Premium single-origin coffee beans, freshly ground & French pressed. Fantastically aromatic!</p>
+                    <p class="item-price">$4.75</p>
+                </div>
+                <div class="menu-item signature" data-category="beverage" data-prep-time="3" data-serves="1">
+                    <h3 class="item-name">Fresh Lemonade - House Special</h3>
+                    <p class="item-description">Made with fresh lemons, perfectly balanced sweetness. Available with fresh mint or lavender. Fantastic!</p>
+                    <p class="item-price">$3.99</p>
+                </div>
+                <div class="menu-item" data-category="beverage" data-prep-time="1" data-serves="1">
+                    <h3 class="item-name">Craft Beer Selection</h3>
+                    <p class="item-description">Rotating selection of local craft beers. Ask your server for today's fantastic featured brews!</p>
+                    <p class="item-price">$5.50</p>
+                </div>
+                <div class="menu-item vegetarian" data-category="beverage" data-prep-time="4" data-serves="1">
+                    <h3 class="item-name">Fresh Herbal Teas</h3>
+                    <p class="item-description">Selection of fresh herbal teas: chamomile, peppermint, ginger & our fantastic house blend.</p>
+                    <p class="item-price">$3.25</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chef's specials section -->
+    <section id="specials" class="menu-section">
+        <div class="container">
+            <h2 class="section-title">Chef's Fantastic Daily Specials</h2>
+            <div class="menu-grid">
+                <div class="menu-item chef-special featured" data-category="special" data-prep-time="40" data-serves="1">
+                    <h3 class="item-name">Friday Fish Special</h3>
+                    <p class="item-description">Fresh catch of the day, prepared with chef's fantastic signature sauce & fresh seasonal vegetables. Market price.</p>
+                    <p class="item-price">Market Price</p>
+                </div>
+                <div class="menu-item chef-special premium" data-category="special" data-prep-time="45" data-serves="2">
+                    <h3 class="item-name">Weekend Paella - Spanish Style</h3>
+                    <p class="item-description">Traditional Spanish paella with fresh seafood, saffron rice & fantastic authentic flavors. Perfect for sharing!</p>
+                    <p class="item-price">$55.99</p>
+                </div>
+                <div class="menu-item chef-special signature" data-category="special" data-prep-time="35" data-serves="1">
+                    <h3 class="item-name">Farm-to-Table Special</h3>
+                    <p class="item-description">Fresh ingredients from local farms, prepared daily. Changes with seasonal availability. Fantastically fresh!</p>
+                    <p class="item-price">$32.50</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer with contact information -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Contact Information</h3>
+                    <p>📍 123 Fantastic Food Street</p>
+                    <p>📍 Flavor Town, FT 12345</p>
+                    <p>📞 Phone: (555) 123-FOOD</p>
+                    <p>📧 Email: info@fantasticfoodfestival.com</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Hours of Operation</h3>
+                    <ul>
+                        <li>Monday - Thursday: 11:00 AM - 10:00 PM</li>
+                        <li>Friday - Saturday: 11:00 AM - 11:00 PM</li>
+                        <li>Sunday: 10:00 AM - 9:00 PM (Brunch Available)</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <p><a href="#">Facebook - @FantasticFoodFestival</a></p>
+                    <p><a href="#">Twitter - @FFRestaurant</a></p>
+                    <p><a href="#">Instagram - @FantasticFlavors</a></p>
+                    <p><a href="#">TikTok - @FoodFestivalFun</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Special Features</h3>
+                    <ul>
+                        <li>🌱 Farm-to-table fresh ingredients</li>
+                        <li>🔥 Fantastic flame-grilled specialties</li>
+                        <li>🍷 Fine wine & craft beer selection</li>
+                        <li>🎉 Private dining & catering available</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

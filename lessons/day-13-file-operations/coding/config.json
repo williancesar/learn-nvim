@@ -1,0 +1,189 @@
+{
+  "server": {
+    "host": "localhost",
+    "port": 3000,
+    "environment": "development",
+    "cors": {
+      "origin": ["http://localhost:3000", "https://myapp.com"],
+      "credentials": true,
+      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    },
+    "rateLimit": {
+      "windowMs": 900000,
+      "max": 100
+    }
+  },
+  "database": {
+    "url": "mongodb://localhost:27017/myapp_dev",
+    "options": {
+      "useNewUrlParser": true,
+      "useUnifiedTopology": true,
+      "maxPoolSize": 10,
+      "serverSelectionTimeoutMS": 5000,
+      "socketTimeoutMS": 45000
+    },
+    "backup": {
+      "enabled": true,
+      "frequency": "daily",
+      "retention": "30 days"
+    }
+  },
+  "processing": {
+    "batchSize": 50,
+    "timeout": 10000,
+    "maxRetries": 5,
+    "retryDelay": 1000,
+    "enableAnalytics": true,
+    "enableEnrichment": true,
+    "processors": {
+      "user": {
+        "enabled": true,
+        "threads": 4
+      },
+      "data": {
+        "enabled": true,
+        "threads": 2
+      },
+      "analytics": {
+        "enabled": true,
+        "threads": 1
+      }
+    }
+  },
+  "logging": {
+    "level": "info",
+    "format": "combined",
+    "file": {
+      "enabled": true,
+      "path": "./logs/app.log",
+      "maxSize": "10MB",
+      "maxFiles": 5,
+      "datePattern": "YYYY-MM-DD"
+    },
+    "console": {
+      "enabled": true,
+      "colorize": true,
+      "timestamp": true
+    },
+    "errorFile": {
+      "enabled": true,
+      "path": "./logs/error.log"
+    }
+  },
+  "security": {
+    "jwt": {
+      "secret": "your-super-secret-jwt-key-change-in-production",
+      "expiresIn": "24h",
+      "issuer": "myapp",
+      "audience": "myapp-users"
+    },
+    "bcrypt": {
+      "saltRounds": 12
+    },
+    "session": {
+      "maxAge": 86400000,
+      "secure": false,
+      "httpOnly": true,
+      "sameSite": "lax"
+    },
+    "passwordPolicy": {
+      "minLength": 8,
+      "requireUppercase": true,
+      "requireLowercase": true,
+      "requireNumbers": true,
+      "requireSpecialChars": true,
+      "maxAttempts": 5,
+      "lockoutDuration": 900000
+    }
+  },
+  "cache": {
+    "redis": {
+      "host": "localhost",
+      "port": 6379,
+      "password": null,
+      "db": 0,
+      "ttl": 3600
+    },
+    "memory": {
+      "enabled": true,
+      "maxSize": "100MB",
+      "ttl": 1800
+    }
+  },
+  "email": {
+    "service": "smtp",
+    "host": "smtp.gmail.com",
+    "port": 587,
+    "secure": false,
+    "auth": {
+      "user": "your-email@gmail.com",
+      "pass": "your-app-password"
+    },
+    "templates": {
+      "welcome": "./templates/welcome.html",
+      "resetPassword": "./templates/reset-password.html",
+      "verification": "./templates/verification.html"
+    }
+  },
+  "storage": {
+    "type": "local",
+    "local": {
+      "uploadPath": "./uploads",
+      "maxFileSize": "10MB",
+      "allowedTypes": ["image/jpeg", "image/png", "image/gif", "application/pdf"]
+    },
+    "aws": {
+      "region": "us-east-1",
+      "bucket": "myapp-uploads",
+      "accessKeyId": "your-access-key",
+      "secretAccessKey": "your-secret-key"
+    }
+  },
+  "monitoring": {
+    "enabled": true,
+    "metrics": {
+      "enabled": true,
+      "interval": 60000
+    },
+    "health": {
+      "enabled": true,
+      "checks": ["database", "cache", "storage"]
+    },
+    "alerts": {
+      "enabled": true,
+      "thresholds": {
+        "memory": 80,
+        "cpu": 80,
+        "disk": 85,
+        "responseTime": 5000
+      }
+    }
+  },
+  "features": {
+    "userRegistration": true,
+    "emailVerification": true,
+    "socialLogin": false,
+    "twoFactorAuth": false,
+    "dataExport": true,
+    "analytics": true,
+    "notifications": true
+  },
+  "api": {
+    "version": "v1",
+    "baseUrl": "/api/v1",
+    "documentation": {
+      "enabled": true,
+      "path": "/docs"
+    },
+    "rateLimit": {
+      "public": {
+        "windowMs": 900000,
+        "max": 100
+      },
+      "authenticated": {
+        "windowMs": 900000,
+        "max": 1000
+      }
+    }
+  }
+}

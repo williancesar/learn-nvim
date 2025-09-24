@@ -1,0 +1,452 @@
+/* Day 17 - Text Objects Practice CSS */
+/* Designed for practicing word, sentence, paragraph, and tag text objects */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    line-height: 1.7;
+    color: #333;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+/* Header section for tag practice */
+.main-header {
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
+    padding: 40px;
+    text-align: center;
+    position: relative;
+}
+
+.main-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><pattern id="dots" width="40" height="40" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="2" fill="white" opacity="0.1"/></pattern></defs><rect width="40" height="40" fill="url(%23dots)"/></svg>');
+}
+
+.main-header h1 {
+    font-size: 2.8rem;
+    margin-bottom: 15px;
+    font-weight: 300;
+    position: relative;
+    z-index: 1;
+}
+
+.main-header p {
+    font-size: 1.3rem;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+}
+
+/* Main content area */
+.content {
+    padding: 50px;
+}
+
+/* Section styling for paragraph practice */
+section {
+    margin-bottom: 50px;
+    padding: 30px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border-left: 5px solid #3498db;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+section h2 {
+    color: #2c3e50;
+    font-size: 2.2rem;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e74c3c;
+}
+
+/* Paragraph styling for text object practice */
+p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    text-align: justify;
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+/* Inline elements for tag object practice */
+strong {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+em {
+    color: #8e44ad;
+    font-style: italic;
+}
+
+code {
+    background: #2c3e50;
+    color: #1abc9c;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+}
+
+/* Example containers for structured practice */
+.example-container {
+    background: white;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    padding: 25px;
+    margin: 25px 0;
+}
+
+.example-container h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+}
+
+.example-list {
+    list-style: none;
+    padding: 0;
+}
+
+.example-list li {
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: #ecf0f1;
+    border-radius: 5px;
+    border-left: 3px solid #3498db;
+}
+
+/* Word practice section */
+.word-practice {
+    background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+    border-left-color: #27ae60;
+}
+
+.word-examples {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #27ae60;
+}
+
+.word-examples ul {
+    list-style-type: disc;
+    padding-left: 25px;
+}
+
+.word-examples li {
+    margin-bottom: 6px;
+    font-family: 'Courier New', monospace;
+}
+
+/* Sentence practice section */
+.sentence-practice {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    border-left-color: #f39c12;
+}
+
+.sentence-examples {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #f39c12;
+}
+
+/* Paragraph practice section */
+.paragraph-practice {
+    background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+    border-left-color: #9c27b0;
+}
+
+.paragraph-examples {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #9c27b0;
+}
+
+.paragraph-examples h3 {
+    color: #9c27b0;
+    margin-bottom: 15px;
+}
+
+/* Tag practice section */
+.tag-practice {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-left-color: #2196f3;
+}
+
+.tag-examples {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #2196f3;
+}
+
+.highlight {
+    background: #ffeb3b;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+.nested-example {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 6px;
+    margin: 15px 0;
+    border-left: 3px solid #ff5722;
+}
+
+.practice-list {
+    list-style-type: square;
+    padding-left: 25px;
+    margin: 15px 0;
+}
+
+.practice-list li {
+    margin-bottom: 8px;
+}
+
+/* Quote example for tag practice */
+.quote-example {
+    background: #f8f9fa;
+    border-left: 4px solid #6c757d;
+    padding: 20px;
+    margin: 20px 0;
+    font-style: italic;
+}
+
+.quote-example cite {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* Advanced practice section */
+.advanced-practice {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    border-left-color: #f44336;
+}
+
+.combination-examples {
+    margin: 25px 0;
+}
+
+.example-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.example-table th {
+    background: #f44336;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.example-table td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.example-table tr:last-child td {
+    border-bottom: none;
+}
+
+.example-table tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+.nested-structure {
+    margin: 25px 0;
+}
+
+.outer-container {
+    background: #e8f5e8;
+    padding: 20px;
+    border-radius: 8px;
+    border: 2px solid #4caf50;
+}
+
+.inner-container {
+    background: #fff3e0;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #ff9800;
+}
+
+.nested-span {
+    background: #e3f2fd;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #2196f3;
+}
+
+/* Practice exercises section */
+.practice-exercises {
+    background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+    border-left-color: #4caf50;
+}
+
+.exercise-container {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #4caf50;
+}
+
+.exercise-container h3 {
+    color: #2e7d32;
+    margin-bottom: 15px;
+    margin-top: 25px;
+    font-size: 1.3rem;
+}
+
+.exercise-container h3:first-child {
+    margin-top: 0;
+}
+
+.exercise-block {
+    background: #f1f8e9;
+    padding: 15px;
+    border-radius: 6px;
+    margin: 15px 0;
+    border-left: 3px solid #8bc34a;
+}
+
+/* Tips and tricks section */
+.tips-and-tricks {
+    background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+    border-left-color: #ffc107;
+}
+
+.tips-list {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #ffc107;
+}
+
+.tips-list h3 {
+    color: #f57c00;
+    margin-bottom: 15px;
+}
+
+.tips-list ul {
+    list-style-type: disc;
+    padding-left: 25px;
+}
+
+.tips-list li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.workflow-integration {
+    background: #f3e5f5;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border-left: 4px solid #9c27b0;
+}
+
+.workflow-integration h3 {
+    color: #7b1fa2;
+    margin-bottom: 15px;
+}
+
+/* Footer styling */
+.main-footer {
+    background: linear-gradient(135deg, #37474f 0%, #263238 100%);
+    color: white;
+    padding: 30px 50px;
+    text-align: center;
+}
+
+.main-footer p {
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.main-footer p:last-child {
+    margin-bottom: 0;
+    font-weight: bold;
+    color: #4fc3f7;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .content {
+        padding: 30px 20px;
+    }
+
+    .main-header {
+        padding: 30px 20px;
+    }
+
+    .main-header h1 {
+        font-size: 2.2rem;
+    }
+
+    section {
+        padding: 20px;
+    }
+
+    section h2 {
+        font-size: 1.8rem;
+    }
+
+    .main-footer {
+        padding: 20px;
+    }
+
+    .example-table {
+        font-size: 0.9rem;
+    }
+
+    .example-table th,
+    .example-table td {
+        padding: 8px;
+    }
+}

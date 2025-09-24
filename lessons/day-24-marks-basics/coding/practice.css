@@ -1,0 +1,511 @@
+/* Day 24 - Marks Basics Practice CSS */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.marks-container {
+    font-family: 'Source Code Pro', 'Consolas', monospace;
+    line-height: 1.7;
+    color: #2c3e50;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.main-header {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    padding: 40px;
+    text-align: center;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.main-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.content {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.mark-section {
+    margin-bottom: 50px;
+    padding: 30px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border-left: 5px solid #e74c3c;
+}
+
+.mark-section h2 {
+    color: #e74c3c;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e74c3c;
+}
+
+.mark-point {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-left: 4px solid #f39c12;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.marks-explanation {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #e74c3c;
+}
+
+.marks-commands {
+    list-style: none;
+    padding: 0;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+.marks-commands li {
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    background: white;
+    border-radius: 4px;
+    border-left: 3px solid #e74c3c;
+    font-family: 'Monaco', monospace;
+}
+
+.marks-commands code {
+    background: #2c3e50;
+    color: #1abc9c;
+    padding: 3px 6px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.important-point {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-left: 4px solid #28a745;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+#basic-marks {
+    background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+    border-left-color: #27ae60;
+}
+
+#basic-marks h2 {
+    color: #27ae60;
+    border-bottom-color: #27ae60;
+}
+
+.example-content {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #27ae60;
+}
+
+.practice-area {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 6px;
+    margin: 15px 0;
+    border-left: 3px solid #27ae60;
+}
+
+.practice-area pre {
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin: 10px 0;
+    font-family: 'Monaco', monospace;
+}
+
+.navigation-practice {
+    background: #e8f5e8;
+    padding: 20px;
+    border-radius: 6px;
+    margin: 15px 0;
+    border: 1px solid #27ae60;
+}
+
+.nested-mark {
+    background: #fff;
+    border: 1px solid #27ae60;
+    border-left: 4px solid #27ae60;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+
+#advanced-marks {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-left-color: #2196f3;
+}
+
+#advanced-marks h2 {
+    color: #2196f3;
+    border-bottom-color: #2196f3;
+}
+
+.advanced-content {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #2196f3;
+}
+
+.mark-strategy {
+    background: #f3f4f6;
+    padding: 20px;
+    border-radius: 6px;
+    margin: 15px 0;
+    border-left: 3px solid #2196f3;
+}
+
+.strategy-list {
+    list-style-type: disc;
+    padding-left: 25px;
+    margin: 15px 0;
+}
+
+.strategy-list li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.implementation-note {
+    background: #e3f2fd;
+    border: 1px solid #bbdefb;
+    border-left: 4px solid #2196f3;
+    padding: 12px;
+    margin: 15px 0;
+    border-radius: 4px;
+}
+
+.workflow-integration {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 6px;
+    margin: 15px 0;
+    border: 1px solid #2196f3;
+}
+
+.integration-examples {
+    background: white;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 10px 0;
+    border-left: 3px solid #2196f3;
+}
+
+.macro-example {
+    background: #f0f0f0;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+}
+
+.macro-example pre {
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    margin: 8px 0;
+}
+
+.search-integration {
+    background: #fff;
+    border: 1px solid #2196f3;
+    border-left: 4px solid #2196f3;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 4px;
+}
+
+#global-marks {
+    background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+    border-left-color: #9c27b0;
+}
+
+#global-marks h2 {
+    color: #9c27b0;
+    border-bottom-color: #9c27b0;
+}
+
+.global-mark {
+    background: #f3e5f5;
+    border: 1px solid #e1bee7;
+    border-left: 4px solid #9c27b0;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.global-examples {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #9c27b0;
+}
+
+.project-navigation {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 6px;
+    margin: 15px 0;
+    border-left: 3px solid #9c27b0;
+}
+
+.navigation-patterns {
+    list-style: none;
+    padding: 0;
+    background: white;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.navigation-patterns li {
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    background: #f3e5f5;
+    border-radius: 4px;
+    border-left: 3px solid #9c27b0;
+    font-family: 'Monaco', monospace;
+}
+
+.usage-example {
+    background: #fff;
+    border: 1px solid #9c27b0;
+    border-left: 4px solid #9c27b0;
+    padding: 12px;
+    margin: 15px 0;
+    border-radius: 4px;
+}
+
+.session-persistence {
+    background: #f3e5f5;
+    padding: 20px;
+    border-radius: 6px;
+    margin: 15px 0;
+    border: 1px solid #9c27b0;
+}
+
+.configuration-example {
+    background: white;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 10px 0;
+    border-left: 3px solid #9c27b0;
+}
+
+.configuration-example pre {
+    background: #2c3e50;
+    color: #ecf0f1;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 0.85rem;
+    margin: 10px 0;
+    overflow-x: auto;
+}
+
+#practice-exercises {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    border-left-color: #ff9800;
+}
+
+#practice-exercises h2 {
+    color: #ff9800;
+    border-bottom-color: #ff9800;
+}
+
+.exercise-set {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border: 1px solid #ff9800;
+}
+
+.exercise-set h3 {
+    color: #e65100;
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+}
+
+.exercise-start {
+    background: #fff3e0;
+    border: 1px solid #ffe0b2;
+    border-left: 4px solid #ff9800;
+    padding: 12px;
+    margin: 15px 0;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.exercise-steps {
+    list-style-type: decimal;
+    padding-left: 25px;
+    margin: 15px 0;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.exercise-steps li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.exercise-end {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-left: 4px solid #28a745;
+    padding: 12px;
+    margin: 15px 0;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.integration-tasks {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 6px;
+    margin: 15px 0;
+    border-left: 3px solid #ff9800;
+}
+
+.task-list {
+    list-style-type: disc;
+    padding-left: 25px;
+    margin: 15px 0;
+}
+
+.task-list li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.advanced-task {
+    background: #fff;
+    border: 1px solid #ff9800;
+    border-left: 4px solid #ff9800;
+    padding: 12px;
+    margin: 15px 0;
+    border-radius: 4px;
+}
+
+.scenario-practice {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 6px;
+    margin: 15px 0;
+    border-left: 3px solid #ff9800;
+}
+
+.review-workflow {
+    background: white;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 10px 0;
+    border: 1px solid #ffe0b2;
+}
+
+.workflow-steps {
+    list-style-type: decimal;
+    padding-left: 25px;
+    margin: 15px 0;
+}
+
+.workflow-steps li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.final-mark {
+    background: #e1f5fe;
+    border: 1px solid #b3e5fc;
+    border-left: 4px solid #03a9f4;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 5px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.main-footer {
+    background: linear-gradient(135deg, #37474f 0%, #263238 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+    border-radius: 10px;
+    margin-top: 30px;
+}
+
+.main-footer p {
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.main-footer p:last-child {
+    margin-bottom: 0;
+    font-weight: bold;
+    color: #4fc3f7;
+    font-family: 'Monaco', monospace;
+}
+
+@media (max-width: 768px) {
+    .marks-container {
+        padding: 10px;
+    }
+
+    .content {
+        padding: 25px 15px;
+    }
+
+    .main-header {
+        padding: 25px 15px;
+    }
+
+    .main-header h1 {
+        font-size: 2rem;
+    }
+
+    .mark-section {
+        padding: 20px 15px;
+    }
+
+    .mark-section h2 {
+        font-size: 1.6rem;
+    }
+}

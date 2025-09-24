@@ -1,0 +1,252 @@
+{
+  "_delete_operations_instructions": {
+    "description": "Day 06 - Delete Operations Practice",
+    "objectives": [
+      "Use 'x' to delete character under cursor, 'X' to delete before cursor",
+      "Practice 'dw' (delete word), 'dd' (delete line), 'd$' (delete to end of line)",
+      "Use 'D' as shortcut for 'd$'",
+      "Practice delete with motions: 'd2w', 'd3j', 'dt)' etc.",
+      "Remove redundant sections and cleanup configurations"
+    ],
+    "targets": "This file contains duplicate and redundant configurations to practice deletion"
+  },
+  "web_application_config": {
+    "app_name": "E-Commerce Platform",
+    "app_name_duplicate": "E-Commerce Platform",
+    "app_name_backup": "E-Commerce Platform",
+    "version": "2.1.0",
+    "version_old": "2.0.9",
+    "version_legacy": "1.9.8",
+    "version_deprecated": "1.8.5",
+    "description": "A full-featured e-commerce platform",
+    "description_copy": "A full-featured e-commerce platform",
+    "description_backup": "A full-featured e-commerce platform"
+  },
+  "server_configuration": {
+    "host": "localhost",
+    "host_backup": "localhost",
+    "port": 3000,
+    "port_alternative": 3001,
+    "port_fallback": 3002,
+    "port_test": 3003,
+    "ssl_enabled": true,
+    "ssl_enabled_duplicate": true,
+    "ssl_port": 443,
+    "ssl_port_backup": 443,
+    "ssl_certificate": "/path/to/cert.pem",
+    "ssl_certificate_old": "/path/to/old-cert.pem",
+    "ssl_certificate_backup": "/path/to/backup-cert.pem",
+    "ssl_private_key": "/path/to/key.pem",
+    "ssl_private_key_old": "/path/to/old-key.pem",
+    "ssl_private_key_backup": "/path/to/backup-key.pem"
+  },
+  "database_settings": {
+    "primary": {
+      "type": "postgresql",
+      "type_backup": "postgresql",
+      "host": "db.example.com",
+      "host_replica": "db-replica.example.com",
+      "host_backup": "db-backup.example.com",
+      "host_old": "old-db.example.com",
+      "port": 5432,
+      "port_backup": 5432,
+      "port_alternative": 5433,
+      "database": "ecommerce_prod",
+      "database_test": "ecommerce_test",
+      "database_dev": "ecommerce_dev",
+      "database_staging": "ecommerce_staging",
+      "username": "admin",
+      "username_readonly": "readonly_user",
+      "username_backup": "backup_user",
+      "username_old": "legacy_user"
+    },
+    "redis_cache": {
+      "host": "redis.example.com",
+      "host_backup": "redis-backup.example.com",
+      "host_cluster_1": "redis-cluster-1.example.com",
+      "host_cluster_2": "redis-cluster-2.example.com",
+      "host_old": "old-redis.example.com",
+      "port": 6379,
+      "port_backup": 6380,
+      "port_cluster": 6381,
+      "database": 0,
+      "database_sessions": 1,
+      "database_cache": 2,
+      "database_temp": 3,
+      "database_old": 4
+    },
+    "elasticsearch": {
+      "cluster_name": "ecommerce-search",
+      "cluster_name_backup": "ecommerce-search-backup",
+      "cluster_name_old": "old-ecommerce-search",
+      "nodes": [
+        "es-node-1.example.com:9200",
+        "es-node-2.example.com:9200",
+        "es-node-3.example.com:9200"
+      ],
+      "nodes_backup": [
+        "es-backup-1.example.com:9200",
+        "es-backup-2.example.com:9200"
+      ],
+      "nodes_old": [
+        "old-es-1.example.com:9200",
+        "old-es-2.example.com:9200"
+      ],
+      "index_prefix": "ecommerce",
+      "index_prefix_backup": "ecommerce_backup",
+      "index_prefix_old": "old_ecommerce"
+    }
+  },
+  "authentication_methods": {
+    "jwt": {
+      "secret": "${JWT_SECRET}",
+      "secret_backup": "${JWT_SECRET_BACKUP}",
+      "secret_old": "${JWT_SECRET_OLD}",
+      "expiration": "24h",
+      "expiration_short": "1h",
+      "expiration_long": "7d",
+      "expiration_extended": "30d",
+      "algorithm": "HS256",
+      "algorithm_backup": "HS256",
+      "algorithm_alternative": "RS256"
+    },
+    "oauth2": {
+      "google": {
+        "client_id": "${GOOGLE_CLIENT_ID}",
+        "client_id_backup": "${GOOGLE_CLIENT_ID_BACKUP}",
+        "client_secret": "${GOOGLE_CLIENT_SECRET}",
+        "client_secret_backup": "${GOOGLE_CLIENT_SECRET_BACKUP}",
+        "callback_url": "/auth/google/callback",
+        "callback_url_backup": "/auth/google/callback/backup",
+        "callback_url_old": "/auth/google/callback/old"
+      },
+      "facebook": {
+        "app_id": "${FACEBOOK_APP_ID}",
+        "app_id_backup": "${FACEBOOK_APP_ID_BACKUP}",
+        "app_secret": "${FACEBOOK_APP_SECRET}",
+        "app_secret_backup": "${FACEBOOK_APP_SECRET_BACKUP}",
+        "callback_url": "/auth/facebook/callback",
+        "callback_url_backup": "/auth/facebook/callback/backup"
+      },
+      "twitter": {
+        "consumer_key": "${TWITTER_CONSUMER_KEY}",
+        "consumer_key_backup": "${TWITTER_CONSUMER_KEY_BACKUP}",
+        "consumer_secret": "${TWITTER_CONSUMER_SECRET}",
+        "consumer_secret_backup": "${TWITTER_CONSUMER_SECRET_BACKUP}",
+        "callback_url": "/auth/twitter/callback",
+        "callback_url_backup": "/auth/twitter/callback/backup"
+      }
+    },
+    "session": {
+      "store": "redis",
+      "store_backup": "memory",
+      "store_fallback": "file",
+      "secret": "${SESSION_SECRET}",
+      "secret_backup": "${SESSION_SECRET_BACKUP}",
+      "cookie_name": "session_id",
+      "cookie_name_backup": "session_id_backup",
+      "max_age": 86400000,
+      "max_age_short": 3600000,
+      "max_age_extended": 604800000
+    }
+  },
+  "payment_providers": {
+    "stripe": {
+      "public_key": "${STRIPE_PUBLIC_KEY}",
+      "public_key_test": "${STRIPE_PUBLIC_KEY_TEST}",
+      "public_key_backup": "${STRIPE_PUBLIC_KEY_BACKUP}",
+      "secret_key": "${STRIPE_SECRET_KEY}",
+      "secret_key_test": "${STRIPE_SECRET_KEY_TEST}",
+      "secret_key_backup": "${STRIPE_SECRET_KEY_BACKUP}",
+      "webhook_secret": "${STRIPE_WEBHOOK_SECRET}",
+      "webhook_secret_backup": "${STRIPE_WEBHOOK_SECRET_BACKUP}",
+      "api_version": "2023-08-16",
+      "api_version_old": "2023-06-01",
+      "api_version_legacy": "2022-11-15"
+    },
+    "paypal": {
+      "client_id": "${PAYPAL_CLIENT_ID}",
+      "client_id_sandbox": "${PAYPAL_CLIENT_ID_SANDBOX}",
+      "client_id_backup": "${PAYPAL_CLIENT_ID_BACKUP}",
+      "client_secret": "${PAYPAL_CLIENT_SECRET}",
+      "client_secret_sandbox": "${PAYPAL_CLIENT_SECRET_SANDBOX}",
+      "client_secret_backup": "${PAYPAL_CLIENT_SECRET_BACKUP}",
+      "mode": "production",
+      "mode_test": "sandbox",
+      "mode_backup": "production"
+    }
+  },
+  "email_services": {
+    "smtp": {
+      "host": "smtp.example.com",
+      "host_backup": "smtp-backup.example.com",
+      "host_old": "old-smtp.example.com",
+      "port": 587,
+      "port_ssl": 465,
+      "port_backup": 587,
+      "secure": true,
+      "secure_backup": true,
+      "auth": {
+        "user": "${SMTP_USER}",
+        "user_backup": "${SMTP_USER_BACKUP}",
+        "pass": "${SMTP_PASSWORD}",
+        "pass_backup": "${SMTP_PASSWORD_BACKUP}"
+      }
+    },
+    "sendgrid": {
+      "api_key": "${SENDGRID_API_KEY}",
+      "api_key_backup": "${SENDGRID_API_KEY_BACKUP}",
+      "api_key_test": "${SENDGRID_API_KEY_TEST}",
+      "from_email": "noreply@example.com",
+      "from_email_backup": "noreply-backup@example.com",
+      "from_email_old": "old-noreply@example.com"
+    },
+    "mailgun": {
+      "api_key": "${MAILGUN_API_KEY}",
+      "api_key_backup": "${MAILGUN_API_KEY_BACKUP}",
+      "domain": "mg.example.com",
+      "domain_backup": "mg-backup.example.com",
+      "domain_old": "old-mg.example.com"
+    }
+  },
+  "cdn_configuration": {
+    "cloudfront": {
+      "distribution_id": "${CLOUDFRONT_DISTRIBUTION_ID}",
+      "distribution_id_backup": "${CLOUDFRONT_DISTRIBUTION_ID_BACKUP}",
+      "domain": "cdn.example.com",
+      "domain_backup": "cdn-backup.example.com",
+      "domain_old": "old-cdn.example.com"
+    },
+    "cloudflare": {
+      "zone_id": "${CLOUDFLARE_ZONE_ID}",
+      "zone_id_backup": "${CLOUDFLARE_ZONE_ID_BACKUP}",
+      "api_key": "${CLOUDFLARE_API_KEY}",
+      "api_key_backup": "${CLOUDFLARE_API_KEY_BACKUP}",
+      "email": "${CLOUDFLARE_EMAIL}",
+      "email_backup": "${CLOUDFLARE_EMAIL_BACKUP}"
+    }
+  },
+  "monitoring_services": {
+    "newrelic": {
+      "license_key": "${NEW_RELIC_LICENSE_KEY}",
+      "license_key_backup": "${NEW_RELIC_LICENSE_KEY_BACKUP}",
+      "app_name": "E-Commerce Platform",
+      "app_name_backup": "E-Commerce Platform Backup",
+      "app_name_old": "Old E-Commerce Platform"
+    },
+    "datadog": {
+      "api_key": "${DATADOG_API_KEY}",
+      "api_key_backup": "${DATADOG_API_KEY_BACKUP}",
+      "app_key": "${DATADOG_APP_KEY}",
+      "app_key_backup": "${DATADOG_APP_KEY_BACKUP}"
+    },
+    "sentry": {
+      "dsn": "${SENTRY_DSN}",
+      "dsn_backup": "${SENTRY_DSN_BACKUP}",
+      "dsn_test": "${SENTRY_DSN_TEST}",
+      "environment": "production",
+      "environment_backup": "production-backup",
+      "environment_test": "test"
+    }
+  }
+}

@@ -1,0 +1,310 @@
+{
+  "apiVersion": "v1",
+  "kind": "ConfigMap",
+  "metadata": {
+    "name": "microservices-config",
+    "namespace": "microservices",
+    "labels": {
+      "app": "microservices",
+      "version": "1.0.0"
+    }
+    // Error: Missing comma after labels
+    "annotations": {
+      "description": "Configuration for microservices deployment",
+      "last-updated": "2024-03-15T10:30:00Z"
+    }
+  },
+  "data": {
+    "database": {
+      "host": "postgresql.microservices.svc.cluster.local",
+      "port": 5432,
+      "database": "microservices_db",
+      "ssl_mode": "require",
+      "connection_pool": {
+        "max_connections": 20,
+        "min_connections": 5,
+        "connection_timeout": 30
+      },
+      "backup": {
+        "enabled": true,
+        "schedule": "0 2 * * *",
+        "retention_days": 30,
+        "storage_class": "standard"
+      }
+    },
+    "redis": {
+      "host": "redis-master.microservices.svc.cluster.local",
+      "port": 6379,
+      "database": 0,
+      "ttl_seconds": 3600,
+      "cluster_mode": false,
+      "sentinel": {
+        "enabled": false,
+        "master_name": "mymaster",
+        "sentinels": []
+      }
+    },
+    "services": {
+      "user-service": {
+        "port": 8080,
+        "health_check_path": "/health",
+        "readiness_path": "/ready",
+        "metrics_path": "/metrics",
+        "log_level": "info",
+        "jwt": {
+          "secret_key": "${JWT_SECRET}",
+          "expiry_hours": 24,
+          "refresh_expiry_days": 30
+        },
+        "rate_limiting": {
+          "enabled": true,
+          "requests_per_minute": 1000,
+          "burst_size": 100
+        },
+        "cors": {
+          "allowed_origins": ["*"],
+          "allowed_methods": ["GET", "POST", "PUT", "DELETE"],
+          "allowed_headers": ["Content-Type", "Authorization"]
+        }
+      },
+      "order-service": {
+        "port": 8080,
+        "health_check_path": "/health",
+        "readiness_path": "/ready",
+        "metrics_path": "/metrics",
+        "log_level": "info",
+        "payment": {
+          "gateway": "stripe",
+          "webhook_secret": "${STRIPE_WEBHOOK_SECRET}",
+          "currency": "USD",
+          "timeout_seconds": 30
+        },
+        "inventory": {
+          "service_url": "http://inventory-service.microservices.svc.cluster.local",
+          "timeout_seconds": 10,
+          "retry_attempts": 3
+        }
+        // Error: Missing comma
+        "notification": {
+          "service_url": "http://notification-service.microservices.svc.cluster.local",
+          "async": true
+        }
+      },
+      "payment-service": {
+        "port": 8080,
+        "health_check_path": "/health",
+        "readiness_path": "/ready",
+        "metrics_path": "/metrics",
+        "log_level": "info",
+        "providers": {
+          "stripe": {
+            "api_key": "${STRIPE_API_KEY}",
+            "webhook_endpoint": "/webhooks/stripe",
+            "supported_currencies": ["USD", "EUR", "GBP"]
+          },
+          "paypal": {
+            "client_id": "${PAYPAL_CLIENT_ID}",
+            "client_secret": "${PAYPAL_CLIENT_SECRET}",
+            "sandbox": false
+          }
+        },
+        "fraud_detection": {
+          "enabled": true,
+          "max_amount_usd": 10000,
+          "velocity_checks": true,
+          "geolocation_checks": true
+        }
+      },
+      "notification-service": {
+        "port": 8080,
+        "health_check_path": "/health",
+        "readiness_path": "/ready",
+        "metrics_path": "/metrics",
+        "log_level": "info",
+        "email": {
+          "provider": "sendgrid",
+          "api_key": "${SENDGRID_API_KEY}",
+          "from_address": "noreply@example.com",
+          "templates": {
+            "order_confirmation": "d-1234567890abcdef",
+            "password_reset": "d-fedcba0987654321",
+            "welcome": "d-abcdef1234567890"
+          }
+        },
+        "sms": {
+          "provider": "twilio",
+          "account_sid": "${TWILIO_ACCOUNT_SID}",
+          "auth_token": "${TWILIO_AUTH_TOKEN}",
+          "from_number": "+1234567890"
+        },
+        "push": {
+          "provider": "firebase",
+          "server_key": "${FIREBASE_SERVER_KEY}",
+          "project_id": "microservices-app"
+        }
+      }
+    },
+    "monitoring": {
+      "prometheus": {
+        "enabled": true,
+        "scrape_interval": "15s",
+        "evaluation_interval": "15s",
+        "retention": "30d"
+      },
+      "grafana": {
+        "enabled": true,
+        "admin_user": "admin",
+        "admin_password": "${GRAFANA_PASSWORD}",
+        "dashboards": [
+          "microservices-overview",
+          "kubernetes-cluster",
+          "application-performance"
+        ]
+      },
+      "jaeger": {
+        "enabled": true,
+        "sampling_rate": 0.1,
+        "agent_host": "jaeger-agent.monitoring.svc.cluster.local",
+        "agent_port": 6831
+      },
+      "alerts": {
+        "slack": {
+          "webhook_url": "${SLACK_WEBHOOK_URL}",
+          "channel": "#alerts",
+          "username": "PrometheusBot"
+        },
+        "pagerduty": {
+          "integration_key": "${PAGERDUTY_INTEGRATION_KEY}",
+          "severity": "critical"
+        }
+      }
+    },
+    "security": {
+      "network_policies": {
+        "enabled": true,
+        "default_deny": true,
+        "allowed_ingress": [
+          {
+            "from": "ingress-nginx",
+            "ports": [80, 443]
+          },
+          {
+            "from": "monitoring",
+            "ports": [8080, 9090]
+          }
+        ]
+      },
+      "pod_security": {
+        "run_as_non_root": true,
+        "read_only_root_filesystem": true,
+        "allow_privilege_escalation": false,
+        "drop_capabilities": ["ALL"],
+        "add_capabilities": []
+      },
+      "secrets": {
+        "encryption_at_rest": true,
+        "auto_rotation": true,
+        "rotation_interval_days": 90
+      }
+    },
+    "scaling": {
+      "horizontal_pod_autoscaler": {
+        "enabled": true,
+        "min_replicas": 2,
+        "max_replicas": 20,
+        "target_cpu_utilization": 70,
+        "target_memory_utilization": 80,
+        "scale_down_delay": "5m",
+        "scale_up_delay": "3m"
+      },
+      "vertical_pod_autoscaler": {
+        "enabled": false,
+        "update_mode": "Auto",
+        "resource_policies": []
+      },
+      "cluster_autoscaler": {
+        "enabled": true,
+        "min_nodes": 3,
+        "max_nodes": 100,
+        "scale_down_delay_after_add": "10m",
+        "scale_down_unneeded_time": "10m"
+      }
+    },
+    "backup": {
+      "velero": {
+        "enabled": true,
+        "storage_location": "s3://backup-bucket/velero",
+        "schedule": "0 1 * * *",
+        "retention": "720h"
+      },
+      "database": {
+        "enabled": true,
+        "schedule": "0 2 * * *",
+        "retention_days": 30,
+        "encryption": true
+      }
+    },
+    "logging": {
+      "level": "info",
+      "format": "json",
+      "elasticsearch": {
+        "enabled": true,
+        "host": "elasticsearch-master.monitoring.svc.cluster.local",
+        "port": 9200,
+        "index_prefix": "microservices",
+        "retention_days": 14
+      },
+      "fluentd": {
+        "enabled": true,
+        "buffer_size": "32MB",
+        "flush_interval": "10s"
+      }
+    },
+    // Error: Extra comma and invalid JSON structure
+    "feature_flags": {
+      "new_payment_flow": {
+        "enabled": true,
+        "rollout_percentage": 10,
+        "user_segments": ["beta_users"]
+      },
+      "enhanced_notifications": {
+        "enabled": false,
+        "rollout_percentage": 0,
+        "user_segments": []
+      },
+      "advanced_analytics": {
+        "enabled": true,
+        "rollout_percentage": 100,
+        "user_segments": ["all"]
+      },
+    },
+    "performance": {
+      "caching": {
+        "enabled": true,
+        "redis_cluster": true,
+        "default_ttl": 3600,
+        "strategies": {
+          "user_data": "write_through",
+          "product_catalog": "write_behind",
+          "session_data": "write_around"
+        }
+      },
+      "circuit_breaker": {
+        "enabled": true,
+        "failure_threshold": 5,
+        "timeout": "60s",
+        "half_open_max_calls": 3
+      },
+      "rate_limiting": {
+        "global": {
+          "requests_per_second": 10000,
+          "burst": 1000
+        },
+        "per_user": {
+          "requests_per_minute": 1000,
+          "burst": 100
+        }
+      }
+    }
+  }
+}

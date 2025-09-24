@@ -1,0 +1,576 @@
+# Legacy Application Configuration - Requires Modernization
+# Practice change operations: cw, ciw, c$, cc, C, etc.
+# Transform this legacy config into modern cloud-native configuration
+
+# Legacy Docker Compose v2.0 format (needs update to v3.8+)
+version: '2.0'
+
+# Legacy service definitions
+services:
+  # Legacy web server configuration
+  web:
+    image: apache:2.2
+    container_name: legacy_web
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - ./www:/var/www/html
+      - ./config/apache.conf:/etc/apache2/apache2.conf
+    links:
+      - database:db
+      - cache:memcached
+    environment:
+      - APACHE_LOG_LEVEL=debug
+      - PHP_VERSION=5.6
+      - REGISTER_GLOBALS=on
+      - MAGIC_QUOTES=on
+      - ALLOW_URL_INCLUDE=on
+      - EXPOSE_PHP=on
+    restart: always
+    mem_limit: 512m
+    cpuset: "0"
+
+  # Legacy database (MySQL 5.5)
+  database:
+    image: mysql:5.5
+    container_name: legacy_mysql
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./dumps:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: ecommerce
+      MYSQL_USER: webapp
+      MYSQL_PASSWORD: webapp123
+    command: |
+      --sql-mode=""
+      --innodb-use-native-aio=0
+      --skip-innodb-use-native-aio
+      --innodb-flush-method=fsync
+    restart: always
+    mem_limit: 1g
+
+  # Legacy cache (Memcached)
+  cache:
+    image: memcached:1.4
+    container_name: legacy_memcached
+    ports:
+      - "11211:11211"
+    command: memcached -m 256 -p 11211 -u memcache -l 0.0.0.0
+    restart: always
+    mem_limit: 256m
+
+  # Legacy session store
+  sessions:
+    image: redis:3.2
+    container_name: legacy_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --save ""
+    restart: always
+    mem_limit: 128m
+
+  # Legacy monitoring (basic)
+  monitoring:
+    image: prom/node-exporter:v0.15.0
+    container_name: legacy_monitoring
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    restart: always
+
+  # Legacy FTP server
+  ftp:
+    image: stilliard/pure-ftpd:hardened
+    container_name: legacy_ftp
+    ports:
+      - "21:21"
+      - "30000-30009:30000-30009"
+    volumes:
+      - ./uploads:/home/ftpusers
+    environment:
+      PUBLICHOST: localhost
+      FTP_USER_NAME: ftpuser
+      FTP_USER_PASS: ftppass123
+      FTP_USER_HOME: /home/ftpusers
+    restart: always
+
+  # Legacy email server
+  mail:
+    image: tvial/docker-mailserver:2.1.0
+    container_name: legacy_mail
+    hostname: mail.company.local
+    domainname: company.local
+    ports:
+      - "25:25"
+      - "587:587"
+      - "993:993"
+    volumes:
+      - maildata:/var/mail
+      - mailstate:/var/mail-state
+      - ./config/postfix-main.cf:/tmp/docker-mailserver/postfix-main.cf
+    environment:
+      - ENABLE_SPAMASSASSIN=0
+      - ENABLE_CLAMAV=0
+      - ENABLE_POSTGREY=0
+      - ENABLE_AMAVIS=0
+      - ONE_DIR=1
+      - DMS_DEBUG=1
+      - SSL_TYPE=manual
+    cap_add:
+      - NET_ADMIN
+      - SYS_PTRACE
+    restart: always
+
+# Legacy volume definitions
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+  maildata:
+    driver: local
+  mailstate:
+    driver: local
+
+# Legacy network configuration (should use custom networks)
+# Using default bridge network (insecure)
+
+---
+# Legacy Kubernetes Configuration (API version needs update)
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: legacy-webapp
+  namespace: default
+  labels:
+    app: legacy-webapp
+    version: "1.0"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: legacy-webapp
+  template:
+    metadata:
+      labels:
+        app: legacy-webapp
+        version: "1.0"
+    spec:
+      containers:
+      - name: webapp
+        image: php:5.6-apache
+        ports:
+        - containerPort: 80
+        env:
+        - name: MYSQL_HOST
+          value: "mysql-service"
+        - name: MYSQL_USER
+          value: "root"
+        - name: MYSQL_PASSWORD
+          value: "root123"
+        - name: MYSQL_DATABASE
+          value: "ecommerce"
+        - name: PHP_REGISTER_GLOBALS
+          value: "On"
+        - name: PHP_MAGIC_QUOTES
+          value: "On"
+        - name: PHP_ALLOW_URL_INCLUDE
+          value: "On"
+        - name: SESSION_SAVE_HANDLER
+          value: "files"
+        - name: SESSION_SAVE_PATH
+          value: "/tmp"
+        volumeMounts:
+        - name: web-content
+          mountPath: /var/www/html
+        - name: php-config
+          mountPath: /usr/local/etc/php/php.ini
+          subPath: php.ini
+        - name: apache-config
+          mountPath: /etc/apache2/sites-available/000-default.conf
+          subPath: default.conf
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health.php
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /ready.php
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: web-content
+        hostPath:
+          path: /var/www
+      - name: php-config
+        configMap:
+          name: legacy-php-config
+      - name: apache-config
+        configMap:
+          name: legacy-apache-config
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      restartPolicy: Always
+
+---
+# Legacy Service definition
+apiVersion: v1
+kind: Service
+metadata:
+  name: legacy-webapp-service
+  namespace: default
+  labels:
+    app: legacy-webapp
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30080
+    protocol: TCP
+  selector:
+    app: legacy-webapp
+
+---
+# Legacy MySQL Deployment
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.5
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "root123"
+        - name: MYSQL_DATABASE
+          value: "ecommerce"
+        - name: MYSQL_USER
+          value: "webapp"
+        - name: MYSQL_PASSWORD
+          value: "webapp123"
+        volumeMounts:
+        - name: mysql-storage
+          mountPath: /var/lib/mysql
+        - name: mysql-config
+          mountPath: /etc/mysql/my.cnf
+          subPath: my.cnf
+        args:
+        - "--sql-mode="
+        - "--innodb-use-native-aio=0"
+        - "--skip-innodb-use-native-aio"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "200m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+      volumes:
+      - name: mysql-storage
+        hostPath:
+          path: /var/lib/mysql
+      - name: mysql-config
+        configMap:
+          name: mysql-legacy-config
+
+---
+# Legacy MySQL Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+  namespace: default
+spec:
+  type: ClusterIP
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    app: mysql
+
+---
+# Legacy ConfigMap for PHP
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: legacy-php-config
+  namespace: default
+data:
+  php.ini: |
+    ; Legacy PHP 5.6 Configuration
+    ; WARNING: These settings are insecure and deprecated
+
+    [PHP]
+    engine = On
+    short_open_tag = On
+    precision = 14
+    output_buffering = 4096
+    zlib.output_compression = Off
+    implicit_flush = Off
+    unserialize_callback_func =
+    serialize_precision = 17
+    disable_functions =
+    disable_classes =
+    zend.enable_gc = On
+
+    ; Legacy settings (DEPRECATED)
+    register_globals = On
+    magic_quotes_gpc = On
+    magic_quotes_runtime = Off
+    magic_quotes_sybase = Off
+    auto_prepend_file =
+    auto_append_file =
+    default_mimetype = "text/html"
+    default_charset = "UTF-8"
+
+    ; File uploads
+    file_uploads = On
+    upload_tmp_dir =
+    upload_max_filesize = 2M
+    max_file_uploads = 20
+
+    ; Security (weak settings)
+    allow_url_fopen = On
+    allow_url_include = On
+    expose_php = On
+
+    ; Session handling (insecure)
+    session.save_handler = files
+    session.save_path = "/tmp"
+    session.use_strict_mode = 0
+    session.use_cookies = 1
+    session.use_only_cookies = 0
+    session.name = PHPSESSID
+    session.auto_start = 1
+    session.cookie_lifetime = 0
+    session.cookie_path = /
+    session.cookie_domain =
+    session.cookie_httponly = 0
+    session.cookie_secure = 0
+    session.serialize_handler = php
+    session.gc_probability = 1
+    session.gc_divisor = 1000
+    session.gc_maxlifetime = 1440
+    session.referer_check =
+    session.cache_limiter = nocache
+    session.cache_expire = 180
+    session.use_trans_sid = 1
+    session.hash_function = 0
+    session.hash_bits_per_character = 5
+
+    ; MySQL extension (deprecated)
+    mysql.allow_local_infile = On
+    mysql.allow_persistent = On
+    mysql.cache_size = 2000
+    mysql.max_persistent = -1
+    mysql.max_links = -1
+    mysql.default_port =
+    mysql.default_socket =
+    mysql.default_host =
+    mysql.default_user =
+    mysql.default_password =
+    mysql.connect_timeout = 60
+    mysql.trace_mode = Off
+
+---
+# Legacy Apache Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: legacy-apache-config
+  namespace: default
+data:
+  default.conf: |
+    <VirtualHost *:80>
+        ServerName localhost
+        DocumentRoot /var/www/html
+
+        # Legacy Apache 2.2 syntax
+        <Directory /var/www/html>
+            Options Indexes FollowSymLinks MultiViews
+            AllowOverride All
+            Order allow,deny
+            Allow from all
+        </Directory>
+
+        # Insecure headers
+        Header unset X-Frame-Options
+        Header unset X-Content-Type-Options
+        Header unset X-XSS-Protection
+        Header set Server "Apache/2.2.22"
+
+        # Enable server-status (insecure)
+        <Location "/server-status">
+            SetHandler server-status
+            Order deny,allow
+            Allow from all
+        </Location>
+
+        # Enable server-info (insecure)
+        <Location "/server-info">
+            SetHandler server-info
+            Order deny,allow
+            Allow from all
+        </Location>
+
+        # Legacy rewrite rules
+        RewriteEngine On
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteRule ^(.*)$ index.php?path=$1 [QSA,L]
+
+        # Weak SSL configuration (if SSL enabled)
+        SSLEngine off
+        SSLProtocol all -SSLv2 -SSLv3
+        SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5
+        SSLHonorCipherOrder on
+
+        # Log configuration
+        ErrorLog /var/log/apache2/error.log
+        CustomLog /var/log/apache2/access.log combined
+        LogLevel debug
+
+        # PHP configuration
+        php_admin_value register_globals "On"
+        php_admin_value magic_quotes_gpc "On"
+        php_admin_value allow_url_include "On"
+        php_admin_value expose_php "On"
+        php_admin_value display_errors "On"
+        php_admin_value log_errors "On"
+        php_admin_value max_execution_time "300"
+        php_admin_value memory_limit "512M"
+        php_admin_value upload_max_filesize "100M"
+        php_admin_value post_max_size "100M"
+    </VirtualHost>
+
+---
+# Legacy MySQL Configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-legacy-config
+  namespace: default
+data:
+  my.cnf: |
+    [mysqld]
+    # Legacy MySQL 5.5 configuration
+
+    # Basic settings
+    port = 3306
+    socket = /var/run/mysqld/mysqld.sock
+    datadir = /var/lib/mysql
+    tmpdir = /tmp
+    lc-messages-dir = /usr/share/mysql
+
+    # Legacy SQL mode (permissive)
+    sql_mode = ""
+
+    # Character set (old default)
+    character-set-server = latin1
+    collation-server = latin1_swedish_ci
+
+    # Networking (insecure)
+    bind-address = 0.0.0.0
+    skip-name-resolve
+
+    # Security (weak settings)
+    local-infile = 1
+    secure-file-priv = ""
+
+    # InnoDB settings (legacy)
+    innodb_file_per_table = 0
+    innodb_buffer_pool_size = 128M
+    innodb_log_file_size = 5M
+    innodb_log_buffer_size = 8M
+    innodb_flush_log_at_trx_commit = 1
+    innodb_lock_wait_timeout = 50
+    innodb_use_native_aio = 0
+    skip-innodb-use-native-aio
+
+    # MyISAM settings
+    key_buffer_size = 16M
+    table_open_cache = 64
+    sort_buffer_size = 512K
+    net_buffer_length = 16K
+    read_buffer_size = 256K
+    read_rnd_buffer_size = 512K
+    myisam_sort_buffer_size = 8M
+
+    # Query cache (deprecated)
+    query_cache_type = 1
+    query_cache_size = 16M
+    query_cache_limit = 1M
+
+    # Logging
+    log_error = /var/log/mysql/error.log
+    general_log = 1
+    general_log_file = /var/log/mysql/mysql.log
+    slow_query_log = 1
+    slow_query_log_file = /var/log/mysql/mysql-slow.log
+    long_query_time = 2
+
+    # Replication (basic setup)
+    server-id = 1
+    log_bin = /var/log/mysql/mysql-bin.log
+    expire_logs_days = 10
+    max_binlog_size = 100M
+
+    [mysql]
+    default-character-set = latin1
+
+    [client]
+    default-character-set = latin1
+    port = 3306
+    socket = /var/run/mysqld/mysqld.sock
+
+# Migration checklist (comments to practice change operations):
+# TODO: Update Docker Compose version from 2.0 to 3.8
+# TODO: Replace Apache 2.2 with Nginx or modern Apache
+# TODO: Update PHP from 5.6 to 8.1+
+# TODO: Migrate MySQL 5.5 to PostgreSQL 14+
+# TODO: Replace Memcached with Redis
+# TODO: Update Kubernetes API versions
+# TODO: Add proper security contexts and policies
+# TODO: Implement proper secrets management
+# TODO: Add health checks and monitoring
+# TODO: Configure proper networking and ingress
+# TODO: Add resource limits and requests
+# TODO: Implement backup and disaster recovery
+# TODO: Add CI/CD pipeline configuration

@@ -1,0 +1,413 @@
+# Marks Navigation Practice File
+# Practice setting marks (ma, mb, mc) and jumping to them ('a, 'b, 'c)
+# Use marks to navigate between important sections quickly
+
+# MARK A: Database Configuration Section
+# Set mark 'a' here with: ma
+database_configuration:
+  primary:
+    host: "postgres-primary.database.svc.cluster.local"
+    port: 5432
+    database: "enterprise_db"
+    username: "app_user"
+    password: "secure_db_password_123"
+    pool_settings:
+      min_connections: 5
+      max_connections: 20
+      idle_timeout: "10m"
+      connection_timeout: "30s"
+      max_lifetime: "1h"
+
+  read_replicas:
+    replica_1:
+      host: "postgres-replica-1.database.svc.cluster.local"
+      port: 5432
+      max_connections: 10
+      read_only: true
+
+    replica_2:
+      host: "postgres-replica-2.database.svc.cluster.local"
+      port: 5432
+      max_connections: 10
+      read_only: true
+
+  backup_configuration:
+    schedule: "0 2 * * *"  # Daily at 2 AM
+    retention_days: 30
+    compression: true
+    encryption: true
+    storage_backend: "AWS S3"
+    bucket_name: "enterprise-db-backups"
+    region: "us-west-2"
+
+# MARK B: Cache Configuration Section
+# Set mark 'b' here with: mb
+cache_configuration:
+  redis_cluster:
+    sentinel:
+      master_name: "enterprise-master"
+      sentinels:
+        - host: "redis-sentinel-1.cache.svc.cluster.local"
+          port: 26379
+        - host: "redis-sentinel-2.cache.svc.cluster.local"
+          port: 26379
+        - host: "redis-sentinel-3.cache.svc.cluster.local"
+          port: 26379
+
+    master:
+      host: "redis-master.cache.svc.cluster.local"
+      port: 6379
+      password: "redis_master_password"
+      max_memory: "2GB"
+      max_memory_policy: "allkeys-lru"
+
+    slaves:
+      - host: "redis-slave-1.cache.svc.cluster.local"
+        port: 6379
+        master_host: "redis-master.cache.svc.cluster.local"
+      - host: "redis-slave-2.cache.svc.cluster.local"
+        port: 6379
+        master_host: "redis-master.cache.svc.cluster.local"
+
+  memcached:
+    servers:
+      - "memcached-1.cache.svc.cluster.local:11211"
+      - "memcached-2.cache.svc.cluster.local:11211"
+      - "memcached-3.cache.svc.cluster.local:11211"
+    max_memory: "1GB"
+    eviction_policy: "lru"
+
+# MARK C: API Gateway Configuration Section
+# Set mark 'c' here with: mc
+api_gateway_configuration:
+  kong:
+    admin_api:
+      host: "kong-admin.gateway.svc.cluster.local"
+      port: 8001
+      ssl: false
+
+    proxy:
+      host: "kong-proxy.gateway.svc.cluster.local"
+      port: 8000
+      ssl_port: 8443
+      ssl_certificate: "/etc/ssl/certs/gateway.crt"
+      ssl_private_key: "/etc/ssl/private/gateway.key"
+
+    upstream_services:
+      user_service:
+        url: "http://user-service.backend.svc.cluster.local:8080"
+        health_check_path: "/actuator/health"
+        timeout_ms: 30000
+        retries: 3
+        circuit_breaker:
+          failure_threshold: 5
+          recovery_timeout_ms: 30000
+
+      order_service:
+        url: "http://order-service.backend.svc.cluster.local:8080"
+        health_check_path: "/health"
+        timeout_ms: 25000
+        retries: 5
+        circuit_breaker:
+          failure_threshold: 3
+          recovery_timeout_ms: 20000
+
+      payment_service:
+        url: "http://payment-service.backend.svc.cluster.local:8080"
+        health_check_path: "/health/live"
+        timeout_ms: 15000
+        retries: 3
+        circuit_breaker:
+          failure_threshold: 2
+          recovery_timeout_ms: 10000
+
+# MARK D: Monitoring Configuration Section
+# Set mark 'd' here with: md
+monitoring_configuration:
+  prometheus:
+    server:
+      host: "prometheus.monitoring.svc.cluster.local"
+      port: 9090
+      retention_period: "15d"
+      storage_size: "100Gi"
+      storage_class: "fast-ssd"
+
+    scrape_configs:
+      kubernetes_components:
+        - job_name: "kubernetes-apiservers"
+          scrape_interval: "30s"
+          scrape_timeout: "10s"
+          metrics_path: "/metrics"
+          scheme: "https"
+
+        - job_name: "kubernetes-nodes"
+          scrape_interval: "30s"
+          scrape_timeout: "10s"
+          kubernetes_sd_configs:
+            - role: "node"
+
+        - job_name: "kubernetes-pods"
+          scrape_interval: "15s"
+          scrape_timeout: "10s"
+          kubernetes_sd_configs:
+            - role: "pod"
+
+      application_metrics:
+        - job_name: "user-service"
+          scrape_interval: "15s"
+          metrics_path: "/actuator/prometheus"
+          static_configs:
+            - targets: ["user-service.backend.svc.cluster.local:8080"]
+
+        - job_name: "order-service"
+          scrape_interval: "15s"
+          metrics_path: "/metrics"
+          static_configs:
+            - targets: ["order-service.backend.svc.cluster.local:8080"]
+
+  grafana:
+    host: "grafana.monitoring.svc.cluster.local"
+    port: 3000
+    admin_password: "${GRAFANA_ADMIN_PASSWORD}"
+    database:
+      type: "postgres"
+      host: "grafana-db.monitoring.svc.cluster.local"
+      port: 5432
+      name: "grafana"
+      username: "grafana_user"
+      password: "${GRAFANA_DB_PASSWORD}"
+
+    dashboards:
+      - name: "Kubernetes Cluster Overview"
+        uid: "kubernetes-cluster"
+        source: "https://grafana.com/api/dashboards/315/revisions/3/download"
+
+      - name: "Application Performance"
+        uid: "app-performance"
+        source: "custom-dashboard-app.json"
+
+      - name: "Infrastructure Health"
+        uid: "infrastructure"
+        source: "custom-dashboard-infra.json"
+
+# MARK E: Security Configuration Section
+# Set mark 'e' here with: me
+security_configuration:
+  oauth2:
+    providers:
+      google:
+        client_id: "123456789012-abcdefghijklmnopqrstuvwxyz.apps.googleusercontent.com"
+        client_secret: "${GOOGLE_CLIENT_SECRET}"
+        authorization_endpoint: "https://accounts.google.com/o/oauth2/v2/auth"
+        token_endpoint: "https://oauth2.googleapis.com/token"
+        userinfo_endpoint: "https://openidconnect.googleapis.com/v1/userinfo"
+        scopes: ["openid", "profile", "email"]
+
+      github:
+        client_id: "Iv1.abcdefghijklmnop"
+        client_secret: "${GITHUB_CLIENT_SECRET}"
+        authorization_endpoint: "https://github.com/login/oauth/authorize"
+        token_endpoint: "https://github.com/login/oauth/access_token"
+        userinfo_endpoint: "https://api.github.com/user"
+        scopes: ["user:email", "read:user"]
+
+  jwt:
+    issuer: "https://auth.company.com"
+    audience: "https://api.company.com"
+    algorithm: "RS256"
+    public_key_url: "https://auth.company.com/.well-known/jwks.json"
+    token_expiry: "1h"
+    refresh_token_expiry: "24h"
+    clock_skew_tolerance: "5m"
+
+  rbac:
+    policies:
+      - name: "cluster-admin"
+        subjects:
+          - kind: "User"
+            name: "admin@company.com"
+          - kind: "Group"
+            name: "platform-engineers"
+        role_ref:
+          kind: "ClusterRole"
+          name: "cluster-admin"
+
+      - name: "developer-access"
+        subjects:
+          - kind: "Group"
+            name: "developers"
+        role_ref:
+          kind: "ClusterRole"
+          name: "developer-role"
+        namespaces: ["development", "staging"]
+
+# MARK F: Deployment Configuration Section
+# Set mark 'f' here with: mf
+deployment_configuration:
+  kubernetes:
+    clusters:
+      production:
+        name: "production-cluster"
+        region: "us-west-2"
+        version: "1.28.0"
+
+        node_groups:
+          control_plane:
+            instance_type: "t3.medium"
+            min_size: 3
+            max_size: 3
+            desired_capacity: 3
+            labels:
+              node-role.kubernetes.io/control-plane: ""
+            taints:
+              - key: "node-role.kubernetes.io/control-plane"
+                effect: "NoSchedule"
+
+          worker_nodes:
+            instance_type: "t3.large"
+            min_size: 5
+            max_size: 20
+            desired_capacity: 10
+            labels:
+              node-role.kubernetes.io/worker: ""
+              workload-type: "general"
+
+          storage_nodes:
+            instance_type: "r5.xlarge"
+            min_size: 3
+            max_size: 5
+            desired_capacity: 3
+            labels:
+              node-role.kubernetes.io/storage: ""
+              storage-type: "high-performance"
+
+      staging:
+        name: "staging-cluster"
+        region: "us-west-2"
+        version: "1.28.0"
+
+        node_groups:
+          control_plane:
+            instance_type: "t3.small"
+            min_size: 1
+            max_size: 1
+            desired_capacity: 1
+
+          worker_nodes:
+            instance_type: "t3.medium"
+            min_size: 2
+            max_size: 5
+            desired_capacity: 3
+
+# MARK G: Logging Configuration Section
+# Set mark 'g' here with: mg
+logging_configuration:
+  elasticsearch:
+    cluster_name: "production-logs"
+    version: "8.6.0"
+
+    nodes:
+      master_nodes:
+        count: 3
+        instance_type: "t3.medium"
+        storage_size: "20Gi"
+        storage_class: "gp3"
+
+      data_nodes:
+        count: 3
+        instance_type: "r5.large"
+        storage_size: "500Gi"
+        storage_class: "gp3"
+
+      ingest_nodes:
+        count: 2
+        instance_type: "t3.medium"
+        storage_size: "50Gi"
+        storage_class: "gp3"
+
+    index_management:
+      templates:
+        - name: "application-logs"
+          pattern: "app-logs-*"
+          settings:
+            number_of_shards: 3
+            number_of_replicas: 1
+            refresh_interval: "5s"
+          lifecycle_policy:
+            hot_phase: "7d"
+            warm_phase: "30d"
+            cold_phase: "90d"
+            delete_phase: "365d"
+
+        - name: "infrastructure-logs"
+          pattern: "infra-logs-*"
+          settings:
+            number_of_shards: 2
+            number_of_replicas: 1
+            refresh_interval: "10s"
+          lifecycle_policy:
+            hot_phase: "3d"
+            warm_phase: "14d"
+            cold_phase: "30d"
+            delete_phase: "90d"
+
+  kibana:
+    host: "kibana.logging.svc.cluster.local"
+    port: 5601
+    elasticsearch_hosts:
+      - "http://es-master-1.logging.svc.cluster.local:9200"
+      - "http://es-master-2.logging.svc.cluster.local:9200"
+      - "http://es-master-3.logging.svc.cluster.local:9200"
+
+    index_patterns:
+      - "application-logs-*"
+      - "infrastructure-logs-*"
+      - "security-logs-*"
+
+# MARK H: Backup Configuration Section
+# Set mark 'h' here with: mh
+backup_configuration:
+  velero:
+    provider: "aws"
+    bucket: "enterprise-kubernetes-backups"
+    region: "us-west-2"
+
+    schedules:
+      daily_backup:
+        schedule: "0 2 * * *"
+        ttl: "720h"  # 30 days
+        include_namespaces:
+          - "production"
+          - "monitoring"
+          - "logging"
+
+      weekly_backup:
+        schedule: "0 1 * * 0"  # Sundays at 1 AM
+        ttl: "2160h"  # 90 days
+        include_cluster_resources: true
+
+      monthly_backup:
+        schedule: "0 0 1 * *"  # First day of month
+        ttl: "8760h"  # 365 days
+        include_cluster_resources: true
+        storage_location: "long-term-storage"
+
+  database_backups:
+    postgresql:
+      schedule: "0 3 * * *"
+      retention_days: 30
+      compression: true
+      encryption: true
+      storage:
+        type: "s3"
+        bucket: "enterprise-db-backups"
+        region: "us-west-2"
+
+    mongodb:
+      schedule: "0 4 * * *"
+      retention_days: 14
+      compression: true
+      storage:
+        type: "s3"
+        bucket: "enterprise-mongo-backups"
+        region: "us-west-2"

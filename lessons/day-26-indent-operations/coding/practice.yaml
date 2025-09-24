@@ -1,0 +1,281 @@
+# Indentation Practice File - Fix the poor indentation using >> << = commands
+# This file has intentionally poor indentation for practice
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+name: poorly-indented-app
+namespace: training
+labels:
+app: practice-app
+version: v1.0.0
+environment: development
+annotations:
+deployment.kubernetes.io/revision: "1"
+kubectl.kubernetes.io/last-applied-configuration: |
+{"apiVersion":"apps/v1","kind":"Deployment"}
+
+spec:
+replicas: 3
+selector:
+matchLabels:
+app: practice-app
+version: v1.0.0
+template:
+metadata:
+labels:
+app: practice-app
+version: v1.0.0
+tier: frontend
+spec:
+containers:
+- name: main-container
+image: nginx:1.21.0
+ports:
+- containerPort: 80
+name: http
+protocol: TCP
+- containerPort: 443
+name: https
+protocol: TCP
+env:
+- name: NODE_ENV
+value: production
+- name: API_URL
+value: https://api.company.com
+- name: DATABASE_URL
+value: postgresql://user:pass@db:5432/app
+resources:
+requests:
+memory: 256Mi
+cpu: 250m
+limits:
+memory: 512Mi
+cpu: 500m
+volumeMounts:
+- name: config-volume
+mountPath: /etc/config
+readOnly: true
+- name: ssl-certs
+mountPath: /etc/ssl/certs
+readOnly: true
+livenessProbe:
+httpGet:
+path: /health
+port: 80
+initialDelaySeconds: 30
+periodSeconds: 10
+readinessProbe:
+httpGet:
+path: /ready
+port: 80
+initialDelaySeconds: 5
+periodSeconds: 5
+volumes:
+- name: config-volume
+configMap:
+name: app-config
+- name: ssl-certs
+secret:
+secretName: ssl-certificates
+serviceAccountName: app-service-account
+securityContext:
+runAsNonRoot: true
+runAsUser: 1000
+fsGroup: 2000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+name: practice-service
+labels:
+app: practice-app
+spec:
+type: LoadBalancer
+selector:
+app: practice-app
+ports:
+- port: 80
+targetPort: 80
+protocol: TCP
+name: http
+- port: 443
+targetPort: 443
+protocol: TCP
+name: https
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+name: app-config
+data:
+nginx.conf: |
+events {
+worker_connections 1024;
+}
+http {
+include /etc/nginx/mime.types;
+default_type application/octet-stream;
+sendfile on;
+keepalive_timeout 65;
+server {
+listen 80;
+server_name localhost;
+location / {
+root /usr/share/nginx/html;
+index index.html index.htm;
+}
+error_page 500 502 503 504 /50x.html;
+location = /50x.html {
+root /usr/share/nginx/html;
+}
+}
+}
+database.yaml: |
+primary:
+host: postgres-primary.db.local
+port: 5432
+database: maindb
+username: app_user
+password: secure_password
+pool:
+min: 5
+max: 20
+idle_timeout: 10m
+replica:
+host: postgres-replica.db.local
+port: 5432
+database: maindb
+username: readonly_user
+password: readonly_password
+pool:
+min: 2
+max: 10
+idle_timeout: 5m
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+name: deny-all-default
+spec:
+podSelector: {}
+policyTypes:
+- Ingress
+- Egress
+ingress: []
+egress:
+- to:
+- namespaceSelector:
+matchLabels:
+name: kube-system
+ports:
+- protocol: UDP
+port: 53
+- protocol: TCP
+port: 53
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+name: app-secrets
+type: Opaque
+data:
+database-password: cGFzc3dvcmQxMjM=
+api-key: YWJjZGVmZ2hpams=
+jwt-secret: bXlfc2VjcmV0X2tleV8xMjM=
+stringData:
+config.json: |
+{
+"api": {
+"keys": {
+"stripe": "sk_live_xxxxxxxx",
+"sendgrid": "SG.xxxxxxxx"
+},
+"endpoints": {
+"payment": "https://api.stripe.com/v1",
+"email": "https://api.sendgrid.com/v3"
+}
+},
+"database": {
+"host": "postgres.db.local",
+"port": 5432,
+"ssl": true
+},
+"cache": {
+"host": "redis.cache.local",
+"port": 6379,
+"password": "redis_password"
+}
+}
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+name: database-migration
+spec:
+template:
+spec:
+containers:
+- name: migration
+image: migrate/migrate:v4.15.2
+command:
+- migrate
+- -path
+- /migrations
+- -database
+- postgresql://user:pass@postgres:5432/db?sslmode=disable
+- up
+volumeMounts:
+- name: migrations
+mountPath: /migrations
+readOnly: true
+volumes:
+- name: migrations
+configMap:
+name: migration-scripts
+restartPolicy: OnFailure
+backoffLimit: 3
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+name: practice-app-hpa
+spec:
+scaleTargetRef:
+apiVersion: apps/v1
+kind: Deployment
+name: poorly-indented-app
+minReplicas: 3
+maxReplicas: 20
+metrics:
+- type: Resource
+resource:
+name: cpu
+target:
+type: Utilization
+averageUtilization: 70
+- type: Resource
+resource:
+name: memory
+target:
+type: Utilization
+averageUtilization: 80
+behavior:
+scaleUp:
+stabilizationWindowSeconds: 300
+policies:
+- type: Percent
+value: 100
+periodSeconds: 15
+scaleDown:
+stabilizationWindowSeconds: 300
+policies:
+- type: Percent
+value: 10
+periodSeconds: 60

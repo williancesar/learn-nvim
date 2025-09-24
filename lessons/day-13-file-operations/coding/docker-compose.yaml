@@ -1,0 +1,744 @@
+# Multi-Service E-Commerce Platform Docker Compose
+# Practice file operations: :sp, :vsp, :tabnew, :e, gf, Ctrl+^, :bn, :bp
+
+version: '3.8'
+
+networks:
+  frontend:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+  backend:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
+  database:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 172.22.0.0/16
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+  mongodb_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  minio_data:
+    driver: local
+  rabbitmq_data:
+    driver: local
+
+services:
+  # Reverse Proxy & Load Balancer
+  nginx:
+    image: nginx:1.25.3-alpine
+    container_name: ecommerce_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/sites-enabled:/etc/nginx/sites-enabled:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - ./nginx/logs:/var/log/nginx
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - api_gateway
+      - frontend
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nginx.rule=Host(`ecommerce.local`)"
+      - "traefik.http.services.nginx.loadbalancer.server.port=80"
+
+  # Frontend Application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NODE_VERSION: 18.19.0
+        NGINX_VERSION: 1.25.3
+    image: ecommerce/frontend:2.1.0
+    container_name: ecommerce_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_API_URL=http://api_gateway:8080/api/v2
+      - REACT_APP_WS_URL=ws://api_gateway:8080/ws
+      - REACT_APP_CDN_URL=http://minio:9000/assets
+      - REACT_APP_STRIPE_PUBLIC_KEY=${STRIPE_PUBLIC_KEY}
+      - REACT_APP_GOOGLE_ANALYTICS_ID=${GA_TRACKING_ID}
+    volumes:
+      - ./frontend/public:/app/public:ro
+      - ./frontend/build:/app/build
+    networks:
+      - frontend
+    depends_on:
+      - api_gateway
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # API Gateway
+  api_gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+      args:
+        GO_VERSION: 1.21.5
+    image: ecommerce/api-gateway:2.1.0
+    container_name: ecommerce_api_gateway
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+      - "9090:9090"
+    environment:
+      - PORT=8080
+      - SSL_PORT=8443
+      - METRICS_PORT=9090
+      - LOG_LEVEL=info
+      - JWT_SECRET=${JWT_SECRET}
+      - REDIS_URL=redis://redis:6379/0
+      - USER_SERVICE_URL=http://user_service:8081
+      - PRODUCT_SERVICE_URL=http://product_service:8082
+      - ORDER_SERVICE_URL=http://order_service:8083
+      - PAYMENT_SERVICE_URL=http://payment_service:8084
+      - NOTIFICATION_SERVICE_URL=http://notification_service:8085
+      - RATE_LIMIT_ENABLED=true
+      - RATE_LIMIT_RPS=1000
+      - CORS_ALLOWED_ORIGINS=http://localhost:3000,https://ecommerce.local
+    volumes:
+      - ./api-gateway/config:/app/config:ro
+      - ./ssl:/app/ssl:ro
+      - ./logs:/app/logs
+    networks:
+      - frontend
+      - backend
+    depends_on:
+      - redis
+      - user_service
+      - product_service
+      - order_service
+      - payment_service
+      - notification_service
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # User Service
+  user_service:
+    build:
+      context: ./services/user
+      dockerfile: Dockerfile
+      args:
+        JAVA_VERSION: 17
+        SPRING_BOOT_VERSION: 3.2.1
+    image: ecommerce/user-service:1.8.2
+    container_name: ecommerce_user_service
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+      - "9091:9091"
+    environment:
+      - SERVER_PORT=8081
+      - MANAGEMENT_PORT=9091
+      - SPRING_PROFILES_ACTIVE=production
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=ecommerce_users
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - JWT_SECRET=${JWT_SECRET}
+      - EMAIL_SERVICE_URL=http://notification_service:8085
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - JAEGER_AGENT_HOST=jaeger
+      - JAEGER_AGENT_PORT=6831
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./services/user/config:/app/config:ro
+      - ./logs:/app/logs
+    networks:
+      - backend
+      - database
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9091/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+
+  # Product Service
+  product_service:
+    build:
+      context: ./services/product
+      dockerfile: Dockerfile
+      args:
+        NODE_VERSION: 18.19.0
+    image: ecommerce/product-service:1.5.3
+    container_name: ecommerce_product_service
+    restart: unless-stopped
+    ports:
+      - "8082:8082"
+      - "9092:9092"
+    environment:
+      - PORT=8082
+      - METRICS_PORT=9092
+      - NODE_ENV=production
+      - DB_HOST=mongodb
+      - DB_PORT=27017
+      - DB_NAME=ecommerce_products
+      - DB_USERNAME=mongo
+      - DB_PASSWORD=${MONGODB_PASSWORD}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - ELASTICSEARCH_HOST=elasticsearch
+      - ELASTICSEARCH_PORT=9200
+      - S3_ENDPOINT=http://minio:9000
+      - S3_ACCESS_KEY=${MINIO_ACCESS_KEY}
+      - S3_SECRET_KEY=${MINIO_SECRET_KEY}
+      - S3_BUCKET=product-images
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - LOG_LEVEL=info
+    volumes:
+      - ./services/product/config:/app/config:ro
+      - ./logs:/app/logs
+    networks:
+      - backend
+      - database
+    depends_on:
+      - mongodb
+      - redis
+      - elasticsearch
+      - minio
+      - kafka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9092/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+
+  # Order Service
+  order_service:
+    build:
+      context: ./services/order
+      dockerfile: Dockerfile
+      args:
+        PYTHON_VERSION: 3.11.7
+    image: ecommerce/order-service:1.3.1
+    container_name: ecommerce_order_service
+    restart: unless-stopped
+    ports:
+      - "8083:8083"
+      - "9093:9093"
+    environment:
+      - PORT=8083
+      - METRICS_PORT=9093
+      - ENVIRONMENT=production
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/ecommerce_orders
+      - REDIS_URL=redis://redis:6379/1
+      - USER_SERVICE_URL=http://user_service:8081
+      - PRODUCT_SERVICE_URL=http://product_service:8082
+      - PAYMENT_SERVICE_URL=http://payment_service:8084
+      - INVENTORY_SERVICE_URL=http://inventory_service:8086
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+      - CELERY_BROKER_URL=redis://redis:6379/2
+      - CELERY_RESULT_BACKEND=redis://redis:6379/3
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./services/order/config:/app/config:ro
+      - ./logs:/app/logs
+    networks:
+      - backend
+      - database
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9093/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+
+  # Payment Service
+  payment_service:
+    build:
+      context: ./services/payment
+      dockerfile: Dockerfile
+      args:
+        DOTNET_VERSION: 8.0
+    image: ecommerce/payment-service:2.0.4
+    container_name: ecommerce_payment_service
+    restart: unless-stopped
+    ports:
+      - "8084:8084"
+      - "9094:9094"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:8084
+      - Kestrel__Endpoints__Http__Url=http://+:8084
+      - Kestrel__Endpoints__Metrics__Url=http://+:9094
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=ecommerce_payments;Username=postgres;Password=${POSTGRES_PASSWORD}
+      - Redis__ConnectionString=redis:6379
+      - Stripe__PublicKey=${STRIPE_PUBLIC_KEY}
+      - Stripe__SecretKey=${STRIPE_SECRET_KEY}
+      - Stripe__WebhookSecret=${STRIPE_WEBHOOK_SECRET}
+      - PayPal__ClientId=${PAYPAL_CLIENT_ID}
+      - PayPal__ClientSecret=${PAYPAL_CLIENT_SECRET}
+      - PayPal__Environment=Live
+      - Kafka__BootstrapServers=kafka:9092
+      - Logging__LogLevel__Default=Information
+    volumes:
+      - ./services/payment/appsettings.Production.json:/app/appsettings.Production.json:ro
+      - ./logs:/app/logs
+    networks:
+      - backend
+      - database
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9094/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+
+  # Notification Service
+  notification_service:
+    build:
+      context: ./services/notification
+      dockerfile: Dockerfile
+      args:
+        GO_VERSION: 1.21.5
+    image: ecommerce/notification-service:1.2.0
+    container_name: ecommerce_notification_service
+    restart: unless-stopped
+    ports:
+      - "8085:8085"
+      - "9095:9095"
+    environment:
+      - PORT=8085
+      - METRICS_PORT=9095
+      - LOG_LEVEL=info
+      - REDIS_URL=redis://redis:6379/4
+      - EMAIL_SMTP_HOST=smtp.sendgrid.net
+      - EMAIL_SMTP_PORT=587
+      - EMAIL_USERNAME=apikey
+      - EMAIL_PASSWORD=${SENDGRID_API_KEY}
+      - EMAIL_FROM=noreply@ecommerce.com
+      - SMS_PROVIDER=twilio
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - TWILIO_FROM_NUMBER=${TWILIO_FROM_NUMBER}
+      - PUSH_FCM_SERVER_KEY=${FCM_SERVER_KEY}
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    volumes:
+      - ./services/notification/config:/app/config:ro
+      - ./services/notification/templates:/app/templates:ro
+      - ./logs:/app/logs
+    networks:
+      - backend
+    depends_on:
+      - redis
+      - rabbitmq
+      - kafka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9095/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Inventory Service
+  inventory_service:
+    build:
+      context: ./services/inventory
+      dockerfile: Dockerfile
+      args:
+        RUST_VERSION: 1.75.0
+    image: ecommerce/inventory-service:1.0.2
+    container_name: ecommerce_inventory_service
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+      - "9096:9096"
+    environment:
+      - PORT=8086
+      - METRICS_PORT=9096
+      - RUST_LOG=info
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/ecommerce_inventory
+      - REDIS_URL=redis://redis:6379/5
+      - PRODUCT_SERVICE_URL=http://product_service:8082
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+    volumes:
+      - ./services/inventory/config:/app/config:ro
+      - ./logs:/app/logs
+    networks:
+      - backend
+      - database
+    depends_on:
+      - postgres
+      - redis
+      - kafka
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9096/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Database Services
+  postgres:
+    image: postgres:15.5-alpine
+    container_name: ecommerce_postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=ecommerce
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256 --auth-local=scram-sha-256
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/postgres/init:/docker-entrypoint-initdb.d:ro
+      - ./database/postgres/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+      - ./database/postgres/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
+    networks:
+      - database
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ecommerce"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # Redis Cache
+  redis:
+    image: redis:7.2.4-alpine
+    container_name: ecommerce_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server /etc/redis/redis.conf
+    volumes:
+      - redis_data:/data
+      - ./database/redis/redis.conf:/etc/redis/redis.conf:ro
+    networks:
+      - backend
+      - database
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  # MongoDB (for product catalog)
+  mongodb:
+    image: mongo:7.0.5
+    container_name: ecommerce_mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
+      - MONGO_INITDB_DATABASE=ecommerce_products
+    volumes:
+      - mongodb_data:/data/db
+      - ./database/mongodb/mongod.conf:/etc/mongod.conf:ro
+      - ./database/mongodb/init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - database
+    command: mongod --config /etc/mongod.conf
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # Elasticsearch (for search)
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.3
+    container_name: ecommerce_elasticsearch
+    restart: unless-stopped
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - node.name=elasticsearch
+      - cluster.name=ecommerce-cluster
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+      - ./database/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    networks:
+      - backend
+      - database
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # Message Queue Services
+  rabbitmq:
+    image: rabbitmq:3.12.10-management-alpine
+    container_name: ecommerce_rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_DEFAULT_VHOST=/
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - ./messaging/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./messaging/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
+    networks:
+      - backend
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+      start_period: 60s
+
+  kafka:
+    image: confluentinc/cp-kafka:7.5.3
+    container_name: ecommerce_kafka
+    restart: unless-stopped
+    ports:
+      - "9092:9092"
+      - "9101:9101"
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
+      - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
+      - KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS=0
+      - KAFKA_JMX_PORT=9101
+      - KAFKA_JMX_HOSTNAME=localhost
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+      - KAFKA_DELETE_TOPIC_ENABLE=true
+    volumes:
+      - ./messaging/kafka/server.properties:/etc/kafka/server.properties:ro
+    networks:
+      - backend
+    depends_on:
+      - zookeeper
+    healthcheck:
+      test: kafka-topics --bootstrap-server kafka:9092 --list
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.3
+    container_name: ecommerce_zookeeper
+    restart: unless-stopped
+    ports:
+      - "2181:2181"
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_TICK_TIME=2000
+    volumes:
+      - ./messaging/zookeeper/zoo.cfg:/etc/zookeeper/zoo.cfg:ro
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo 'ruok' | nc localhost 2181"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # Object Storage
+  minio:
+    image: minio/minio:RELEASE.2024-01-16T16-07-38Z
+    container_name: ecommerce_minio
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ACCESS_KEY}
+      - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY}
+      - MINIO_BROWSER_REDIRECT_URL=http://localhost:9001
+    volumes:
+      - minio_data:/data
+    networks:
+      - backend
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+      start_period: 60s
+
+  # Monitoring Services
+  prometheus:
+    image: prom/prometheus:v2.48.1
+    container_name: ecommerce_prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=90d'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
+    volumes:
+      - prometheus_data:/prometheus
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/prometheus/alerts:/etc/prometheus/alerts:ro
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9090/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  grafana:
+    image: grafana/grafana:10.2.3
+    container_name: ecommerce_grafana
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SERVER_DOMAIN=localhost
+      - GF_SERVER_ROOT_URL=http://localhost:3001
+      - GF_DATABASE_TYPE=postgres
+      - GF_DATABASE_HOST=postgres:5432
+      - GF_DATABASE_NAME=grafana
+      - GF_DATABASE_USER=postgres
+      - GF_DATABASE_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    networks:
+      - backend
+      - database
+    depends_on:
+      - postgres
+      - prometheus
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Distributed Tracing
+  jaeger:
+    image: jaegertracing/all-in-one:1.53.0
+    container_name: ecommerce_jaeger
+    restart: unless-stopped
+    ports:
+      - "16686:16686"
+      - "14268:14268"
+      - "14250:14250"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+      - SPAN_STORAGE_TYPE=elasticsearch
+      - ES_SERVER_URLS=http://elasticsearch:9200
+      - ES_INDEX_PREFIX=jaeger
+    networks:
+      - backend
+      - database
+    depends_on:
+      - elasticsearch
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:14269/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Log Aggregation
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.11.3
+    container_name: ecommerce_filebeat
+    restart: unless-stopped
+    user: root
+    volumes:
+      - ./monitoring/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./logs:/var/log/apps:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - backend
+      - database
+    depends_on:
+      - elasticsearch
+    command: filebeat -e -strict.perms=false

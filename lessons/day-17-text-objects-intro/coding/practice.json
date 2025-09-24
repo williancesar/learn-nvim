@@ -1,0 +1,505 @@
+{
+  "kubernetes_configuration": {
+    "cluster_information": {
+      "name": "production-kubernetes-cluster",
+      "version": "1.28.3",
+      "provider": "aws-eks",
+      "region": "us-west-2",
+      "created_date": "2024-01-17T09:15:00Z"
+    },
+
+    "node_groups": [
+      {
+        "name": "worker-nodes-general",
+        "instance_types": ["t3.medium", "t3.large"],
+        "desired_capacity": 5,
+        "min_size": 3,
+        "max_size": 20,
+        "disk_size": 50,
+        "ami_type": "AL2_x86_64"
+      },
+      {
+        "name": "worker-nodes-compute",
+        "instance_types": ["c5.xlarge", "c5.2xlarge"],
+        "desired_capacity": 3,
+        "min_size": 1,
+        "max_size": 10,
+        "disk_size": 100,
+        "ami_type": "AL2_x86_64"
+      }
+    ],
+
+    "namespaces": {
+      "production": {
+        "labels": {
+          "environment": "production",
+          "tier": "application"
+        },
+        "resource_quotas": {
+          "cpu_requests": "10",
+          "memory_requests": "20Gi",
+          "cpu_limits": "20",
+          "memory_limits": "40Gi",
+          "persistentvolumeclaims": "10"
+        }
+      },
+      "monitoring": {
+        "labels": {
+          "environment": "production",
+          "tier": "infrastructure"
+        },
+        "resource_quotas": {
+          "cpu_requests": "5",
+          "memory_requests": "10Gi",
+          "cpu_limits": "10",
+          "memory_limits": "20Gi"
+        }
+      }
+    },
+
+    "deployments": [
+      {
+        "metadata": {
+          "name": "web-application",
+          "namespace": "production",
+          "labels": {
+            "app": "web-application",
+            "version": "v2.1.0",
+            "tier": "frontend"
+          }
+        },
+        "spec": {
+          "replicas": 3,
+          "selector": {
+            "matchLabels": {
+              "app": "web-application"
+            }
+          },
+          "template": {
+            "metadata": {
+              "labels": {
+                "app": "web-application",
+                "version": "v2.1.0"
+              }
+            },
+            "spec": {
+              "containers": [
+                {
+                  "name": "web-app",
+                  "image": "registry.company.com/web-app:v2.1.0",
+                  "ports": [
+                    {
+                      "containerPort": 8080,
+                      "name": "http"
+                    }
+                  ],
+                  "env": [
+                    {
+                      "name": "NODE_ENV",
+                      "value": "production"
+                    },
+                    {
+                      "name": "DATABASE_URL",
+                      "valueFrom": {
+                        "secretKeyRef": {
+                          "name": "database-credentials",
+                          "key": "url"
+                        }
+                      }
+                    }
+                  ],
+                  "resources": {
+                    "requests": {
+                      "cpu": "200m",
+                      "memory": "256Mi"
+                    },
+                    "limits": {
+                      "cpu": "500m",
+                      "memory": "512Mi"
+                    }
+                  },
+                  "livenessProbe": {
+                    "httpGet": {
+                      "path": "/health",
+                      "port": 8080
+                    },
+                    "initialDelaySeconds": 30,
+                    "periodSeconds": 10
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "metadata": {
+          "name": "api-gateway",
+          "namespace": "production",
+          "labels": {
+            "app": "api-gateway",
+            "version": "v1.5.2",
+            "tier": "gateway"
+          }
+        },
+        "spec": {
+          "replicas": 2,
+          "selector": {
+            "matchLabels": {
+              "app": "api-gateway"
+            }
+          },
+          "template": {
+            "spec": {
+              "containers": [
+                {
+                  "name": "gateway",
+                  "image": "registry.company.com/api-gateway:v1.5.2",
+                  "ports": [
+                    {
+                      "containerPort": 3000,
+                      "name": "http"
+                    }
+                  ],
+                  "env": [
+                    {
+                      "name": "UPSTREAM_SERVICES",
+                      "value": "user-service:8080,order-service:8080"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+    ],
+
+    "services": [
+      {
+        "metadata": {
+          "name": "web-application-service",
+          "namespace": "production"
+        },
+        "spec": {
+          "selector": {
+            "app": "web-application"
+          },
+          "ports": [
+            {
+              "port": 80,
+              "targetPort": 8080,
+              "protocol": "TCP"
+            }
+          ],
+          "type": "ClusterIP"
+        }
+      },
+      {
+        "metadata": {
+          "name": "api-gateway-service",
+          "namespace": "production"
+        },
+        "spec": {
+          "selector": {
+            "app": "api-gateway"
+          },
+          "ports": [
+            {
+              "port": 80,
+              "targetPort": 3000,
+              "protocol": "TCP"
+            }
+          ],
+          "type": "LoadBalancer"
+        }
+      }
+    ],
+
+    "configmaps": [
+      {
+        "metadata": {
+          "name": "application-config",
+          "namespace": "production"
+        },
+        "data": {
+          "database_host": "postgres.database.svc.cluster.local",
+          "database_port": "5432",
+          "redis_host": "redis.cache.svc.cluster.local",
+          "redis_port": "6379",
+          "log_level": "info",
+          "feature_flags": "authentication,monitoring,caching"
+        }
+      },
+      {
+        "metadata": {
+          "name": "nginx-config",
+          "namespace": "production"
+        },
+        "data": {
+          "nginx.conf": "events {\n    worker_connections 1024;\n}\n\nhttp {\n    upstream backend {\n        server web-application-service:80;\n    }\n\n    server {\n        listen 80;\n        location / {\n            proxy_pass http://backend;\n        }\n    }\n}"
+        }
+      }
+    ],
+
+    "secrets": [
+      {
+        "metadata": {
+          "name": "database-credentials",
+          "namespace": "production"
+        },
+        "type": "Opaque",
+        "data": {
+          "username": "YXBwX3VzZXI=",
+          "password": "c2VjdXJlX3Bhc3N3b3Jk",
+          "url": "cG9zdGdyZXNxbDovL2FwcF91c2VyOnNlY3VyZV9wYXNzd29yZEBwb3N0Z3Jlcy5kYXRhYmFzZS5zdmMuY2x1c3Rlci5sb2NhbDo1NDMyL2FwcA=="
+        }
+      },
+      {
+        "metadata": {
+          "name": "api-keys",
+          "namespace": "production"
+        },
+        "type": "Opaque",
+        "data": {
+          "jwt_secret": "anNvbl93ZWJfdG9rZW5fc2VjcmV0X2tleQ==",
+          "encryption_key": "ZW5jcnlwdGlvbl9rZXlfZm9yX2FwcA==",
+          "api_key": "YXBpX2tleV9mb3JfZXh0ZXJuYWxfc2VydmljZXM="
+        }
+      }
+    ],
+
+    "ingress_rules": [
+      {
+        "metadata": {
+          "name": "application-ingress",
+          "namespace": "production",
+          "annotations": {
+            "kubernetes.io/ingress.class": "nginx",
+            "cert-manager.io/cluster-issuer": "letsencrypt-prod",
+            "nginx.ingress.kubernetes.io/rate-limit": "100"
+          }
+        },
+        "spec": {
+          "tls": [
+            {
+              "hosts": ["app.company.com"],
+              "secretName": "app-tls-secret"
+            }
+          ],
+          "rules": [
+            {
+              "host": "app.company.com",
+              "http": {
+                "paths": [
+                  {
+                    "path": "/",
+                    "pathType": "Prefix",
+                    "backend": {
+                      "service": {
+                        "name": "web-application-service",
+                        "port": {
+                          "number": 80
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "path": "/api",
+                    "pathType": "Prefix",
+                    "backend": {
+                      "service": {
+                        "name": "api-gateway-service",
+                        "port": {
+                          "number": 80
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+
+    "persistent_volumes": [
+      {
+        "metadata": {
+          "name": "database-pv",
+          "labels": {
+            "type": "database"
+          }
+        },
+        "spec": {
+          "capacity": {
+            "storage": "100Gi"
+          },
+          "accessModes": ["ReadWriteOnce"],
+          "persistentVolumeReclaimPolicy": "Retain",
+          "storageClassName": "gp3",
+          "awsElasticBlockStore": {
+            "volumeID": "vol-0123456789abcdef0",
+            "fsType": "ext4"
+          }
+        }
+      }
+    ],
+
+    "persistent_volume_claims": [
+      {
+        "metadata": {
+          "name": "database-pvc",
+          "namespace": "production"
+        },
+        "spec": {
+          "accessModes": ["ReadWriteOnce"],
+          "resources": {
+            "requests": {
+              "storage": "100Gi"
+            }
+          },
+          "storageClassName": "gp3"
+        }
+      }
+    ],
+
+    "horizontal_pod_autoscalers": [
+      {
+        "metadata": {
+          "name": "web-application-hpa",
+          "namespace": "production"
+        },
+        "spec": {
+          "scaleTargetRef": {
+            "apiVersion": "apps/v1",
+            "kind": "Deployment",
+            "name": "web-application"
+          },
+          "minReplicas": 2,
+          "maxReplicas": 10,
+          "metrics": [
+            {
+              "type": "Resource",
+              "resource": {
+                "name": "cpu",
+                "target": {
+                  "type": "Utilization",
+                  "averageUtilization": 70
+                }
+              }
+            },
+            {
+              "type": "Resource",
+              "resource": {
+                "name": "memory",
+                "target": {
+                  "type": "Utilization",
+                  "averageUtilization": 80
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+
+    "network_policies": [
+      {
+        "metadata": {
+          "name": "deny-all-ingress",
+          "namespace": "production"
+        },
+        "spec": {
+          "podSelector": {},
+          "policyTypes": ["Ingress"]
+        }
+      },
+      {
+        "metadata": {
+          "name": "allow-web-to-api",
+          "namespace": "production"
+        },
+        "spec": {
+          "podSelector": {
+            "matchLabels": {
+              "app": "api-gateway"
+            }
+          },
+          "policyTypes": ["Ingress"],
+          "ingress": [
+            {
+              "from": [
+                {
+                  "podSelector": {
+                    "matchLabels": {
+                      "app": "web-application"
+                    }
+                  }
+                }
+              ],
+              "ports": [
+                {
+                  "protocol": "TCP",
+                  "port": 3000
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+
+    "rbac_configuration": {
+      "service_accounts": [
+        {
+          "metadata": {
+            "name": "app-deployer",
+            "namespace": "production"
+          }
+        }
+      ],
+      "roles": [
+        {
+          "metadata": {
+            "name": "deployment-manager",
+            "namespace": "production"
+          },
+          "rules": [
+            {
+              "apiGroups": ["apps"],
+              "resources": ["deployments", "replicasets"],
+              "verbs": ["get", "list", "watch", "create", "update", "patch", "delete"]
+            },
+            {
+              "apiGroups": [""],
+              "resources": ["pods", "services", "configmaps"],
+              "verbs": ["get", "list", "watch", "create", "update", "patch"]
+            }
+          ]
+        }
+      ],
+      "role_bindings": [
+        {
+          "metadata": {
+            "name": "app-deployer-binding",
+            "namespace": "production"
+          },
+          "subjects": [
+            {
+              "kind": "ServiceAccount",
+              "name": "app-deployer",
+              "namespace": "production"
+            }
+          ],
+          "roleRef": {
+            "kind": "Role",
+            "name": "deployment-manager",
+            "apiGroup": "rbac.authorization.k8s.io"
+          }
+        }
+      ]
+    }
+  }
+}

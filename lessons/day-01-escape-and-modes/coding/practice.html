@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 01: Escape & Modes Practice</title>
+    <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+    <!--
+    PRACTICE INSTRUCTIONS FOR DAY 01: ESCAPE & MODES
+
+    Mode Switching Practice:
+    1. Start in Normal mode (default when opening file)
+    2. Press 'i' to enter Insert mode - type some text
+    3. Press Escape to return to Normal mode
+    4. Press 'a' to enter Insert mode after cursor
+    5. Press Escape to return to Normal mode
+    6. Press 'o' to create new line and enter Insert mode
+    7. Press Escape to return to Normal mode
+    8. Press 'v' to enter Visual mode - select text
+    9. Press Escape to return to Normal mode
+    10. Press ':' to enter Command mode - type commands
+    11. Press Escape to return to Normal mode
+
+    Practice areas are marked with [PRACTICE] comments below
+    -->
+
+    <header class="main-header">
+        <nav class="navigation">
+            <ul class="nav-list">
+                <!-- [PRACTICE] Insert mode: Add navigation items here -->
+                <li><a href="#section1">Section 1</a></li>
+                <li><a href="#section2">Section 2</a></li>
+                <!-- [PRACTICE] Append mode: Add more nav items after this line -->
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <section id="section1" class="content-section">
+            <h1>Understanding Vim Modes</h1>
+            <!-- [PRACTICE] Insert mode: Add content inside this section -->
+            <p>Vim has several modes that serve different purposes:</p>
+
+            <div class="mode-explanation">
+                <h2>Normal Mode</h2>
+                <!-- [PRACTICE] Visual mode: Select this text and practice -->
+                <p>The default mode for navigation and commands</p>
+
+                <h2>Insert Mode</h2>
+                <!-- [PRACTICE] New line mode: Use 'o' to add content below -->
+                <p>For typing and editing text content</p>
+
+                <h2>Visual Mode</h2>
+                <p>For selecting and manipulating text blocks</p>
+                <!-- [PRACTICE] Insert after: Use 'a' to add text at end of line -->
+
+                <h2>Command Mode</h2>
+                <p>For executing vim commands and operations</p>
+                <!-- [PRACTICE] New line above: Use 'O' to add content above this line -->
+            </div>
+        </section>
+
+        <section id="section2" class="practice-area">
+            <h1>Mode Switching Practice Zone</h1>
+
+            <div class="practice-block">
+                <!-- [PRACTICE] Insert mode: Fill in missing content -->
+                <h3>Practice Block 1</h3>
+                <p>Use 'i' to insert text here: </p>
+                <ul>
+                    <li>First item</li>
+                    <!-- [PRACTICE] New line: Add items using 'o' -->
+                    <li>Third item</li>
+                </ul>
+            </div>
+
+            <div class="practice-block">
+                <h3>Practice Block 2</h3>
+                <!-- [PRACTICE] Visual mode: Select and practice with this paragraph -->
+                <p>This is a paragraph for visual mode practice. Select words, lines, or the entire paragraph using different visual mode commands.</p>
+
+                <div class="code-block">
+                    <pre><code>
+<!-- [PRACTICE] Insert mode: Add code examples here -->
+function switchModes() {
+    // Normal mode: navigate with hjkl
+    // Insert mode: type code
+    // Visual mode: select code blocks
+}
+                    </code></pre>
+                </div>
+            </div>
+
+            <div class="practice-block">
+                <h3>Practice Block 3</h3>
+                <form class="practice-form">
+                    <!-- [PRACTICE] Insert mode: Complete form fields -->
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" placeholder="">
+
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="">
+
+                    <!-- [PRACTICE] Append mode: Add more form fields -->
+
+                    <textarea placeholder="Use insert mode to add content here"></textarea>
+
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </section>
+
+        <aside class="sidebar">
+            <h2>Quick Reference</h2>
+            <!-- [PRACTICE] Insert mode: Add reference content -->
+            <ul class="reference-list">
+                <li><strong>i</strong> - Insert mode before cursor</li>
+                <li><strong>a</strong> - Insert mode after cursor</li>
+                <li><strong>o</strong> - New line below and insert mode</li>
+                <!-- [PRACTICE] New line: Add more reference items -->
+                <li><strong>v</strong> - Visual mode</li>
+                <li><strong>:</strong> - Command mode</li>
+                <li><strong>Esc</strong> - Return to Normal mode</li>
+            </ul>
+
+            <!-- [PRACTICE] Visual mode: Practice selecting this entire block -->
+            <div class="tip-box">
+                <h3>Pro Tip</h3>
+                <p>Always remember which mode you're in. The status line usually shows the current mode.</p>
+            </div>
+        </aside>
+    </main>
+
+    <footer class="main-footer">
+        <!-- [PRACTICE] Insert mode: Complete footer content -->
+        <p>Day 01 Practice - Vim Modes &copy; </p>
+        <!-- [PRACTICE] Append mode: Add year and additional footer info -->
+    </footer>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{
+    "application": {
+        "name": "Buffer Practice App",
+        "version": "1.0.0",
+        "environment": "development"
+    },
+    "server": {
+        "host": "localhost",
+        "port": 3000,
+        "ssl": false
+    },
+    "database": {
+        "type": "postgresql",
+        "host": "localhost",
+        "port": 5432,
+        "name": "practice_db",
+        "pool": {
+            "min": 2,
+            "max": 10
+        }
+    },
+    "features": {
+        "authentication": true,
+        "caching": true,
+        "logging": "verbose"
+    }
+}

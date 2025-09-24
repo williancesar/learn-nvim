@@ -1,0 +1,1363 @@
+/*
+PRACTICE INSTRUCTIONS FOR DAY 06: DELETE OPERATIONS - CSS
+
+Delete Operations Practice in CSS:
+- Use 'x' to delete extra characters (semicolons, brackets, etc.)
+- Use 'dd' to delete entire CSS rules or property lines
+- Use 'dw' to delete property names or values
+- Use 'd$' to delete from cursor to end of line
+- Use visual mode (v) to select and delete code blocks
+- Practice 'dt;' to delete up to semicolon
+- Use 'da{' to delete around braces (entire rule)
+
+This file has redundant rules, duplicate properties, and unnecessary comments to delete!
+*/
+
+/* DELETE THIS ENTIRE COMMENT BLOCK - Outdated information */
+/*
+  Old stylesheet version 1.0
+  Created: 2020-01-01
+  This comment block is obsolete and should be deleted
+  Remove this entire section using visual mode
+*/
+
+/* CSS Variables - Contains duplicates to delete */
+:root {
+    /* Primary Colors */
+    --primary-blue: #3b82f6;
+    --primary-blue-duplicate: #3b82f6; /* DELETE: This duplicate variable */
+    --secondary-blue: #1e40af;
+    --accent-green: #10b981;
+    --accent-green-old: #16a085; /* DELETE: Remove old accent color */
+
+    /* DELETE: Remove extra spacing variables */
+    --spacing-xs-old: 0.125rem;
+    --spacing-sm-old: 0.25rem;
+    --spacing-md-old: 0.5rem;
+
+    /* Current spacing (keep these) */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+
+    /* DELETE THESE: Unused color variables */
+    --unused-purple: #8b5cf6;
+    --deprecated-orange: #f97316;
+    --old-gray: #9ca3af;
+
+    /* Typography */
+    --font-sans: system-ui, -apple-system, sans-serif;
+    --font-mono: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    --font-serif: Georgia, 'Times New Roman', serif; /* DELETE: Unused serif font */
+
+    /* DELETE THIS: Old font sizes */
+    --text-xs-old: 0.7rem;
+    --text-sm-old: 0.8rem;
+    --text-base-old: 0.9rem;
+
+    /* Current font sizes (keep) */
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.875rem;
+
+    /* DELETE THESE: Experimental variables that didn't work */
+    --experimental-gradient: linear-gradient(45deg, red, blue);
+    --test-shadow: 0 10px 20px rgba(0, 0, 0, 0.8);
+    --prototype-border: 5px solid purple;
+}
+
+/* DELETE THIS ENTIRE RULE: Old browser support */
+* {
+    -webkit-box-sizing: border-box; /* DELETE: Unnecessary webkit prefix */
+    -moz-box-sizing: border-box;    /* DELETE: Unnecessary moz prefix */
+    box-sizing: border-box;
+}
+
+/* Universal Reset - Clean version */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0; /* DELETE: Remove this line - border reset not needed */
+}
+
+html {
+    font-size: 16px;
+    line-height: 1.6;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%; /* DELETE: Old webkit property */
+    -moz-text-size-adjust: 100%;    /* DELETE: Old moz property */
+}
+
+body {
+    font-family: var(--font-sans);
+    color: var(--text-color);
+    background-color: var(--white);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased; /* DELETE: Webkit-specific property */
+    -moz-osx-font-smoothing: grayscale;  /* DELETE: Moz-specific property */
+}
+
+/* DELETE THIS ENTIRE RULE: Obsolete print styles */
+@media print {
+    * {
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+    .header,
+    .footer {
+        display: none;
+    }
+}
+
+/* Header Styles - Contains redundant properties */
+.main-header {
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    padding: var(--spacing-md) 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid transparent; /* DELETE: Unnecessary transparent border */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* DELETE: Webkit prefix */
+}
+
+/* DELETE THIS ENTIRE RULE: Duplicate header styling */
+.main-header.redundant-class {
+    background: var(--primary-blue);
+    padding: 1rem 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-lg);
+    min-height: 60px; /* DELETE: Unnecessary min-height */
+}
+
+/* DELETE THESE: Old logo styles */
+.logo-image.duplicate-logo {
+    width: 40px;
+    height: 40px;
+    opacity: 0;
+    position: absolute;
+    left: -9999px;
+}
+
+.site-title.duplicate-title {
+    font-size: 1.5rem;
+    color: white;
+    display: none;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    transition: transform 0.3s ease; /* DELETE: Unnecessary transition */
+}
+
+.logo-image {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: var(--border-radius-sm);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1)); /* DELETE: Unnecessary filter */
+}
+
+.site-title {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+    letter-spacing: -0.025em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* DELETE: Unnecessary text-shadow */
+}
+
+/* Navigation Styles */
+.main-navigation {
+    display: flex;
+    align-items: center;
+}
+
+/* DELETE THIS: Unnecessary role-based styling */
+.main-navigation[role="navigation"] {
+    border: 1px solid red;
+    background: yellow;
+}
+
+.nav-list {
+    display: flex;
+    list-style: none;
+    gap: var(--spacing-md);
+    margin: 0;
+    padding: 0;
+    align-items: center; /* DELETE: Redundant with flex alignment */
+}
+
+.nav-item {
+    position: relative;
+    display: flex; /* DELETE: Unnecessary display flex for list items */
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    transition: all 0.3s ease;
+    font-weight: 500;
+    border: 1px solid transparent; /* DELETE: Transparent border not needed */
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* DELETE: Excessive hover shadow */
+}
+
+/* DELETE THESE: Styles for duplicate nav items */
+.nav-link.duplicate-home {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* DELETE THIS ENTIRE RULE: Obsolete search form */
+.search-form.obsolete-search {
+    display: flex;
+    gap: var(--spacing-sm);
+    background: rgba(255, 255, 255, 0.1);
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-md);
+    backdrop-filter: blur(5px);
+}
+
+.search-input {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: none;
+    border-radius: var(--border-radius-sm);
+    background: white;
+    color: var(--text-color);
+    font-size: var(--text-sm);
+    outline: none; /* DELETE: Outline none is bad for accessibility */
+}
+
+.search-button {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--accent-green);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-size: var(--text-sm);
+    transition: background-color 0.3s ease;
+    text-transform: uppercase; /* DELETE: Unnecessary text transform */
+}
+
+/* Main Content */
+.main-content {
+    min-height: 100vh;
+    padding-top: var(--spacing-xl); /* DELETE: Redundant padding */
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--light-gray), white);
+    padding: var(--spacing-xl);
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* DELETE: Subtle shadow not needed */
+}
+
+/* DELETE THIS: Redundant banner class */
+.hero-section.banner-section {
+    border: 2px solid blue;
+    background: yellow;
+}
+
+.hero-content {
+    text-align: left;
+    padding: var(--spacing-lg); /* DELETE: Extra padding not needed */
+}
+
+.hero-title {
+    font-size: var(--text-4xl);
+    font-weight: 800;
+    color: var(--primary-blue);
+    margin-bottom: var(--spacing-lg);
+    line-height: 1.2;
+    text-transform: capitalize; /* DELETE: Text transform not needed */
+}
+
+/* DELETE THESE: Redundant title classes */
+.hero-title.primary-heading {
+    border-bottom: 3px solid red;
+}
+
+.hero-title.main-title {
+    text-decoration: underline;
+}
+
+/* DELETE THIS ENTIRE RULE: Hidden duplicate subtitle */
+.hero-subtitle.duplicate-subtitle {
+    font-size: var(--text-xl);
+    color: var(--neutral-gray);
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.hero-description {
+    font-size: var(--text-lg);
+    color: var(--dark-gray);
+    margin-bottom: var(--spacing-lg);
+    line-height: 1.7;
+    max-width: 600px; /* DELETE: Max-width constraint not needed here */
+}
+
+/* DELETE THIS: Duplicate description styling */
+.hero-description-duplicate {
+    opacity: 0;
+    position: absolute;
+    left: -9999px;
+    font-size: var(--text-lg);
+    color: var(--dark-gray);
+}
+
+.hero-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: flex-start;
+    margin-top: var(--spacing-lg);
+    flex-wrap: wrap; /* DELETE: Flex-wrap not needed */
+}
+
+/* Button Styles */
+.btn {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-size: var(--text-base);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    min-width: 120px; /* DELETE: Min-width constraint */
+}
+
+.btn-primary {
+    background: var(--primary-blue);
+    color: white;
+    border: 2px solid var(--primary-blue); /* DELETE: Border same as background */
+}
+
+.btn-primary:hover {
+    background: var(--secondary-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+    border-color: var(--secondary-blue); /* DELETE: Redundant border color */
+}
+
+/* DELETE THIS: Redundant CTA button class */
+.btn.cta-button {
+    animation: pulse 2s infinite;
+    border: 3px solid gold;
+    box-shadow: 0 0 10px gold;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--primary-blue);
+    border: 2px solid var(--primary-blue);
+}
+
+.btn-secondary:hover {
+    background: var(--primary-blue);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* DELETE THIS: Duplicate learn more button */
+.btn.duplicate-learn-more {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    background: gray;
+    color: white;
+}
+
+/* Hero Image */
+.hero-image-container { /* DELETE: Unnecessary wrapper div */
+    padding: var(--spacing-md);
+    border: 1px solid transparent;
+}
+
+.hero-image {
+    text-align: center;
+    position: relative; /* DELETE: Position relative not needed */
+}
+
+.hero-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-xl);
+    filter: saturate(1.1); /* DELETE: Filter not needed */
+}
+
+/* DELETE THIS: Decorative image styling */
+.decorative-img.obsolete-decoration {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 50px;
+    height: 50px;
+    opacity: 0.3;
+    z-index: -1;
+}
+
+/* DELETE THIS ENTIRE RULE: Announcement banner */
+.announcement-banner.deprecated-section {
+    background: yellow;
+    padding: 10px;
+    text-align: center;
+    border: 2px dashed red;
+    margin: var(--spacing-lg) 0;
+}
+
+.announcement-text {
+    font-weight: bold;
+    color: red;
+    font-size: var(--text-lg);
+}
+
+/* Features Section */
+.features-section {
+    padding: var(--spacing-xl) 0;
+    background: var(--light-gray);
+    border-top: 1px solid transparent; /* DELETE: Transparent border */
+}
+
+/* DELETE THIS: Content section class */
+.features-section.content-section {
+    border: 1px solid blue;
+    background: lightblue;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+    position: relative; /* DELETE: Position relative not needed */
+}
+
+.section-title {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    color: var(--black);
+    text-transform: uppercase; /* DELETE: Text transform */
+    letter-spacing: 0.05em; /* DELETE: Letter spacing */
+}
+
+/* DELETE THIS: Features heading class */
+.section-title.features-heading {
+    border-bottom: 3px solid green;
+    padding-bottom: 10px;
+}
+
+/* DELETE THIS: Duplicate features title */
+.section-title.duplicate-features-title {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-md); /* DELETE: Extra padding */
+}
+
+/* Feature Cards */
+.feature-card {
+    background: white;
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid var(--light-gray);
+    position: relative; /* DELETE: Position relative not needed */
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-blue); /* DELETE: Border color change */
+}
+
+/* DELETE THESE: Specific feature card classes */
+.feature-card.char-deletion-card {
+    border-left: 5px solid red;
+}
+
+.feature-card.word-deletion-card {
+    border-left: 5px solid blue;
+}
+
+.feature-card.extra-padding {
+    padding: calc(var(--spacing-xl) + 10px);
+}
+
+.feature-card.line-deletion-card {
+    border-left: 5px solid green;
+}
+
+/* DELETE THIS ENTIRE RULE: Obsolete feature card */
+.feature-card.advanced-deletion-card.obsolete-feature {
+    opacity: 0.5;
+    background: #f0f0f0;
+    border: 2px dashed #ccc;
+    position: relative;
+}
+
+.feature-card.advanced-deletion-card.obsolete-feature::before {
+    content: "DELETE ME";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: red;
+    color: white;
+    padding: 5px;
+    font-size: 12px;
+    border-radius: 3px;
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+    text-align: center;
+    line-height: 1; /* DELETE: Line-height not needed */
+}
+
+.feature-title {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    color: var(--primary-blue);
+    text-align: center; /* DELETE: Center alignment not needed */
+}
+
+/* DELETE THIS: Obsolete subtitle */
+.feature-subtitle.obsolete-subtitle {
+    font-size: var(--text-lg);
+    color: gray;
+    margin-bottom: var(--spacing-sm);
+    text-decoration: line-through;
+}
+
+.feature-description {
+    color: var(--neutral-gray);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-lg);
+    text-align: justify; /* DELETE: Text justify */
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.feature-list li {
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--light-gray);
+    position: relative;
+    padding-left: var(--spacing-lg);
+    font-size: var(--text-sm);
+    line-height: 1.4;
+}
+
+.feature-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--accent-green);
+    font-weight: bold;
+    font-size: 1.2em; /* DELETE: Font-size adjustment */
+}
+
+.feature-list li:last-child {
+    border-bottom: none;
+}
+
+/* DELETE THESE: Redundant list styles */
+.feature-list.redundant-list {
+    color: #ccc;
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+
+.feature-list.duplicate-word-list {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.redundant-explanation {
+    font-style: italic;
+    color: #999;
+    text-decoration: line-through;
+}
+
+.tip-item {
+    background: yellow;
+    padding: 5px;
+    border: 1px dashed orange;
+    font-weight: bold;
+}
+
+/* Practice Section */
+.practice-section {
+    padding: var(--spacing-xl) 0;
+    background: white;
+    border-radius: var(--border-radius-lg); /* DELETE: Border radius on section */
+    margin: var(--spacing-xl) 0;
+}
+
+/* DELETE THESE: Extra practice classes */
+.practice-section.training-area {
+    border: 2px solid purple;
+}
+
+.practice-section.exercise-zone {
+    background: lightyellow;
+}
+
+/* DELETE THIS ENTIRE RULE: Obsolete instructions */
+.instruction-box.obsolete-instructions {
+    border: 2px dashed red;
+    background: #ffe6e6;
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+    color: red;
+    font-weight: bold;
+}
+
+.practice-content {
+    background: var(--light-gray);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* DELETE: Subtle shadow */
+}
+
+.practice-area {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-lg);
+    border: 1px solid var(--light-gray);
+    position: relative; /* DELETE: Position relative */
+}
+
+.practice-area:last-child {
+    margin-bottom: 0;
+}
+
+/* DELETE THESE: Specific practice area classes */
+.practice-area.char-practice-area {
+    border-left: 4px solid red;
+}
+
+.practice-area.word-practice-area {
+    border-left: 4px solid blue;
+}
+
+.practice-area.line-practice-area {
+    border-left: 4px solid green;
+}
+
+.practice-title {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    color: var(--primary-blue);
+    text-transform: capitalize; /* DELETE: Text transform */
+}
+
+/* DELETE THESE: Duplicate title styles */
+.practice-title.duplicate-char-title {
+    display: none;
+    opacity: 0;
+}
+
+.practice-subtitle.redundant-subtitle {
+    font-size: var(--text-lg);
+    color: gray;
+    margin-bottom: var(--spacing-sm);
+    text-decoration: line-through;
+}
+
+.practice-text {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    background: var(--light-gray);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--light-gray); /* DELETE: Redundant border */
+}
+
+/* DELETE THIS: Duplicate practice text */
+.duplicate-practice-text {
+    color: #999;
+    opacity: 0.5;
+    text-decoration: line-through;
+    font-style: italic;
+    background: #f0f0f0;
+    padding: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+}
+
+.code-sample {
+    background: var(--black);
+    color: white;
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    font-family: var(--font-mono);
+    margin: var(--spacing-md) 0;
+    overflow-x: auto;
+    border: 1px solid #333; /* DELETE: Border not needed on dark background */
+}
+
+/* DELETE THIS ENTIRE BLOCK: Redundant code block */
+.redundant-code-block.obsolete-block {
+    background: #f0f0f0;
+    border: 2px dashed #ccc;
+    padding: var(--spacing-md);
+    margin: var(--spacing-md) 0;
+    opacity: 0.5;
+    position: relative;
+}
+
+.redundant-code-block.obsolete-block::before {
+    content: "DELETE THIS BLOCK";
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: red;
+    color: white;
+    padding: 2px 5px;
+    font-size: 10px;
+    border-radius: 2px;
+}
+
+.word-examples {
+    margin-top: var(--spacing-lg);
+    padding: var(--spacing-md); /* DELETE: Extra padding */
+}
+
+.delete-target {
+    background: red;
+    color: white;
+    padding: 2px 4px;
+    border-radius: 2px;
+    font-weight: bold;
+    text-decoration: line-through;
+    opacity: 0.7; /* DELETE: Opacity adjustment */
+}
+
+/* Line Deletion Practice */
+.delete-this-line {
+    background: red;
+    color: white;
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    text-align: center;
+    font-weight: bold;
+    text-decoration: line-through;
+    margin: var(--spacing-sm) 0;
+}
+
+.debug-line {
+    background: yellow;
+    color: black;
+    padding: var(--spacing-xs);
+    border-left: 3px solid orange;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+}
+
+.obsolete-content {
+    opacity: 0.5;
+    text-decoration: line-through;
+    color: #999;
+    background: #f8f8f8;
+    padding: var(--spacing-xs);
+    margin: var(--spacing-xs) 0;
+}
+
+/* DELETE THIS ENTIRE SECTION: Old version styles */
+.old-version-section.deprecated-section {
+    background: #ffe6e6;
+    border: 2px dashed red;
+    padding: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
+    opacity: 0.6;
+    position: relative;
+}
+
+.old-version-section h4 {
+    color: red;
+    font-weight: bold;
+    margin-bottom: var(--spacing-md);
+}
+
+.old-version-section::before {
+    content: "DEPRECATED - DELETE ME";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: red;
+    color: white;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+/* DELETE THIS ENTIRE RULE: Duplicate practice area */
+.duplicate-practice-area {
+    background: #f0f0f0;
+    border: 1px dashed #ccc;
+    opacity: 0.5;
+    padding: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
+    position: relative;
+}
+
+.duplicate-practice-area::before {
+    content: "DUPLICATE - DELETE ME";
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: orange;
+    color: white;
+    padding: 3px 8px;
+    font-size: 10px;
+    border-radius: 2px;
+}
+
+.nested-content {
+    padding: var(--spacing-md);
+    background: white;
+    border-radius: var(--border-radius-sm);
+    margin: var(--spacing-sm) 0;
+}
+
+/* DELETE THIS ENTIRE SECTION: Deprecated testimonials */
+.testimonials-section.deprecated-testimonials {
+    background: #ffe6e6;
+    padding: var(--spacing-xl) 0;
+    margin: var(--spacing-xl) 0;
+    border: 3px dashed red;
+    position: relative;
+}
+
+.testimonials-section.deprecated-testimonials::before {
+    content: "DEPRECATED SECTION - DELETE";
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: red;
+    color: white;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 5px;
+    z-index: 10;
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.testimonial {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    opacity: 0.3;
+    text-decoration: line-through;
+}
+
+/* Contact Section */
+.contact-section {
+    padding: var(--spacing-xl) 0;
+    background: var(--light-gray);
+}
+
+/* DELETE THESE: Extra contact classes */
+.contact-section.contact-area {
+    border-top: 3px solid blue;
+}
+
+.contact-section.contact-zone {
+    background: lightblue;
+}
+
+/* DELETE THIS: Duplicate contact title */
+.section-title.duplicate-contact-title {
+    display: none;
+    opacity: 0;
+    color: red;
+}
+
+.contact-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-lg);
+    align-items: start; /* DELETE: Align-items not needed */
+}
+
+.contact-info {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--light-gray); /* DELETE: Redundant border */
+}
+
+.contact-item {
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.contact-item:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+.contact-item h3 {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    color: var(--primary-blue);
+}
+
+/* DELETE THESE: Old contact info styles */
+.old-email {
+    text-decoration: line-through;
+    opacity: 0.5;
+    color: red;
+}
+
+.old-phone.deprecated-contact {
+    text-decoration: line-through;
+    color: #999;
+    font-style: italic;
+}
+
+/* DELETE THIS ENTIRE RULE: Duplicate address */
+.contact-item.duplicate-address.obsolete-address {
+    background: #ffe6e6;
+    border: 2px dashed red;
+    opacity: 0.5;
+    position: relative;
+}
+
+.contact-item.duplicate-address::before {
+    content: "DELETE ME";
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: red;
+    color: white;
+    padding: 2px 5px;
+    font-size: 10px;
+    border-radius: 2px;
+}
+
+/* Contact Form */
+.contact-form {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: relative; /* DELETE: Position relative not needed */
+}
+
+.form-group {
+    margin-bottom: var(--spacing-lg);
+    position: relative; /* DELETE: Position relative not needed */
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+    color: var(--black);
+    font-size: var(--text-sm);
+    text-transform: uppercase; /* DELETE: Text transform */
+    letter-spacing: 0.05em; /* DELETE: Letter spacing */
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 2px solid var(--light-gray);
+    border-radius: var(--border-radius-md);
+    font-size: var(--text-base);
+    font-family: var(--font-sans);
+    transition: all 0.3s ease;
+    background: white;
+    resize: vertical; /* DELETE: Only applies to textarea */
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    transform: scale(1.02); /* DELETE: Scale transform */
+}
+
+/* DELETE THIS: Obsolete email confirmation field */
+.form-group.obsolete-field {
+    display: none;
+    opacity: 0;
+    background: #f0f0f0;
+    border: 1px dashed #ccc;
+}
+
+/* DELETE THESE: Honeypot field styles */
+.honeypot-fields {
+    display: none;
+    opacity: 0;
+    position: absolute;
+    left: -9999px;
+}
+
+.honeypot-fields input {
+    width: 1px;
+    height: 1px;
+    border: none;
+    background: transparent;
+}
+
+.form-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: flex-start;
+    margin-top: var(--spacing-lg);
+    flex-wrap: wrap; /* DELETE: Flex-wrap not needed */
+}
+
+/* DELETE THIS: Submit button class */
+.btn.submit-button {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* DELETE THIS: Reset button styles */
+.btn.reset-btn.obsolete-button {
+    background: gray;
+    color: white;
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+
+/* Footer */
+.main-footer {
+    background: var(--black);
+    color: white;
+    padding: var(--spacing-xl) 0 var(--spacing-lg);
+    margin-top: var(--spacing-xl);
+    border-top: 3px solid var(--primary-blue); /* DELETE: Border top */
+}
+
+/* DELETE THESE: Extra footer classes */
+.main-footer.site-footer {
+    border-bottom: 3px solid blue;
+}
+
+.main-footer.page-footer {
+    background: darkblue;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+    align-items: start; /* DELETE: Align-items not needed */
+}
+
+.footer-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.footer-section h3 {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    color: white;
+    text-transform: uppercase; /* DELETE: Text transform */
+    letter-spacing: 0.05em; /* DELETE: Letter spacing */
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: var(--spacing-sm);
+    padding-left: var(--spacing-sm); /* DELETE: Padding left */
+}
+
+.footer-links a {
+    color: var(--neutral-gray);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: var(--text-sm);
+    display: block; /* DELETE: Display block */
+}
+
+.footer-links a:hover {
+    color: white;
+    text-decoration: underline; /* DELETE: Text decoration */
+}
+
+/* DELETE THIS: Obsolete link styling */
+.footer-links a.obsolete-link {
+    text-decoration: line-through;
+    opacity: 0.5;
+    color: red;
+}
+
+/* DELETE THIS ENTIRE SECTION: Old social media */
+.footer-section.obsolete-social-section {
+    background: #333;
+    padding: var(--spacing-md);
+    border: 2px dashed red;
+    opacity: 0.5;
+    position: relative;
+}
+
+.footer-section.obsolete-social-section::before {
+    content: "OBSOLETE - DELETE";
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: red;
+    color: white;
+    padding: 2px 5px;
+    font-size: 10px;
+    border-radius: 2px;
+}
+
+.social-links {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.social-link {
+    color: #999;
+    text-decoration: line-through;
+    opacity: 0.3;
+}
+
+/* DELETE THIS: Old contact styling */
+.old-contact {
+    opacity: 0.5;
+    text-decoration: line-through;
+    color: #666;
+}
+
+/* Newsletter */
+.newsletter-form {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+    flex-wrap: wrap; /* DELETE: Flex-wrap not needed */
+}
+
+.newsletter-form input[type="email"] {
+    flex: 1;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--light-gray);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--text-sm);
+    min-width: 200px; /* DELETE: Min-width constraint */
+}
+
+.newsletter-form button {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--primary-blue);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-size: var(--text-sm);
+    white-space: nowrap; /* DELETE: White-space nowrap */
+}
+
+/* DELETE THIS: Old newsletter form */
+.newsletter-form.old-newsletter {
+    display: none;
+    opacity: 0;
+    background: #f0f0f0;
+    border: 1px dashed #ccc;
+    padding: var(--spacing-sm);
+}
+
+/* DELETE THIS: Newsletter button class */
+.btn.newsletter-btn {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: bold;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+    border-top: 1px solid #333;
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-lg);
+    text-align: center; /* DELETE: Text align center */
+}
+
+.copyright {
+    font-size: var(--text-sm);
+    color: var(--neutral-gray);
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.4; /* DELETE: Line-height adjustment */
+}
+
+.footer-legal {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-lg);
+    flex-wrap: wrap; /* DELETE: Flex-wrap */
+}
+
+.legal-link {
+    color: var(--neutral-gray);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    transition: color 0.3s ease;
+    padding: var(--spacing-xs); /* DELETE: Padding */
+}
+
+.legal-link:hover {
+    color: white;
+}
+
+/* DELETE THIS: Obsolete legal navigation */
+.footer-legal.obsolete-legal {
+    opacity: 0.3;
+    text-decoration: line-through;
+    background: #333;
+    padding: 5px;
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-section {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: var(--spacing-lg); /* DELETE: Redundant gap */
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-content {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .footer-legal {
+        justify-content: center;
+        flex-direction: column; /* DELETE: Flex-direction not needed */
+        align-items: center; /* DELETE: Align-items not needed */
+    }
+}
+
+/* DELETE THIS ENTIRE MEDIA QUERY: Unused mobile styles */
+@media (max-width: 480px) {
+    .obsolete-mobile-styles {
+        display: none;
+    }
+
+    .old-mobile-layout {
+        flex-direction: column;
+        background: red;
+    }
+
+    .deprecated-mobile-nav {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        transition: left 0.3s ease;
+    }
+}

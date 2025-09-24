@@ -1,0 +1,652 @@
+/*
+PRACTICE INSTRUCTIONS FOR DAY 04: LINE OPERATIONS - CSS
+
+Line Operations Practice in CSS:
+- Navigate between CSS rules using j/k (down/up)
+- Jump to specific line numbers with :line_number or line_numberG
+- Practice dd to delete entire CSS rules
+- Use yy to copy CSS rules and p to paste them
+- Try o/O to create new lines for adding properties
+- Use numbered movement like 10j to jump between sections
+
+This CSS file has over 100 lines - perfect for line navigation practice!
+Each major section is commented with line ranges.
+*/
+
+/* Lines 1-20: CSS Reset and Variables */
+:root {
+    /* Custom Properties - Practice line jumping here */
+    --primary-blue: #2563eb;
+    --secondary-blue: #1e40af;
+    --accent-green: #10b981;
+    --warning-yellow: #f59e0b;
+    --danger-red: #ef4444;
+    --neutral-gray: #6b7280;
+    --light-gray: #f3f4f6;
+    --dark-gray: #374151;
+    --white: #ffffff;
+    --black: #111827;
+
+    /* Typography Scale */
+    --font-sans: system-ui, -apple-system, sans-serif;
+    --font-mono: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.875rem;
+    --text-4xl: 2.25rem;
+}
+
+/* Lines 21-40: Universal Reset */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    line-height: 1.5;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-sans);
+    color: var(--black);
+    background-color: var(--white);
+    line-height: 1.6;
+}
+
+/* Lines 41-70: Header Styles */
+.main-site-header {
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.primary-navigation {
+    display: flex;
+    justify-content: center;
+}
+
+.nav-list {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item {
+    display: flex;
+}
+
+.nav-link {
+    color: var(--white);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    transition: background-color 0.3s ease;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Lines 71-100: Main Content Area */
+.main-content-area {
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+.hero-banner {
+    background: linear-gradient(135deg, var(--light-gray), var(--white));
+    padding: 4rem 2rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    border-radius: 1rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-title {
+    font-size: var(--text-4xl);
+    font-weight: 800;
+    color: var(--primary-blue);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.hero-subtitle {
+    font-size: var(--text-xl);
+    color: var(--neutral-gray);
+    margin-bottom: 2rem;
+    font-weight: 300;
+}
+
+.hero-description {
+    font-size: var(--text-lg);
+    color: var(--dark-gray);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    line-height: 1.7;
+}
+
+/* Lines 101-130: Button Styles */
+.hero-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.btn-primary {
+    background: var(--primary-blue);
+    color: var(--white);
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: var(--text-base);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary:hover {
+    background: var(--secondary-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--primary-blue);
+    padding: 0.75rem 2rem;
+    border: 2px solid var(--primary-blue);
+    border-radius: 0.5rem;
+    font-size: var(--text-base);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-secondary:hover {
+    background: var(--primary-blue);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+/* Lines 131-160: Section Styles */
+.tutorial-section,
+.practice-area-1,
+.code-practice,
+.data-tables,
+.form-practice,
+.list-practice,
+.article-content,
+.final-practice {
+    max-width: 1200px;
+    margin: 0 auto 4rem;
+    padding: 0 2rem;
+}
+
+.container {
+    width: 100%;
+    max-width: 100%;
+}
+
+.section-title {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--accent-green);
+    border-radius: 1.5px;
+}
+
+/* Lines 161-190: Tutorial Content */
+.tutorial-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.command-explanation {
+    background: var(--light-gray);
+    padding: 2rem;
+    border-radius: 0.75rem;
+    border-left: 4px solid var(--primary-blue);
+}
+
+.command-explanation h3 {
+    font-size: var(--text-xl);
+    color: var(--black);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.command-explanation ul {
+    list-style: none;
+    padding: 0;
+}
+
+.command-explanation li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--dark-gray);
+}
+
+.command-explanation li:last-child {
+    border-bottom: none;
+}
+
+/* Lines 191-220: Practice Content */
+.practice-content {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--light-gray);
+}
+
+.practice-content p {
+    margin-bottom: 1rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--dark-gray);
+    padding: 0.5rem;
+    background: var(--light-gray);
+    border-radius: 0.25rem;
+    border-left: 3px solid var(--accent-green);
+}
+
+/* Lines 221-250: Code Block Styles */
+.code-examples {
+    background: var(--black);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    overflow-x: auto;
+    margin: 2rem 0;
+}
+
+.code-block {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--white);
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+.code-block::selection {
+    background: rgba(59, 130, 246, 0.3);
+}
+
+/* Lines 251-280: Table Styles */
+.practice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    background: var(--white);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.practice-table thead {
+    background: var(--primary-blue);
+    color: var(--white);
+}
+
+.practice-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.practice-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--light-gray);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--dark-gray);
+}
+
+.practice-table tr:nth-child(even) {
+    background: var(--light-gray);
+}
+
+.practice-table tr:hover {
+    background: rgba(59, 130, 246, 0.05);
+}
+
+/* Lines 281-310: Form Styles */
+.practice-form {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--light-gray);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--black);
+    font-size: var(--text-sm);
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--light-gray);
+    border-radius: 0.5rem;
+    font-size: var(--text-base);
+    font-family: var(--font-sans);
+    transition: border-color 0.3s ease;
+    background: var(--white);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-start;
+    margin-top: 2rem;
+}
+
+/* Lines 311-340: List Styles */
+.list-container {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--light-gray);
+}
+
+.list-container h3 {
+    font-size: var(--text-xl);
+    color: var(--black);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.practice-list,
+.practice-numbered-list {
+    margin: 1rem 0 2rem;
+    padding-left: 1.5rem;
+}
+
+.practice-list li,
+.practice-numbered-list li {
+    margin-bottom: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--dark-gray);
+    padding: 0.5rem;
+    background: var(--light-gray);
+    border-radius: 0.25rem;
+    border-left: 3px solid var(--warning-yellow);
+}
+
+/* Lines 341-370: Article Styles */
+.practice-article {
+    background: var(--white);
+    padding: 3rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--light-gray);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.practice-article h3 {
+    font-size: var(--text-2xl);
+    color: var(--primary-blue);
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.practice-article h4 {
+    font-size: var(--text-xl);
+    color: var(--black);
+    margin: 2rem 0 1rem;
+    font-weight: 600;
+}
+
+.practice-article p {
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+    color: var(--dark-gray);
+    font-size: var(--text-base);
+}
+
+/* Lines 371-400: Challenge Blocks */
+.practice-challenges {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--light-gray);
+}
+
+.challenge-block {
+    background: var(--light-gray);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid var(--danger-red);
+}
+
+.challenge-block h4 {
+    font-size: var(--text-lg);
+    color: var(--black);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.challenge-block p {
+    margin-bottom: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--dark-gray);
+    line-height: 1.6;
+}
+
+.challenge-block:last-child {
+    margin-bottom: 0;
+}
+
+/* Lines 401-430: Footer Styles */
+.main-footer {
+    background: var(--black);
+    color: var(--white);
+    padding: 3rem 0 2rem;
+    margin-top: 4rem;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.footer-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.footer-section h3 {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--primary-blue);
+    padding-bottom: 0.5rem;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--neutral-gray);
+    line-height: 1.4;
+    padding: 0.25rem 0;
+    border-left: 2px solid transparent;
+    padding-left: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.footer-links li:hover {
+    color: var(--white);
+    border-left-color: var(--accent-green);
+    padding-left: 1rem;
+}
+
+/* Lines 431-460: Footer Bottom */
+.footer-bottom {
+    max-width: 1200px;
+    margin: 2rem auto 0;
+    padding: 2rem;
+    border-top: 1px solid var(--dark-gray);
+    text-align: center;
+}
+
+.footer-bottom p {
+    margin-bottom: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--neutral-gray);
+    line-height: 1.6;
+}
+
+.footer-bottom p:last-child {
+    margin-bottom: 0;
+    color: var(--accent-green);
+    font-weight: 600;
+}
+
+/* Lines 461-490: Responsive Design */
+@media (max-width: 768px) {
+    .nav-list {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .hero-banner {
+        padding: 2rem 1rem;
+    }
+
+    .hero-title {
+        font-size: var(--text-3xl);
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tutorial-content {
+        grid-template-columns: 1fr;
+    }
+
+    .main-content-area,
+    .tutorial-section,
+    .practice-area-1,
+    .code-practice,
+    .data-tables,
+    .form-practice,
+    .list-practice,
+    .article-content,
+    .final-practice {
+        padding: 0 1rem;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: var(--text-2xl);
+    }
+
+    .section-title {
+        font-size: var(--text-2xl);
+    }
+
+    .practice-table {
+        font-size: var(--text-xs);
+    }
+
+    .practice-table th,
+    .practice-table td {
+        padding: 0.5rem;
+    }
+}

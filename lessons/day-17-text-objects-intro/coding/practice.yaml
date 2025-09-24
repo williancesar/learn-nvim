@@ -1,0 +1,143 @@
+# API Gateway Configuration with Various Key Names
+# Practice file for text objects (iw aw iW aW)
+# Focus on selecting words containing different patterns and key names
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-gateway-config
+  namespace: production
+data:
+  gateway_port: "8080"
+  service-discovery-endpoint: "http://consul.service.consul:8500"
+  auth_provider_url: "https://auth0.company.com/oauth/token"
+  cache_ttl_seconds: "3600"
+  rate_limit_requests_per_minute: "1000"
+  health_check_interval: "30s"
+  circuit_breaker_threshold: "50"
+  retry_attempts: "3"
+  timeout_duration: "10s"
+  load_balancer_algorithm: "round_robin"
+
+  # Database configuration keys
+  db.primary.host: "postgres-primary.db.svc.cluster.local"
+  db.primary.port: "5432"
+  db.primary.database: "maindb"
+  db.primary.username: "app_user"
+  db.primary.max_connections: "100"
+  db.replica.host: "postgres-replica.db.svc.cluster.local"
+  db.replica.port: "5432"
+  db.replica.max_connections: "50"
+
+  # Redis cache settings
+  redis.cluster.endpoint: "redis://redis-cluster.cache.svc.cluster.local:6379"
+  redis.cluster.password: "secure_password_123"
+  redis.connection.timeout: "2s"
+  redis.connection.pool_size: "20"
+  redis.sentinel.master_name: "mymaster"
+  redis.sentinel.addresses: "sentinel-1:26379,sentinel-2:26379,sentinel-3:26379"
+
+  # Message queue configuration
+  messageQueue.type: "rabbitmq"
+  messageQueue.host: "rabbitmq.queue.svc.cluster.local"
+  messageQueue.port: "5672"
+  messageQueue.virtual_host: "/production"
+  messageQueue.exchange_name: "main_exchange"
+  messageQueue.queue_prefix: "api_"
+  messageQueue.durable_queues: "true"
+  messageQueue.auto_delete: "false"
+
+  # Monitoring and observability
+  metrics.enabled: "true"
+  metrics.endpoint: "/metrics"
+  metrics.interval: "15s"
+  metrics.retention_period: "7d"
+  logging.level: "info"
+  logging.format: "json"
+  logging.destination: "stdout"
+  logging.structured_logs: "true"
+  tracing.enabled: "true"
+  tracing.sampler_type: "probabilistic"
+  tracing.sampling_rate: "0.1"
+  tracing.jaeger_endpoint: "http://jaeger-collector:14268/api/traces"
+
+  # Security configuration
+  security.cors.allowed_origins: "https://app.company.com,https://admin.company.com"
+  security.cors.allowed_methods: "GET,POST,PUT,DELETE,OPTIONS"
+  security.cors.allowed_headers: "Authorization,Content-Type,X-Requested-With"
+  security.cors.max_age: "3600"
+  security.rate_limit.enabled: "true"
+  security.rate_limit.requests: "1000"
+  security.rate_limit.window: "1m"
+  security.rate_limit.burst: "100"
+  security.jwt.issuer: "https://auth.company.com"
+  security.jwt.audience: "api.company.com"
+  security.jwt.algorithm: "RS256"
+  security.jwt.public_key_url: "https://auth.company.com/.well-known/jwks.json"
+
+  # Service discovery settings
+  service_discovery.type: "kubernetes"
+  service_discovery.namespace: "production"
+  service_discovery.sync_interval: "30s"
+  service_discovery.watch_enabled: "true"
+  service_discovery.label_selector: "app=microservice"
+  service_discovery.health_check_path: "/health"
+
+  # Feature flags
+  features.async_processing: "true"
+  features.experimental_caching: "false"
+  features.advanced_routing: "true"
+  features.request_validation: "true"
+  features.response_compression: "true"
+  features.access_logging: "true"
+
+  # Environment specific settings
+  environment.name: "production"
+  environment.debug_mode: "false"
+  environment.profiling_enabled: "false"
+  environment.maintenance_mode: "false"
+  environment.read_only_mode: "false"
+
+  # AWS specific configuration
+  aws.region: "us-west-2"
+  aws.s3.bucket_name: "api-gateway-assets"
+  aws.s3.prefix: "production/"
+  aws.cloudwatch.log_group: "/aws/apigateway/production"
+  aws.cloudwatch.retention_days: "30"
+  aws.sns.topic_arn: "arn:aws:sns:us-west-2:123456789012:api-alerts"
+  aws.sqs.queue_url: "https://sqs.us-west-2.amazonaws.com/123456789012/api-events"
+
+  # Kubernetes specific settings
+  k8s.service_account: "api-gateway"
+  k8s.cluster_role: "api-gateway-role"
+  k8s.pod_annotations: "prometheus.io/scrape=true,prometheus.io/port=8080"
+  k8s.node_selector: "workload-type=api"
+  k8s.tolerations: "key=api-gateway,operator=Equal,value=true,effect=NoSchedule"
+  k8s.affinity_rules: "preferredDuringSchedulingIgnoredDuringExecution"
+
+  # Custom application settings
+  app.session_timeout: "1800"
+  app.max_request_size: "10MB"
+  app.allowed_file_types: "jpg,png,gif,pdf,doc,docx"
+  app.temp_directory: "/tmp/uploads"
+  app.worker_processes: "4"
+  app.worker_connections: "1024"
+  app.keepalive_timeout: "65"
+  app.client_max_body_size: "50M"
+
+  # Third party integrations
+  stripe.api_key: "sk_live_xxxxxxxxxxxxxxxxxxxxxxxxxx"
+  stripe.webhook_secret: "whsec_xxxxxxxxxxxxxxxxxxxxxxxxxx"
+  sendgrid.api_key: "SG.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  twilio.account_sid: "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  twilio.auth_token: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  slack.webhook_url: "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX"
+
+  # Performance tuning
+  performance.max_concurrent_requests: "1000"
+  performance.request_timeout: "30s"
+  performance.connection_pool_size: "50"
+  performance.idle_timeout: "60s"
+  performance.read_timeout: "10s"
+  performance.write_timeout: "10s"
+  performance.buffer_size: "64KB"

@@ -1,0 +1,398 @@
+{
+  "infrastructure": {
+    "metadata": {
+      "version": "2.1.0",
+      "environment": "production",
+      "created_by": "devops-team",
+      "last_updated": "2024-01-15T10:30:00Z",
+      "tags": ["production", "kubernetes", "microservices"]
+    },
+
+    "cloud_provider": {
+      "name": "aws",
+      "region": "us-west-2",
+      "availability_zones": ["us-west-2a", "us-west-2b", "us-west-2c"],
+      "account_id": "123456789012",
+      "billing_tags": {
+        "environment": "production",
+        "team": "platform",
+        "cost_center": "engineering",
+        "project": "ecommerce-platform"
+      }
+    },
+
+    "networking": {
+      "vpc": {
+        "cidr_block": "10.0.0.0/16",
+        "enable_dns_hostnames": true,
+        "enable_dns_support": true,
+        "tags": {
+          "Name": "production-vpc",
+          "Environment": "production"
+        }
+      },
+      "subnets": {
+        "public": [
+          {
+            "cidr_block": "10.0.1.0/24",
+            "availability_zone": "us-west-2a",
+            "map_public_ip_on_launch": true
+          },
+          {
+            "cidr_block": "10.0.2.0/24",
+            "availability_zone": "us-west-2b",
+            "map_public_ip_on_launch": true
+          }
+        ],
+        "private": [
+          {
+            "cidr_block": "10.0.10.0/24",
+            "availability_zone": "us-west-2a"
+          },
+          {
+            "cidr_block": "10.0.11.0/24",
+            "availability_zone": "us-west-2b"
+          }
+        ]
+      },
+      "security_groups": {
+        "web_tier": {
+          "name": "web-tier-sg",
+          "description": "Security group for web tier",
+          "ingress_rules": [
+            {
+              "protocol": "tcp",
+              "from_port": 80,
+              "to_port": 80,
+              "cidr_blocks": ["0.0.0.0/0"]
+            },
+            {
+              "protocol": "tcp",
+              "from_port": 443,
+              "to_port": 443,
+              "cidr_blocks": ["0.0.0.0/0"]
+            }
+          ]
+        },
+        "app_tier": {
+          "name": "app-tier-sg",
+          "description": "Security group for application tier",
+          "ingress_rules": [
+            {
+              "protocol": "tcp",
+              "from_port": 8080,
+              "to_port": 8080,
+              "source_security_group": "web-tier-sg"
+            }
+          ]
+        }
+      }
+    },
+
+    "kubernetes": {
+      "cluster": {
+        "name": "production-cluster",
+        "version": "1.28",
+        "endpoint_config": {
+          "private_access": true,
+          "public_access": true,
+          "public_access_cidrs": ["0.0.0.0/0"]
+        },
+        "vpc_config": {
+          "subnet_ids": ["subnet-12345", "subnet-67890"],
+          "security_group_ids": ["sg-cluster-123"]
+        },
+        "logging": {
+          "enable": ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+        }
+      },
+      "node_groups": [
+        {
+          "name": "worker-nodes",
+          "instance_types": ["t3.medium", "t3.large"],
+          "ami_type": "AL2_x86_64",
+          "capacity_type": "ON_DEMAND",
+          "desired_size": 3,
+          "max_size": 10,
+          "min_size": 1,
+          "disk_size": 50,
+          "labels": {
+            "node-type": "worker",
+            "environment": "production"
+          },
+          "taints": []
+        },
+        {
+          "name": "spot-nodes",
+          "instance_types": ["t3.medium"],
+          "ami_type": "AL2_x86_64",
+          "capacity_type": "SPOT",
+          "desired_size": 2,
+          "max_size": 5,
+          "min_size": 0,
+          "disk_size": 50,
+          "labels": {
+            "node-type": "spot",
+            "environment": "production"
+          },
+          "taints": [
+            {
+              "key": "spot",
+              "value": "true",
+              "effect": "NoSchedule"
+            }
+          ]
+        }
+      ]
+    },
+
+    "applications": {
+      "microservices": [
+        {
+          "name": "user-service",
+          "version": "v2.1.0",
+          "replicas": 3,
+          "image": "registry.company.com/user-service:v2.1.0",
+          "port": 8080,
+          "resources": {
+            "requests": {
+              "cpu": "100m",
+              "memory": "256Mi"
+            },
+            "limits": {
+              "cpu": "500m",
+              "memory": "1Gi"
+            }
+          },
+          "environment_variables": {
+            "NODE_ENV": "production",
+            "DATABASE_URL": "postgresql://user:pass@db:5432/users",
+            "REDIS_URL": "redis://cache:6379",
+            "LOG_LEVEL": "info"
+          },
+          "health_checks": {
+            "liveness_probe": {
+              "path": "/health",
+              "port": 8080,
+              "initial_delay_seconds": 30,
+              "period_seconds": 10
+            },
+            "readiness_probe": {
+              "path": "/ready",
+              "port": 8080,
+              "initial_delay_seconds": 5,
+              "period_seconds": 5
+            }
+          }
+        },
+        {
+          "name": "order-service",
+          "version": "v1.8.1",
+          "replicas": 5,
+          "image": "registry.company.com/order-service:v1.8.1",
+          "port": 8080,
+          "resources": {
+            "requests": {
+              "cpu": "200m",
+              "memory": "512Mi"
+            },
+            "limits": {
+              "cpu": "1000m",
+              "memory": "2Gi"
+            }
+          },
+          "environment_variables": {
+            "NODE_ENV": "production",
+            "DATABASE_URL": "postgresql://user:pass@db:5432/orders",
+            "REDIS_URL": "redis://cache:6379",
+            "LOG_LEVEL": "info",
+            "QUEUE_URL": "amqp://queue:5672"
+          }
+        }
+      ],
+      "databases": [
+        {
+          "name": "postgresql-primary",
+          "type": "postgresql",
+          "version": "13.7",
+          "instance_class": "db.t3.large",
+          "allocated_storage": 100,
+          "max_allocated_storage": 1000,
+          "backup_retention_period": 30,
+          "multi_az": true,
+          "encryption": true,
+          "performance_insights": true,
+          "monitoring_interval": 60
+        },
+        {
+          "name": "redis-cache",
+          "type": "redis",
+          "version": "6.2",
+          "node_type": "cache.t3.medium",
+          "num_cache_nodes": 2,
+          "backup_retention_limit": 7,
+          "encryption_at_rest": true,
+          "encryption_in_transit": true
+        }
+      ]
+    },
+
+    "monitoring": {
+      "prometheus": {
+        "enabled": true,
+        "retention": "30d",
+        "storage_size": "50Gi",
+        "resources": {
+          "requests": {
+            "cpu": "500m",
+            "memory": "1Gi"
+          },
+          "limits": {
+            "cpu": "2000m",
+            "memory": "4Gi"
+          }
+        },
+        "scrape_configs": [
+          {
+            "job_name": "kubernetes-pods",
+            "kubernetes_sd_configs": [
+              {
+                "role": "pod"
+              }
+            ],
+            "relabel_configs": [
+              {
+                "source_labels": ["__meta_kubernetes_pod_annotation_prometheus_io_scrape"],
+                "action": "keep",
+                "regex": true
+              }
+            ]
+          }
+        ]
+      },
+      "grafana": {
+        "enabled": true,
+        "admin_password": "secure-password",
+        "persistence": {
+          "enabled": true,
+          "size": "10Gi"
+        },
+        "dashboards": [
+          "kubernetes-cluster-overview",
+          "application-metrics",
+          "infrastructure-monitoring"
+        ]
+      },
+      "alertmanager": {
+        "enabled": true,
+        "storage_size": "10Gi",
+        "webhook_configs": [
+          {
+            "url": "https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX",
+            "send_resolved": true
+          }
+        ]
+      }
+    },
+
+    "security": {
+      "rbac": {
+        "enabled": true,
+        "service_accounts": [
+          {
+            "name": "app-deployer",
+            "namespace": "production",
+            "roles": ["deployment-manager"]
+          },
+          {
+            "name": "monitoring-reader",
+            "namespace": "monitoring",
+            "roles": ["metrics-reader"]
+          }
+        ],
+        "cluster_roles": [
+          {
+            "name": "deployment-manager",
+            "rules": [
+              {
+                "api_groups": ["apps"],
+                "resources": ["deployments", "replicasets"],
+                "verbs": ["get", "list", "watch", "create", "update", "patch", "delete"]
+              },
+              {
+                "api_groups": [""],
+                "resources": ["pods", "services", "configmaps", "secrets"],
+                "verbs": ["get", "list", "watch", "create", "update", "patch"]
+              }
+            ]
+          }
+        ]
+      },
+      "network_policies": {
+        "enabled": true,
+        "default_deny": true,
+        "policies": [
+          {
+            "name": "allow-ingress-to-web",
+            "namespace": "production",
+            "pod_selector": {
+              "app": "web-service"
+            },
+            "ingress": [
+              {
+                "from": [
+                  {
+                    "namespace_selector": {
+                      "name": "ingress-nginx"
+                    }
+                  }
+                ],
+                "ports": [
+                  {
+                    "protocol": "TCP",
+                    "port": 8080
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "pod_security": {
+        "standards": "restricted",
+        "enforce": "v1.28",
+        "audit": "v1.28",
+        "warn": "v1.28"
+      }
+    },
+
+    "backup_and_disaster_recovery": {
+      "velero": {
+        "enabled": true,
+        "provider": "aws",
+        "bucket": "company-cluster-backups",
+        "region": "us-west-2",
+        "schedule": {
+          "daily_backup": {
+            "schedule": "0 2 * * *",
+            "ttl": "720h0m0s",
+            "included_namespaces": ["production", "monitoring"],
+            "excluded_resources": ["events", "events.events.k8s.io"]
+          }
+        }
+      },
+      "database_backups": {
+        "postgresql": {
+          "backup_window": "03:00-04:00",
+          "maintenance_window": "sun:04:00-sun:05:00",
+          "backup_retention_period": 30,
+          "copy_tags_to_snapshot": true
+        },
+        "redis": {
+          "backup_window": "04:00-05:00",
+          "backup_retention_limit": 7
+        }
+      }
+    }
+  }
+}

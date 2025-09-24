@@ -1,0 +1,329 @@
+{
+  "_description": "Cloud Infrastructure Configuration with Extensive Documentation",
+  "_purpose": "This JSON file contains comprehensive cloud infrastructure settings with detailed descriptions for each configuration section. Use this file to practice advanced text object operations and comment navigation.",
+  "_version": "2.1.0",
+  "_last_updated": "2024-03-15",
+  "_maintainer": "Infrastructure Team <infra@company.com>",
+
+  "infrastructure": {
+    "_comment": "Core infrastructure settings for the production environment",
+    "_documentation": "This section defines the fundamental infrastructure components including compute, storage, and networking resources",
+
+    "compute": {
+      "_description": "Compute resource definitions for various workload types",
+      "_scaling_policy": "Auto-scaling enabled based on CPU and memory utilization thresholds",
+
+      "masters": {
+        "_role": "Control plane nodes responsible for API server, etcd, and scheduler",
+        "_high_availability": "Distributed across multiple availability zones for fault tolerance",
+        "count": 3,
+        "instance_type": "c5.2xlarge",
+        "disk_size_gb": 100,
+        "disk_type": "gp3",
+        "availability_zones": [
+          "us-west-2a",  // Primary AZ with highest capacity
+          "us-west-2b",  // Secondary AZ for redundancy
+          "us-west-2c"   // Tertiary AZ for additional fault tolerance
+        ]
+      },
+
+      "workers": {
+        "_role": "Worker nodes that run application workloads and pods",
+        "_autoscaling": "Automatically scales based on resource demand and pod scheduling requirements",
+        "_resource_limits": "Each node has resource limits to prevent noisy neighbor issues",
+        "count": 10,
+        "instance_type": "c5.4xlarge",
+        "disk_size_gb": 200,
+        "disk_type": "gp3",
+        "auto_scaling": {
+          "_policy": "Target tracking scaling based on average CPU utilization",
+          "_cooldown": "Prevents rapid scaling events and allows time for metrics stabilization",
+          "enabled": true,
+          "min_size": 5,
+          "max_size": 50,
+          "target_cpu_utilization": 70,
+          "scale_up_cooldown_seconds": 300,
+          "scale_down_cooldown_seconds": 600
+        }
+      },
+
+      "storage_nodes": {
+        "_purpose": "Dedicated nodes for stateful workloads requiring persistent storage",
+        "_storage_class": "High-performance storage with local NVMe SSDs for database workloads",
+        "count": 3,
+        "instance_type": "r5.2xlarge",
+        "disk_size_gb": 1000,
+        "disk_type": "io2",
+        "iops": 10000,
+        "encryption_enabled": true,
+        "snapshot_schedule": "0 2 * * *"  // Daily snapshots at 2 AM UTC
+      }
+    },
+
+    "networking": {
+      "_description": "Network configuration including VPC, subnets, load balancers, and security groups",
+      "_security_model": "Defense in depth with multiple layers of network security controls",
+
+      "vpc": {
+        "_purpose": "Virtual private cloud providing isolated network environment",
+        "_design": "Multi-tier architecture with public and private subnets",
+        "cidr": "10.0.0.0/16",
+        "enable_dns_hostnames": true,
+        "enable_dns_support": true,
+        "enable_flow_logs": true,
+        "flow_logs_destination": "cloudwatch"
+      },
+
+      "subnets": {
+        "_architecture": "Three-tier subnet design: public for load balancers, private for applications, isolated for databases",
+
+        "public": {
+          "_purpose": "Internet-facing subnets for load balancers and NAT gateways",
+          "_routing": "Direct route to Internet Gateway for inbound/outbound internet traffic",
+          "subnets": [
+            {
+              "_description": "Primary public subnet in AZ-A",
+              "cidr": "10.0.1.0/24",
+              "availability_zone": "us-west-2a",
+              "map_public_ip_on_launch": true
+            },
+            {
+              "_description": "Secondary public subnet in AZ-B for high availability",
+              "cidr": "10.0.2.0/24",
+              "availability_zone": "us-west-2b",
+              "map_public_ip_on_launch": true
+            },
+            {
+              "_description": "Tertiary public subnet in AZ-C for additional redundancy",
+              "cidr": "10.0.3.0/24",
+              "availability_zone": "us-west-2c",
+              "map_public_ip_on_launch": true
+            }
+          ]
+        },
+
+        "private": {
+          "_purpose": "Application subnets with no direct internet access",
+          "_routing": "Outbound internet access through NAT Gateway for software updates",
+          "subnets": [
+            {
+              "_description": "Primary application subnet hosting main workloads",
+              "cidr": "10.0.10.0/24",
+              "availability_zone": "us-west-2a"
+            },
+            {
+              "_description": "Secondary application subnet for load distribution",
+              "cidr": "10.0.20.0/24",
+              "availability_zone": "us-west-2b"
+            },
+            {
+              "_description": "Tertiary application subnet for additional capacity",
+              "cidr": "10.0.30.0/24",
+              "availability_zone": "us-west-2c"
+            }
+          ]
+        }
+      },
+
+      "load_balancer": {
+        "_type": "Application Load Balancer with SSL termination and health checks",
+        "_distribution": "Distributes traffic across multiple availability zones",
+        "type": "application",
+        "scheme": "internet-facing",
+        "ip_address_type": "ipv4",
+        "deletion_protection": true,
+        "idle_timeout_seconds": 60,
+        "cross_zone_load_balancing": true,
+        "access_logs": {
+          "_retention": "Access logs stored for compliance and troubleshooting",
+          "enabled": true,
+          "bucket": "alb-access-logs-bucket",
+          "prefix": "production/"
+        }
+      }
+    },
+
+    "security": {
+      "_framework": "Zero-trust security model with principle of least privilege",
+      "_compliance": "SOC2, PCI-DSS, and HIPAA compliant configuration",
+
+      "authentication": {
+        "_provider": "OAuth 2.0 with OpenID Connect for modern authentication flows",
+        "_token_validation": "JWT tokens validated with RSA256 signatures",
+        "provider": "oauth2",
+        "issuer": "https://auth.company.com",
+        "audience": "api.company.com",
+        "token_validation": {
+          "_algorithm": "RSA256 provides asymmetric key validation for security",
+          "algorithm": "RS256",
+          "clock_skew_seconds": 5,
+          "leeway_seconds": 10
+        }
+      },
+
+      "authorization": {
+        "_model": "Role-based access control with fine-grained permissions",
+        "_policy_engine": "Open Policy Agent (OPA) for dynamic policy evaluation",
+        "rbac": {
+          "_enabled": "Role-based access control enforces authorization policies",
+          "enabled": true,
+          "policies": [
+            {
+              "_scope": "Cluster administrator with full access to all resources",
+              "name": "cluster-admin-policy",
+              "rules": [
+                {
+                  "api_groups": ["*"],
+                  "resources": ["*"],
+                  "verbs": ["*"]
+                }
+              ]
+            },
+            {
+              "_scope": "Developer access limited to application namespaces",
+              "name": "developer-policy",
+              "rules": [
+                {
+                  "api_groups": ["apps", ""],
+                  "resources": ["deployments", "services", "pods", "configmaps"],
+                  "verbs": ["get", "list", "create", "update", "patch"]
+                }
+              ]
+            },
+            {
+              "_scope": "Read-only access for monitoring and audit purposes",
+              "name": "viewer-policy",
+              "rules": [
+                {
+                  "api_groups": ["*"],
+                  "resources": ["*"],
+                  "verbs": ["get", "list", "watch"]
+                }
+              ]
+            }
+          ]
+        }
+      },
+
+      "network_policies": {
+        "_purpose": "Micro-segmentation at the pod level for enhanced security",
+        "_default_behavior": "Default deny all traffic, explicit allow rules required",
+        "default_deny": true,
+        "ingress_rules": [
+          {
+            "_description": "Allow frontend pods to communicate with API services",
+            "from": [
+              {
+                "namespace_selector": {
+                  "match_labels": {
+                    "name": "frontend"
+                  }
+                }
+              }
+            ],
+            "ports": [
+              {
+                "protocol": "TCP",
+                "port": 8080
+              }
+            ]
+          },
+          {
+            "_description": "Allow API gateway to route traffic to backend services",
+            "from": [
+              {
+                "pod_selector": {
+                  "match_labels": {
+                    "app": "api-gateway"
+                  }
+                }
+              }
+            ],
+            "ports": [
+              {
+                "protocol": "TCP",
+                "port": 3000
+              },
+              {
+                "protocol": "TCP",
+                "port": 3001
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+
+  "monitoring": {
+    "_philosophy": "Comprehensive observability with metrics, logs, and distributed tracing",
+    "_retention_policy": "Different retention periods based on data type and compliance requirements",
+
+    "prometheus": {
+      "_purpose": "Time-series metrics collection and alerting system",
+      "_architecture": "Highly available setup with remote storage for long-term retention",
+      "server": {
+        "_storage": "Local storage for recent data, remote storage for historical data",
+        "retention_days": 15,
+        "storage_size_gb": 100,
+        "resources": {
+          "_sizing": "Resource allocation based on expected metric volume and query load",
+          "limits": {
+            "memory_gb": 8,
+            "cpu_cores": 2
+          },
+          "requests": {
+            "memory_gb": 4,
+            "cpu_cores": 1
+          }
+        },
+        "scrape_configs": [
+          {
+            "_target": "Kubernetes API server metrics for cluster health monitoring",
+            "job_name": "kubernetes-apiservers",
+            "scrape_interval_seconds": 30,
+            "scrape_timeout_seconds": 10,
+            "metrics_path": "/metrics",
+            "scheme": "https"
+          },
+          {
+            "_target": "Node-level metrics for infrastructure monitoring",
+            "job_name": "kubernetes-nodes",
+            "scrape_interval_seconds": 30,
+            "scrape_timeout_seconds": 10,
+            "metrics_path": "/metrics",
+            "scheme": "https"
+          }
+        ]
+      }
+    },
+
+    "grafana": {
+      "_purpose": "Visualization and dashboard platform for metrics and logs",
+      "_user_management": "LDAP integration for centralized user authentication",
+      "admin_password": "SecurePassword123!",
+      "persistence": {
+        "_requirement": "Persistent storage for dashboard configurations and user preferences",
+        "enabled": true,
+        "size_gb": 10,
+        "storage_class": "gp3-encrypted"
+      },
+      "resources": {
+        "_allocation": "Moderate resource allocation for dashboard rendering and user sessions",
+        "limits": {
+          "memory_gb": 2,
+          "cpu_cores": 0.5
+        },
+        "requests": {
+          "memory_gb": 1,
+          "cpu_cores": 0.25
+        }
+      },
+      "plugins": [
+        "grafana-piechart-panel",      // For pie chart visualizations
+        "grafana-worldmap-panel",      // For geographical data visualization
+        "grafana-clock-panel"          // For time-based dashboards
+      ]
+    }
+  }
+}

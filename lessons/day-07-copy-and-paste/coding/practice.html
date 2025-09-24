@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 07: Copy & Paste Practice</title>
+    <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+    <!--
+    PRACTICE INSTRUCTIONS FOR DAY 07: COPY & PASTE
+
+    Copy Commands:
+    y - Yank (copy) operator, combine with motions
+    yy - Copy entire line
+    yw - Copy word
+    y$ - Copy from cursor to end of line
+    y0 - Copy from cursor to beginning of line
+    yG - Copy from cursor to end of file
+    ygg - Copy from cursor to beginning of file
+
+    Paste Commands:
+    p - Paste after cursor/below current line
+    P - Paste before cursor/above current line
+    "+y - Copy to system clipboard
+    "+p - Paste from system clipboard
+
+    Visual Mode Copy:
+    v + movement + y - Copy selected text
+    V + movement + y - Copy selected lines
+    Ctrl+v + movement + y - Copy selected block
+
+    This file contains components that need duplication and content that should be copied!
+    -->
+
+    <header class="main-header">
+        <div class="header-container">
+            <!-- COPY THIS: Logo section - duplicate it for mobile version -->
+            <div class="logo-section" data-copy-target="logo">
+                <img src="logo.svg" alt="Copy & Paste Practice" class="logo-image">
+                <h1 class="site-title">Copy & Paste Mastery</h1>
+            </div>
+
+            <!-- TODO: Copy the logo section above and paste it here for mobile -->
+
+            <nav class="primary-navigation">
+                <!-- COPY THIS: Navigation list - we need it for footer -->
+                <ul class="nav-list" data-copy-target="main-nav">
+                    <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="#features" class="nav-link">Features</a></li>
+                    <li class="nav-item"><a href="#components" class="nav-link">Components</a></li>
+                    <li class="nav-item"><a href="#examples" class="nav-link">Examples</a></li>
+                    <li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+
+                <!-- TODO: Copy main navigation and paste here as secondary nav -->
+            </nav>
+
+            <!-- COPY THIS: Search form for use in sidebar -->
+            <form class="search-form" data-copy-target="search">
+                <input type="search" name="query" placeholder="Search..." class="search-input">
+                <button type="submit" class="search-button">Search</button>
+            </form>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section id="hero" class="hero-section">
+            <div class="hero-content">
+                <!-- COPY THIS: Hero title for use in other sections -->
+                <h1 class="hero-title" data-copy-target="main-title">
+                    Master Copy and Paste Operations
+                </h1>
+
+                <!-- COPY THIS: Hero description -->
+                <p class="hero-description" data-copy-target="description">
+                    Learn to efficiently copy and paste text, lines, and blocks in Vim.
+                    These operations will dramatically speed up your editing workflow.
+                </p>
+
+                <!-- TODO: Copy hero description and paste as subtitle -->
+
+                <!-- COPY THIS: Button group for reuse -->
+                <div class="hero-actions" data-copy-target="action-buttons">
+                    <button class="btn btn-primary">Get Started</button>
+                    <button class="btn btn-secondary">Learn More</button>
+                </div>
+
+                <!-- TODO: Copy action buttons and paste as secondary CTA -->
+            </div>
+
+            <div class="hero-image">
+                <!-- COPY THIS: Image with caption pattern -->
+                <figure class="hero-figure" data-copy-target="image-pattern">
+                    <img src="copy-paste-illustration.jpg" alt="Copy paste operations" class="hero-img">
+                    <figcaption class="image-caption">Visual representation of copy/paste</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features-section">
+            <div class="container">
+                <!-- TODO: Copy hero title and paste here as section title -->
+
+                <div class="features-grid">
+                    <!-- COPY THIS ENTIRE FEATURE CARD: Template for other features -->
+                    <div class="feature-card" data-copy-target="feature-template">
+                        <div class="feature-icon">📋</div>
+                        <h3 class="feature-title">Copy Operations</h3>
+                        <p class="feature-description">
+                            Master various copy commands to duplicate text efficiently.
+                        </p>
+                        <ul class="feature-list">
+                            <li>yy - Copy entire line</li>
+                            <li>yw - Copy word</li>
+                            <li>y$ - Copy to end of line</li>
+                            <li>Visual mode copying</li>
+                        </ul>
+                        <div class="feature-footer">
+                            <button class="btn btn-outline">Learn More</button>
+                        </div>
+                    </div>
+
+                    <!-- TODO: Copy the feature card above and modify for "Paste Operations" -->
+
+                    <!-- TODO: Copy the feature card again and modify for "Advanced Techniques" -->
+
+                    <!-- COPY THIS: Another feature template -->
+                    <div class="feature-card" data-copy-target="feature-template-2">
+                        <div class="feature-icon">🎯</div>
+                        <h3 class="feature-title">Precision Control</h3>
+                        <p class="feature-description">
+                            Copy exactly what you need with precise selection.
+                        </p>
+                        <ul class="feature-list">
+                            <li>Character-level precision</li>
+                            <li>Word boundary awareness</li>
+                            <li>Line-based operations</li>
+                            <li>Block selection mode</li>
+                        </ul>
+                        <div class="feature-footer">
+                            <button class="btn btn-outline">Explore</button>
+                        </div>
+                    </div>
+
+                    <!-- TODO: Copy this card for "Speed & Efficiency" feature -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Components Section -->
+        <section id="components" class="components-section">
+            <div class="container">
+                <h2 class="section-title">Reusable Components</h2>
+                <p class="section-description">
+                    Practice copying these component patterns for reuse throughout your projects.
+                </p>
+
+                <!-- COPY THIS: Card component pattern -->
+                <div class="component-showcase">
+                    <div class="component-card" data-copy-target="card-component">
+                        <header class="card-header">
+                            <h3 class="card-title">Card Component</h3>
+                            <span class="card-badge">Copy Me</span>
+                        </header>
+                        <div class="card-content">
+                            <p class="card-text">
+                                This is a reusable card component that you can copy and modify.
+                            </p>
+                            <ul class="card-features">
+                                <li>Flexible header</li>
+                                <li>Configurable content</li>
+                                <li>Action buttons</li>
+                            </ul>
+                        </div>
+                        <footer class="card-footer">
+                            <button class="btn btn-primary btn-sm">Action</button>
+                            <button class="btn btn-secondary btn-sm">Cancel</button>
+                        </footer>
+                    </div>
+
+                    <!-- TODO: Copy the card component above 3 times to create a grid -->
+                </div>
+
+                <!-- COPY THIS: List component pattern -->
+                <div class="component-showcase">
+                    <div class="list-component" data-copy-target="list-component">
+                        <header class="list-header">
+                            <h3 class="list-title">Task List</h3>
+                            <span class="list-count">3 items</span>
+                        </header>
+                        <ul class="task-list">
+                            <li class="task-item">
+                                <input type="checkbox" id="task1" class="task-checkbox">
+                                <label for="task1" class="task-label">Learn copy commands</label>
+                                <button class="task-action">Edit</button>
+                            </li>
+                            <li class="task-item">
+                                <input type="checkbox" id="task2" class="task-checkbox">
+                                <label for="task2" class="task-label">Practice paste operations</label>
+                                <button class="task-action">Edit</button>
+                            </li>
+                            <li class="task-item">
+                                <input type="checkbox" id="task3" class="task-checkbox">
+                                <label for="task3" class="task-label">Master visual mode</label>
+                                <button class="task-action">Edit</button>
+                            </li>
+                        </ul>
+                        <footer class="list-footer">
+                            <button class="btn btn-primary btn-sm">Add Task</button>
+                        </footer>
+                    </div>
+
+                    <!-- TODO: Copy the list component and create "Shopping List" -->
+                </div>
+
+                <!-- COPY THIS: Form component pattern -->
+                <div class="component-showcase">
+                    <form class="form-component" data-copy-target="form-component">
+                        <header class="form-header">
+                            <h3 class="form-title">Contact Form</h3>
+                            <p class="form-description">Get in touch with us</p>
+                        </header>
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" id="name" name="name" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" id="email" name="email" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea id="message" name="message" class="form-textarea" rows="4" required></textarea>
+                            </div>
+                        </div>
+                        <footer class="form-footer">
+                            <button type="submit" class="btn btn-primary">Send Message</button>
+                            <button type="reset" class="btn btn-secondary">Reset</button>
+                        </footer>
+                    </form>
+
+                    <!-- TODO: Copy this form component to create "Newsletter Signup" -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Examples Section -->
+        <section id="examples" class="examples-section">
+            <div class="container">
+                <h2 class="section-title">Code Examples</h2>
+                <p class="section-description">
+                    Copy these code patterns and paste them into your projects.
+                </p>
+
+                <!-- COPY THIS: JavaScript function -->
+                <div class="code-example" data-copy-target="js-function">
+                    <header class="code-header">
+                        <h3 class="code-title">JavaScript Function</h3>
+                        <button class="copy-button" data-copy="js-code">Copy</button>
+                    </header>
+                    <pre class="code-block" id="js-code"><code class="language-javascript">function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}</code></pre>
+                </div>
+
+                <!-- TODO: Copy the code example structure above for CSS snippet -->
+
+                <!-- COPY THIS: CSS utility classes -->
+                <div class="code-example" data-copy-target="css-utilities">
+                    <header class="code-header">
+                        <h3 class="code-title">CSS Utility Classes</h3>
+                        <button class="copy-button" data-copy="css-code">Copy</button>
+                    </header>
+                    <pre class="code-block" id="css-code"><code class="language-css">.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}</code></pre>
+                </div>
+
+                <!-- TODO: Copy this code example for HTML template -->
+
+                <!-- COPY THIS: Data structures -->
+                <div class="code-example" data-copy-target="data-structure">
+                    <header class="code-header">
+                        <h3 class="code-title">Data Structure</h3>
+                        <button class="copy-button" data-copy="data-code">Copy</button>
+                    </header>
+                    <pre class="code-block" id="data-code"><code class="language-javascript">const userProfile = {
+    id: 1,
+    name: "John Doe",
+    email: "john@example.com",
+    preferences: {
+        theme: "dark",
+        notifications: true,
+        language: "en"
+    },
+    permissions: ["read", "write"],
+    lastLogin: new Date().toISOString()
+};</code></pre>
+                </div>
+
+                <!-- TODO: Copy this data structure example for different entity -->
+            </div>
+        </section>
+
+        <!-- Practice Section -->
+        <section id="practice" class="practice-section">
+            <div class="container">
+                <h2 class="section-title">Copy & Paste Practice</h2>
+
+                <!-- COPY THIS: Practice exercise template -->
+                <div class="practice-exercise" data-copy-target="exercise-template">
+                    <header class="exercise-header">
+                        <h3 class="exercise-title">Exercise 1: Line Duplication</h3>
+                        <span class="exercise-difficulty">Beginner</span>
+                    </header>
+                    <div class="exercise-content">
+                        <p class="exercise-description">
+                            Practice copying entire lines using the yy command.
+                        </p>
+                        <div class="exercise-area">
+                            <!-- COPY THIS LINE: Use yy to copy this line -->
+                            <p class="copy-target">This line should be duplicated below</p>
+                            <!-- TODO: Paste the copied line here -->
+
+                            <!-- COPY THIS LINE: Another line to duplicate -->
+                            <p class="copy-target">Copy this line and paste it above</p>
+                            <!-- TODO: Paste the copied line above this comment -->
+                        </div>
+                    </div>
+                    <footer class="exercise-footer">
+                        <div class="exercise-commands">
+                            <code>yy</code> - Copy line
+                            <code>p</code> - Paste below
+                            <code>P</code> - Paste above
+                        </div>
+                    </footer>
+                </div>
+
+                <!-- TODO: Copy the exercise template above for "Word Copying" -->
+
+                <!-- TODO: Copy the exercise template again for "Block Selection" -->
+
+                <!-- COPY THIS: Multi-line copy practice -->
+                <div class="practice-exercise" data-copy-target="multiline-exercise">
+                    <header class="exercise-header">
+                        <h3 class="exercise-title">Exercise 2: Multi-line Copy</h3>
+                        <span class="exercise-difficulty">Intermediate</span>
+                    </header>
+                    <div class="exercise-content">
+                        <p class="exercise-description">
+                            Copy multiple lines using visual mode or numbered commands.
+                        </p>
+                        <div class="exercise-area">
+                            <!-- COPY THESE 3 LINES: Select with V and copy -->
+                            <div class="code-snippet">
+                                <p>Line 1: First line of code block</p>
+                                <p>Line 2: Second line of code block</p>
+                                <p>Line 3: Third line of code block</p>
+                            </div>
+                            <!-- TODO: Paste the 3 lines here -->
+
+                            <!-- COPY THIS ENTIRE BLOCK: Use visual mode -->
+                            <div class="content-block">
+                                <h4>Content Block Title</h4>
+                                <p>This is paragraph content that should be copied.</p>
+                                <ul>
+                                    <li>List item 1</li>
+                                    <li>List item 2</li>
+                                </ul>
+                            </div>
+                            <!-- TODO: Paste the entire content block here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COPY THIS: Table pattern for duplication -->
+                <div class="practice-table">
+                    <table class="data-table" data-copy-target="table-pattern">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- COPY THIS ROW: Template for new entries -->
+                            <tr class="table-row" data-copy-target="table-row">
+                                <td>John Doe</td>
+                                <td>john@example.com</td>
+                                <td>Developer</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary">Edit</button>
+                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                            <!-- TODO: Copy the row above and paste it 3 times with different data -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-content">
+                <h2 class="sidebar-title">Quick Reference</h2>
+
+                <!-- TODO: Copy the search form from header and paste here -->
+
+                <!-- COPY THIS: Command reference pattern -->
+                <div class="command-reference" data-copy-target="command-ref">
+                    <h3 class="reference-title">Copy Commands</h3>
+                    <dl class="command-list">
+                        <dt class="command-term">yy</dt>
+                        <dd class="command-description">Copy entire line</dd>
+
+                        <dt class="command-term">yw</dt>
+                        <dd class="command-description">Copy word</dd>
+
+                        <dt class="command-term">y$</dt>
+                        <dd class="command-description">Copy to end of line</dd>
+
+                        <dt class="command-term">y0</dt>
+                        <dd class="command-description">Copy to beginning of line</dd>
+                    </dl>
+                </div>
+
+                <!-- TODO: Copy command reference and modify for paste commands -->
+
+                <!-- COPY THIS: Tips section -->
+                <div class="tips-section" data-copy-target="tips">
+                    <h3 class="tips-title">Pro Tips</h3>
+                    <ul class="tips-list">
+                        <li class="tip-item">Use numbered commands like 3yy to copy 3 lines</li>
+                        <li class="tip-item">Visual mode gives you precise control over selection</li>
+                        <li class="tip-item">"+y copies to system clipboard</li>
+                        <li class="tip-item">Use registers to store multiple copied items</li>
+                    </ul>
+                </div>
+
+                <!-- TODO: Copy tips section for "Common Mistakes" -->
+            </div>
+        </aside>
+    </main>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <!-- TODO: Copy main title from hero and paste as section title -->
+
+            <div class="contact-content">
+                <!-- TODO: Copy form component from components section -->
+
+                <div class="contact-info">
+                    <!-- COPY THIS: Contact item pattern -->
+                    <div class="contact-item" data-copy-target="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-details">
+                            <h3 class="contact-title">Email</h3>
+                            <p class="contact-text">hello@example.com</p>
+                        </div>
+                    </div>
+
+                    <!-- TODO: Copy contact item for phone -->
+                    <!-- TODO: Copy contact item for address -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <!-- TODO: Copy logo section from header -->
+
+                <div class="footer-nav">
+                    <!-- TODO: Copy main navigation from header -->
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3 class="footer-title">Resources</h3>
+                <!-- COPY THIS: Footer links pattern -->
+                <ul class="footer-links" data-copy-target="footer-links">
+                    <li><a href="#docs" class="footer-link">Documentation</a></li>
+                    <li><a href="#tutorials" class="footer-link">Tutorials</a></li>
+                    <li><a href="#examples" class="footer-link">Examples</a></li>
+                    <li><a href="#support" class="footer-link">Support</a></li>
+                </ul>
+
+                <!-- TODO: Copy footer links for "Community" section -->
+            </div>
+
+            <div class="footer-section">
+                <h3 class="footer-title">Newsletter</h3>
+                <!-- TODO: Copy form component and modify for newsletter signup -->
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-container">
+                <!-- COPY THIS: Copyright pattern -->
+                <p class="copyright" data-copy-target="copyright">
+                    &copy; 2024 Copy & Paste Practice. All rights reserved.
+                </p>
+
+                <!-- TODO: Copy action buttons from hero for social media links -->
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // COPY THIS: Event listener pattern
+        document.addEventListener('DOMContentLoaded', function() {
+            // TODO: Copy this event listener for form validation
+
+            // COPY THIS: Copy button functionality
+            const copyButtons = document.querySelectorAll('.copy-button');
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetId = this.getAttribute('data-copy');
+                    const codeElement = document.getElementById(targetId);
+
+                    if (codeElement) {
+                        navigator.clipboard.writeText(codeElement.textContent);
+                        this.textContent = 'Copied!';
+                        setTimeout(() => {
+                            this.textContent = 'Copy';
+                        }, 2000);
+                    }
+                });
+            });
+
+            // TODO: Copy copy button functionality for other elements
+        });
+
+        // COPY THIS: Utility function
+        function toggleVisibility(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.style.display = element.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+
+        // TODO: Copy utility function and modify for different purposes
+    </script>
+</body>
+</html>

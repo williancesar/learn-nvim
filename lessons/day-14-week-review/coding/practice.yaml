@@ -1,0 +1,994 @@
+# Comprehensive Platform Configuration - Week Review Practice
+# This file combines all Vim concepts learned in Days 8-13:
+# - Day 8: Undo/Redo operations (u, Ctrl+R, :earlier, :later)
+# - Day 9: Character search (f, F, t, T, ;, ,)
+# - Day 10: Visual mode (v, V, Ctrl+V, text objects)
+# - Day 11: Change operations (c, cc, cw, ciw, C, s, S)
+# - Day 12: Number operations (Ctrl+A, Ctrl+X)
+# - Day 13: File operations (:e, :sp, :vsp, :tabnew, gf, Ctrl+^)
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: platform-comprehensive-config
+  namespace: production
+  labels:
+    app: platform
+    version: "3.2.1"
+    environment: production
+    team: platform-engineering
+    cost-center: engineering
+  annotations:
+    description: "Comprehensive platform configuration for week review"
+    created-by: "platform-team@company.com"
+    last-updated: "2024-03-20T14:45:00Z"
+    config.kubernetes.io/depends-on: |
+      - name: database-config
+        kind: ConfigMap
+      - name: monitoring-config
+        kind: ConfigMap
+      - name: security-config
+        kind: Secret
+data:
+  # Core platform configuration
+  platform.yaml: |
+    platform:
+      name: "e-commerce-platform"
+      version: "3.2.1"
+      build_number: 1247
+      deployment_id: "dep-20240320-001"
+
+      # Infrastructure configuration with numeric values for Ctrl+A/Ctrl+X practice
+      infrastructure:
+        clusters:
+          production:
+            region: "us-west-2"
+            zones: 3
+            node_pools:
+              general_purpose:
+                min_nodes: 6
+                max_nodes: 50
+                node_count: 12
+                instance_type: "t3.large"
+                disk_size_gb: 100
+                cpu_cores: 2
+                memory_gb: 8
+              compute_optimized:
+                min_nodes: 2
+                max_nodes: 20
+                node_count: 4
+                instance_type: "c5.2xlarge"
+                disk_size_gb: 200
+                cpu_cores: 8
+                memory_gb: 16
+              memory_optimized:
+                min_nodes: 1
+                max_nodes: 10
+                node_count: 2
+                instance_type: "r5.xlarge"
+                disk_size_gb: 150
+                cpu_cores: 4
+                memory_gb: 32
+
+        networking:
+          vpc_cidr: "10.0.0.0/16"
+          public_subnets:
+            - "10.0.1.0/24"
+            - "10.0.2.0/24"
+            - "10.0.3.0/24"
+          private_subnets:
+            - "10.0.10.0/24"
+            - "10.0.20.0/24"
+            - "10.0.30.0/24"
+          database_subnets:
+            - "10.0.100.0/24"
+            - "10.0.200.0/24"
+
+          load_balancers:
+            application:
+              port: 80
+              ssl_port: 443
+              health_check_port: 8080
+              timeout_seconds: 30
+              interval_seconds: 10
+              healthy_threshold: 2
+              unhealthy_threshold: 5
+
+            network:
+              port: 443
+              target_port: 8443
+              idle_timeout: 300
+              connection_timeout: 10
+
+  # Service configuration for character search practice (lots of colons, quotes, brackets)
+  services.yaml: |
+    services:
+      api_gateway:
+        image: "company/api-gateway:v2.1.0"
+        ports:
+          http: 8080
+          https: 8443
+          metrics: 9090
+          health: 8081
+        replicas:
+          min: 3
+          max: 20
+          current: 5
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+            ephemeral_storage: "1Gi"
+          limits:
+            cpu: "2000m"
+            memory: "4Gi"
+            ephemeral_storage: "5Gi"
+        environment:
+          PORT: "8080"
+          SSL_PORT: "8443"
+          METRICS_PORT: "9090"
+          LOG_LEVEL: "info"
+          RATE_LIMIT_RPS: "1000"
+          RATE_LIMIT_BURST: "2000"
+          JWT_SECRET: "${JWT_SECRET}"
+          # Service URLs for file navigation practice
+          USER_SERVICE_URL: "http://user-service.production.svc.cluster.local:8082"
+          PRODUCT_SERVICE_URL: "http://product-service.production.svc.cluster.local:8083"
+          ORDER_SERVICE_URL: "http://order-service.production.svc.cluster.local:8084"
+          PAYMENT_SERVICE_URL: "http://payment-service.production.svc.cluster.local:8085"
+        timeouts:
+          connection: 5000
+          read: 30000
+          write: 30000
+          idle: 120000
+        circuit_breaker:
+          failure_threshold: 10
+          recovery_timeout: 60
+          success_threshold: 5
+          half_open_max_calls: 3
+        rate_limiting:
+          global:
+            requests_per_second: 1000
+            burst_capacity: 2000
+          per_user:
+            requests_per_minute: 100
+            burst_capacity: 200
+          per_ip:
+            requests_per_minute: 500
+            burst_capacity: 1000
+
+      user_service:
+        image: "company/user-service:v1.8.2"
+        ports:
+          http: 8082
+          actuator: 9092
+          jmx: 9999
+        replicas:
+          min: 5
+          max: 25
+          current: 8
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "512Mi"
+          limits:
+            cpu: "1000m"
+            memory: "2Gi"
+        database:
+          type: "postgresql"
+          host: "postgres-primary.data.svc.cluster.local"
+          port: 5432
+          database: "users"
+          username: "user_service"
+          ssl_mode: "require"
+          connection_pool:
+            min_size: 5
+            max_size: 20
+            connection_timeout_ms: 30000
+            idle_timeout_ms: 600000
+            max_lifetime_ms: 1800000
+            leak_detection_threshold_ms: 60000
+        cache:
+          type: "redis"
+          host: "redis-cluster.data.svc.cluster.local"
+          port: 6379
+          database: 0
+          password: "${REDIS_PASSWORD}"
+          ttl_seconds: 3600
+          max_connections: 50
+          timeout_ms: 5000
+        security:
+          jwt:
+            secret: "${JWT_SECRET}"
+            expiry_hours: 24
+            refresh_expiry_days: 30
+            algorithm: "HS256"
+          oauth:
+            google:
+              client_id: "${GOOGLE_CLIENT_ID}"
+              client_secret: "${GOOGLE_CLIENT_SECRET}"
+            github:
+              client_id: "${GITHUB_CLIENT_ID}"
+              client_secret: "${GITHUB_CLIENT_SECRET}"
+
+      product_service:
+        image: "company/product-service:v1.5.3"
+        ports:
+          http: 8083
+          metrics: 9093
+        replicas:
+          min: 4
+          max: 20
+          current: 6
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "384Mi"
+          limits:
+            cpu: "800m"
+            memory: "1536Mi"
+        database:
+          type: "mongodb"
+          host: "mongodb-cluster.data.svc.cluster.local"
+          port: 27017
+          database: "products"
+          username: "product_service"
+          password: "${MONGODB_PASSWORD}"
+          options:
+            max_pool_size: 10
+            min_pool_size: 2
+            max_idle_time_ms: 600000
+            server_selection_timeout_ms: 30000
+            heartbeat_frequency_ms: 10000
+        search:
+          elasticsearch:
+            host: "elasticsearch.search.svc.cluster.local"
+            port: 9200
+            index_prefix: "products"
+            refresh_interval: "30s"
+            number_of_shards: 6
+            number_of_replicas: 1
+            max_result_window: 50000
+        storage:
+          s3:
+            bucket: "product-images-prod"
+            region: "us-west-2"
+            prefix: "images/"
+            access_key: "${S3_ACCESS_KEY}"
+            secret_key: "${S3_SECRET_KEY}"
+
+      order_service:
+        image: "company/order-service:v1.3.1"
+        ports:
+          http: 8084
+          metrics: 9094
+        replicas:
+          min: 3
+          max: 15
+          current: 5
+        resources:
+          requests:
+            cpu: "300m"
+            memory: "768Mi"
+          limits:
+            cpu: "1200m"
+            memory: "3Gi"
+        database:
+          type: "postgresql"
+          host: "postgres-primary.data.svc.cluster.local"
+          port: 5432
+          database: "orders"
+          username: "order_service"
+          password: "${POSTGRES_PASSWORD}"
+        messaging:
+          kafka:
+            brokers:
+              - "kafka-0.messaging.svc.cluster.local:9092"
+              - "kafka-1.messaging.svc.cluster.local:9092"
+              - "kafka-2.messaging.svc.cluster.local:9092"
+            topics:
+              order_events:
+                partitions: 12
+                replication_factor: 3
+                retention_ms: 604800000  # 7 days
+                segment_ms: 86400000     # 1 day
+              inventory_updates:
+                partitions: 6
+                replication_factor: 3
+                retention_ms: 259200000  # 3 days
+            consumer_groups:
+              order_processors:
+                session_timeout_ms: 30000
+                heartbeat_interval_ms: 3000
+                max_poll_records: 500
+                auto_offset_reset: "earliest"
+        external_services:
+          inventory_service:
+            url: "http://inventory-service.production.svc.cluster.local:8086"
+            timeout_ms: 10000
+            retry_attempts: 3
+            retry_delay_ms: 1000
+          notification_service:
+            url: "http://notification-service.production.svc.cluster.local:8087"
+            timeout_ms: 15000
+            async: true
+
+      payment_service:
+        image: "company/payment-service:v2.0.4"
+        ports:
+          http: 8085
+          metrics: 9095
+        replicas:
+          min: 2
+          max: 10
+          current: 4
+        resources:
+          requests:
+            cpu: "400m"
+            memory: "1Gi"
+          limits:
+            cpu: "1600m"
+            memory: "4Gi"
+        database:
+          type: "postgresql"
+          host: "postgres-primary.data.svc.cluster.local"
+          port: 5432
+          database: "payments"
+          username: "payment_service"
+          password: "${POSTGRES_PASSWORD}"
+        payment_providers:
+          stripe:
+            api_version: "2023-10-16"
+            public_key: "${STRIPE_PUBLIC_KEY}"
+            secret_key: "${STRIPE_SECRET_KEY}"
+            webhook_secret: "${STRIPE_WEBHOOK_SECRET}"
+            webhook_endpoints:
+              - "https://api.company.com/webhooks/stripe/payment-intent"
+              - "https://api.company.com/webhooks/stripe/invoice"
+            supported_payment_methods:
+              - "card"
+              - "bank_transfer"
+              - "digital_wallet"
+            fee_percentage: 2.9
+            currency: "USD"
+          paypal:
+            api_version: "v2"
+            environment: "live"
+            client_id: "${PAYPAL_CLIENT_ID}"
+            client_secret: "${PAYPAL_CLIENT_SECRET}"
+            webhook_events:
+              - "PAYMENT.CAPTURE.COMPLETED"
+              - "PAYMENT.CAPTURE.DENIED"
+              - "BILLING.SUBSCRIPTION.CREATED"
+        fraud_detection:
+          enabled: true
+          providers:
+            - "internal"
+            - "stripe_radar"
+          rules:
+            - name: "velocity_check"
+              threshold: 10
+              time_window_minutes: 60
+              action: "review"
+            - name: "amount_threshold"
+              threshold: 5000.00
+              currency: "USD"
+              action: "manual_review"
+            - name: "geolocation_check"
+              blocked_countries: ["XX", "YY", "ZZ"]
+              action: "block"
+
+  # Database configuration with nested structures for visual mode practice
+  databases.yaml: |
+    databases:
+      postgresql:
+        version: "15.5"
+        deployment_type: "cluster"
+        primary:
+          instance_class: "db.r6g.2xlarge"
+          cpu_cores: 8
+          memory_gb: 32
+          storage:
+            size_gb: 2000
+            type: "gp3"
+            iops: 6000
+            throughput_mbps: 250
+            encrypted: true
+            kms_key_id: "arn:aws:kms:us-west-2:123456789012:key/postgresql-key"
+          backup:
+            retention_days: 30
+            backup_window: "03:00-04:00"
+            maintenance_window: "sun:04:00-sun:05:00"
+            point_in_time_recovery: true
+            cross_region_backup: true
+        read_replicas:
+          - instance_class: "db.r6g.xlarge"
+            cpu_cores: 4
+            memory_gb: 16
+            storage_gb: 2000
+            availability_zone: "us-west-2b"
+            lag_threshold_ms: 1000
+          - instance_class: "db.r6g.xlarge"
+            cpu_cores: 4
+            memory_gb: 16
+            storage_gb: 2000
+            availability_zone: "us-west-2c"
+            lag_threshold_ms: 1000
+        configuration:
+          max_connections: 500
+          shared_buffers_mb: 8192
+          effective_cache_size_mb: 24576
+          work_mem_mb: 64
+          maintenance_work_mem_mb: 2048
+          checkpoint_completion_target: 0.9
+          wal_buffers_mb: 256
+          random_page_cost: 1.1
+          seq_page_cost: 1.0
+          min_wal_size_mb: 1024
+          max_wal_size_mb: 4096
+          autovacuum: true
+          autovacuum_max_workers: 3
+          autovacuum_naptime_seconds: 60
+        security:
+          ssl_mode: "require"
+          encryption_at_rest: true
+          encryption_in_transit: true
+          vpc_security_groups:
+            - "sg-database-primary"
+            - "sg-database-backup"
+          parameter_group: "custom-postgres15-production"
+
+      redis:
+        version: "7.2.4"
+        deployment_type: "cluster"
+        cluster_configuration:
+          shards: 3
+          replicas_per_shard: 2
+          node_type: "cache.r7g.xlarge"
+          cpu_cores: 4
+          memory_gb: 26
+          network_throughput_mbps: 12500
+        nodes:
+          - name: "redis-0001-001"
+            endpoint: "redis-cluster-0001-001.xyz.cache.amazonaws.com"
+            port: 6379
+            role: "primary"
+            shard: 1
+          - name: "redis-0001-002"
+            endpoint: "redis-cluster-0001-002.xyz.cache.amazonaws.com"
+            port: 6379
+            role: "replica"
+            shard: 1
+          - name: "redis-0002-001"
+            endpoint: "redis-cluster-0002-001.xyz.cache.amazonaws.com"
+            port: 6379
+            role: "primary"
+            shard: 2
+          - name: "redis-0002-002"
+            endpoint: "redis-cluster-0002-002.xyz.cache.amazonaws.com"
+            port: 6379
+            role: "replica"
+            shard: 2
+          - name: "redis-0003-001"
+            endpoint: "redis-cluster-0003-001.xyz.cache.amazonaws.com"
+            port: 6379
+            role: "primary"
+            shard: 3
+          - name: "redis-0003-002"
+            endpoint: "redis-cluster-0003-002.xyz.cache.amazonaws.com"
+            port: 6379
+            role: "replica"
+            shard: 3
+        configuration:
+          maxmemory_policy: "allkeys-lru"
+          timeout: 300
+          tcp_keepalive: 300
+          tcp_backlog: 511
+          databases: 16
+          save_config:
+            - seconds: 900
+              changes: 1
+            - seconds: 300
+              changes: 10
+            - seconds: 60
+              changes: 10000
+          rdb_compression: true
+          rdb_checksum: true
+          appendonly: true
+          appendfsync: "everysec"
+          no_appendfsync_on_rewrite: false
+          auto_aof_rewrite_percentage: 100
+          auto_aof_rewrite_min_size: "64mb"
+        security:
+          auth_token_enabled: true
+          auth_token: "${REDIS_AUTH_TOKEN}"
+          transit_encryption_enabled: true
+          at_rest_encryption_enabled: true
+          kms_key_id: "arn:aws:kms:us-west-2:123456789012:key/redis-key"
+        backup:
+          snapshot_retention_limit: 7
+          snapshot_window: "05:00-06:00"
+          automatic_failover_enabled: true
+          multi_az_enabled: true
+
+      mongodb:
+        version: "7.0.5"
+        deployment_type: "replica_set"
+        replica_set:
+          name: "rs0"
+          members:
+            - host: "mongodb-0.mongodb.data.svc.cluster.local"
+              port: 27017
+              priority: 1.0
+              votes: 1
+              tags:
+                role: "primary"
+                datacenter: "us-west-2a"
+            - host: "mongodb-1.mongodb.data.svc.cluster.local"
+              port: 27017
+              priority: 0.5
+              votes: 1
+              tags:
+                role: "secondary"
+                datacenter: "us-west-2b"
+            - host: "mongodb-2.mongodb.data.svc.cluster.local"
+              port: 27017
+              priority: 0.5
+              votes: 1
+              tags:
+                role: "secondary"
+                datacenter: "us-west-2c"
+        storage:
+          engine: "wiredTiger"
+          cache_size_gb: 8
+          journal_enabled: true
+          directory_per_db: true
+          compression: "snappy"
+        configuration:
+          max_connections: 200
+          operation_profiling:
+            slow_op_threshold_ms: 100
+            slow_op_sample_rate: 1.0
+          replication:
+            oplog_size_mb: 2048
+            enable_majority_read_concern: true
+          sharding:
+            enabled: false  # Change to true for sharded deployment
+          security:
+            authorization: "enabled"
+            authentication: "enabled"
+            keyfile: "/etc/mongodb/keyfile"
+            cluster_auth_mode: "keyFile"
+
+  # Monitoring configuration combining all concepts
+  monitoring.yaml: |
+    monitoring:
+      prometheus:
+        version: "2.48.1"
+        deployment:
+          replicas: 2
+          storage_size: "500Gi"
+          retention_days: 90
+          retention_size: "450Gi"
+        configuration:
+          global:
+            scrape_interval: "15s"
+            evaluation_interval: "15s"
+            scrape_timeout: "10s"
+            external_labels:
+              cluster: "production"
+              region: "us-west-2"
+              environment: "production"
+          scrape_configs:
+            - job_name: "kubernetes-apiservers"
+              scheme: "https"
+              tls_config:
+                ca_file: "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+              bearer_token_file: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+              kubernetes_sd_configs:
+                - role: "endpoints"
+              relabel_configs:
+                - source_labels: ["__meta_kubernetes_namespace", "__meta_kubernetes_service_name", "__meta_kubernetes_endpoint_port_name"]
+                  action: "keep"
+                  regex: "default;kubernetes;https"
+            - job_name: "kubernetes-nodes"
+              scheme: "https"
+              tls_config:
+                ca_file: "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+              bearer_token_file: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+              kubernetes_sd_configs:
+                - role: "node"
+              relabel_configs:
+                - action: "labelmap"
+                  regex: "__meta_kubernetes_node_label_(.+)"
+            - job_name: "kubernetes-pods"
+              kubernetes_sd_configs:
+                - role: "pod"
+              relabel_configs:
+                - source_labels: ["__meta_kubernetes_pod_annotation_prometheus_io_scrape"]
+                  action: "keep"
+                  regex: "true"
+                - source_labels: ["__meta_kubernetes_pod_annotation_prometheus_io_path"]
+                  action: "replace"
+                  target_label: "__metrics_path__"
+                  regex: "(.+)"
+                - source_labels: ["__address__", "__meta_kubernetes_pod_annotation_prometheus_io_port"]
+                  action: "replace"
+                  regex: "([^:]+)(?::[0-9]+)?;([0-9]+)"
+                  replacement: "${1}:${2}"
+                  target_label: "__address__"
+            - job_name: "application-services"
+              static_configs:
+                - targets:
+                    - "api-gateway.production.svc.cluster.local:9090"
+                    - "user-service.production.svc.cluster.local:9092"
+                    - "product-service.production.svc.cluster.local:9093"
+                    - "order-service.production.svc.cluster.local:9094"
+                    - "payment-service.production.svc.cluster.local:9095"
+              scrape_interval: "30s"
+              metrics_path: "/metrics"
+        alert_rules:
+          - name: "kubernetes-cluster"
+            rules:
+              - alert: "KubernetesNodeReady"
+                expr: "kube_node_status_condition{condition=\"Ready\",status=\"true\"} == 0"
+                for: "10m"
+                labels:
+                  severity: "critical"
+                annotations:
+                  summary: "Kubernetes node not ready"
+                  description: "Node {{ $labels.node }} has been unready for more than 10 minutes"
+              - alert: "KubernetesPodCrashLooping"
+                expr: "increase(kube_pod_container_status_restarts_total[15m]) > 0"
+                for: "0m"
+                labels:
+                  severity: "warning"
+                annotations:
+                  summary: "Pod is crash looping"
+                  description: "Pod {{ $labels.namespace }}/{{ $labels.pod }} is crash looping"
+          - name: "application-performance"
+            rules:
+              - alert: "HighResponseTime"
+                expr: "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 1"
+                for: "5m"
+                labels:
+                  severity: "warning"
+                annotations:
+                  summary: "High response time"
+                  description: "95th percentile response time is {{ $value }}s"
+              - alert: "HighErrorRate"
+                expr: "rate(http_requests_total{status=~\"5..\"}[5m]) / rate(http_requests_total[5m]) > 0.05"
+                for: "2m"
+                labels:
+                  severity: "critical"
+                annotations:
+                  summary: "High error rate"
+                  description: "Error rate is {{ $value | humanizePercentage }}"
+          - name: "infrastructure"
+            rules:
+              - alert: "HighCPUUsage"
+                expr: "100 - (avg by(instance) (irate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100) > 80"
+                for: "5m"
+                labels:
+                  severity: "warning"
+                annotations:
+                  summary: "High CPU usage"
+                  description: "CPU usage is {{ $value }}% on {{ $labels.instance }}"
+              - alert: "HighMemoryUsage"
+                expr: "(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100 > 85"
+                for: "5m"
+                labels:
+                  severity: "warning"
+                annotations:
+                  summary: "High memory usage"
+                  description: "Memory usage is {{ $value }}% on {{ $labels.instance }}"
+              - alert: "DiskSpaceLow"
+                expr: "(node_filesystem_size_bytes - node_filesystem_free_bytes) / node_filesystem_size_bytes * 100 > 90"
+                for: "10m"
+                labels:
+                  severity: "critical"
+                annotations:
+                  summary: "Disk space low"
+                  description: "Disk usage is {{ $value }}% on {{ $labels.instance }}:{{ $labels.mountpoint }}"
+
+      grafana:
+        version: "10.2.3"
+        deployment:
+          replicas: 2
+          storage_size: "50Gi"
+        configuration:
+          server:
+            protocol: "https"
+            domain: "grafana.company.com"
+            root_url: "https://grafana.company.com/"
+            serve_from_sub_path: false
+            cert_file: "/etc/ssl/certs/tls.crt"
+            cert_key: "/etc/ssl/private/tls.key"
+          database:
+            type: "postgres"
+            host: "postgres-primary.data.svc.cluster.local"
+            port: 5432
+            name: "grafana"
+            user: "grafana"
+            password: "${GRAFANA_DB_PASSWORD}"
+            ssl_mode: "require"
+            max_open_conn: 25
+            max_idle_conn: 25
+            conn_max_lifetime: 14400
+          security:
+            admin_user: "admin"
+            admin_password: "${GRAFANA_ADMIN_PASSWORD}"
+            secret_key: "${GRAFANA_SECRET_KEY}"
+            cookie_secure: true
+            cookie_samesite: "strict"
+            content_security_policy: true
+            data_source_proxy_whitelist:
+              - "prometheus.monitoring.svc.cluster.local"
+              - "loki.monitoring.svc.cluster.local"
+              - "jaeger.monitoring.svc.cluster.local"
+          auth:
+            disable_login_form: false
+            disable_signout_menu: false
+            oauth_auto_login: true
+            oauth_allow_insecure_email_lookup: false
+          users:
+            allow_sign_up: false
+            allow_org_create: false
+            auto_assign_org: true
+            auto_assign_org_id: 1
+            auto_assign_org_role: "Viewer"
+            verify_email_enabled: false
+          smtp:
+            enabled: true
+            host: "smtp.sendgrid.net:587"
+            user: "apikey"
+            password: "${SENDGRID_API_KEY}"
+            cert_file: ""
+            key_file: ""
+            skip_verify: false
+            from_address: "grafana@company.com"
+            from_name: "Grafana"
+            ehlo_identity: "grafana.company.com"
+        datasources:
+          - name: "Prometheus"
+            type: "prometheus"
+            access: "proxy"
+            url: "http://prometheus.monitoring.svc.cluster.local:9090"
+            is_default: true
+            editable: false
+            json_data:
+              time_interval: "15s"
+              query_timeout: "60s"
+              http_method: "GET"
+          - name: "Loki"
+            type: "loki"
+            access: "proxy"
+            url: "http://loki.monitoring.svc.cluster.local:3100"
+            editable: false
+            json_data:
+              max_lines: 1000
+              timeout: "60s"
+          - name: "Jaeger"
+            type: "jaeger"
+            access: "proxy"
+            url: "http://jaeger-query.monitoring.svc.cluster.local:16686"
+            editable: false
+        dashboards:
+          - name: "Kubernetes Cluster Overview"
+            uid: "k8s-cluster-overview"
+            folder: "Kubernetes"
+            path: "/var/lib/grafana/dashboards/kubernetes-cluster-overview.json"
+          - name: "Application Performance"
+            uid: "app-performance"
+            folder: "Applications"
+            path: "/var/lib/grafana/dashboards/application-performance.json"
+          - name: "Database Monitoring"
+            uid: "database-monitoring"
+            folder: "Databases"
+            path: "/var/lib/grafana/dashboards/database-monitoring.json"
+          - name: "Infrastructure Overview"
+            uid: "infrastructure-overview"
+            folder: "Infrastructure"
+            path: "/var/lib/grafana/dashboards/infrastructure-overview.json"
+
+      logging:
+        loki:
+          version: "2.9.4"
+          deployment:
+            replicas: 3
+            storage_size: "200Gi"
+            retention_days: 30
+          configuration:
+            server:
+              http_listen_port: 3100
+              grpc_listen_port: 9095
+              log_level: "info"
+            auth_enabled: false
+            common:
+              path_prefix: "/loki"
+              storage:
+                filesystem:
+                  chunks_directory: "/loki/chunks"
+                  rules_directory: "/loki/rules"
+              replication_factor: 1
+              ring:
+                instance_addr: "127.0.0.1"
+                kvstore:
+                  store: "inmemory"
+            schema_config:
+              configs:
+                - from: "2024-01-01"
+                  store: "boltdb-shipper"
+                  object_store: "filesystem"
+                  schema: "v11"
+                  index:
+                    prefix: "index_"
+                    period: "24h"
+            storage_config:
+              boltdb_shipper:
+                active_index_directory: "/loki/boltdb-shipper-active"
+                cache_location: "/loki/boltdb-shipper-cache"
+                cache_ttl: "24h"
+                shared_store: "filesystem"
+              filesystem:
+                directory: "/loki/chunks"
+            limits_config:
+              reject_old_samples: true
+              reject_old_samples_max_age: "168h"
+              ingestion_rate_mb: 4
+              ingestion_burst_size_mb: 6
+              max_query_length: "12000h"
+              max_query_parallelism: 32
+              max_streams_per_user: 10000
+              max_line_size: 256000
+
+        fluentd:
+          version: "1.16.2"
+          deployment:
+            replicas: 3
+          configuration:
+            source:
+              - tag: "kubernetes.var.log.containers.*.log"
+                type: "tail"
+                path: "/var/log/containers/*.log"
+                pos_file: "/var/log/fluentd-containers.log.pos"
+                format: "json"
+                time_key: "time"
+                time_format: "%Y-%m-%dT%H:%M:%S.%NZ"
+                keep_time_key: true
+                read_from_head: true
+                refresh_interval: 60
+                limit_recently_modified: "2h"
+                skip_refresh_on_startup: true
+                read_lines_limit: 1000
+            filter:
+              - tag: "kubernetes.**"
+                type: "kubernetes_metadata"
+                kubernetes_url: "https://kubernetes.default.svc"
+                verify_ssl: true
+                ca_file: "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+                bearer_token_file: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+                merge_json_log: true
+                preserve_json_log: true
+                annotation_match:
+                  - "fluentd.org/*"
+              - tag: "kubernetes.**"
+                type: "record_transformer"
+                enable_ruby: true
+                record:
+                  cluster: "production"
+                  region: "us-west-2"
+                  log_timestamp: "${Time.now.utc.iso8601}"
+            match:
+              - tag: "kubernetes.**"
+                type: "loki"
+                url: "http://loki.monitoring.svc.cluster.local:3100"
+                username: ""
+                password: ""
+                tenant: ""
+                extra_labels:
+                  cluster: "production"
+                  environment: "production"
+                line_format: "json"
+                buffer_type: "file"
+                buffer_path: "/var/log/fluentd-buffers/kubernetes.buffer"
+                buffer_chunk_limit: "2m"
+                buffer_queue_limit: 32
+                flush_interval: "10s"
+                retry_limit: 3
+                retry_wait: "5s"
+
+      tracing:
+        jaeger:
+          version: "1.53.0"
+          deployment:
+            collector:
+              replicas: 3
+              ports:
+                grpc: 14250
+                http: 14268
+                admin: 14269
+              resources:
+                requests:
+                  cpu: "200m"
+                  memory: "512Mi"
+                limits:
+                  cpu: "1000m"
+                  memory: "2Gi"
+            query:
+              replicas: 2
+              ports:
+                http: 16686
+                grpc: 16685
+                admin: 16687
+              resources:
+                requests:
+                  cpu: "100m"
+                  memory: "256Mi"
+                limits:
+                  cpu: "500m"
+                  memory: "1Gi"
+          configuration:
+            collector:
+              log_level: "info"
+              queue_size: 2000
+              num_workers: 50
+              write_cache_ttl: "1h"
+            query:
+              log_level: "info"
+              base_path: "/jaeger"
+              static_files: "/go/jaeger-ui/"
+              ui_config: "ui-config.json"
+            storage:
+              type: "elasticsearch"
+              elasticsearch:
+                server_urls:
+                  - "http://elasticsearch.tracing.svc.cluster.local:9200"
+                index_prefix: "jaeger"
+                username: ""
+                password: ""
+                sniffer: false
+                max_doc_count: 10000
+                num_shards: 6
+                num_replicas: 1
+                timeout: "30s"
+                bulk_size: 1000
+                bulk_workers: 10
+                bulk_actions: 1000
+                bulk_flush_interval: "200ms"
+            sampling:
+              default_strategy:
+                type: "probabilistic"
+                param: 0.001
+              max_traces_per_second: 10000
+              per_service_strategies:
+                - service: "api-gateway"
+                  type: "probabilistic"
+                  param: 0.1
+                  max_traces_per_second: 1000
+                - service: "user-service"
+                  type: "probabilistic"
+                  param: 0.05
+                  max_traces_per_second: 500
+                - service: "payment-service"
+                  type: "probabilistic"
+                  param: 1.0
+                  max_traces_per_second: 100
+
+# File references for navigation practice:
+# Related configuration files that can be opened with gf:
+# - ./secrets/app-secrets.yaml
+# - ./monitoring/prometheus-rules.yaml
+# - ./monitoring/grafana-dashboards.json
+# - ./security/network-policies.yaml
+# - ./database/postgres-config.yaml
+# - ./database/redis-config.yaml
+# - ./database/mongodb-config.yaml
+# - ./logging/fluentd-config.yaml
+# - ./tracing/jaeger-config.yaml
+# - ../docker-compose.yaml
+# - ../k8s.yaml
+# - ../api.json
+# - ../../scripts/deploy.sh
+# - ../../scripts/backup.sh
+# - ../../logs/application.log

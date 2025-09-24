@@ -1,0 +1,230 @@
+{
+"indent_practice_file": {
+"servers": {
+"web": [
+{
+"name": "web-01",
+"ip": "192.168.1.100",
+"config": {
+"nginx": {
+"version": "1.21.0",
+"modules": ["ssl", "gzip", "cache"],
+"worker_processes": 4,
+"worker_connections": 1024,
+"keepalive_timeout": 65,
+"client_max_body_size": "50M"
+},
+"ssl": {
+"certificate": "/etc/ssl/certs/server.crt",
+"private_key": "/etc/ssl/private/server.key",
+"protocols": ["TLSv1.2", "TLSv1.3"],
+"ciphers": "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256"
+}
+}
+},
+{
+"name": "web-02",
+"ip": "192.168.1.101",
+"config": {
+"nginx": {
+"version": "1.21.0",
+"modules": ["ssl", "gzip", "cache"],
+"worker_processes": 4,
+"worker_connections": 1024
+}
+}
+}
+],
+"api": [
+{
+"name": "api-01",
+"ip": "192.168.2.100",
+"config": {
+"application": {
+"port": 8080,
+"environment": "production",
+"database": {
+"host": "postgres.db.local",
+"port": 5432,
+"database": "app_production",
+"username": "app_user",
+"password": "secure_password",
+"pool": {
+"min": 5,
+"max": 20,
+"idle_timeout": "10m"
+}
+},
+"cache": {
+"type": "redis",
+"host": "redis.cache.local",
+"port": 6379,
+"password": "redis_password",
+"db": 0,
+"timeout": "2s"
+},
+"logging": {
+"level": "info",
+"format": "json",
+"destination": "stdout",
+"structured": true
+}
+}
+}
+}
+]
+},
+"databases": {
+"postgresql": [
+{
+"name": "primary",
+"host": "postgres-primary.db.local",
+"port": 5432,
+"config": {
+"version": "15.2",
+"max_connections": 200,
+"shared_buffers": "256MB",
+"effective_cache_size": "1GB",
+"maintenance_work_mem": "64MB",
+"checkpoint_completion_target": 0.9,
+"wal_buffers": "16MB",
+"default_statistics_target": 100,
+"random_page_cost": 1.1,
+"effective_io_concurrency": 200
+}
+},
+{
+"name": "replica",
+"host": "postgres-replica.db.local",
+"port": 5432,
+"config": {
+"version": "15.2",
+"max_connections": 100,
+"hot_standby": true,
+"max_standby_streaming_delay": "30s",
+"hot_standby_feedback": true
+}
+}
+],
+"redis": [
+{
+"name": "master",
+"host": "redis-master.cache.local",
+"port": 6379,
+"config": {
+"version": "7.0",
+"maxmemory": "2GB",
+"maxmemory_policy": "allkeys-lru",
+"appendonly": true,
+"appendfsync": "everysec",
+"save": ["900 1", "300 10", "60 10000"]
+}
+},
+{
+"name": "slave",
+"host": "redis-slave.cache.local",
+"port": 6379,
+"config": {
+"version": "7.0",
+"slaveof": "redis-master.cache.local 6379",
+"slave_read_only": true
+}
+}
+]
+},
+"monitoring": {
+"prometheus": {
+"server": {
+"host": "prometheus.monitoring.local",
+"port": 9090,
+"config": {
+"global": {
+"scrape_interval": "15s",
+"evaluation_interval": "15s"
+},
+"scrape_configs": [
+{
+"job_name": "prometheus",
+"static_configs": [
+{
+"targets": ["localhost:9090"]
+}
+]
+},
+{
+"job_name": "node-exporter",
+"static_configs": [
+{
+"targets": [
+"node-1:9100",
+"node-2:9100",
+"node-3:9100"
+]
+}
+]
+}
+]
+}
+}
+},
+"grafana": {
+"server": {
+"host": "grafana.monitoring.local",
+"port": 3000,
+"config": {
+"security": {
+"admin_user": "admin",
+"admin_password": "secure_password"
+},
+"database": {
+"type": "postgres",
+"host": "grafana-db.monitoring.local",
+"name": "grafana",
+"user": "grafana",
+"password": "grafana_password"
+},
+"dashboards": {
+"providers": [
+{
+"name": "default",
+"path": "/var/lib/grafana/dashboards"
+}
+]
+}
+}
+}
+}
+},
+"load_balancers": {
+"nginx": [
+{
+"name": "main-lb",
+"host": "lb.company.local",
+"config": {
+"upstream": {
+"backend": [
+"server backend-1.local:8080 weight=3",
+"server backend-2.local:8080 weight=2",
+"server backend-3.local:8080 weight=1 backup"
+]
+},
+"server": {
+"listen": [80, 443],
+"server_name": "api.company.com",
+"location": {
+"/": {
+"proxy_pass": "http://backend",
+"proxy_set_header": [
+"Host $host",
+"X-Real-IP $remote_addr",
+"X-Forwarded-For $proxy_add_x_forwarded_for"
+]
+}
+}
+}
+}
+}
+]
+}
+}
+}

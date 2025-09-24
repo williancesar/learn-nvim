@@ -1,0 +1,292 @@
+{
+  "cloud_native_architecture": {
+    "service_mesh": {
+      "istio_configuration": {
+        "version": "1.19.0",
+        "components": ["pilot", "citadel", "galley", "mixer"],
+        "mesh_policy": {
+          "mtls_mode": "STRICT",
+          "policy_check": true,
+          "telemetry_enabled": true
+        },
+        "gateway_config": {
+          "https_redirect": true,
+          "ssl_termination": "edge",
+          "cert_manager": "lets-encrypt"
+        }
+      },
+      "envoy_proxy": {
+        "version": "1.28.0",
+        "access_log_enabled": true,
+        "tracing_enabled": true,
+        "circuit_breaker": {
+          "max_connections": 1000,
+          "max_pending_requests": 100,
+          "max_requests": 100,
+          "max_retries": 3
+        }
+      }
+    },
+    "microservices": {
+      "user_service": {
+        "namespace": "user-management",
+        "replicas": 5,
+        "image": "user-service:v2.1.0",
+        "ports": [8080, 8081, 9090],
+        "environment_variables": {
+          "DATABASE_URL": "postgresql://user-db:5432/users",
+          "REDIS_URL": "redis://user-cache:6379",
+          "JWT_SECRET": "super-secret-key-123",
+          "BCRYPT_ROUNDS": 12,
+          "SESSION_TIMEOUT": 3600
+        },
+        "resource_limits": {
+          "cpu": "500m",
+          "memory": "1Gi",
+          "ephemeral_storage": "2Gi"
+        },
+        "health_checks": {
+          "liveness_probe": "/health/live",
+          "readiness_probe": "/health/ready",
+          "startup_probe": "/health/start"
+        }
+      },
+      "order_service": {
+        "namespace": "order-processing",
+        "replicas": 8,
+        "image": "order-service:v3.0.0",
+        "ports": [8080, 8082, 9090],
+        "environment_variables": {
+          "DATABASE_URL": "postgresql://order-db:5432/orders",
+          "PAYMENT_SERVICE_URL": "http://payment-service:8080",
+          "INVENTORY_SERVICE_URL": "http://inventory-service:8080",
+          "NOTIFICATION_SERVICE_URL": "http://notification-service:8080",
+          "MAX_ORDER_AMOUNT": 10000
+        },
+        "resource_limits": {
+          "cpu": "1000m",
+          "memory": "2Gi",
+          "ephemeral_storage": "5Gi"
+        },
+        "scaling_policy": {
+          "min_replicas": 3,
+          "max_replicas": 20,
+          "target_cpu_utilization": 70,
+          "scale_up_policy": "fast",
+          "scale_down_policy": "slow"
+        }
+      },
+      "payment_service": {
+        "namespace": "payment-processing",
+        "replicas": 10,
+        "image": "payment-service:v1.5.2",
+        "ports": [8080, 8083, 9090],
+        "environment_variables": {
+          "STRIPE_API_KEY": "sk_live_xxxxxxxxxxxxxxxxxxxx",
+          "PAYPAL_CLIENT_ID": "AYxxxxxxxxxxxxxxxxxxxxxxx",
+          "DATABASE_URL": "postgresql://payment-db:5432/payments",
+          "ENCRYPTION_KEY": "payment-encryption-key-456",
+          "PCI_COMPLIANCE_MODE": true
+        },
+        "security_context": {
+          "run_as_non_root": true,
+          "run_as_user": 1000,
+          "fs_group": 2000,
+          "read_only_root_filesystem": true
+        }
+      },
+      "inventory_service": {
+        "namespace": "inventory-management",
+        "replicas": 6,
+        "image": "inventory-service:v2.3.1",
+        "ports": [8080, 8084, 9090],
+        "environment_variables": {
+          "DATABASE_URL": "postgresql://inventory-db:5432/inventory",
+          "WAREHOUSE_API_URL": "http://warehouse-service:8080",
+          "SUPPLIER_API_URL": "http://supplier-service:8080",
+          "LOW_STOCK_THRESHOLD": 10,
+          "REORDER_QUANTITY": 100
+        },
+        "persistent_volume_claims": [
+          {
+            "name": "inventory-data",
+            "size": "50Gi",
+            "access_mode": "ReadWriteOnce",
+            "storage_class": "fast-ssd"
+          }
+        ]
+      }
+    },
+    "databases": {
+      "postgresql_cluster": {
+        "primary": {
+          "host": "postgres-primary.db.svc.cluster.local",
+          "port": 5432,
+          "database": "maindb",
+          "username": "app_user",
+          "max_connections": 200,
+          "shared_buffers": "256MB",
+          "effective_cache_size": "1GB",
+          "maintenance_work_mem": "64MB",
+          "checkpoint_completion_target": 0.9,
+          "wal_buffers": "16MB",
+          "default_statistics_target": 100
+        },
+        "replicas": [
+          {
+            "host": "postgres-replica-1.db.svc.cluster.local",
+            "port": 5432,
+            "lag_threshold": "10MB",
+            "max_connections": 100
+          },
+          {
+            "host": "postgres-replica-2.db.svc.cluster.local",
+            "port": 5432,
+            "lag_threshold": "10MB",
+            "max_connections": 100
+          }
+        ],
+        "backup_configuration": {
+          "schedule": "0 2 * * *",
+          "retention_days": 30,
+          "compression": true,
+          "encryption": true,
+          "storage_location": "s3://db-backups/postgresql/"
+        }
+      },
+      "redis_cluster": {
+        "nodes": [
+          {
+            "host": "redis-0.cache.svc.cluster.local",
+            "port": 6379,
+            "role": "master",
+            "max_memory": "2GB",
+            "max_memory_policy": "allkeys-lru"
+          },
+          {
+            "host": "redis-1.cache.svc.cluster.local",
+            "port": 6379,
+            "role": "slave",
+            "max_memory": "2GB",
+            "max_memory_policy": "allkeys-lru"
+          },
+          {
+            "host": "redis-2.cache.svc.cluster.local",
+            "port": 6379,
+            "role": "slave",
+            "max_memory": "2GB",
+            "max_memory_policy": "allkeys-lru"
+          }
+        ],
+        "sentinel_configuration": {
+          "master_name": "mymaster",
+          "quorum": 2,
+          "down_after_milliseconds": 5000,
+          "failover_timeout": 60000
+        }
+      }
+    },
+    "monitoring_stack": {
+      "prometheus": {
+        "server": {
+          "retention": "15d",
+          "storage_size": "100Gi",
+          "scrape_interval": "15s",
+          "evaluation_interval": "15s"
+        },
+        "alertmanager": {
+          "replicas": 3,
+          "storage_size": "10Gi",
+          "retention": "120h"
+        },
+        "node_exporter": {
+          "enabled": true,
+          "host_network": true,
+          "host_pid": true
+        },
+        "kube_state_metrics": {
+          "enabled": true,
+          "resource_quotas": true,
+          "custom_resources": true
+        }
+      },
+      "grafana": {
+        "admin_password": "secure-grafana-password",
+        "persistence": {
+          "enabled": true,
+          "size": "10Gi",
+          "access_mode": "ReadWriteOnce"
+        },
+        "dashboards": [
+          "kubernetes-cluster-overview",
+          "node-exporter-full",
+          "application-metrics",
+          "database-performance"
+        ]
+      },
+      "jaeger": {
+        "collector": {
+          "replicas": 3,
+          "max_queue_size": 1000,
+          "num_workers": 50
+        },
+        "query": {
+          "replicas": 2,
+          "max_traces": 1000000
+        },
+        "agent": {
+          "strategy": "DaemonSet",
+          "sampling_strategies": {
+            "default_strategy": {
+              "type": "probabilistic",
+              "param": 0.1
+            }
+          }
+        }
+      }
+    },
+    "security_configuration": {
+      "network_policies": {
+        "default_deny_all": true,
+        "allow_dns": true,
+        "ingress_rules": [
+          {
+            "from": "frontend-namespace",
+            "to": "backend-namespace",
+            "ports": [8080, 8443]
+          },
+          {
+            "from": "api-gateway",
+            "to": "microservices",
+            "ports": [8080, 8081, 8082, 8083, 8084]
+          }
+        ],
+        "egress_rules": [
+          {
+            "from": "backend-namespace",
+            "to": "database-namespace",
+            "ports": [5432, 6379]
+          }
+        ]
+      },
+      "pod_security_standards": {
+        "enforce": "restricted",
+        "audit": "restricted",
+        "warn": "restricted",
+        "baseline_exemptions": []
+      },
+      "service_accounts": [
+        {
+          "name": "microservice-account",
+          "namespace": "default",
+          "automount_service_account_token": false
+        },
+        {
+          "name": "monitoring-account",
+          "namespace": "monitoring",
+          "automount_service_account_token": true
+        }
+      ]
+    }
+  }
+}

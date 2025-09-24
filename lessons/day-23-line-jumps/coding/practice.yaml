@@ -1,0 +1,368 @@
+# Line Jump Practice File with Matching Brackets
+# Practice using line numbers (10G, 50G, :25, etc.) and bracket matching (% key)
+# Also practice finding matching brackets with nested structures
+
+# ===== LINE 10 REFERENCE =====
+apiVersion: apps/v1
+kind: Deployment
+metadata: {
+  name: "line-jump-practice",
+  namespace: "training",
+  labels: {
+    app: "practice-app",
+    version: "v1.0.0",
+    environment: "development"
+  },
+  annotations: {
+    "deployment.kubernetes.io/revision": "1",
+    "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"apps/v1\",\"kind\":\"Deployment\"}"
+  }
+}
+
+# ===== LINE 25 REFERENCE =====
+spec:
+  replicas: 3
+  selector: {
+    matchLabels: {
+      app: "practice-app",
+      version: "v1.0.0"
+    }
+  }
+  template: {
+    metadata: {
+      labels: {
+        app: "practice-app",
+        version: "v1.0.0",
+        tier: "frontend"
+      }
+    },
+    spec: {
+      containers: [
+        {
+          name: "main-container",
+          image: "nginx:1.21.0",
+          ports: [
+            {containerPort: 80, name: "http", protocol: "TCP"},
+            {containerPort: 443, name: "https", protocol: "TCP"}
+          ],
+          env: [
+            {name: "NODE_ENV", value: "production"},
+            {name: "API_URL", value: "https://api.company.com"},
+            {name: "DATABASE_URL", value: "postgresql://user:pass@db:5432/app"}
+          ],
+          resources: {
+            requests: {memory: "256Mi", cpu: "250m"},
+            limits: {memory: "512Mi", cpu: "500m"}
+          }
+        }
+      ]
+    }
+  }
+
+# ===== LINE 50 REFERENCE =====
+---
+apiVersion: v1
+kind: Service
+metadata: {
+  name: "practice-service",
+  labels: {
+    app: "practice-app",
+    service-type: "load-balancer"
+  }
+}
+spec: {
+  type: "LoadBalancer",
+  selector: {app: "practice-app"},
+  ports: [
+    {port: 80, targetPort: 80, protocol: "TCP", name: "http"},
+    {port: 443, targetPort: 443, protocol: "TCP", name: "https"}
+  ],
+  loadBalancerSourceRanges: [
+    "10.0.0.0/8",
+    "172.16.0.0/12",
+    "192.168.0.0/16"
+  ]
+}
+
+# ===== LINE 75 REFERENCE =====
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {
+  name: "app-config",
+  namespace: "training"
+}
+data: {
+  database.yaml: |
+    primary: {
+      host: "postgres-primary.db.svc.cluster.local",
+      port: 5432,
+      database: "maindb",
+      ssl: {mode: "require", ca_file: "/etc/ssl/ca.pem"},
+      pool: {min: 5, max: 20, idle_timeout: "10m"}
+    },
+    replica: {
+      host: "postgres-replica.db.svc.cluster.local",
+      port: 5432,
+      database: "maindb",
+      ssl: {mode: "prefer", ca_file: "/etc/ssl/ca.pem"},
+      pool: {min: 2, max: 10, idle_timeout: "5m"}
+    }
+  redis.yaml: |
+    cluster: [
+      {host: "redis-0.cache.svc.cluster.local", port: 6379},
+      {host: "redis-1.cache.svc.cluster.local", port: 6379},
+      {host: "redis-2.cache.svc.cluster.local", port: 6379}
+    ],
+    options: {
+      timeout: "2s",
+      retry_delay: "100ms",
+      max_retries: 3,
+      pool: {size: 20, timeout: "30s"}
+    }
+}
+
+# ===== LINE 100 REFERENCE =====
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {
+  name: "deny-all-default",
+  namespace: "training"
+}
+spec: {
+  podSelector: {},
+  policyTypes: ["Ingress", "Egress"],
+  ingress: [],
+  egress: [
+    {
+      to: [{namespaceSelector: {matchLabels: {name: "kube-system"}}}],
+      ports: [{protocol: "UDP", port: 53}, {protocol: "TCP", port: 53}]
+    }
+  ]
+}
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: {
+  name: "allow-frontend-to-backend",
+  namespace: "training"
+}
+spec: {
+  podSelector: {matchLabels: {tier: "backend"}},
+  policyTypes: ["Ingress"],
+  ingress: [
+    {
+      from: [
+        {podSelector: {matchLabels: {tier: "frontend"}}},
+        {namespaceSelector: {matchLabels: {name: "ingress-nginx"}}}
+      ],
+      ports: [
+        {protocol: "TCP", port: 8080},
+        {protocol: "TCP", port: 8443}
+      ]
+    }
+  ]
+}
+
+# ===== LINE 125 REFERENCE =====
+---
+apiVersion: v1
+kind: Secret
+metadata: {
+  name: "app-secrets",
+  namespace: "training"
+}
+type: "Opaque"
+data: {
+  database-password: "cGFzc3dvcmQxMjM=",  # base64 encoded
+  api-key: "YWJjZGVmZ2hpams=",
+  jwt-secret: "bXlfc2VjcmV0X2tleV8xMjM="
+}
+stringData: {
+  config.json: |
+    {
+      "api": {
+        "keys": {
+          "stripe": "sk_live_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "sendgrid": "SG.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "twilio": "ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        },
+        "endpoints": {
+          "payment": {"url": "https://api.stripe.com/v1", "timeout": 30},
+          "email": {"url": "https://api.sendgrid.com/v3", "timeout": 15},
+          "sms": {"url": "https://api.twilio.com/2010-04-01", "timeout": 10}
+        }
+      },
+      "features": {
+        "authentication": {"enabled": true, "provider": "oauth2"},
+        "authorization": {"enabled": true, "model": "rbac"},
+        "monitoring": {"enabled": true, "metrics": true, "tracing": true},
+        "caching": {"enabled": true, "ttl": 3600, "backend": "redis"}
+      }
+    }
+}
+
+# ===== LINE 150 REFERENCE =====
+---
+apiVersion: batch/v1
+kind: Job
+metadata: {
+  name: "database-migration",
+  namespace: "training"
+}
+spec: {
+  template: {
+    spec: {
+      containers: [
+        {
+          name: "migration",
+          image: "migrate/migrate:v4.15.2",
+          command: [
+            "migrate",
+            "-path", "/migrations",
+            "-database", "postgresql://user:pass@postgres:5432/db?sslmode=disable",
+            "up"
+          ],
+          volumeMounts: [
+            {name: "migrations", mountPath: "/migrations", readOnly: true}
+          ],
+          env: [
+            {
+              name: "DATABASE_URL",
+              valueFrom: {
+                secretKeyRef: {name: "app-secrets", key: "database-url"}
+              }
+            }
+          ]
+        }
+      ],
+      volumes: [
+        {
+          name: "migrations",
+          configMap: {
+            name: "migration-scripts",
+            items: [
+              {key: "001_initial_schema.sql", path: "001_initial_schema.up.sql"},
+              {key: "002_add_users_table.sql", path: "002_add_users_table.up.sql"},
+              {key: "003_add_orders_table.sql", path: "003_add_orders_table.up.sql"}
+            ]
+          }
+        }
+      ],
+      restartPolicy: "OnFailure"
+    }
+  },
+  backoffLimit: 3
+}
+
+# ===== LINE 175 REFERENCE =====
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata: {
+  name: "practice-app-hpa",
+  namespace: "training"
+}
+spec: {
+  scaleTargetRef: {
+    apiVersion: "apps/v1",
+    kind: "Deployment",
+    name: "line-jump-practice"
+  },
+  minReplicas: 3,
+  maxReplicas: 20,
+  metrics: [
+    {
+      type: "Resource",
+      resource: {
+        name: "cpu",
+        target: {type: "Utilization", averageUtilization: 70}
+      }
+    },
+    {
+      type: "Resource",
+      resource: {
+        name: "memory",
+        target: {type: "Utilization", averageUtilization: 80}
+      }
+    },
+    {
+      type: "Pods",
+      pods: {
+        metric: {name: "custom_metric"},
+        target: {type: "AverageValue", averageValue: "30"}
+      }
+    }
+  ],
+  behavior: {
+    scaleUp: {
+      stabilizationWindowSeconds: 300,
+      policies: [
+        {type: "Percent", value: 100, periodSeconds: 15},
+        {type: "Pods", value: 4, periodSeconds: 15}
+      ],
+      selectPolicy: "Max"
+    },
+    scaleDown: {
+      stabilizationWindowSeconds: 300,
+      policies: [
+        {type: "Percent", value: 10, periodSeconds: 60}
+      ]
+    }
+  }
+}
+
+# ===== LINE 200 REFERENCE =====
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: {
+  name: "practice-app-ingress",
+  namespace: "training",
+  annotations: {
+    "kubernetes.io/ingress.class": "nginx",
+    "cert-manager.io/cluster-issuer": "letsencrypt-prod",
+    "nginx.ingress.kubernetes.io/rate-limit": "100",
+    "nginx.ingress.kubernetes.io/ssl-redirect": "true"
+  }
+}
+spec: {
+  tls: [
+    {
+      hosts: ["api.company.com", "www.api.company.com"],
+      secretName: "api-tls-secret"
+    }
+  ],
+  rules: [
+    {
+      host: "api.company.com",
+      http: {
+        paths: [
+          {
+            path: "/",
+            pathType: "Prefix",
+            backend: {
+              service: {name: "practice-service", port: {number: 80}}
+            }
+          },
+          {
+            path: "/api/v1",
+            pathType: "Prefix",
+            backend: {
+              service: {name: "api-service", port: {number: 8080}}
+            }
+          },
+          {
+            path: "/health",
+            pathType: "Exact",
+            backend: {
+              service: {name: "health-service", port: {number: 8081}}
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jump History Practice - Day 21</title>
+    <link rel="stylesheet" href="practice.css">
+</head>
+<body>
+    <div class="container">
+        <header class="main-header">
+            <h1>Jump History and Navigation</h1>
+            <p>Multi-page website for practicing Ctrl+o, Ctrl+i, and jump list navigation</p>
+        </header>
+
+        <nav class="site-navigation">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <section id="home" class="page-section">
+                <h2>Welcome to Jump History Practice</h2>
+                <p>This multi-section website is designed to help you practice jump history navigation. Use Ctrl+o to go back in your jump history and Ctrl+i to go forward. Each section represents a different "page" that creates jump list entries.</p>
+
+                <p>Start by jumping to different sections using the navigation links or search commands. Then practice using the jump history to retrace your steps. The jump list keeps track of significant cursor movements, not just every cursor position.</p>
+
+                <div class="jump-introduction">
+                    <h3>Understanding Jump History</h3>
+                    <p>Vim maintains a jump list that tracks significant cursor movements. Jumps include:</p>
+                    <ul>
+                        <li>Moving to a different line with G, gg, or line numbers</li>
+                        <li>Search operations with / or ?</li>
+                        <li>Using % to match brackets</li>
+                        <li>Jumping to marks with ' or `</li>
+                        <li>Using tags or other navigation commands</li>
+                    </ul>
+                </div>
+
+                <p>Practice jumping to different sections and then using Ctrl+o and Ctrl+i to navigate through your history. Try jumping to <a href="#services">Services</a>, then <a href="#portfolio">Portfolio</a>, then use Ctrl+o twice to come back here.</p>
+            </section>
+
+            <section id="about" class="page-section">
+                <h2>About Jump Navigation</h2>
+                <p>Jump navigation is one of Vim's most powerful features for maintaining context while exploring code or documents. When you make a significant movement, Vim automatically adds your previous position to the jump list.</p>
+
+                <div class="jump-mechanics">
+                    <h3>How Jump Lists Work</h3>
+                    <p>The jump list is a stack-like structure, but it's more sophisticated than a simple stack. Vim maintains separate jump lists for each window, and the lists can hold up to 100 entries by default.</p>
+
+                    <p>When you make a jump, your current position is added to the list before moving. This means you can always return to where you came from, even after multiple jumps.</p>
+
+                    <div class="jump-commands">
+                        <h4>Essential Jump Commands</h4>
+                        <ul>
+                            <li><code>Ctrl+o</code> - Go to previous jump location</li>
+                            <li><code>Ctrl+i</code> - Go to next jump location (forward in history)</li>
+                            <li><code>:jumps</code> - Display the jump list</li>
+                            <li><code>''</code> - Jump to last jump position</li>
+                            <li><code>'.</code> - Jump to last change position</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <p>Try jumping to <a href="#team">Team</a> section now, then return here using jump navigation. Notice how each significant movement creates a new entry in your jump history.</p>
+            </section>
+
+            <section id="services" class="page-section">
+                <h2>Our Services</h2>
+                <p>This services section demonstrates how jump history works with content exploration. When you jumped here from another section, Vim added your previous location to the jump list.</p>
+
+                <div class="service-grid">
+                    <div class="service-item">
+                        <h3>Web Development</h3>
+                        <p>Full-stack web development with modern frameworks and technologies. Practice jumping between different parts of this content to build your jump history.</p>
+                        <p>Try searching for specific terms using / or ? to create search-based jumps. Search for "frameworks" or "technologies" and notice how search operations add to your jump list.</p>
+                    </div>
+
+                    <div class="service-item">
+                        <h3>Mobile Applications</h3>
+                        <p>Native and cross-platform mobile app development for iOS and Android. Each time you search within this content, you create new jump entries.</p>
+                        <p>Use the % command to jump between matching brackets or parentheses in code examples. These bracket jumps also contribute to your jump history.</p>
+                    </div>
+
+                    <div class="service-item">
+                        <h3>Database Design</h3>
+                        <p>Efficient database architecture and optimization services. Practice with line number jumps like :42G or 100G to see how line-based navigation affects jump history.</p>
+                        <p>Try jumping to the end of this section with G, then back to the beginning with gg. Each of these movements creates jump entries you can navigate with Ctrl+o and Ctrl+i.</p>
+                    </div>
+
+                    <div class="service-item">
+                        <h3>Cloud Solutions</h3>
+                        <p>Scalable cloud infrastructure and deployment strategies. The jump list becomes most valuable when you're exploring large documents or codebases.</p>
+                        <p>Imagine this is a large codebase where you need to jump between functions, classes, or modules. Jump navigation lets you maintain your exploration context.</p>
+                    </div>
+                </div>
+
+                <p>From here, try jumping to <a href="#portfolio">Portfolio</a> or <a href="#testimonials">Testimonials</a>, then practice using your jump history to return to previous sections.</p>
+            </section>
+
+            <section id="portfolio" class="page-section">
+                <h2>Portfolio Projects</h2>
+                <p>This portfolio section contains various projects that demonstrate different aspects of jump history usage. Each project represents a different area you might explore in a real codebase.</p>
+
+                <div class="project-showcase">
+                    <article class="project">
+                        <h3>E-commerce Platform</h3>
+                        <p>A comprehensive e-commerce solution built with React and Node.js. In a real project like this, you might jump between component files, API endpoints, and database models.</p>
+
+                        <div class="project-details">
+                            <h4>Key Features</h4>
+                            <ul>
+                                <li>User authentication and authorization</li>
+                                <li>Product catalog with search and filtering</li>
+                                <li>Shopping cart and checkout process</li>
+                                <li>Order management and tracking</li>
+                                <li>Admin dashboard for inventory management</li>
+                            </ul>
+                        </div>
+
+                        <p>Practice: Search for "authentication" with /, then jump to another section, then use Ctrl+o to return to your search result. This simulates common development workflows.</p>
+                    </article>
+
+                    <article class="project">
+                        <h3>Data Analytics Dashboard</h3>
+                        <p>Real-time data visualization and analytics platform using D3.js and Python. Jump navigation is essential when working with complex data processing pipelines.</p>
+
+                        <div class="project-details">
+                            <h4>Technical Stack</h4>
+                            <ul>
+                                <li>Frontend: React, D3.js, Chart.js</li>
+                                <li>Backend: Python, Django, PostgreSQL</li>
+                                <li>Data Processing: Pandas, NumPy, Celery</li>
+                                <li>Infrastructure: Docker, AWS, Redis</li>
+                                <li>Monitoring: Grafana, Prometheus</li>
+                            </ul>
+                        </div>
+
+                        <p>Try jumping to line 50 with :50, then to line 100 with :100, then use your jump history to navigate between these positions and your starting point.</p>
+                    </article>
+
+                    <article class="project">
+                        <h3>Content Management System</h3>
+                        <p>Flexible CMS with multi-site support and custom content types. Large CMS projects often require extensive navigation between templates, models, and configuration files.</p>
+
+                        <div class="project-details">
+                            <h4>Content Features</h4>
+                            <ul>
+                                <li>Drag-and-drop page builder</li>
+                                <li>Custom field types and templates</li>
+                                <li>Multi-language support</li>
+                                <li>SEO optimization tools</li>
+                                <li>Media library management</li>
+                            </ul>
+                        </div>
+
+                        <p>Jump navigation becomes crucial when working with template hierarchies and complex content structures. Practice jumping between different parts of this documentation.</p>
+                    </article>
+                </div>
+
+                <p>Continue exploring by jumping to <a href="#team">Team</a> or <a href="#blog">Blog</a> sections, building up a rich jump history for practice.</p>
+            </section>
+
+            <section id="team" class="page-section">
+                <h2>Our Team</h2>
+                <p>Meet our development team. This section demonstrates how jump history helps you maintain context when exploring team information or code authored by different developers.</p>
+
+                <div class="team-grid">
+                    <div class="team-member">
+                        <h3>Sarah Johnson</h3>
+                        <h4>Lead Developer</h4>
+                        <p>Full-stack developer with 8 years of experience in web technologies. Specializes in React, Node.js, and cloud architecture.</p>
+                        <p>When reviewing Sarah's code, you might jump between her commits, functions, and documentation. Practice using search to find specific terms in her bio.</p>
+                    </div>
+
+                    <div class="team-member">
+                        <h3>Michael Chen</h3>
+                        <h4>Senior Backend Engineer</h4>
+                        <p>Database optimization expert with deep knowledge of PostgreSQL, MongoDB, and distributed systems architecture.</p>
+                        <p>Michael's work often spans multiple files and modules. Jump navigation helps you follow the flow of his database implementations.</p>
+                    </div>
+
+                    <div class="team-member">
+                        <h3>Emily Rodriguez</h3>
+                        <h4>Frontend Specialist</h4>
+                        <p>UI/UX developer focused on creating responsive and accessible user interfaces using modern CSS and JavaScript frameworks.</p>
+                        <p>Emily's frontend work involves jumping between component files, stylesheets, and design specifications. Practice navigation patterns here.</p>
+                    </div>
+
+                    <div class="team-member">
+                        <h3>David Kumar</h3>
+                        <h4>DevOps Engineer</h4>
+                        <p>Infrastructure automation specialist managing CI/CD pipelines, containerization, and cloud deployments across multiple environments.</p>
+                        <p>DevOps work requires jumping between configuration files, scripts, and monitoring dashboards. Use this content to practice complex navigation patterns.</p>
+                    </div>
+
+                    <div class="team-member">
+                        <h3>Lisa Park</h3>
+                        <h4>Quality Assurance Lead</h4>
+                        <p>Test automation engineer developing comprehensive testing strategies for web applications and API services.</p>
+                        <p>Lisa's testing work involves jumping between test specifications, implementation code, and bug reports. Practice these workflows here.</p>
+                    </div>
+
+                    <div class="team-member">
+                        <h3>Alex Thompson</h3>
+                        <h4>Mobile Developer</h4>
+                        <p>Cross-platform mobile development expert working with React Native and Flutter for iOS and Android applications.</p>
+                        <p>Mobile development often requires jumping between platform-specific implementations. Use jump navigation to explore Alex's profile and projects.</p>
+                    </div>
+                </div>
+
+                <p>Try searching for specific skills or technologies mentioned in team member descriptions, then use jump history to navigate between search results and other sections.</p>
+            </section>
+
+            <section id="testimonials" class="page-section">
+                <h2>Client Testimonials</h2>
+                <p>Client feedback and project reviews. This section helps you practice jump navigation with longer text content that you might encounter in documentation or comments.</p>
+
+                <div class="testimonial-list">
+                    <blockquote class="testimonial">
+                        <p>"The development team delivered an exceptional e-commerce platform that exceeded our expectations. Their attention to detail and technical expertise resulted in a scalable solution that handles our growing customer base effortlessly."</p>
+                        <cite>— Rachel Williams, CEO of TechStart Inc.</cite>
+                        <p class="project-ref">E-commerce Platform Project (referenced in <a href="#portfolio">Portfolio</a>)</p>
+                    </blockquote>
+
+                    <blockquote class="testimonial">
+                        <p>"Working with this team on our data analytics dashboard was a game-changer for our business intelligence capabilities. The real-time visualizations and custom reporting features have transformed how we make data-driven decisions."</p>
+                        <cite>— Mark Davis, CTO of DataFlow Solutions</cite>
+                        <p class="project-ref">Analytics Dashboard Project (see <a href="#portfolio">Portfolio</a> for details)</p>
+                    </blockquote>
+
+                    <blockquote class="testimonial">
+                        <p>"The content management system they built for us is incredibly flexible and user-friendly. Our editorial team can now manage multiple websites efficiently, and the SEO tools have significantly improved our search rankings."</p>
+                        <cite>— Jennifer Lee, Marketing Director at ContentPro</cite>
+                        <p class="project-ref">CMS Project implementation details in <a href="#portfolio">Portfolio</a></p>
+                    </blockquote>
+
+                    <blockquote class="testimonial">
+                        <p>"Their mobile app development expertise helped us launch cross-platform applications that provide consistent user experiences across iOS and Android. The performance and reliability have been outstanding."</p>
+                        <cite>— Tom Anderson, Product Manager at MobileFirst</cite>
+                        <p class="project-ref">Mobile development capabilities shown in <a href="#team">Team</a> profiles</p>
+                    </blockquote>
+
+                    <blockquote class="testimonial">
+                        <p>"The cloud infrastructure they designed and implemented has scaled seamlessly with our growth. Their DevOps practices and monitoring solutions give us confidence in our production environment."</p>
+                        <cite>— Sandra Kim, Infrastructure Lead at CloudScale</cite>
+                        <p class="project-ref">Cloud solutions detailed in <a href="#services">Services</a> section</p>
+                    </blockquote>
+                </div>
+
+                <p>Practice jumping between testimonials and their referenced sections. Use search to find specific technologies or services mentioned, then navigate back using jump history.</p>
+            </section>
+
+            <section id="blog" class="page-section">
+                <h2>Development Blog</h2>
+                <p>Technical articles and insights from our development team. Blog content provides excellent practice for jump navigation in documentation and technical writing.</p>
+
+                <div class="blog-posts">
+                    <article class="blog-post">
+                        <h3>Optimizing Database Queries for Scale</h3>
+                        <p class="meta">By Michael Chen • March 15, 2024 • Database Performance</p>
+                        <p>Database optimization is crucial for application performance at scale. This article explores advanced query optimization techniques, indexing strategies, and performance monitoring approaches that have proven effective in production environments.</p>
+
+                        <div class="post-content">
+                            <h4>Key Optimization Strategies</h4>
+                            <ul>
+                                <li>Query plan analysis and optimization</li>
+                                <li>Strategic index creation and maintenance</li>
+                                <li>Connection pooling and resource management</li>
+                                <li>Caching layers and data denormalization</li>
+                                <li>Monitoring and alerting setup</li>
+                            </ul>
+                        </div>
+
+                        <p>Practice: Search for "indexing" in this post, then jump to other blog posts, then return using Ctrl+o to continue reading about optimization strategies.</p>
+                    </article>
+
+                    <article class="blog-post">
+                        <h3>Building Responsive User Interfaces</h3>
+                        <p class="meta">By Emily Rodriguez • March 10, 2024 • Frontend Development</p>
+                        <p>Modern web applications require responsive design that works across all devices and screen sizes. This guide covers CSS Grid, Flexbox, and media queries for creating adaptive layouts.</p>
+
+                        <div class="post-content">
+                            <h4>Responsive Design Principles</h4>
+                            <ul>
+                                <li>Mobile-first development approach</li>
+                                <li>Flexible grid systems and layouts</li>
+                                <li>Optimized images and media</li>
+                                <li>Touch-friendly interface elements</li>
+                                <li>Performance considerations for mobile</li>
+                            </ul>
+                        </div>
+
+                        <p>Jump navigation is essential when working with CSS files and HTML templates. Practice jumping between different responsive breakpoints and design patterns.</p>
+                    </article>
+
+                    <article class="blog-post">
+                        <h3>CI/CD Pipeline Best Practices</h3>
+                        <p class="meta">By David Kumar • March 5, 2024 • DevOps</p>
+                        <p>Continuous integration and deployment pipelines are fundamental to modern software development. This article covers pipeline design, testing strategies, and deployment automation.</p>
+
+                        <div class="post-content">
+                            <h4>Pipeline Components</h4>
+                            <ul>
+                                <li>Automated testing and code quality checks</li>
+                                <li>Build optimization and artifact management</li>
+                                <li>Environment-specific deployment strategies</li>
+                                <li>Rollback procedures and monitoring</li>
+                                <li>Security scanning and compliance</li>
+                            </ul>
+                        </div>
+
+                        <p>DevOps workflows involve jumping between configuration files, scripts, and monitoring dashboards. Practice these navigation patterns with this content.</p>
+                    </article>
+
+                    <article class="blog-post">
+                        <h3>Testing Strategies for Web Applications</h3>
+                        <p class="meta">By Lisa Park • February 28, 2024 • Quality Assurance</p>
+                        <p>Comprehensive testing strategies ensure application reliability and user satisfaction. This post covers unit testing, integration testing, and end-to-end testing approaches.</p>
+
+                        <div class="post-content">
+                            <h4>Testing Pyramid Levels</h4>
+                            <ul>
+                                <li>Unit tests for individual components</li>
+                                <li>Integration tests for system interactions</li>
+                                <li>End-to-end tests for user workflows</li>
+                                <li>Performance and load testing</li>
+                                <li>Security and accessibility testing</li>
+                            </ul>
+                        </div>
+
+                        <p>Testing workflows require jumping between test files, implementation code, and test reports. Use this content to practice navigation between related testing concepts.</p>
+                    </article>
+                </div>
+
+                <p>Blog exploration demonstrates real-world jump navigation scenarios. Try jumping between different posts, searching for specific topics, then using jump history to maintain your reading context.</p>
+            </section>
+
+            <section id="contact" class="page-section">
+                <h2>Contact Information</h2>
+                <p>Get in touch with our development team. This final section completes your jump history practice by providing a destination for your navigation exercises.</p>
+
+                <div class="contact-details">
+                    <div class="contact-method">
+                        <h3>Office Location</h3>
+                        <address>
+                            123 Developer Street<br>
+                            Tech City, TC 12345<br>
+                            United States
+                        </address>
+                    </div>
+
+                    <div class="contact-method">
+                        <h3>Phone & Email</h3>
+                        <p>Phone: (555) 123-4567</p>
+                        <p>Email: contact@devteam.com</p>
+                        <p>Support: support@devteam.com</p>
+                    </div>
+
+                    <div class="contact-method">
+                        <h3>Business Hours</h3>
+                        <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
+                        <p>Saturday: 10:00 AM - 4:00 PM</p>
+                        <p>Sunday: Closed</p>
+                    </div>
+
+                    <div class="contact-method">
+                        <h3>Social Media</h3>
+                        <p>LinkedIn: /company/devteam</p>
+                        <p>Twitter: @devteam</p>
+                        <p>GitHub: github.com/devteam</p>
+                    </div>
+                </div>
+
+                <div class="jump-summary">
+                    <h3>Jump History Practice Summary</h3>
+                    <p>You've now explored multiple sections of this practice website. Your jump history should contain entries from various sections, searches, and navigation commands.</p>
+
+                    <p>Try using <code>:jumps</code> to view your complete jump list. Then practice navigating through your history with Ctrl+o (back) and Ctrl+i (forward).</p>
+
+                    <p>Return to any previous section using jump navigation instead of clicking links. This simulates real development workflows where you maintain context while exploring large codebases.</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="main-footer">
+            <p>Jump history navigation enables efficient exploration of large documents and codebases.</p>
+            <p>Key commands: Ctrl+o (back), Ctrl+i (forward), :jumps (list), '' (last position)</p>
+        </footer>
+    </div>
+</body>
+</html>
