@@ -16,15 +16,15 @@ Imagine if your keyboard could transform based on what you're doing. That's moda
 ### The Three Core Modes
 
 ```
-┌─────────────────────────────────────────────┐
+┌──────────────────────────────────────────────┐
 │                  NORMAL MODE                 │
 │         (Command Center - Default)           │
 │     Navigate, Delete, Copy, Paste, etc.      │
 └─────────────┬───────────────┬────────────────┘
               │               │
-         ESC ←│→ i,a,o      ←│→ v,V,Ctrl-v
+         ESC ←│→ i,a,o       ←│→ v,V,Ctrl-v
               │               │
-┌─────────────▼─────────┐ ┌──▼────────────────┐
+┌─────────────▼─────────┐ ┌───▼───────────────┐
 │     INSERT MODE       │ │   VISUAL MODE     │
 │   (Writing Text)      │ │ (Selecting Text)  │
 │  Type like normal     │ │ Highlight regions │
