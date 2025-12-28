@@ -147,7 +147,7 @@ learn-nvim/
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/learn-nvim.git
+   git clone https://github.com/williancesar/learn-nvim.git
    cd learn-nvim
    ```
 
